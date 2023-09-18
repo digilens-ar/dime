@@ -62,7 +62,7 @@ public:
 	const char* readStringNoSkip();
 
 	class dimeModel* getModel();
-	class dimeMemHandler* getMemHandler();
+	class DimeMemHandler* getMemHandler();
 
 	int getFilePosition() const;
 

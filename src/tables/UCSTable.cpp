@@ -59,7 +59,7 @@ dimeUCSTable::dimeUCSTable()
 dimeTableEntry*
 dimeUCSTable::copy(dimeModel* const model) const
 {
-	dimeMemHandler* memh = model->getMemHandler();
+	DimeMemHandler* memh = model->getMemHandler();
 	auto u = new(memh) dimeUCSTable;
 	u->xaxis = this->xaxis;
 	u->yaxis = this->yaxis;
@@ -119,7 +119,7 @@ dimeUCSTable::write(dimeOutput* const file)
 int
 dimeUCSTable::typeId() const
 {
-	return dimeBase::dimeUCSTableType;
+	return DimeBase::dimeUCSTableType;
 }
 
 //!
@@ -127,7 +127,7 @@ dimeUCSTable::typeId() const
 bool
 dimeUCSTable::handleRecord(const int groupcode,
                            const dimeParam& param,
-                           dimeMemHandler* const memhandler)
+                           DimeMemHandler* const memhandler)
 {
 	switch (groupcode)
 	{

@@ -59,11 +59,11 @@ class dimeModel;
 
 class DIME_DLL_API dimeEntity : public dimeRecordHolder
 {
-	friend class dimeEntitiesSection;
+	friend class DimeEntitiesSection;
 	friend class dimeModel;
 	friend class dimePolyline;
 	friend class dimeBlock;
-	friend class dimeInsert;
+	friend class DimeInsert;
 
 public:
 	dimeEntity();
@@ -118,19 +118,19 @@ public:
 protected:
 	bool preWrite(dimeOutput* file);
 
-	virtual bool traverse(const dimeState* state,
+	virtual bool traverse(const DimeState* state,
 	                      dimeCallback callback,
 	                      void* userdata);
 
 	virtual void fixReferences(dimeModel* model);
 	bool handleRecord(int groupcode,
 	                  const dimeParam& param,
-	                  dimeMemHandler* memhandler) override;
+	                  DimeMemHandler* memhandler) override;
 	bool shouldWriteRecord(int groupcode) const override;
 
 public:
 	static dimeEntity* createEntity(const char* name,
-	                                dimeMemHandler* memhandler = nullptr);
+	                                DimeMemHandler* memhandler = nullptr);
 	static bool readEntities(dimeInput* file,
 	                         dimeArray<dimeEntity*>& array,
 	                         const char* stopat);

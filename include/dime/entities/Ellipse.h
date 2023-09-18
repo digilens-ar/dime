@@ -74,7 +74,7 @@ public:
 protected:
 	bool handleRecord(int groupcode,
 	                  const dimeParam& param,
-	                  dimeMemHandler* memhandler) override;
+	                  DimeMemHandler* memhandler) override;
 
 private:
 	dimeVec3f center;

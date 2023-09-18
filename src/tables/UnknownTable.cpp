@@ -48,7 +48,7 @@
 */
 
 dimeUnknownTable::dimeUnknownTable(const char* const name,
-                                   dimeMemHandler* const memhandler)
+                                   DimeMemHandler* const memhandler)
 {
 	DXF_STRCPY(memhandler, this->tableName, name);
 }
@@ -67,7 +67,7 @@ dimeUnknownTable::~dimeUnknownTable()
 dimeTableEntry*
 dimeUnknownTable::copy(dimeModel* const model) const
 {
-	dimeMemHandler* memh = model->getMemHandler();
+	DimeMemHandler* memh = model->getMemHandler();
 	auto u = new(memh) dimeUnknownTable(this->tableName, memh);
 	if (!this->copyRecords(u, model))
 	{
@@ -96,7 +96,7 @@ dimeUnknownTable::write(dimeOutput* const file)
 int
 dimeUnknownTable::typeId() const
 {
-	return dimeBase::dimeUnknownTableType;
+	return DimeBase::dimeUnknownTableType;
 }
 
 //!

@@ -41,18 +41,18 @@
 #include <dime/State.h>
 
 
-static void convert_line_3d(dimePolyline* pline, const dimeState* state,
+static void convert_line_3d(dimePolyline* pline, const DimeState* state,
                             dxfLayerData* layerData, dxfConverter*);
 
-static void convert_line(dimePolyline* pline, const dimeState* state,
+static void convert_line(dimePolyline* pline, const DimeState* state,
                          dxfLayerData* layerData, dxfConverter*);
-static void convert_mesh(dimePolyline* pline, const dimeState* state,
+static void convert_mesh(dimePolyline* pline, const DimeState* state,
                          dxfLayerData* layerData, dxfConverter*);
-static void convert_face(dimePolyline* pline, const dimeState* state,
+static void convert_face(dimePolyline* pline, const DimeState* state,
                          dxfLayerData* layerData, dxfConverter*);
 
 void
-convert_polyline(const dimeEntity* entity, const dimeState* state,
+convert_polyline(const dimeEntity* entity, const DimeState* state,
                  dxfLayerData* layerData, dxfConverter* converter)
 {
 	auto pline = (dimePolyline*)entity;
@@ -97,7 +97,7 @@ set_segment_data(dxfLineSegment* segment,
 
 
 static void
-convert_line(dimePolyline* pline, const dimeState* state,
+convert_line(dimePolyline* pline, const DimeState* state,
              dxfLayerData* layerData, dxfConverter* converter)
 {
 	// respect the value in the $FILLMODE header variable
@@ -258,7 +258,7 @@ convert_line(dimePolyline* pline, const dimeState* state,
 }
 
 static void
-convert_line_3d(dimePolyline* pline, const dimeState* state,
+convert_line_3d(dimePolyline* pline, const DimeState* state,
                 dxfLayerData* layerData, dxfConverter* converter)
 {
 	int i, n = pline->getNumCoordVertices();
@@ -286,7 +286,7 @@ convert_line_3d(dimePolyline* pline, const dimeState* state,
 }
 
 static void
-convert_mesh(dimePolyline* pline, const dimeState* state,
+convert_mesh(dimePolyline* pline, const DimeState* state,
              dxfLayerData* layerData, dxfConverter*)
 {
 	int i;
@@ -379,7 +379,7 @@ convert_mesh(dimePolyline* pline, const dimeState* state,
 }
 
 static void
-convert_face(dimePolyline* pline, const dimeState* state,
+convert_face(dimePolyline* pline, const DimeState* state,
              dxfLayerData* layerData, dxfConverter* converter)
 {
 	dimeMatrix matrix;

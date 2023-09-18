@@ -199,7 +199,7 @@ dimeEntity::~dimeEntity()
 bool
 dimeEntity::copyRecords(dimeEntity* const entity, dimeModel* const model) const
 {
-	dimeMemHandler* memh = model->getMemHandler();
+	DimeMemHandler* memh = model->getMemHandler();
 	bool ok = dimeRecordHolder::copyRecords(entity, memh);
 
 	if (ok && this->layer)
@@ -283,7 +283,7 @@ dimeEntity::write(dimeOutput* const file)
 
 dimeEntity*
 dimeEntity::createEntity(const char* const name,
-                         dimeMemHandler* const memhandler)
+                         DimeMemHandler* const memhandler)
 {
 #ifndef NDEBUG
 	//fprintf(stderr,"Entity: %s\n", name);
@@ -311,7 +311,7 @@ dimeEntity::createEntity(const char* const name,
 	if (!strcmp(name, "TEXT"))
 		return new(memhandler) dimeText;
 	if (!strcmp(name, "INSERT"))
-		return new(memhandler) dimeInsert;
+		return new(memhandler) DimeInsert;
 	if (!strcmp(name, "BLOCK"))
 		return new(memhandler) dimeBlock(memhandler);
 	if (!strcmp(name, "SOLID"))
@@ -349,7 +349,7 @@ dimeEntity::readEntities(dimeInput* const file,
 	const char* string;
 	bool ok = true;
 	dimeEntity* entity = nullptr;
-	dimeMemHandler* memhandler = file->getMemHandler();
+	DimeMemHandler* memhandler = file->getMemHandler();
 
 	while (true)
 	{
@@ -394,7 +394,7 @@ dimeEntity::copyEntityArray(const dimeEntity* const* const array,
 {
 	int i;
 	int num = nument;
-	dimeMemHandler* memh = model->getMemHandler();
+	DimeMemHandler* memh = model->getMemHandler();
 
 	nument = 0;
 	for (i = 0; i < num; i++)
@@ -557,7 +557,7 @@ dimeEntity::countRecords() const
 */
 
 bool
-dimeEntity::traverse(const dimeState* const state,
+dimeEntity::traverse(const DimeState* const state,
                      dimeCallback callback,
                      void* userdata)
 {
@@ -679,7 +679,7 @@ dimeEntity::setLayer(const dimeLayer* const layer)
 bool
 dimeEntity::handleRecord(const int groupcode,
                          const dimeParam& param,
-                         dimeMemHandler* const memhandler)
+                         DimeMemHandler* const memhandler)
 {
 	if (groupcode == 8)
 	{

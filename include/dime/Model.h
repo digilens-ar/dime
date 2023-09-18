@@ -43,9 +43,9 @@
 class dimeInput;
 class dimeOutput;
 class dimeDict;
-class dimeMemHandler;
+class DimeMemHandler;
 class dimeSection;
-class dimeEntitiesSection;
+class DimeEntitiesSection;
 class dimeBlocksSection;
 class dimeBlock;
 class dimeEntity;
@@ -75,7 +75,7 @@ public:
 	void* findReference(const char* name) const;
 	const char* findRefStringPtr(const char* name) const;
 	void removeReference(const char* name);
-	dimeMemHandler* getMemHandler();
+	DimeMemHandler* getMemHandler();
 
 	int getNumLayers() const;
 	const  dimeLayer* getLayer(int idx) const;
@@ -108,7 +108,7 @@ public:
 private:
 	dimeDict* refDict;
 	dimeDict* layerDict;
-	dimeMemHandler* memoryHandler;
+	DimeMemHandler* memoryHandler;
 	dimeArray<dimeSection*> sections;
 	dimeArray<dimeLayer*> layers;
 	dimeArray<dimeRecord*> headerComments;

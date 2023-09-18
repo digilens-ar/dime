@@ -40,10 +40,10 @@ class dimeInput;
 class dimeModel;
 class dimeOutput;
 
-class DIME_DLL_API dimeSection : public dimeBase
+class DIME_DLL_API dimeSection : public DimeBase
 {
 public:
-	dimeSection(dimeMemHandler* memhandler);
+	dimeSection(DimeMemHandler* memhandler);
 	~dimeSection() override;
 
 	virtual const char* getSectionName() const = 0;
@@ -57,10 +57,10 @@ public:
 
 public:
 	static dimeSection* createSection(const char* sectionname,
-	                                  dimeMemHandler* memhandler);
+	                                  DimeMemHandler* memhandler);
 
 protected:
-	dimeMemHandler* memHandler;
+	DimeMemHandler* memHandler;
 }; // class dimeSection
 
 #endif // ! DIME_SECTION_H

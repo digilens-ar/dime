@@ -54,7 +54,7 @@ dimeDoubleRecord::dimeDoubleRecord(const int group_code, const dxfdouble val)
 //!
 
 dimeRecord*
-dimeDoubleRecord::copy(dimeMemHandler* const mh) const
+dimeDoubleRecord::copy(DimeMemHandler* const mh) const
 {
 	return new(mh) dimeDoubleRecord(this->groupCode, this->value);
 }
@@ -84,7 +84,7 @@ dimeDoubleRecord::getValue() const
 int
 dimeDoubleRecord::typeId() const
 {
-	return dimeBase::dimeDoubleRecordType;
+	return DimeBase::dimeDoubleRecordType;
 }
 
 //!
@@ -110,7 +110,7 @@ dimeDoubleRecord::write(dimeOutput* const out)
 //!
 
 void
-dimeDoubleRecord::setValue(const dimeParam& param, dimeMemHandler* const)
+dimeDoubleRecord::setValue(const dimeParam& param, DimeMemHandler* const)
 {
 	this->value = param.double_data;
 }

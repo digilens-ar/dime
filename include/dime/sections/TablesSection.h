@@ -39,7 +39,7 @@
 class DIME_DLL_API dimeTablesSection : public dimeSection
 {
 public:
-	dimeTablesSection(dimeMemHandler* memhandler = nullptr);
+	dimeTablesSection(DimeMemHandler* memhandler = nullptr);
 	~dimeTablesSection() override;
 
 	const char* getSectionName() const override;

@@ -38,7 +38,7 @@
 #include <dime/State.h>
 
 void
-convert_lwpolyline(const dimeEntity* entity, const dimeState* state,
+convert_lwpolyline(const dimeEntity* entity, const DimeState* state,
                    dxfLayerData* layerData, dxfConverter*)
 {
 	auto pline = (dimeLWPolyline*)entity;

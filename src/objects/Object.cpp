@@ -80,7 +80,7 @@ dimeObject::~dimeObject()
 bool
 dimeObject::copyRecords(dimeObject* const myobject, dimeModel* const model) const
 {
-	dimeMemHandler* memh = model->getMemHandler();
+	DimeMemHandler* memh = model->getMemHandler();
 	bool ok = dimeRecordHolder::copyRecords(myobject, memh);
 	return ok;
 }
@@ -101,7 +101,7 @@ dimeObject::write(dimeOutput* const file)
 
 dimeObject*
 dimeObject::createObject(const char* const name,
-                         dimeMemHandler* const memhandler)
+                         DimeMemHandler* const memhandler)
 {
 	return new(memhandler) dimeUnknownObject(name, memhandler);
 }
@@ -141,7 +141,7 @@ dimeObject::read(dimeInput* const file)
 bool
 dimeObject::handleRecord(const int /*groupcode*/,
                          const dimeParam&/*param*/,
-                         dimeMemHandler* const /*memhandler*/)
+                         DimeMemHandler* const /*memhandler*/)
 {
 	// no groupcodes supported yet...
 	return false;

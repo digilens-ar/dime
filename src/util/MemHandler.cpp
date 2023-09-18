@@ -31,7 +31,7 @@
 \**************************************************************************/
 
 /*!
-  \class dimeMemHandler dime/util/MemHandler.h
+  \class DimeMemHandler dime/util/MemHandler.h
   \brief The dimeMemHandler class is a special-purpose memory manager.
 
   Using this class will give you efficient memory allocation and extremely
@@ -65,7 +65,7 @@
 
 class dimeMemNode
 {
-	friend class dimeMemHandler;
+	friend class DimeMemHandler;
 
 public:
 	dimeMemNode(const size_t numbytes, dimeMemNode* next_node)
@@ -112,7 +112,7 @@ private:
   Constructor. Get ready for fast alloc :-)
 */
 
-dimeMemHandler::dimeMemHandler()
+DimeMemHandler::DimeMemHandler()
 	: bigmemnode(nullptr)
 {
 	this->memnode = new dimeMemNode(MEMBLOCK_SIZE, nullptr);
@@ -122,7 +122,7 @@ dimeMemHandler::dimeMemHandler()
   Frees all memory used.
 */
 
-dimeMemHandler::~dimeMemHandler()
+DimeMemHandler::~DimeMemHandler()
 {
 	dimeMemNode* curr = this->memnode;
 	dimeMemNode* next;
@@ -149,7 +149,7 @@ dimeMemHandler::~dimeMemHandler()
 */
 
 bool
-dimeMemHandler::initOk() const
+DimeMemHandler::initOk() const
 {
 	return this->memnode && this->memnode->initOk();
 }
@@ -160,7 +160,7 @@ dimeMemHandler::initOk() const
 */
 
 char*
-dimeMemHandler::stringAlloc(const char* const string)
+DimeMemHandler::stringAlloc(const char* const string)
 {
 	size_t len = strlen(string) + 1;
 	auto ret = static_cast<char*>(this->allocMem(len, 1));
@@ -181,7 +181,7 @@ dimeMemHandler::stringAlloc(const char* const string)
 */
 
 void*
-dimeMemHandler::allocMem(const size_t size, const int alignment)
+DimeMemHandler::allocMem(const size_t size, const int alignment)
 {
 	void* ret = nullptr;
 	if (size > MEMBLOCK_SIZE / 2)

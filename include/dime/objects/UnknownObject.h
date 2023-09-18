@@ -35,12 +35,12 @@
 
 #include <dime/objects/Object.h>
 
-class dimeMemHandler;
+class DimeMemHandler;
 
 class DIME_DLL_API dimeUnknownObject : public dimeObject
 {
 public:
-	dimeUnknownObject(const char* name, dimeMemHandler* memhandler);
+	dimeUnknownObject(const char* name, DimeMemHandler* memhandler);
 	~dimeUnknownObject() override;
 
 	dimeObject* copy(dimeModel* model) const override;

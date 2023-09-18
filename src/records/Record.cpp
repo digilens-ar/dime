@@ -172,7 +172,7 @@ dimeRecord::readRecord(dimeInput* const in)
 
 dimeRecord*
 dimeRecord::createRecord(const int group_code,
-                         dimeMemHandler* const memhandler)
+                         DimeMemHandler* const memhandler)
 {
 	int type = getRecordType(group_code);
 	dimeRecord* record = nullptr;
@@ -211,7 +211,7 @@ dimeRecord::createRecord(const int group_code,
 dimeRecord*
 dimeRecord::createRecord(const int group_code,
                          const dimeParam& param,
-                         dimeMemHandler* const memhandler)
+                         DimeMemHandler* const memhandler)
 {
 	dimeRecord* record = createRecord(group_code, memhandler);
 	if (record) record->setValue(param, memhandler);
@@ -226,23 +226,23 @@ dimeRecord::createRecord(const int group_code,
 static int
 get_record_type(const int group_code)
 {
-	int type = dimeBase::dimeStringRecordType;
+	int type = DimeBase::dimeStringRecordType;
 
 	if (group_code < 0)
 	{
 		// not normally used in DXF files, but return string record to 
 		// ensure correct read & write
-		type = dimeBase::dimeStringRecordType;
+		type = DimeBase::dimeStringRecordType;
 	}
 
 	else if (group_code <= 9)
 	{
-		type = dimeBase::dimeStringRecordType;
+		type = DimeBase::dimeStringRecordType;
 	}
 	else if (group_code <= 59)
 	{
 		// double precision floating point values.
-		type = dimeBase::dimeDoubleRecordType;
+		type = DimeBase::dimeDoubleRecordType;
 	}
 	// FIXME: this is a fix for some illegal files !!!!
 #ifdef DIME_FIXBIG
@@ -255,113 +255,113 @@ get_record_type(const int group_code)
 #endif // DIME_FIXBIG
 	else if (group_code <= 79)
 	{
-		type = dimeBase::dimeInt16RecordType;
+		type = DimeBase::dimeInt16RecordType;
 	}
 	else if (group_code <= 89)
 	{
 		// not defined yet. Use string.
-		type = dimeBase::dimeStringRecordType;
+		type = DimeBase::dimeStringRecordType;
 	}
 	else if (group_code <= 99)
 	{
-		type = dimeBase::dimeInt32RecordType;
+		type = DimeBase::dimeInt32RecordType;
 	}
 	else if (group_code < 140)
 	{
 		// only 100, 102 and 105 are defined. But use string for the rest also. 
-		type = dimeBase::dimeStringRecordType;
+		type = DimeBase::dimeStringRecordType;
 	}
 	else if (group_code <= 147)
 	{
-		type = dimeBase::dimeDoubleRecordType;
+		type = DimeBase::dimeDoubleRecordType;
 	}
 	else if (group_code < 170)
 	{
 		// not defined. Use string.
-		type = dimeBase::dimeStringRecordType;
+		type = DimeBase::dimeStringRecordType;
 	}
 	else if (group_code <= 178)
 	{
-		type = dimeBase::dimeInt16RecordType;
+		type = DimeBase::dimeInt16RecordType;
 	}
 	// XXX: this is not specified in the spec., but...
 	else if (group_code == 210 || group_code == 220 || group_code == 230)
 	{
-		type = dimeBase::dimeDoubleRecordType;
+		type = DimeBase::dimeDoubleRecordType;
 	}
 	else if (group_code < 270)
 	{
 		// not defined. Use string.
-		type = dimeBase::dimeStringRecordType;
+		type = DimeBase::dimeStringRecordType;
 	}
 	else if (group_code <= 275)
 	{
-		type = dimeBase::dimeInt8RecordType;
+		type = DimeBase::dimeInt8RecordType;
 	}
 	else if (group_code < 280)
 	{
 		// not defined.
-		type = dimeBase::dimeStringRecordType;
+		type = DimeBase::dimeStringRecordType;
 	}
 	else if (group_code <= 289)
 	{
-		type = dimeBase::dimeInt8RecordType;
+		type = DimeBase::dimeInt8RecordType;
 	}
 	else if (group_code < 300)
 	{
 		// not defined.
-		type = dimeBase::dimeStringRecordType;
+		type = DimeBase::dimeStringRecordType;
 	}
 	else if (group_code <= 309)
 	{
-		type = dimeBase::dimeStringRecordType;
+		type = DimeBase::dimeStringRecordType;
 	}
 	else if (group_code <= 319)
 	{
 		// binary chunk of data
-		type = dimeBase::dimeHexRecordType;
+		type = DimeBase::dimeHexRecordType;
 	}
 	else if (group_code <= 329)
 	{
 		// hex handle value
-		type = dimeBase::dimeHexRecordType;
+		type = DimeBase::dimeHexRecordType;
 	}
 	else if (group_code <= 369)
 	{
 		// hexvalue for object ID
-		type = dimeBase::dimeHexRecordType;
+		type = DimeBase::dimeHexRecordType;
 	}
 	else if (group_code < 999)
 	{
 		// not defined.
-		type = dimeBase::dimeStringRecordType;
+		type = DimeBase::dimeStringRecordType;
 	}
 	else if (group_code == 999)
 	{
 		// comment
-		type = dimeBase::dimeStringRecordType;
+		type = DimeBase::dimeStringRecordType;
 	}
 	else if (group_code <= 1009)
 	{
 		// 255 character max string.
-		type = dimeBase::dimeStringRecordType;
+		type = DimeBase::dimeStringRecordType;
 	}
 	else if (group_code <= 1059)
 	{
-		type = dimeBase::dimeStringRecordType;
+		type = DimeBase::dimeStringRecordType;
 		// should be float according to spec, but I have found
 		// _huge_ numbers here that do not fit into a float.
 		//    type = dimeBase::dimeFloatRecordType;
 	}
 	else if (group_code <= 1070)
 	{
-		type = dimeBase::dimeInt16RecordType;
+		type = DimeBase::dimeInt16RecordType;
 	}
 	else if (group_code == 1071)
 	{
-		type = dimeBase::dimeInt32RecordType;
+		type = DimeBase::dimeInt32RecordType;
 	}
-	else type = dimeBase::dimeStringRecordType;
+	else type = DimeBase::dimeStringRecordType;
 	return type;
 }
 

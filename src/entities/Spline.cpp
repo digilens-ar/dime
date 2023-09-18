@@ -101,7 +101,7 @@ dimeSpline::hasWeights() const
 dimeEntity*
 dimeSpline::copy(dimeModel* const model) const
 {
-	dimeMemHandler* mh = model->getMemHandler();
+	DimeMemHandler* mh = model->getMemHandler();
 	auto s = new(mh) dimeSpline;
 	if (!s) return nullptr;
 
@@ -249,7 +249,7 @@ dimeSpline::write(dimeOutput* const file)
 int
 dimeSpline::typeId() const
 {
-	return dimeBase::dimeSplineType;
+	return DimeBase::dimeSplineType;
 }
 
 //!
@@ -257,7 +257,7 @@ dimeSpline::typeId() const
 bool
 dimeSpline::handleRecord(const int groupcode,
                          const dimeParam& param,
-                         dimeMemHandler* const mh)
+                         DimeMemHandler* const mh)
 {
 	switch (groupcode)
 	{
@@ -473,7 +473,7 @@ dimeSpline::countRecords() const
 
 void
 dimeSpline::setKnotValues(const dxfdouble* const values, const int numvalues,
-                          dimeMemHandler* const memhandler)
+                          DimeMemHandler* const memhandler)
 {
 	if (memhandler == nullptr && this->numKnots != numvalues)
 	{
@@ -496,7 +496,7 @@ dimeSpline::setKnotValues(const dxfdouble* const values, const int numvalues,
 
 void
 dimeSpline::setControlPoints(const dimeVec3f* const pts, const int numpts,
-                             dimeMemHandler* const memhandler)
+                             DimeMemHandler* const memhandler)
 {
 	// update weights array (if present)
 	if (this->hasWeights())
@@ -545,7 +545,7 @@ dimeSpline::setControlPoints(const dimeVec3f* const pts, const int numpts,
 
 void
 dimeSpline::setWeight(const int idx, const dxfdouble w,
-                      dimeMemHandler* const memhandler)
+                      DimeMemHandler* const memhandler)
 {
 	if (!this->hasWeights() && w != 1.0)
 	{
@@ -565,7 +565,7 @@ dimeSpline::setWeight(const int idx, const dxfdouble w,
 
 void
 dimeSpline::setFitPoints(const dimeVec3f* const pts, const int numpts,
-                         dimeMemHandler* const memhandler)
+                         DimeMemHandler* const memhandler)
 {
 	if (memhandler == nullptr && this->numFitPoints != numpts)
 	{

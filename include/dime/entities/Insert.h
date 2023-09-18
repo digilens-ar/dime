@@ -39,14 +39,14 @@
 
 class dimeBlock;
 
-class DIME_DLL_API dimeInsert : public dimeEntity
+class DIME_DLL_API DimeInsert : public dimeEntity
 {
-	friend class dimeEntitiesSection;
+	friend class DimeEntitiesSection;
 	friend class dimeBlocksSection;
 
 public:
-	dimeInsert();
-	~dimeInsert() override;
+	DimeInsert();
+	~DimeInsert() override;
 
 	void setBlock(dimeBlock* block);
 	dimeBlock* getBlock() const;
@@ -77,8 +77,8 @@ protected:
 	void fixReferences(dimeModel* model) override;
 	bool handleRecord(int groupcode,
 	                  const dimeParam& param,
-	                  dimeMemHandler* memhandler) override;
-	bool traverse(const dimeState* state,
+	                  DimeMemHandler* memhandler) override;
+	bool traverse(const DimeState* state,
 	              dimeCallback callback,
 	              void* userdata) override;
 
@@ -107,43 +107,43 @@ private:
 
 
 inline void
-dimeInsert::setInsertionPoint(const dimeVec3f& v)
+DimeInsert::setInsertionPoint(const dimeVec3f& v)
 {
 	this->insertionPoint = v;
 }
 
 inline const dimeVec3f&
-dimeInsert::getInsertionPoint() const
+DimeInsert::getInsertionPoint() const
 {
 	return this->insertionPoint;
 }
 
 inline dimeBlock*
-dimeInsert::getBlock() const
+DimeInsert::getBlock() const
 {
 	return this->block;
 }
 
 inline void
-dimeInsert::setScale(const dimeVec3f& v)
+DimeInsert::setScale(const dimeVec3f& v)
 {
 	this->scale = v;
 }
 
 inline const dimeVec3f&
-dimeInsert::getScale() const
+DimeInsert::getScale() const
 {
 	return this->scale;
 }
 
 inline void
-dimeInsert::setRotAngle(dxfdouble angle)
+DimeInsert::setRotAngle(dxfdouble angle)
 {
 	this->rotAngle = angle;
 }
 
 inline dxfdouble
-dimeInsert::getRotAngle() const
+DimeInsert::getRotAngle() const
 {
 	return this->rotAngle;
 }

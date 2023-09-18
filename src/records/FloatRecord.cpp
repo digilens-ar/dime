@@ -53,7 +53,7 @@ dimeFloatRecord::dimeFloatRecord(const int group_code, const float val)
 //!
 
 dimeRecord*
-dimeFloatRecord::copy(dimeMemHandler* const mh) const
+dimeFloatRecord::copy(DimeMemHandler* const mh) const
 {
 	return new(mh) dimeFloatRecord(this->groupCode, this->value);
 }
@@ -81,7 +81,7 @@ dimeFloatRecord::getValue() const
 int
 dimeFloatRecord::typeId() const
 {
-	return dimeBase::dimeFloatRecordType;
+	return DimeBase::dimeFloatRecordType;
 }
 
 //!
@@ -107,7 +107,7 @@ dimeFloatRecord::write(dimeOutput* const out)
 //!
 
 void
-dimeFloatRecord::setValue(const dimeParam& param, dimeMemHandler* const)
+dimeFloatRecord::setValue(const dimeParam& param, DimeMemHandler* const)
 {
 	this->value = param.float_data;
 }

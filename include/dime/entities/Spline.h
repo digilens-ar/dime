@@ -70,24 +70,24 @@ public:
 	dxfdouble getKnotValue(int idx) const;
 	void setKnotValue(int idx, dxfdouble value);
 	void setKnotValues(const dxfdouble* values, int numvalues,
-	                   dimeMemHandler* memhandler = nullptr);
+	                   DimeMemHandler* memhandler = nullptr);
 
 	int getNumControlPoints() const;
 	const dimeVec3f& getControlPoint(int idx) const;
 	void setControlPoint(int idx, const dimeVec3f& v);
 	void setControlPoints(const dimeVec3f* pts, int numpts,
-	                      dimeMemHandler* memhandler = nullptr);
+	                      DimeMemHandler* memhandler = nullptr);
 
 	int getNumWeights() const;
 	dxfdouble getWeight(int idx) const;
 	void setWeight(int idx, dxfdouble w,
-	               dimeMemHandler* memhandler = nullptr);
+	               DimeMemHandler* memhandler = nullptr);
 
 	int getNumFitPoints() const;
 	const dimeVec3f& getFitPoint(int idx) const;
 	void setFitPoint(int idx, const dimeVec3f& pt);
 	void setFitPoints(const dimeVec3f* pts, int numpts,
-	                  dimeMemHandler* memhandler = nullptr);
+	                  DimeMemHandler* memhandler = nullptr);
 
 	dimeEntity* copy(dimeModel* model) const override;
 	bool getRecord(int groupcode,
@@ -103,7 +103,7 @@ public:
 protected:
 	bool handleRecord(int groupcode,
 	                  const dimeParam& param,
-	                  dimeMemHandler* memhandler) override;
+	                  DimeMemHandler* memhandler) override;
 
 private:
 	int16 flags;

@@ -54,7 +54,7 @@
   Constructor.
 */
 
-dimeTable::dimeTable(dimeMemHandler* const memhandler)
+dimeTable::dimeTable(DimeMemHandler* const memhandler)
 	: maxEntries(0), tablename(nullptr), memHandler(memhandler)
 {
 }
@@ -85,7 +85,7 @@ dimeTable::~dimeTable()
 dimeTable*
 dimeTable::copy(dimeModel* const model) const
 {
-	dimeMemHandler* memh = model->getMemHandler();
+	DimeMemHandler* memh = model->getMemHandler();
 	int i;
 	auto t = new dimeTable(memh);
 	int n = this->records.count();
@@ -122,7 +122,7 @@ dimeTable::read(dimeInput* const file)
 	int32 groupcode;
 	dimeRecord* record = nullptr;
 	bool ok = true;
-	dimeMemHandler* memh = file->getMemHandler();
+	DimeMemHandler* memh = file->getMemHandler();
 
 	do
 	{
@@ -242,7 +242,7 @@ dimeTable::write(dimeOutput* const file)
 int
 dimeTable::typeId() const
 {
-	return dimeBase::dimeTableType;
+	return DimeBase::dimeTableType;
 }
 
 //!

@@ -38,7 +38,7 @@
 class DIME_DLL_API dimeUnknownEntity : public dimeEntity
 {
 public:
-	dimeUnknownEntity(const char* name, dimeMemHandler* memhandler);
+	dimeUnknownEntity(const char* name, DimeMemHandler* memhandler);
 	~dimeUnknownEntity() override;
 
 	dimeEntity* copy(dimeModel* model) const override;

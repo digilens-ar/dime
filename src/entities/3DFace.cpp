@@ -109,7 +109,7 @@ dime3DFace::write(dimeOutput* const file)
 int
 dime3DFace::typeId() const
 {
-	return dimeBase::dime3DFaceType;
+	return DimeBase::dime3DFaceType;
 }
 
 //!
@@ -117,7 +117,7 @@ dime3DFace::typeId() const
 bool
 dime3DFace::handleRecord(const int groupcode,
                          const dimeParam& param,
-                         dimeMemHandler* const memhandler)
+                         DimeMemHandler* const memhandler)
 {
 	if (groupcode == 70)
 	{

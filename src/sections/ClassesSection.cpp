@@ -31,7 +31,7 @@
 \**************************************************************************/
 
 /*!
-  \class dimeClassesSection dime/sections/ClassesSection.h
+  \class DimeClassesSection dime/sections/ClassesSection.h
   \brief The dimeClassesSection class handles a CLASSES \e section.
 */
 
@@ -51,7 +51,7 @@ static constexpr char sectionName[] = "CLASSES";
   Constructor.
 */
 
-dimeClassesSection::dimeClassesSection(dimeMemHandler* const memhandler)
+DimeClassesSection::DimeClassesSection(DimeMemHandler* const memhandler)
 	: dimeSection(memhandler)
 {
 }
@@ -60,7 +60,7 @@ dimeClassesSection::dimeClassesSection(dimeMemHandler* const memhandler)
   Destructor.
 */
 
-dimeClassesSection::~dimeClassesSection()
+DimeClassesSection::~DimeClassesSection()
 {
 	if (!this->memHandler)
 	{
@@ -72,10 +72,10 @@ dimeClassesSection::~dimeClassesSection()
 //!
 
 dimeSection*
-dimeClassesSection::copy(dimeModel* const model) const
+DimeClassesSection::copy(dimeModel* const model) const
 {
-	dimeMemHandler* memh = model->getMemHandler();
-	auto cs = new dimeClassesSection(memh);
+	DimeMemHandler* memh = model->getMemHandler();
+	auto cs = new DimeClassesSection(memh);
 	bool ok = cs != nullptr;
 
 	int num = this->classes.count();
@@ -105,13 +105,13 @@ dimeClassesSection::copy(dimeModel* const model) const
 //!
 
 bool
-dimeClassesSection::read(dimeInput* const file)
+DimeClassesSection::read(dimeInput* const file)
 {
 	int32 groupcode;
 	const char* string;
 	bool ok = true;
 	dimeClass* myclass = nullptr;
-	dimeMemHandler* memhandler = file->getMemHandler();
+	DimeMemHandler* memhandler = file->getMemHandler();
 	this->classes.makeEmpty(64);
 
 	//  sim_trace("Reading section: CLASSES\n");
@@ -150,7 +150,7 @@ dimeClassesSection::read(dimeInput* const file)
 //!
 
 bool
-dimeClassesSection::write(dimeOutput* const file)
+DimeClassesSection::write(dimeOutput* const file)
 {
 	//  sim_trace("Writing section: CLASSES\n");
 
@@ -174,15 +174,15 @@ dimeClassesSection::write(dimeOutput* const file)
 //!
 
 int
-dimeClassesSection::typeId() const
+DimeClassesSection::typeId() const
 {
-	return dimeBase::dimeClassesSectionType;
+	return DimeBase::dimeClassesSectionType;
 }
 
 //!
 
 int
-dimeClassesSection::countRecords() const
+DimeClassesSection::countRecords() const
 {
 	int cnt = 0;
 	int n = this->classes.count();
@@ -194,7 +194,7 @@ dimeClassesSection::countRecords() const
 //!
 
 const char*
-dimeClassesSection::getSectionName() const
+DimeClassesSection::getSectionName() const
 {
 	return sectionName;
 }
@@ -204,7 +204,7 @@ dimeClassesSection::getSectionName() const
 */
 
 int
-dimeClassesSection::getNumClasses() const
+DimeClassesSection::getNumClasses() const
 {
 	return this->classes.count();
 }
@@ -214,7 +214,7 @@ dimeClassesSection::getNumClasses() const
 */
 
 dimeClass*
-dimeClassesSection::getClass(const int idx)
+DimeClassesSection::getClass(const int idx)
 {
 	assert(idx >= 0 && idx < this->classes.count());
 	return this->classes[idx];
@@ -225,7 +225,7 @@ dimeClassesSection::getClass(const int idx)
 */
 
 void
-dimeClassesSection::removeClass(const int idx)
+DimeClassesSection::removeClass(const int idx)
 {
 	assert(idx >= 0 && idx < this->classes.count());
 	if (!this->memHandler) delete this->classes[idx];
@@ -238,7 +238,7 @@ dimeClassesSection::removeClass(const int idx)
 */
 
 void
-dimeClassesSection::insertClass(dimeClass* const myclass, const int idx)
+DimeClassesSection::insertClass(dimeClass* const myclass, const int idx)
 {
 	if (idx < 0) this->classes.append(myclass);
 	else

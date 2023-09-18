@@ -35,11 +35,11 @@
 
 #include <dime/Basic.h>
 
-class DIME_DLL_API dimeMemHandler
+class DIME_DLL_API DimeMemHandler
 {
 public:
-	dimeMemHandler();
-	~dimeMemHandler();
+	DimeMemHandler();
+	~DimeMemHandler();
 
 	bool initOk() const;
 

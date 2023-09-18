@@ -40,7 +40,7 @@
 
 void
 convert_solid_data(dimeVec3f* v, dimeVec3f& e, dxfdouble thickness,
-                   const dimeState* state,
+                   const DimeState* state,
                    dxfLayerData* layerData)
 {
 	dimeMatrix matrix;
@@ -123,7 +123,7 @@ convert_solid_data(dimeVec3f* v, dimeVec3f& e, dxfdouble thickness,
 
 
 void
-convert_solid(const dimeEntity* entity, const dimeState* state,
+convert_solid(const dimeEntity* entity, const DimeState* state,
               dxfLayerData* layerData, dxfConverter* converter)
 {
 	// respect the value in the $FILLMODE header variable

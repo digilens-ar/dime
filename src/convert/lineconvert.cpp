@@ -37,7 +37,7 @@
 #include <dime/State.h>
 
 void
-convert_line(const dimeEntity* entity, const dimeState* state,
+convert_line(const dimeEntity* entity, const DimeState* state,
              dxfLayerData* layerData, dxfConverter*)
 {
 	auto line = (dimeLine*)entity;

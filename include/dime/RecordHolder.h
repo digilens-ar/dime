@@ -36,26 +36,26 @@
 #include <dime/Base.h>
 
 class dimeInput;
-class dimeMemHandler;
+class DimeMemHandler;
 class dimeOutput;
 class dimeRecord;
 
-class DIME_DLL_API dimeRecordHolder : public dimeBase
+class DIME_DLL_API dimeRecordHolder : public DimeBase
 {
 public:
 	dimeRecordHolder(int separator);
 	~dimeRecordHolder() override;
 
 	void setRecord(int groupcode, const dimeParam& value,
-	               dimeMemHandler* memhandler = nullptr);
+	               DimeMemHandler* memhandler = nullptr);
 	void setRecords(const int* groupcodes,
 	                const dimeParam* params,
 	                int numrecords,
-	                dimeMemHandler* memhandler = nullptr);
+	                DimeMemHandler* memhandler = nullptr);
 	void setIndexedRecord(int groupcode,
 	                      const dimeParam& value,
 	                      int index,
-	                      dimeMemHandler* memhandler = nullptr);
+	                      DimeMemHandler* memhandler = nullptr);
 
 	virtual bool getRecord(int groupcode,
 	                       dimeParam& param,
@@ -74,10 +74,10 @@ public:
 protected:
 	virtual bool handleRecord(int groupcode,
 	                          const dimeParam& param,
-	                          dimeMemHandler* memhandler);
+	                          DimeMemHandler* memhandler);
 
 	bool copyRecords(dimeRecordHolder* rh,
-	                 dimeMemHandler* memhandler) const;
+	                 DimeMemHandler* memhandler) const;
 
 	virtual bool shouldWriteRecord(int groupcode) const;
 
@@ -88,7 +88,7 @@ protected:
 
 private:
 	void setRecordCommon(int groupcode, const dimeParam& param,
-	                     int index, dimeMemHandler* memhandler);
+	                     int index, DimeMemHandler* memhandler);
 }; // class dimeRecordHolder
 
 #endif // ! DIME_RECORDHOLDER_H

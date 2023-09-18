@@ -114,7 +114,7 @@ dimeCircle::write(dimeOutput* const file)
 int
 dimeCircle::typeId() const
 {
-	return dimeBase::dimeCircleType;
+	return DimeBase::dimeCircleType;
 }
 
 /*!
@@ -124,7 +124,7 @@ dimeCircle::typeId() const
 bool
 dimeCircle::handleRecord(const int groupcode,
                          const dimeParam& param,
-                         dimeMemHandler* const memhandler)
+                         DimeMemHandler* const memhandler)
 {
 	switch (groupcode)
 	{

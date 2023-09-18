@@ -108,7 +108,7 @@ dimeTrace::write(dimeOutput* const file)
 
 bool
 dimeTrace::handleRecord(const int groupcode, const dimeParam& param,
-                        dimeMemHandler* const memhandler)
+                        DimeMemHandler* const memhandler)
 {
 	switch (groupcode)
 	{
@@ -158,7 +158,7 @@ dimeTrace::getRecord(const int groupcode,
 int
 dimeTrace::typeId() const
 {
-	return dimeBase::dimeTraceType;
+	return DimeBase::dimeTraceType;
 }
 
 dxfdouble

@@ -57,7 +57,7 @@ public:
 protected:
 	bool handleRecord(int groupcode,
 	                  const dimeParam& param,
-	                  dimeMemHandler* memhandler) override;
+	                  DimeMemHandler* memhandler) override;
 
 	void copyExtrusionData(const dimeExtrusionEntity* entity);
 	bool writeExtrusionData(dimeOutput* out);

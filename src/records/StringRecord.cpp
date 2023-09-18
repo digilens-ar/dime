@@ -63,7 +63,7 @@ dimeStringRecord::~dimeStringRecord()
 //!
 
 dimeRecord*
-dimeStringRecord::copy(dimeMemHandler* const mh) const
+dimeStringRecord::copy(DimeMemHandler* const mh) const
 {
 	auto s = new(mh) dimeStringRecord(this->groupCode);
 	if (s)
@@ -81,7 +81,7 @@ dimeStringRecord::copy(dimeMemHandler* const mh) const
 
 bool
 dimeStringRecord::setString(const char* const s,
-                            dimeMemHandler* const memhandler)
+                            DimeMemHandler* const memhandler)
 {
 	DXF_STRCPY(memhandler, this->string, s);
 	return this->string != nullptr;
@@ -130,7 +130,7 @@ dimeStringRecord::isEndOfFileRecord() const
 int
 dimeStringRecord::typeId() const
 {
-	return dimeBase::dimeStringRecordType;
+	return DimeBase::dimeStringRecordType;
 }
 
 //!
@@ -160,7 +160,7 @@ dimeStringRecord::write(dimeOutput* const out)
 //!
 
 void
-dimeStringRecord::setValue(const dimeParam& param, dimeMemHandler* const memhandler)
+dimeStringRecord::setValue(const dimeParam& param, DimeMemHandler* const memhandler)
 {
 	if (memhandler)
 	{

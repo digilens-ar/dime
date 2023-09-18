@@ -57,7 +57,7 @@ calc_num_sub(dxfdouble maxerr, dxfdouble radius)
 
 
 void
-convert_circle(const dimeEntity* entity, const dimeState* state,
+convert_circle(const dimeEntity* entity, const DimeState* state,
                dxfLayerData* layerData, dxfConverter* converter)
 {
 	auto circle = (dimeCircle*)entity;

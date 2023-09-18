@@ -99,7 +99,7 @@ dimePoint::write(dimeOutput* const file)
 int
 dimePoint::typeId() const
 {
-	return dimeBase::dimePointType;
+	return DimeBase::dimePointType;
 }
 
 //!
@@ -107,7 +107,7 @@ dimePoint::typeId() const
 bool
 dimePoint::handleRecord(const int groupcode,
                         const dimeParam& param,
-                        dimeMemHandler* const memhandler)
+                        DimeMemHandler* const memhandler)
 {
 	switch (groupcode)
 	{

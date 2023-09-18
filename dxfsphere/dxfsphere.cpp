@@ -284,7 +284,7 @@ main(int ac, char ** av)
   }
 
   // DIME: add the entities section.
-  dimeEntitiesSection * entities = new dimeEntitiesSection;
+  DimeEntitiesSection * entities = new DimeEntitiesSection;
   model.insertSection(entities);
 
   if (ccwflag)
@@ -372,7 +372,7 @@ main(int ac, char ** av)
   print_object(old, maxlevel, model, LAYERNAME1, block);
 
   if (block) {
-    dimeInsert * insert = new dimeInsert;
+    DimeInsert * insert = new DimeInsert;
     insert->setBlock(block);
     model.addEntity(insert);
   }

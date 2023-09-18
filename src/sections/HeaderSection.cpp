@@ -51,7 +51,7 @@ static constexpr char sectionName[] = "HEADER";
   Constructor
 */
 
-dimeHeaderSection::dimeHeaderSection(dimeMemHandler* const memhandler)
+dimeHeaderSection::dimeHeaderSection(DimeMemHandler* const memhandler)
 	: dimeSection(memhandler)
 {
 }
@@ -115,7 +115,7 @@ dimeHeaderSection::setVariable(const char* const variableName,
                                const int* const groupcodes,
                                const dimeParam* const params,
                                const int numparams,
-                               dimeMemHandler* const memhandler)
+                               DimeMemHandler* const memhandler)
 {
 	int i = findVariable(variableName);
 	if (i < 0)
@@ -164,7 +164,7 @@ dimeHeaderSection::getSectionName() const
 dimeSection*
 dimeHeaderSection::copy(dimeModel* const model) const
 {
-	dimeMemHandler* mh = model->getMemHandler();
+	DimeMemHandler* mh = model->getMemHandler();
 	auto hs = new dimeHeaderSection(mh);
 	if (hs)
 	{
@@ -227,7 +227,7 @@ dimeHeaderSection::write(dimeOutput* const file)
 int
 dimeHeaderSection::typeId() const
 {
-	return dimeBase::dimeHeaderSectionType;
+	return DimeBase::dimeHeaderSectionType;
 }
 
 //!

@@ -88,7 +88,7 @@ static char entityName[] = "BLOCK";
   Constructor.
 */
 
-dimeBlock::dimeBlock(dimeMemHandler* const memhandler)
+dimeBlock::dimeBlock(DimeMemHandler* const memhandler)
 	: flags(0), name(nullptr), basePoint(0, 0, 0), endblock(nullptr),
 	  memHandler(memhandler)
 {
@@ -115,7 +115,7 @@ dimeBlock::~dimeBlock()
 dimeEntity*
 dimeBlock::copy(dimeModel* const model) const
 {
-	dimeMemHandler* memh = model->getMemHandler();
+	DimeMemHandler* memh = model->getMemHandler();
 	auto bl = new dimeBlock(memh);
 	bool ok = true;
 
@@ -170,7 +170,7 @@ dimeBlock::read(dimeInput* const file)
 	// got to do some reading to get all entities in the block
 	if (ret)
 	{
-		dimeMemHandler* memhandler = file->getMemHandler();
+		DimeMemHandler* memhandler = file->getMemHandler();
 		this->entities.makeEmpty(1024); // begin with a fairly large array
 		ret = dimeEntity::readEntities(file, this->entities, "ENDBLK");
 		if (ret)
@@ -249,7 +249,7 @@ dimeBlock::write(dimeOutput* const file)
 int
 dimeBlock::typeId() const
 {
-	return dimeBase::dimeBlockType;
+	return DimeBase::dimeBlockType;
 }
 
 //!
@@ -257,7 +257,7 @@ dimeBlock::typeId() const
 bool
 dimeBlock::handleRecord(const int groupcode,
                         const dimeParam& param,
-                        dimeMemHandler* const memhandler)
+                        DimeMemHandler* const memhandler)
 {
 	switch (groupcode)
 	{
@@ -378,7 +378,7 @@ dimeBlock::removeEntity(const int idx, const bool deleteIt)
 //!
 
 bool
-dimeBlock::traverse(const dimeState* const state,
+dimeBlock::traverse(const DimeState* const state,
                     dimeCallback callback,
                     void* userdata)
 {

@@ -39,7 +39,7 @@
 
 class DIME_DLL_API dime3DFace : public dimeFaceEntity
 {
-	friend class dimeEntitiesSection;
+	friend class DimeEntitiesSection;
 	friend class dimeBlock;
 	friend class dimeModel;
 	friend class dimeEntity;
@@ -75,7 +75,7 @@ public:
 protected:
 	bool handleRecord(int groupcode,
 	                  const dimeParam& param,
-	                  dimeMemHandler* memhandler) override;
+	                  DimeMemHandler* memhandler) override;
 
 	int16 flags;
 

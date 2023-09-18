@@ -111,7 +111,7 @@ dimeSolid::write(dimeOutput* const file)
 bool
 dimeSolid::handleRecord(const int groupcode,
                         const dimeParam& param,
-                        dimeMemHandler* const memhandler)
+                        DimeMemHandler* const memhandler)
 {
 	switch (groupcode)
 	{
@@ -161,7 +161,7 @@ dimeSolid::getRecord(const int groupcode,
 int
 dimeSolid::typeId() const
 {
-	return dimeBase::dimeSolidType;
+	return DimeBase::dimeSolidType;
 }
 
 //!

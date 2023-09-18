@@ -31,7 +31,7 @@
 \**************************************************************************/
 
 /*!
-  \class dimeState dime/State.h
+  \class DimeState dime/State.h
   \brief The dimeState class manages various state variables while the
   model is traversed.
 */
@@ -42,7 +42,7 @@
   Constructor.
 */
 
-dimeState::dimeState(const bool traversePolylineVertices,
+DimeState::DimeState(const bool traversePolylineVertices,
                      const bool explodeInserts)
 {
 	this->matrix.makeIdentity();
@@ -63,7 +63,7 @@ dimeState::dimeState(const bool traversePolylineVertices,
   Constructor.
 */
 
-dimeState::dimeState(const dimeState& st)
+DimeState::DimeState(const DimeState& st)
 {
 	this->matrix = st.matrix;
 	this->invmatrix = st.invmatrix;
@@ -72,7 +72,7 @@ dimeState::dimeState(const dimeState& st)
 }
 
 void
-dimeState::setMatrix(const dimeMatrix& m)
+DimeState::setMatrix(const dimeMatrix& m)
 {
 	this->matrix = m;
 	this->flags |= INVMATRIX_DIRTY;
@@ -80,11 +80,11 @@ dimeState::setMatrix(const dimeMatrix& m)
 
 
 const dimeMatrix&
-dimeState::getInvMatrix() const
+DimeState::getInvMatrix() const
 {
 	if (this->flags & INVMATRIX_DIRTY)
 	{
-		auto thisp = (dimeState*)this;
+		auto thisp = (DimeState*)this;
 		thisp->invmatrix = thisp->matrix;
 		thisp->invmatrix.inverse();
 		thisp->flags ^= INVMATRIX_DIRTY;
@@ -93,7 +93,7 @@ dimeState::getInvMatrix() const
 }
 
 void
-dimeState::getMatrix(dimeMatrix& m) const
+DimeState::getMatrix(dimeMatrix& m) const
 {
 	m = this->matrix;
 }

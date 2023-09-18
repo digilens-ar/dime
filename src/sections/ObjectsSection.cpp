@@ -50,7 +50,7 @@ static constexpr char sectionName[] = "OBJECTS";
   Constructor.
 */
 
-dimeObjectsSection::dimeObjectsSection(dimeMemHandler* const memhandler)
+dimeObjectsSection::dimeObjectsSection(DimeMemHandler* const memhandler)
 	: dimeSection(memhandler)
 {
 }
@@ -73,7 +73,7 @@ dimeObjectsSection::~dimeObjectsSection()
 dimeSection*
 dimeObjectsSection::copy(dimeModel* const model) const
 {
-	dimeMemHandler* memh = model->getMemHandler();
+	DimeMemHandler* memh = model->getMemHandler();
 	auto os = new dimeObjectsSection(memh);
 	bool ok = os != nullptr;
 
@@ -110,7 +110,7 @@ dimeObjectsSection::read(dimeInput* const file)
 	const char* string;
 	bool ok = true;
 	dimeObject* object = nullptr;
-	dimeMemHandler* memhandler = file->getMemHandler();
+	DimeMemHandler* memhandler = file->getMemHandler();
 	this->objects.makeEmpty(64);
 
 	//  sim_trace("Reading section: OBJECTS\n");
@@ -175,7 +175,7 @@ dimeObjectsSection::write(dimeOutput* const file)
 int
 dimeObjectsSection::typeId() const
 {
-	return dimeBase::dimeObjectsSectionType;
+	return DimeBase::dimeObjectsSectionType;
 }
 
 //!

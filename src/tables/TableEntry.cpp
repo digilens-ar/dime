@@ -100,7 +100,7 @@ dimeTableEntry::read(dimeInput* const file)
 
 dimeTableEntry*
 dimeTableEntry::createTableEntry(const char* const name,
-                                 dimeMemHandler* const memhandler)
+                                 DimeMemHandler* const memhandler)
 {
 	if (!strcmp(name, "LAYER"))
 	{
@@ -130,7 +130,7 @@ dimeTableEntry::countRecords() const
 bool
 dimeTableEntry::handleRecord(const int,
                              const dimeParam&,
-                             dimeMemHandler* const)
+                             DimeMemHandler* const)
 {
 	return false;
 }
@@ -140,7 +140,7 @@ dimeTableEntry::handleRecord(const int,
 bool
 dimeTableEntry::isOfType(const int thetypeid) const
 {
-	return thetypeid == dimeBase::dimeTableEntryType ||
+	return thetypeid == DimeBase::dimeTableEntryType ||
 		dimeRecordHolder::isOfType(thetypeid);
 }
 

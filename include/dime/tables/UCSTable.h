@@ -59,7 +59,7 @@ public:
 protected:
 	bool handleRecord(int groupcodes,
 	                  const dimeParam& param,
-	                  dimeMemHandler* memhandler) override;
+	                  DimeMemHandler* memhandler) override;
 
 private:
 	dimeVec3f origin;

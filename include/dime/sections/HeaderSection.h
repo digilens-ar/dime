@@ -39,7 +39,7 @@
 class DIME_DLL_API dimeHeaderSection : public dimeSection
 {
 public:
-	dimeHeaderSection(dimeMemHandler* memhandler);
+	dimeHeaderSection(DimeMemHandler* memhandler);
 	~dimeHeaderSection() override;
 
 	int getVariable(const char* variableName,
@@ -51,7 +51,7 @@ public:
 	                const int* groupcodes,
 	                const dimeParam* params,
 	                int numparams,
-	                dimeMemHandler* memhandler = nullptr);
+	                DimeMemHandler* memhandler = nullptr);
 
 	const char* getSectionName() const override;
 	dimeSection* copy(dimeModel* model) const override;

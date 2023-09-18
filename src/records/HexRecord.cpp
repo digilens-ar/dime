@@ -56,5 +56,5 @@ dimeHexRecord::dimeHexRecord(const int group_code)
 int
 dimeHexRecord::typeId() const
 {
-	return dimeBase::dimeHexRecordType;
+	return DimeBase::dimeHexRecordType;
 }

@@ -41,7 +41,7 @@ public:
 	dimeLayerTable();
 	~dimeLayerTable() override;
 
-	void setLayerName(const char* name, dimeMemHandler* memhandler);
+	void setLayerName(const char* name, DimeMemHandler* memhandler);
 	const char* getLayerName(void) const;
 
 	void setColorNumber(int16 colnum);
@@ -60,7 +60,7 @@ public:
 protected:
 	bool handleRecord(int groupcode,
 	                  const dimeParam& param,
-	                  dimeMemHandler* memhandler) override;
+	                  DimeMemHandler* memhandler) override;
 
 private:
 	int16 colorNumber;

@@ -147,7 +147,7 @@ dimeVertex::getIndex(const int num) const
 int
 dimeVertex::typeId() const
 {
-	return dimeBase::dimeVertexType;
+	return DimeBase::dimeVertexType;
 }
 
 //!
@@ -155,7 +155,7 @@ dimeVertex::typeId() const
 bool
 dimeVertex::handleRecord(const int groupcode,
                          const dimeParam& param,
-                         dimeMemHandler* const memhandler)
+                         DimeMemHandler* const memhandler)
 {
 	switch (groupcode)
 	{

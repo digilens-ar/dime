@@ -36,9 +36,9 @@
 #include <dime/Basic.h>
 #include <stddef.h>  // for size_t
 
-class dimeMemHandler;
+class DimeMemHandler;
 
-class DIME_DLL_API dimeBase
+class DIME_DLL_API DimeBase
 {
 public:
 	enum
@@ -94,15 +94,15 @@ public:
 		dimeLastTypeTag
 	};
 
-	dimeBase(void);
-	virtual ~dimeBase();
+	DimeBase(void);
+	virtual ~DimeBase();
 
 	virtual int typeId() const = 0;
 	virtual bool isOfType(int thetypeid) const;
 
 public:
-	void* operator new(size_t size, dimeMemHandler* memhandler = nullptr, int alignment = 4);
-	void operator delete(void* ptr, dimeMemHandler* memhandler, int alignment);
+	void* operator new(size_t size, DimeMemHandler* memhandler = nullptr, int alignment = 4);
+	void operator delete(void* ptr, DimeMemHandler* memhandler, int alignment);
 	void operator delete(void* ptr);
 }; // class dimeBase
 

@@ -38,7 +38,7 @@
 
 class dimeModel;
 class dxfLayerData;
-class dimeState;
+class DimeState;
 class dimeEntity;
 
 class DIME_DLL_API dxfConverter
@@ -117,9 +117,9 @@ private:
 	bool fillmode;
 	bool layercol;
 
-	bool private_callback(const dimeState* state,
+	bool private_callback(const DimeState* state,
 	                      dimeEntity* entity);
-	static bool dime_callback(const dimeState* state,
+	static bool dime_callback(const DimeState* state,
 	                          dimeEntity* entity, void*);
 };
 

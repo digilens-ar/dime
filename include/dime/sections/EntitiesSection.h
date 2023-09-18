@@ -36,13 +36,13 @@
 #include <dime/sections/Section.h>
 #include <dime/util/Array.h>
 
-class DIME_DLL_API dimeEntitiesSection : public dimeSection
+class DIME_DLL_API DimeEntitiesSection : public dimeSection
 {
 	friend class dimeModel;
 
 public:
-	dimeEntitiesSection(dimeMemHandler* memhandler = nullptr);
-	~dimeEntitiesSection() override;
+	DimeEntitiesSection(DimeMemHandler* memhandler = nullptr);
+	~DimeEntitiesSection() override;
 
 	const char* getSectionName() const override;
 	dimeSection* copy(dimeModel* model) const override;

@@ -184,7 +184,7 @@ dimeText::write(dimeOutput* const file)
 int
 dimeText::typeId() const
 {
-	return dimeBase::dimeTextType;
+	return DimeBase::dimeTextType;
 }
 
 //!
@@ -192,7 +192,7 @@ dimeText::typeId() const
 bool
 dimeText::handleRecord(const int groupcode,
                        const dimeParam& param,
-                       dimeMemHandler* const memhandler)
+                       DimeMemHandler* const memhandler)
 {
 	switch (groupcode)
 	{

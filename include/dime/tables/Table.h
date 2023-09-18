@@ -42,10 +42,10 @@ class dimeOutput;
 class dimeTableEntry;
 class dimeRecord;
 
-class DIME_DLL_API dimeTable : public dimeBase
+class DIME_DLL_API dimeTable : public DimeBase
 {
 public:
-	dimeTable(dimeMemHandler* memhandler);
+	dimeTable(DimeMemHandler* memhandler);
 	~dimeTable() override;
 
 	bool read(dimeInput* in);
@@ -73,7 +73,7 @@ private:
 	char* tablename;
 	dimeArray<dimeTableEntry*> tableEntries;
 	dimeArray<dimeRecord*> records;
-	dimeMemHandler* memHandler;
+	DimeMemHandler* memHandler;
 }; // class dimeTable
 
 #endif // ! DIME_TABLE_H

@@ -151,7 +151,7 @@ dxfLayerData*
 dxfConverter::getLayerData(const dimeEntity* entity)
 {
 	// special case for VERTEX
-	if (this->currentPolyline && entity->typeId() == dimeBase::dimeVertexType)
+	if (this->currentPolyline && entity->typeId() == DimeBase::dimeVertexType)
 	{
 		if (!(entity->getEntityFlags() & FLAG_COLOR_NUMBER))
 			return getLayerData(this->currentPolyline);
@@ -287,7 +287,7 @@ dxfConverter::getColorIndex(const dimeEntity* entity)
 // forward the call to the correct class instance
 //
 bool
-dxfConverter::dime_callback(const dimeState* const state,
+dxfConverter::dime_callback(const DimeState* const state,
                             dimeEntity* entity, void* data)
 {
 	return static_cast<dxfConverter*>(data)->private_callback(state, entity);
@@ -297,10 +297,10 @@ dxfConverter::dime_callback(const dimeState* const state,
 // handles the callback from the dime-library
 //
 bool
-dxfConverter::private_callback(const dimeState* const state,
+dxfConverter::private_callback(const DimeState* const state,
                                dimeEntity* entity)
 {
-	if (entity->typeId() == dimeBase::dimePolylineType)
+	if (entity->typeId() == DimeBase::dimePolylineType)
 	{
 		this->currentPolyline = entity;
 	}
@@ -325,43 +325,43 @@ dxfConverter::private_callback(const dimeState* const state,
 
 	switch (entity->typeId())
 	{
-	case dimeBase::dime3DFaceType:
+	case DimeBase::dime3DFaceType:
 		convert_3dface(entity, state, ld, this);
 		break;
-	case dimeBase::dimeSolidType:
+	case DimeBase::dimeSolidType:
 		convert_solid(entity, state, ld, this);
 		break;
-	case dimeBase::dimeTraceType:
+	case DimeBase::dimeTraceType:
 		convert_solid(entity, state, ld, this);
 		break;
-	case dimeBase::dimeArcType:
+	case DimeBase::dimeArcType:
 		convert_arc(entity, state, ld, this);
 		break;
-	case dimeBase::dimeCircleType:
+	case DimeBase::dimeCircleType:
 		convert_circle(entity, state, ld, this);
 		break;
-	case dimeBase::dimeEllipseType:
+	case DimeBase::dimeEllipseType:
 		convert_ellipse(entity, state, ld, this);
 		break;
-	case dimeBase::dimeInsertType:
+	case DimeBase::dimeInsertType:
 		// handled in traverseEntities
 		break;
-	case dimeBase::dimeBlockType:
+	case DimeBase::dimeBlockType:
 		// handled in traverseEntities
 		break;
-	case dimeBase::dimeLineType:
+	case DimeBase::dimeLineType:
 		convert_line(entity, state, ld, this);
 		break;
-	case dimeBase::dimeLWPolylineType:
+	case DimeBase::dimeLWPolylineType:
 		convert_lwpolyline(entity, state, ld, this);
 		break;
-	case dimeBase::dimePointType:
+	case DimeBase::dimePointType:
 		convert_point(entity, state, ld, this);
 		break;
-	case dimeBase::dimePolylineType:
+	case DimeBase::dimePolylineType:
 		convert_polyline(entity, state, ld, this);
 		break;
-	case dimeBase::dimeSplineType:
+	case DimeBase::dimeSplineType:
 		// go for it Raphael! :-)
 		break;
 	default:

@@ -629,7 +629,7 @@ dimeInput::readStringNoSkip()
   Returns the memory handler used in this model.
 */
 
-dimeMemHandler*
+DimeMemHandler*
 dimeInput::getMemHandler()
 {
 	if (model) return model->getMemHandler();

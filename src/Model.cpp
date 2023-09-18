@@ -146,7 +146,7 @@ dimeModel::copy() const
 	// fix forward references
 	auto bs = static_cast<dimeBlocksSection*>(newmodel->findSection("BLOCKS"));
 	auto es =
-		static_cast<dimeEntitiesSection*>(newmodel->findSection("ENTITIES"));
+		static_cast<DimeEntitiesSection*>(newmodel->findSection("ENTITIES"));
 	if (bs) bs->fixReferences(newmodel);
 	if (es) es->fixReferences(newmodel);
 	return newmodel;
@@ -176,7 +176,7 @@ dimeModel::init()
 
 	this->refDict = new dimeDict;
 	this->layerDict = new dimeDict(101); // relatively small
-	if (this->usememhandler) this->memoryHandler = new dimeMemHandler;
+	if (this->usememhandler) this->memoryHandler = new DimeMemHandler;
 
 	return true;
 }
@@ -251,7 +251,7 @@ dimeModel::read(dimeInput* const in)
 	else
 	{
 		auto bs = static_cast<dimeBlocksSection*>(this->findSection("BLOCKS"));
-		auto es = static_cast<dimeEntitiesSection*>(this->findSection("ENTITIES"));
+		auto es = static_cast<DimeEntitiesSection*>(this->findSection("ENTITIES"));
 		if (bs) bs->fixReferences(this);
 		if (es) es->fixReferences(this);
 		//#ifndef NDEBUG
@@ -360,7 +360,7 @@ dimeModel::removeReference(const char* const name)
   Returns a pointer to the memory handler used for this model.
 */
 
-dimeMemHandler*
+DimeMemHandler*
 dimeModel::getMemHandler()
 {
 	return this->memoryHandler;
@@ -536,7 +536,7 @@ dimeModel::traverseEntities(dimeCallback callback,
                             bool traversePolylineVertices)
 {
 	int i, n;
-	dimeState state(traversePolylineVertices, explodeInserts);
+	DimeState state(traversePolylineVertices, explodeInserts);
 	if (traverseBlocksSection)
 	{
 		auto bs =
@@ -552,7 +552,7 @@ dimeModel::traverseEntities(dimeCallback callback,
 		}
 	}
 	auto es =
-		static_cast<dimeEntitiesSection*>(this->findSection("ENTITIES"));
+		static_cast<DimeEntitiesSection*>(this->findSection("ENTITIES"));
 	if (es)
 	{
 		n = es->getNumEntities();
@@ -705,7 +705,7 @@ void
 dimeModel::addEntity(dimeEntity* entity)
 {
 	auto es =
-		static_cast<dimeEntitiesSection*>(this->findSection("ENTITIES"));
+		static_cast<DimeEntitiesSection*>(this->findSection("ENTITIES"));
 	if (es)
 	{
 		es->insertEntity(entity);

@@ -48,7 +48,7 @@
 */
 
 dimeUnknownEntity::dimeUnknownEntity(const char* const name,
-                                     dimeMemHandler* const memhandler)
+                                     DimeMemHandler* const memhandler)
 {
 	DXF_STRCPY(memhandler, this->entityName, name);
 }
@@ -67,7 +67,7 @@ dimeUnknownEntity::~dimeUnknownEntity()
 dimeEntity*
 dimeUnknownEntity::copy(dimeModel* const model) const
 {
-	dimeMemHandler* memh = model->getMemHandler();
+	DimeMemHandler* memh = model->getMemHandler();
 	auto u = new(memh) dimeUnknownEntity(this->entityName, memh);
 	if (!this->copyRecords(u, model))
 	{
@@ -92,7 +92,7 @@ dimeUnknownEntity::write(dimeOutput* const file)
 int
 dimeUnknownEntity::typeId() const
 {
-	return dimeBase::dimeUnknownEntityType;
+	return DimeBase::dimeUnknownEntityType;
 }
 
 //!

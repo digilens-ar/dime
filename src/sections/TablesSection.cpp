@@ -49,7 +49,7 @@ static constexpr char sectionName[] = "TABLES";
   Constructor.
 */
 
-dimeTablesSection::dimeTablesSection(dimeMemHandler* const memhandler)
+dimeTablesSection::dimeTablesSection(DimeMemHandler* const memhandler)
 	: dimeSection(memhandler)
 {
 }
@@ -69,7 +69,7 @@ dimeTablesSection::~dimeTablesSection()
 dimeSection*
 dimeTablesSection::copy(dimeModel* const model) const
 {
-	dimeMemHandler* memh = model->getMemHandler();
+	DimeMemHandler* memh = model->getMemHandler();
 	auto ts = new dimeTablesSection(memh);
 	int n = this->tables.count();
 	if (n)
@@ -103,7 +103,7 @@ dimeTablesSection::read(dimeInput* const file)
 	const char* string;
 	bool ok = true;
 	dimeTable* table = nullptr;
-	dimeMemHandler* memhandler = file->getMemHandler();
+	DimeMemHandler* memhandler = file->getMemHandler();
 
 	//  sim_trace("Reading section: TABLES\n");
 
@@ -171,7 +171,7 @@ dimeTablesSection::write(dimeOutput* const file)
 int
 dimeTablesSection::typeId() const
 {
-	return dimeBase::dimeTablesSectionType;
+	return DimeBase::dimeTablesSectionType;
 }
 
 //!

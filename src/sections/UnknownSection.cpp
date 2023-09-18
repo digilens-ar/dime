@@ -51,7 +51,7 @@
 */
 
 dimeUnknownSection::dimeUnknownSection(const char* const sectionname,
-                                       dimeMemHandler* memhandler)
+                                       DimeMemHandler* memhandler)
 	: dimeSection(memhandler), records(nullptr), numRecords(0)
 {
 	this->sectionName = new char[strlen(sectionname) + 1];
@@ -79,7 +79,7 @@ dimeSection*
 dimeUnknownSection::copy(dimeModel* const model) const
 {
 	int i;
-	dimeMemHandler* memh = model->getMemHandler();
+	DimeMemHandler* memh = model->getMemHandler();
 	auto us = new dimeUnknownSection(this->sectionName,
 	                                 memh);
 	bool ok = us != nullptr;
@@ -114,7 +114,7 @@ dimeUnknownSection::read(dimeInput* const file)
 	dimeRecord* record;
 	bool ok = true;
 	dimeArray<dimeRecord*> array(512);
-	dimeMemHandler* memhandler = file->getMemHandler();
+	DimeMemHandler* memhandler = file->getMemHandler();
 
 	while (true)
 	{
@@ -171,7 +171,7 @@ dimeUnknownSection::write(dimeOutput* const file)
 int
 dimeUnknownSection::typeId() const
 {
-	return dimeBase::dimeUnknownSectionType;
+	return DimeBase::dimeUnknownSectionType;
 }
 
 //!

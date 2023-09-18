@@ -68,7 +68,7 @@ calc_num_sub(dxfdouble maxerr, dxfdouble a, dxfdouble b)
 
 
 void
-convert_ellipse(const dimeEntity* entity, const dimeState* state,
+convert_ellipse(const dimeEntity* entity, const DimeState* state,
                 dxfLayerData* layerData, dxfConverter* converter)
 {
 	auto ellipse = (dimeEllipse*)entity;

@@ -50,7 +50,7 @@ static constexpr char sectionName[] = "BLOCKS";
   Constructor.
 */
 
-dimeBlocksSection::dimeBlocksSection(dimeMemHandler* const memhandler)
+dimeBlocksSection::dimeBlocksSection(DimeMemHandler* const memhandler)
 	: dimeSection(memhandler)
 {
 }
@@ -92,7 +92,7 @@ dimeBlocksSection::read(dimeInput* const file)
 	const char* string;
 	bool ok = true;
 	dimeBlock* block = nullptr;
-	dimeMemHandler* memhandler = file->getMemHandler();
+	DimeMemHandler* memhandler = file->getMemHandler();
 
 	while (true)
 	{
@@ -155,7 +155,7 @@ dimeBlocksSection::write(dimeOutput* const file)
 int
 dimeBlocksSection::typeId() const
 {
-	return dimeBase::dimeBlocksSectionType;
+	return DimeBase::dimeBlocksSectionType;
 }
 
 /*!

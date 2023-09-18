@@ -121,7 +121,7 @@ dimeArc::write(dimeOutput* const file)
 int
 dimeArc::typeId() const
 {
-	return dimeBase::dimeArcType;
+	return DimeBase::dimeArcType;
 }
 
 //!
@@ -129,7 +129,7 @@ dimeArc::typeId() const
 bool
 dimeArc::handleRecord(const int groupcode,
                       const dimeParam& param,
-                      dimeMemHandler* const memhandler)
+                      DimeMemHandler* const memhandler)
 {
 	switch (groupcode)
 	{

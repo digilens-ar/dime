@@ -53,7 +53,7 @@ dimeInt16Record::dimeInt16Record(const int group_code, const int16 val)
 //!
 
 dimeRecord*
-dimeInt16Record::copy(dimeMemHandler* const mh) const
+dimeInt16Record::copy(DimeMemHandler* const mh) const
 {
 	return new(mh) dimeInt16Record(this->groupCode, this->value);
 }
@@ -83,7 +83,7 @@ dimeInt16Record::getValue() const
 int
 dimeInt16Record::typeId() const
 {
-	return dimeBase::dimeInt16RecordType;
+	return DimeBase::dimeInt16RecordType;
 }
 
 //!
@@ -109,7 +109,7 @@ dimeInt16Record::write(dimeOutput* const out)
 //!
 
 void
-dimeInt16Record::setValue(const dimeParam& param, dimeMemHandler* const)
+dimeInt16Record::setValue(const dimeParam& param, DimeMemHandler* const)
 {
 	this->value = param.int16_data;
 }

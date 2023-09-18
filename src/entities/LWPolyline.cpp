@@ -83,7 +83,7 @@ dimeLWPolyline::copy(dimeModel* const model) const
 	auto l = new(model->getMemHandler()) dimeLWPolyline;
 	if (!l) return nullptr;
 
-	dimeMemHandler* mh = model->getMemHandler();
+	DimeMemHandler* mh = model->getMemHandler();
 
 	if (!this->copyRecords(l, model))
 	{
@@ -198,7 +198,7 @@ dimeLWPolyline::write(dimeOutput* const file)
 int
 dimeLWPolyline::typeId() const
 {
-	return dimeBase::dimeLWPolylineType;
+	return DimeBase::dimeLWPolylineType;
 }
 
 /*!
@@ -208,7 +208,7 @@ dimeLWPolyline::typeId() const
 bool
 dimeLWPolyline::handleRecord(const int groupcode,
                              const dimeParam& param,
-                             dimeMemHandler* const mh)
+                             DimeMemHandler* const mh)
 {
 	switch (groupcode)
 	{

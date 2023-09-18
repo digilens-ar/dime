@@ -63,7 +63,7 @@
   Constructor
 */
 
-dimeSection::dimeSection(dimeMemHandler* const memhandler)
+dimeSection::dimeSection(DimeMemHandler* const memhandler)
 	: memHandler(memhandler)
 {
 }
@@ -83,7 +83,7 @@ dimeSection::~dimeSection()
 
 dimeSection*
 dimeSection::createSection(const char* const sectionname,
-                           dimeMemHandler* memhandler)
+                           DimeMemHandler* memhandler)
 {
 	if (!strcmp(sectionname, "HEADER"))
 		return new dimeHeaderSection(memhandler);
@@ -98,7 +98,7 @@ dimeSection::createSection(const char* const sectionname,
 	if (!strcmp(sectionname, "BLOCKS"))
 		return new dimeBlocksSection(memhandler);
 	if (!strcmp(sectionname, "ENTITIES"))
-		return new dimeEntitiesSection(memhandler);
+		return new DimeEntitiesSection(memhandler);
 	return new dimeUnknownSection(sectionname, memhandler);
 }
 
@@ -108,7 +108,7 @@ bool
 dimeSection::isOfType(const int thetypeid) const
 {
 	return thetypeid == dimeSectionType ||
-		dimeBase::isOfType(thetypeid);
+		DimeBase::isOfType(thetypeid);
 }
 
 /*!

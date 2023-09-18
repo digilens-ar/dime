@@ -42,7 +42,7 @@ class DIME_DLL_API dimeUnknownSection : public dimeSection
 
 public:
 	dimeUnknownSection(const char* sectionname,
-	                   dimeMemHandler* memhandler = nullptr);
+	                   DimeMemHandler* memhandler = nullptr);
 	~dimeUnknownSection() override;
 
 	const char* getSectionName() const override;

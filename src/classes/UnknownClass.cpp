@@ -47,7 +47,7 @@
 */
 
 dimeUnknownClass::dimeUnknownClass(const char* const name,
-                                   dimeMemHandler* const memhandler)
+                                   DimeMemHandler* const memhandler)
 {
 	DXF_STRCPY(memhandler, this->dxfClassName, name);
 }
@@ -66,7 +66,7 @@ dimeUnknownClass::~dimeUnknownClass()
 dimeClass*
 dimeUnknownClass::copy(dimeModel* const model) const
 {
-	dimeMemHandler* memh = model->getMemHandler();
+	DimeMemHandler* memh = model->getMemHandler();
 	auto u = new(memh) dimeUnknownClass(this->dxfClassName, memh);
 	if (!this->copyRecords(u, model))
 	{
@@ -92,7 +92,7 @@ dimeUnknownClass::write(dimeOutput* const file)
 int
 dimeUnknownClass::typeId() const
 {
-	return dimeBase::dimeUnknownClassType;
+	return DimeBase::dimeUnknownClassType;
 }
 
 //!

@@ -72,7 +72,7 @@ protected:
 
 	bool handleRecord(int groupcode,
 	                  const dimeParam& param,
-	                  dimeMemHandler* memhandler) override;
+	                  DimeMemHandler* memhandler) override;
 	void copyCoords(const dimeFaceEntity* entity);
 	bool writeCoords(dimeOutput* file);
 

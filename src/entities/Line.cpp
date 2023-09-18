@@ -103,7 +103,7 @@ dimeLine::write(dimeOutput* const file)
 int
 dimeLine::typeId() const
 {
-	return dimeBase::dimeLineType;
+	return DimeBase::dimeLineType;
 }
 
 /*!
@@ -113,7 +113,7 @@ dimeLine::typeId() const
 bool
 dimeLine::handleRecord(const int groupcode,
                        const dimeParam& param,
-                       dimeMemHandler* const memhandler)
+                       DimeMemHandler* const memhandler)
 {
 	switch (groupcode)
 	{

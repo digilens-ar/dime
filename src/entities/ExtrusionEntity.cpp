@@ -97,7 +97,7 @@ dimeExtrusionEntity::writeExtrusionData(dimeOutput* const file)
 int
 dimeExtrusionEntity::typeId() const
 {
-	return dimeBase::dimeExtrusionEntityType;
+	return DimeBase::dimeExtrusionEntityType;
 }
 
 //!
@@ -136,7 +136,7 @@ dimeExtrusionEntity::copyExtrusionData(const dimeExtrusionEntity* const entity)
 bool
 dimeExtrusionEntity::handleRecord(const int groupcode,
                                   const dimeParam& param,
-                                  dimeMemHandler* const memhandler)
+                                  DimeMemHandler* const memhandler)
 {
 	switch (groupcode)
 	{

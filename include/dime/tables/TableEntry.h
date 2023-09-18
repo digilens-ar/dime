@@ -56,14 +56,14 @@ public:
 	int countRecords() const override;
 
 	static dimeTableEntry* createTableEntry(const char* name,
-	                                        dimeMemHandler* memhandler = nullptr);
+	                                        DimeMemHandler* memhandler = nullptr);
 
 protected:
 	bool preWrite(dimeOutput* output);
 
 	bool handleRecord(int groupcode,
 	                  const dimeParam& param,
-	                  dimeMemHandler* memhandler) override;
+	                  DimeMemHandler* memhandler) override;
 
 	bool copyRecords(dimeTableEntry* table, dimeModel* model) const;
 }; // class dimeTableEntry

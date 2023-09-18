@@ -100,11 +100,11 @@ public:
 	dimeVertex* getSplineFrameControlPoint(int index);
 
 	void setCoordVertices(dimeVertex** vertices, int num,
-	                      dimeMemHandler* memhandler = nullptr);
+	                      DimeMemHandler* memhandler = nullptr);
 	void setIndexVertices(dimeVertex** vertices, int num,
-	                      dimeMemHandler* memhandler = nullptr);
+	                      DimeMemHandler* memhandler = nullptr);
 	void setSplineFrameControlPoints(dimeVertex** vertices, int num,
-	                                 dimeMemHandler* memhandler = nullptr);
+	                                 DimeMemHandler* memhandler = nullptr);
 
 	// KRF, 02-16-2006, added to enable ::copy of new polyline
 	void setSeqend(const dimeEntity* ent);
@@ -132,8 +132,8 @@ public:
 protected:
 	bool handleRecord(int groupcode,
 	                  const dimeParam& param,
-	                  dimeMemHandler* memhandler) override;
-	bool traverse(const dimeState* state,
+	                  DimeMemHandler* memhandler) override;
+	bool traverse(const DimeState* state,
 	              dimeCallback callback,
 	              void* userdata) override;
 

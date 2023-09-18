@@ -31,7 +31,7 @@
 \**************************************************************************/
 
 /*!
-  \class dimeInsert dime/entities/Insert.h
+  \class DimeInsert dime/entities/Insert.h
   \brief The dimeInsert class handles an INSERT \e entity.
 */
 
@@ -50,7 +50,7 @@ static char entityName[] = "INSERT";
   Constructor.
 */
 
-dimeInsert::dimeInsert()
+DimeInsert::DimeInsert()
 {
 	this->attributesFollow = 0;
 	this->blockName = nullptr;
@@ -72,7 +72,7 @@ dimeInsert::dimeInsert()
   Destructor.
 */
 
-dimeInsert::~dimeInsert()
+DimeInsert::~DimeInsert()
 {
 	delete this->seqend;
 	for (int i = 0; i < this->numEntities; i++)
@@ -83,10 +83,10 @@ dimeInsert::~dimeInsert()
 //!
 
 dimeEntity*
-dimeInsert::copy(dimeModel* const model) const
+DimeInsert::copy(dimeModel* const model) const
 {
-	dimeMemHandler* memh = model->getMemHandler();
-	auto inst = new(memh) dimeInsert;
+	DimeMemHandler* memh = model->getMemHandler();
+	auto inst = new(memh) DimeInsert;
 
 	bool ok = true;
 	if (this->numEntities)
@@ -146,7 +146,7 @@ dimeInsert::copy(dimeModel* const model) const
 */
 
 bool
-dimeInsert::read(dimeInput* const file)
+DimeInsert::read(dimeInput* const file)
 {
 	// see handleRecord() to understand what is done with
 	// blockName here... Ugly code, but who cares :-)
@@ -170,7 +170,7 @@ dimeInsert::read(dimeInput* const file)
 
 	if (ret && this->attributesFollow)
 	{
-		dimeMemHandler* memhandler = file->getMemHandler();
+		DimeMemHandler* memhandler = file->getMemHandler();
 		// read following entities.
 		dimeArray<dimeEntity*> array;
 		ret = dimeEntity::readEntities(file, array, "SEQEND");
@@ -203,7 +203,7 @@ dimeInsert::read(dimeInput* const file)
 */
 
 bool
-dimeInsert::write(dimeOutput* const file)
+DimeInsert::write(dimeOutput* const file)
 {
 	this->preWrite(file);
 
@@ -294,17 +294,17 @@ dimeInsert::write(dimeOutput* const file)
 //!
 
 int
-dimeInsert::typeId() const
+DimeInsert::typeId() const
 {
-	return dimeBase::dimeInsertType;
+	return DimeBase::dimeInsertType;
 }
 
 //!
 
 bool
-dimeInsert::handleRecord(const int groupcode,
+DimeInsert::handleRecord(const int groupcode,
                          const dimeParam& param,
-                         dimeMemHandler* const memhandler)
+                         DimeMemHandler* const memhandler)
 {
 	switch (groupcode)
 	{
@@ -367,7 +367,7 @@ dimeInsert::handleRecord(const int groupcode,
 //!
 
 const char*
-dimeInsert::getEntityName() const
+DimeInsert::getEntityName() const
 {
 	return entityName;
 }
@@ -375,7 +375,7 @@ dimeInsert::getEntityName() const
 //!
 
 bool
-dimeInsert::getRecord(const int groupcode,
+DimeInsert::getRecord(const int groupcode,
                       dimeParam& param,
                       const int index) const
 {
@@ -428,14 +428,14 @@ dimeInsert::getRecord(const int groupcode,
 //!
 
 bool
-dimeInsert::traverse(const dimeState* const state,
+DimeInsert::traverse(const DimeState* const state,
                      dimeCallback callback,
                      void* userdata)
 {
-	dimeState newstate = *state;
+	DimeState newstate = *state;
 	newstate.currentInsert = this;
 
-	if (this->block && (state->getFlags() & dimeState::EXPLODE_INSERTS))
+	if (this->block && (state->getFlags() & DimeState::EXPLODE_INSERTS))
 	{
 		for (int i = 0; i < this->rowCount; i++)
 		{
@@ -473,7 +473,7 @@ dimeInsert::traverse(const dimeState* const state,
 //!
 
 void
-dimeInsert::fixReferences(dimeModel* const model)
+DimeInsert::fixReferences(dimeModel* const model)
 {
 	if (this->block == nullptr && this->blockName)
 	{
@@ -490,7 +490,7 @@ dimeInsert::fixReferences(dimeModel* const model)
 //!
 
 void
-dimeInsert::makeMatrix(dimeMatrix& m) const
+DimeInsert::makeMatrix(dimeMatrix& m) const
 {
 	if (!this->block)
 	{
@@ -529,7 +529,7 @@ dimeInsert::makeMatrix(dimeMatrix& m) const
 //!
 
 int
-dimeInsert::countRecords() const
+DimeInsert::countRecords() const
 {
 	int cnt = 5; // header + blockName + insertionPoint
 
@@ -561,7 +561,7 @@ dimeInsert::countRecords() const
 */
 
 void
-dimeInsert::setBlock(dimeBlock* const block)
+DimeInsert::setBlock(dimeBlock* const block)
 {
 	this->block = block;
 	this->blockName = block->getName();

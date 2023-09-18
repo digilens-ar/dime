@@ -47,7 +47,7 @@
 */
 
 dimeUnknownObject::dimeUnknownObject(const char* const name,
-                                     dimeMemHandler* const memhandler)
+                                     DimeMemHandler* const memhandler)
 {
 	DXF_STRCPY(memhandler, this->objectName, name);
 }
@@ -66,7 +66,7 @@ dimeUnknownObject::~dimeUnknownObject()
 dimeObject*
 dimeUnknownObject::copy(dimeModel* const model) const
 {
-	dimeMemHandler* memh = model->getMemHandler();
+	DimeMemHandler* memh = model->getMemHandler();
 	auto u = new(memh) dimeUnknownObject(this->objectName, memh);
 	if (!this->copyRecords(u, model))
 	{
@@ -92,7 +92,7 @@ dimeUnknownObject::write(dimeOutput* const file)
 int
 dimeUnknownObject::typeId() const
 {
-	return dimeBase::dimeUnknownObjectType;
+	return DimeBase::dimeUnknownObjectType;
 }
 
 //!

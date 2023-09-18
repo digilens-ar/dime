@@ -38,19 +38,19 @@
 #include <dime/util/Linear.h>
 
 class dimeInput;
-class dimeMemHandler;
+class DimeMemHandler;
 class dimeModel;
 class dimeOutput;
 
 class DIME_DLL_API dimeBlock : public dimeEntity
 {
 	friend class dimeBlocksSection;
-	friend class dimeEntitiesSection;
-	friend class dimeInsert;
+	friend class DimeEntitiesSection;
+	friend class DimeInsert;
 	friend class dimeModel;
 
 public:
-	dimeBlock(dimeMemHandler* memhandler);
+	dimeBlock(DimeMemHandler* memhandler);
 	~dimeBlock() override;
 
 	const dimeVec3f& getBasePoint() const;
@@ -78,10 +78,10 @@ public:
 protected:
 	bool handleRecord(int groupcode,
 	                  const dimeParam& param,
-	                  dimeMemHandler* memhandler) override;
+	                  DimeMemHandler* memhandler) override;
 
 	void fixReferences(dimeModel* model) override;
-	bool traverse(const dimeState* state,
+	bool traverse(const DimeState* state,
 	              dimeCallback callback,
 	              void* userdata) override;
 
@@ -91,7 +91,7 @@ private:
 	dimeVec3f basePoint;
 	dimeArray<dimeEntity*> entities;
 	dimeEntity* endblock;
-	dimeMemHandler* memHandler;
+	DimeMemHandler* memHandler;
 }; // class dimeBlock
 
 inline const dimeVec3f&

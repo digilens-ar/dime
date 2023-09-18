@@ -187,7 +187,7 @@ dimeEllipse::write(dimeOutput* const file)
 int
 dimeEllipse::typeId() const
 {
-	return dimeBase::dimeEllipseType;
+	return DimeBase::dimeEllipseType;
 }
 
 //!
@@ -195,7 +195,7 @@ dimeEllipse::typeId() const
 bool
 dimeEllipse::handleRecord(const int groupcode,
                           const dimeParam& param,
-                          dimeMemHandler* const memhandler)
+                          DimeMemHandler* const memhandler)
 {
 	switch (groupcode)
 	{

@@ -37,7 +37,7 @@
 #include <dime/State.h>
 
 void
-convert_3dface(const dimeEntity* entity, const dimeState* state,
+convert_3dface(const dimeEntity* entity, const DimeState* state,
                dxfLayerData* layerData, dxfConverter*)
 {
 	dimeMatrix matrix;

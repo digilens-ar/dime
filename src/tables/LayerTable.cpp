@@ -64,7 +64,7 @@ dimeLayerTable::~dimeLayerTable()
 dimeTableEntry*
 dimeLayerTable::copy(dimeModel* const model) const
 {
-	dimeMemHandler* memh = model->getMemHandler();
+	DimeMemHandler* memh = model->getMemHandler();
 	auto l = new(memh) dimeLayerTable;
 	l->colorNumber = this->colorNumber;
 	if (this->layerName)
@@ -129,7 +129,7 @@ dimeLayerTable::write(dimeOutput* const file)
 int
 dimeLayerTable::typeId() const
 {
-	return dimeBase::dimeLayerTableType;
+	return DimeBase::dimeLayerTableType;
 }
 
 //!
@@ -137,7 +137,7 @@ dimeLayerTable::typeId() const
 bool
 dimeLayerTable::handleRecord(const int groupcode,
                              const dimeParam& param,
-                             dimeMemHandler* const memhandler)
+                             DimeMemHandler* const memhandler)
 {
 	switch (groupcode)
 	{
@@ -166,7 +166,7 @@ dimeLayerTable::countRecords() const
   Sets the layer name.
 */
 void
-dimeLayerTable::setLayerName(const char* name, dimeMemHandler* const memhandler)
+dimeLayerTable::setLayerName(const char* name, DimeMemHandler* const memhandler)
 {
 	if (this->layerName && memhandler == nullptr)
 	{

@@ -40,15 +40,15 @@
 class dimeInput;
 class dimeOutput;
 
-class DIME_DLL_API dimeRecord : public dimeBase
+class DIME_DLL_API dimeRecord : public DimeBase
 {
 public:
 	dimeRecord(int group_code);
 	~dimeRecord() override;
 
-	virtual void setValue(const dimeParam& param, dimeMemHandler* memhandler = nullptr) = 0;
+	virtual void setValue(const dimeParam& param, DimeMemHandler* memhandler = nullptr) = 0;
 	virtual void getValue(dimeParam& param) const = 0;
-	virtual dimeRecord* copy(dimeMemHandler* memhandler) const = 0;
+	virtual dimeRecord* copy(DimeMemHandler* memhandler) const = 0;
 
 	void setGroupCode(int group_code);
 	int getGroupCode() const;
@@ -66,10 +66,10 @@ public:
 	                           dimeParam& param);
 	static dimeRecord* readRecord(dimeInput* in);
 	static dimeRecord* createRecord(int group_code,
-	                                dimeMemHandler* memhandler);
+	                                DimeMemHandler* memhandler);
 	static dimeRecord* createRecord(int group_code,
 	                                const dimeParam& param,
-	                                dimeMemHandler* memhandler);
+	                                DimeMemHandler* memhandler);
 	static int getRecordType(int group_code);
 
 protected:

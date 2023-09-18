@@ -43,12 +43,12 @@
 //
 extern void
 convert_solid_data(dimeVec3f* v, dimeVec3f& e, dxfdouble thickness,
-                   const dimeState* state,
+                   const DimeState* state,
                    dxfLayerData* layerData);
 
 
 void
-convert_trace(const dimeEntity* entity, const dimeState* state,
+convert_trace(const dimeEntity* entity, const DimeState* state,
               dxfLayerData* layerData, dxfConverter* converter)
 {
 	auto trace = (dimeTrace*)entity;

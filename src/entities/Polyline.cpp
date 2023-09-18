@@ -84,7 +84,7 @@ dimeEntity*
 dimePolyline::copy(dimeModel* const model) const
 {
 	int i;
-	dimeMemHandler* memh = model->getMemHandler();
+	DimeMemHandler* memh = model->getMemHandler();
 	auto pl = new(memh) dimePolyline;
 
 	bool ok = pl != nullptr;
@@ -190,7 +190,7 @@ dimePolyline::read(dimeInput* const file)
 		int32 groupcode;
 		const char* string;
 		dimeVertex* vertex;
-		dimeMemHandler* memhandler = file->getMemHandler();
+		DimeMemHandler* memhandler = file->getMemHandler();
 
 		int idxcnt = 0;
 		int vcnt = 0;
@@ -411,7 +411,7 @@ dimePolyline::write(dimeOutput* const file)
 int
 dimePolyline::typeId() const
 {
-	return dimeBase::dimePolylineType;
+	return DimeBase::dimePolylineType;
 }
 
 //!
@@ -419,7 +419,7 @@ dimePolyline::typeId() const
 bool
 dimePolyline::handleRecord(const int groupcode,
                            const dimeParam& param,
-                           dimeMemHandler* const memhandler)
+                           DimeMemHandler* const memhandler)
 {
 	switch (groupcode)
 	{
@@ -802,7 +802,7 @@ dimePolyline::countRecords() const
 
 void
 dimePolyline::setCoordVertices(dimeVertex** vertices, const int num,
-                               dimeMemHandler* const memhandler)
+                               DimeMemHandler* const memhandler)
 {
 	int i;
 	if (!memhandler)
@@ -843,7 +843,7 @@ dimePolyline::setCoordVertices(dimeVertex** vertices, const int num,
 
 void
 dimePolyline::setSplineFrameControlPoints(dimeVertex** vertices, const int num,
-                                          dimeMemHandler* const memhandler)
+                                          DimeMemHandler* const memhandler)
 {
 	int i;
 	if (!memhandler)
@@ -884,7 +884,7 @@ dimePolyline::setSplineFrameControlPoints(dimeVertex** vertices, const int num,
 
 void
 dimePolyline::setIndexVertices(dimeVertex** vertices, const int num,
-                               dimeMemHandler* const memhandler)
+                               DimeMemHandler* const memhandler)
 {
 	int i;
 	if (!memhandler)
@@ -939,14 +939,14 @@ dimePolyline::setSeqend(const dimeEntity* ent)
 */
 
 bool
-dimePolyline::traverse(const dimeState* const state,
+dimePolyline::traverse(const DimeState* const state,
                        dimeCallback callback,
                        void* userdata)
 {
 	if (this->isDeleted()) return true;
 	callback(state, this, userdata);
 	int i, n;
-	if (state->getFlags() & dimeState::TRAVERSE_POLYLINE_VERTICES)
+	if (state->getFlags() & DimeState::TRAVERSE_POLYLINE_VERTICES)
 	{
 		n = this->frameCnt;
 		for (i = 0; i < n; i++)

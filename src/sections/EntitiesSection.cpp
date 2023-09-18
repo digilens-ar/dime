@@ -31,7 +31,7 @@
 \**************************************************************************/
 
 /*!
-  \class dimeEntitiesSection dime/sections/EntitiesSection.h
+  \class DimeEntitiesSection dime/sections/EntitiesSection.h
   \brief The dimeEntitiesSection class handles an ENTITIES \e section.
 */
 
@@ -55,7 +55,7 @@ static constexpr char sectionName[] = "ENTITIES";
   Constructor.
 */
 
-dimeEntitiesSection::dimeEntitiesSection(dimeMemHandler* const memhandler)
+DimeEntitiesSection::DimeEntitiesSection(DimeMemHandler* const memhandler)
 	: dimeSection(memhandler)
 {
 }
@@ -64,7 +64,7 @@ dimeEntitiesSection::dimeEntitiesSection(dimeMemHandler* const memhandler)
   Destructor.
 */
 
-dimeEntitiesSection::~dimeEntitiesSection()
+DimeEntitiesSection::~DimeEntitiesSection()
 {
 	if (!this->memHandler)
 	{
@@ -76,10 +76,10 @@ dimeEntitiesSection::~dimeEntitiesSection()
 //!
 
 dimeSection*
-dimeEntitiesSection::copy(dimeModel* const model) const
+DimeEntitiesSection::copy(dimeModel* const model) const
 {
-	dimeMemHandler* memh = model->getMemHandler();
-	auto es = new dimeEntitiesSection(memh);
+	DimeMemHandler* memh = model->getMemHandler();
+	auto es = new DimeEntitiesSection(memh);
 	bool ok = es != nullptr;
 
 	int num = this->entities.count();
@@ -106,13 +106,13 @@ dimeEntitiesSection::copy(dimeModel* const model) const
 //!
 
 bool
-dimeEntitiesSection::read(dimeInput* const file)
+DimeEntitiesSection::read(dimeInput* const file)
 {
 	int32 groupcode;
 	const char* string;
 	bool ok = true;
 	dimeEntity* entity = nullptr;
-	dimeMemHandler* memhandler = file->getMemHandler();
+	DimeMemHandler* memhandler = file->getMemHandler();
 	this->entities.makeEmpty(1024);
 
 	while (true)
@@ -147,7 +147,7 @@ dimeEntitiesSection::read(dimeInput* const file)
 //!
 
 bool
-dimeEntitiesSection::write(dimeOutput* const file)
+DimeEntitiesSection::write(dimeOutput* const file)
 {
 	//  sim_trace("Writing section: ENTITIES\n");
 
@@ -171,9 +171,9 @@ dimeEntitiesSection::write(dimeOutput* const file)
 //!
 
 int
-dimeEntitiesSection::typeId() const
+DimeEntitiesSection::typeId() const
 {
-	return dimeBase::dimeEntitiesSectionType;
+	return DimeBase::dimeEntitiesSectionType;
 }
 
 /*!
@@ -182,7 +182,7 @@ dimeEntitiesSection::typeId() const
 */
 
 void
-dimeEntitiesSection::fixReferences(dimeModel* const model)
+DimeEntitiesSection::fixReferences(dimeModel* const model)
 {
 	int i, n = this->entities.count();
 	for (i = 0; i < n; i++)
@@ -192,7 +192,7 @@ dimeEntitiesSection::fixReferences(dimeModel* const model)
 //!
 
 int
-dimeEntitiesSection::countRecords() const
+DimeEntitiesSection::countRecords() const
 {
 	int cnt = 0;
 	int n = this->entities.count();
@@ -204,7 +204,7 @@ dimeEntitiesSection::countRecords() const
 //!
 
 const char*
-dimeEntitiesSection::getSectionName() const
+DimeEntitiesSection::getSectionName() const
 {
 	return sectionName;
 }
@@ -215,7 +215,7 @@ dimeEntitiesSection::getSectionName() const
 */
 
 int
-dimeEntitiesSection::getNumEntities() const
+DimeEntitiesSection::getNumEntities() const
 {
 	return this->entities.count();
 }
@@ -225,7 +225,7 @@ dimeEntitiesSection::getNumEntities() const
 */
 
 dimeEntity*
-dimeEntitiesSection::getEntity(const int idx)
+DimeEntitiesSection::getEntity(const int idx)
 {
 	assert(idx >= 0 && idx < this->entities.count());
 	return this->entities[idx];
@@ -236,7 +236,7 @@ dimeEntitiesSection::getEntity(const int idx)
 */
 
 void
-dimeEntitiesSection::removeEntity(const int idx)
+DimeEntitiesSection::removeEntity(const int idx)
 {
 	assert(idx >= 0 && idx < this->entities.count());
 	if (!this->memHandler) delete this->entities[idx];
@@ -252,7 +252,7 @@ dimeEntitiesSection::removeEntity(const int idx)
 */
 
 void
-dimeEntitiesSection::insertEntity(dimeEntity* const entity, const int idx)
+DimeEntitiesSection::insertEntity(dimeEntity* const entity, const int idx)
 {
 	if (idx < 0) this->entities.append(entity);
 	else

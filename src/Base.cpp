@@ -69,7 +69,7 @@
 
 
 /*!
-  \class dimeBase dime/Base.h
+  \class DimeBase dime/Base.h
   \brief The dimeBase class is the superclass for most classes in Dime.
 
   dimeBase implements the \e new operator to enable use of the special-purpose
@@ -90,14 +90,14 @@
 /*!
   Constructor.
 */
-dimeBase::dimeBase(void)
+DimeBase::DimeBase(void)
 {
 }
 
 /*!
   virtual destructor.
 */
-dimeBase::~dimeBase()
+DimeBase::~DimeBase()
 {
 }
 
@@ -113,14 +113,14 @@ dimeBase::~dimeBase()
 */
 
 bool
-dimeBase::isOfType(const int thetypeid) const
+DimeBase::isOfType(const int thetypeid) const
 {
 	return this->typeId() == thetypeid ||
 		thetypeid == dimeBaseType;
 }
 
 void*
-dimeBase::operator new(size_t size, dimeMemHandler* memhandler,
+DimeBase::operator new(size_t size, DimeMemHandler* memhandler,
                        const int alignment)
 {
 	if (memhandler)
@@ -128,14 +128,14 @@ dimeBase::operator new(size_t size, dimeMemHandler* memhandler,
 	return ::operator new(size);
 }
 
-void dimeBase::operator delete(void* ptr, dimeMemHandler* memhandler, int alignment)
+void DimeBase::operator delete(void* ptr, DimeMemHandler* memhandler, int alignment)
 {
 	assert(!memhandler);
 	::operator delete(ptr);
 }
 
 void
-dimeBase::operator delete(void* ptr)
+DimeBase::operator delete(void* ptr)
 {
 	// will only get here if we don't use a memory handler
 	::operator delete(ptr);

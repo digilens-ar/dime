@@ -122,7 +122,7 @@ dimeClass::~dimeClass()
 bool
 dimeClass::copyRecords(dimeClass* const myclass, dimeModel* const model) const
 {
-	dimeMemHandler* memh = model->getMemHandler();
+	DimeMemHandler* memh = model->getMemHandler();
 	bool ok = dimeRecordHolder::copyRecords(myclass, memh);
 
 	if (ok && this->className)
@@ -170,7 +170,7 @@ dimeClass::write(dimeOutput* const file)
 
 dimeClass*
 dimeClass::createClass(const char* const name,
-                       dimeMemHandler* const memhandler)
+                       DimeMemHandler* const memhandler)
 {
 	return new(memhandler) dimeUnknownClass(name, memhandler);
 }
@@ -209,7 +209,7 @@ dimeClass::read(dimeInput* const file)
 bool
 dimeClass::handleRecord(const int groupcode,
                         const dimeParam& param,
-                        dimeMemHandler* const memhandler)
+                        DimeMemHandler* const memhandler)
 {
 	switch (groupcode)
 	{
@@ -238,7 +238,7 @@ dimeClass::handleRecord(const int groupcode,
 
 void
 dimeClass::setClassName(const char* const classname,
-                        dimeMemHandler* const memhandler)
+                        DimeMemHandler* const memhandler)
 {
 	if (!memhandler) delete [] this->className;
 	DXF_STRCPY(memhandler, this->className, classname);
@@ -250,7 +250,7 @@ dimeClass::setClassName(const char* const classname,
 
 void
 dimeClass::setApplicationName(const char* const appname,
-                              dimeMemHandler* const memhandler)
+                              DimeMemHandler* const memhandler)
 {
 	if (!memhandler) delete [] this->appName;
 	DXF_STRCPY(memhandler, this->appName, appname);

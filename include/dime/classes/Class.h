@@ -40,13 +40,13 @@
 #include <dime/RecordHolder.h>
 
 class dimeInput;
-class dimeMemHandler;
+class DimeMemHandler;
 class dimeOutput;
 class dimeModel;
 
 class DIME_DLL_API dimeClass : public dimeRecordHolder
 {
-	friend class dimeClassesSection;
+	friend class DimeClassesSection;
 	friend class dimeModel;
 
 public:
@@ -67,9 +67,9 @@ public:
 	int8 getFlag281() const;
 
 	void setClassName(const char* classname,
-	                  dimeMemHandler* memhandler = nullptr);
+	                  DimeMemHandler* memhandler = nullptr);
 	void setApplicationName(const char* appname,
-	                        dimeMemHandler* memhandler = nullptr);
+	                        DimeMemHandler* memhandler = nullptr);
 	void setVersionNumber(int32 v);
 	void setFlag280(int8 flag);
 	void setFlag281(int8 flag);
@@ -77,11 +77,11 @@ public:
 protected:
 	bool handleRecord(int groupcode,
 	                  const dimeParam& param,
-	                  dimeMemHandler* memhandler) override;
+	                  DimeMemHandler* memhandler) override;
 
 public:
 	static dimeClass* createClass(const char* name,
-	                              dimeMemHandler* memhandler = nullptr);
+	                              DimeMemHandler* memhandler = nullptr);
 
 protected:
 	bool copyRecords(dimeClass* newclass, dimeModel* model) const;

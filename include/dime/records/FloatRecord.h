@@ -40,8 +40,8 @@ class DIME_DLL_API dimeFloatRecord : public dimeRecord
 public:
 	dimeFloatRecord(int group_code = 10, float val = 0.0f);
 
-	dimeRecord* copy(dimeMemHandler* mh) const override;
-	void setValue(const dimeParam& param, dimeMemHandler* memhandler = nullptr) override;
+	dimeRecord* copy(DimeMemHandler* mh) const override;
+	void setValue(const dimeParam& param, DimeMemHandler* memhandler = nullptr) override;
 	void getValue(dimeParam& param) const override;
 
 	float getValue() const;

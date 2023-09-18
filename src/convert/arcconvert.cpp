@@ -59,7 +59,7 @@ calc_num_sub(dxfdouble maxerr, dxfdouble radius)
 
 
 void
-convert_arc(const dimeEntity* entity, const dimeState* state,
+convert_arc(const dimeEntity* entity, const DimeState* state,
             dxfLayerData* layerData, dxfConverter* converter)
 {
 	auto arc = (dimeArc*)entity;
