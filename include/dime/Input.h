@@ -88,8 +88,8 @@ private:
 #endif // ! USE_GZFILE
   long filesize;
   char *readbuf;
-  int readbufIndex;
-  int readbufLen;
+  size_t readbufIndex;
+  size_t readbufLen;
   
   dimeArray <char> backBuf;
   int backBufIndex; 

@@ -29,7 +29,7 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 \**************************************************************************/
-
+#define _CRT_SECURE_NO_WARNINGS
 #include <dime/Input.h>
 #include <dime/Output.h>
 #include <dime/Model.h>

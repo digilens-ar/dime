@@ -67,7 +67,7 @@ class dimeMemNode
 {
   friend class dimeMemHandler;
 public:
-  dimeMemNode(const int numbytes, dimeMemNode *next_node)
+  dimeMemNode(const size_t numbytes, dimeMemNode *next_node)
     : next( next_node ), currPos( 0 ), size( numbytes )
   {
     this->block = (unsigned char*)malloc(numbytes);
@@ -83,9 +83,9 @@ public:
     return (this->block != NULL);
   }
 
-  void *alloc(const int numbytes, const int alignment)
+  void *alloc(const size_t numbytes, const int alignment)
   {
-    unsigned int mask = alignment - 1;
+    const size_t mask = alignment - 1;
     unsigned char *ret = NULL;
     if (alignment > 1) {
       if (this->currPos & mask) 
@@ -101,8 +101,8 @@ public:
 private:
   dimeMemNode *next;
   unsigned char *block;
-  unsigned int currPos;
-  unsigned int size;
+  size_t currPos;
+  size_t size;
 }; // class dimeMemNode
 
 /*!
@@ -175,7 +175,7 @@ dimeMemHandler::stringAlloc(const char * const string)
 */
 
 void *
-dimeMemHandler::allocMem(const int size, const int alignment)
+dimeMemHandler::allocMem(const size_t size, const int alignment)
 {
   void *ret = NULL;
   if (size > MEMBLOCK_SIZE/2) { // big blocks is allocated separately.

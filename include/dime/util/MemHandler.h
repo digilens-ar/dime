@@ -43,8 +43,8 @@ public:
 
   bool initOk() const;
 
-  char *stringAlloc(const char * const string);
-  void *allocMem(const int size, const int alignment = 4);
+  char *stringAlloc(const char * string);
+  void *allocMem(size_t size, int alignment = 4);
   
 private:
 

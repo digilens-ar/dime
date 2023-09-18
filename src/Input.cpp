@@ -694,7 +694,7 @@ dimeInput::putBack(const char * const string)
   if (n <= readbufIndex && backBufIndex < 0)
     readbufIndex -= n;
   else {
-    for (int i = n - 1; i >= 0; i--) 
+    for (size_t i = n - 1; i >= 0; i--) 
       backBuf[++backBufIndex] = string[i];
   }
 }
@@ -998,7 +998,7 @@ dimeInput::checkBinary()
   static char binaryid[] = "AutoCAD Binary DXF";
   char buf[64];
   int i;
-  int n = strlen(binaryid);
+  size_t n = strlen(binaryid);
   for (i = 0; i < n; i++) {
     if (!this->get(buf[i])) break;
     if (buf[i] != binaryid[i]) break;

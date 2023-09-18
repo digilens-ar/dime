@@ -127,9 +127,7 @@ convert_ellipse(const dimeEntity *entity, const dimeState *state,
   //dxfdouble size = (2*M_PI) / (end-rad);
   dxfdouble size = (end-rad)/(2*M_PI);
   dxfdouble inc = (end-rad) / (numpts * size);  
-  
-  int i;
-  
+
   dimeVec3f v;
   dimeVec3f prev(center[0] + xaxis[0] * cos(rad) + yaxis[0] * sin(rad),
 		 center[1] + xaxis[1] * cos(rad) + yaxis[1] * sin(rad),
