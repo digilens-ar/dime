@@ -85,7 +85,7 @@ dimeEntitiesSection::copy(dimeModel* const model) const
 	int num = this->entities.count();
 	if (ok && num)
 	{
-		ok = dimeEntity::copyEntityArray(static_cast<const dimeEntity**>(this->entities.constArrayPointer()),
+		ok = dimeEntity::copyEntityArray(this->entities.constArrayPointer(),
 		                                 num,
 		                                 model,
 		                                 es->entities);

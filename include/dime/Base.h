@@ -41,68 +41,69 @@ class dimeMemHandler;
 class DIME_DLL_API dimeBase
 {
 public:
-  enum {
-    dimeBaseType = 1,
-    dimeRecordType,
-    dimeStringRecordType,
-    dimeFloatRecordType,
-    dimeDoubleRecordType,
-    dimeInt8RecordType,
-    dimeInt16RecordType,
-    dimeInt32RecordType,
-    dimeHexRecordType,
-    dimeRecordHolderType,
-    dimeClassType,
-    dimeUnknownClassType,
-    dimeObjectType,
-    dimeUnknownObjectType,
-    dimeEntityType,
-    dimeUnknownEntityType,
-    dimePolylineType,
-    dimeVertexType,
-    dimeFaceEntityType,
-    dimeExtrusionEntityType,
-    dime3DFaceType,
-    dimeSolidType,
-    dimeTraceType,
-    dimeLineType,
-    dimeTextType,
-    dimePointType,
-    dimeBlockType,
-    dimeInsertType,
-    dimeCircleType,
-    dimeArcType,
-    dimeLWPolylineType,
-    dimeEllipseType,
-    dimeSplineType,
-    dimeSectionType,
-    dimeUnknownSectionType,
-    dimeEntitiesSectionType,
-    dimeBlocksSectionType,
-    dimeTablesSectionType,
-    dimeHeaderSectionType,
-    dimeClassesSectionType,
-    dimeObjectsSectionType,
-    dimeTableType,
-    dimeTableEntryType,
-    dimeUnknownTableType,
-    dimeUCSTableType,
-    dimeLayerTableType,
+	enum
+	{
+		dimeBaseType = 1,
+		dimeRecordType,
+		dimeStringRecordType,
+		dimeFloatRecordType,
+		dimeDoubleRecordType,
+		dimeInt8RecordType,
+		dimeInt16RecordType,
+		dimeInt32RecordType,
+		dimeHexRecordType,
+		dimeRecordHolderType,
+		dimeClassType,
+		dimeUnknownClassType,
+		dimeObjectType,
+		dimeUnknownObjectType,
+		dimeEntityType,
+		dimeUnknownEntityType,
+		dimePolylineType,
+		dimeVertexType,
+		dimeFaceEntityType,
+		dimeExtrusionEntityType,
+		dime3DFaceType,
+		dimeSolidType,
+		dimeTraceType,
+		dimeLineType,
+		dimeTextType,
+		dimePointType,
+		dimeBlockType,
+		dimeInsertType,
+		dimeCircleType,
+		dimeArcType,
+		dimeLWPolylineType,
+		dimeEllipseType,
+		dimeSplineType,
+		dimeSectionType,
+		dimeUnknownSectionType,
+		dimeEntitiesSectionType,
+		dimeBlocksSectionType,
+		dimeTablesSectionType,
+		dimeHeaderSectionType,
+		dimeClassesSectionType,
+		dimeObjectsSectionType,
+		dimeTableType,
+		dimeTableEntryType,
+		dimeUnknownTableType,
+		dimeUCSTableType,
+		dimeLayerTableType,
 
-    // this should be last
-    dimeLastTypeTag
-  };
-  dimeBase(void);
-  virtual ~dimeBase();
-  
-  virtual int typeId() const = 0;
-  virtual bool isOfType(const int thetypeid) const;
+		// this should be last
+		dimeLastTypeTag
+	};
+
+	dimeBase(void);
+	virtual ~dimeBase();
+
+	virtual int typeId() const = 0;
+	virtual bool isOfType(int thetypeid) const;
+
 public:
-  void *operator new(size_t size, dimeMemHandler *memhandler = NULL, int alignment = 4);
-  void operator delete(void* ptr, dimeMemHandler *memhandler, int alignment);
-  void operator delete(void *ptr);
-
+	void* operator new(size_t size, dimeMemHandler* memhandler = nullptr, int alignment = 4);
+	void operator delete(void* ptr, dimeMemHandler* memhandler, int alignment);
+	void operator delete(void* ptr);
 }; // class dimeBase
 
 #endif // ! DIME_BASE_H
-

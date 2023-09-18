@@ -92,7 +92,7 @@ dimeInsert::copy(dimeModel* const model) const
 	if (this->numEntities)
 	{
 		int realnum = this->numEntities;
-		inst->entities = dimeEntity::copyEntityArray(static_cast<const dimeEntity**>(this->entities),
+		inst->entities = dimeEntity::copyEntityArray(this->entities,
 		                                             realnum,
 		                                             model);
 		if (realnum > 0 && inst->entities == nullptr)

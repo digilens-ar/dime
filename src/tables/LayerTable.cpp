@@ -73,8 +73,7 @@ dimeLayerTable::copy(dimeModel* const model) const
 	}
 	if (this->layerInfo)
 	{
-		l->layerInfo = static_cast<dimeLayer*>(model->addLayer(this->layerInfo->getLayerName(),
-		                                                       DXFABS(this->colorNumber)));
+		l->layerInfo = model->addLayer(this->layerInfo->getLayerName(), DXFABS(this->colorNumber));
 	}
 	if (!copyRecords(l, model))
 	{
@@ -216,6 +215,6 @@ dimeLayerTable::registerLayer(dimeModel* model)
 {
 	if (this->layerInfo == nullptr && this->layerName != nullptr)
 	{
-		this->layerInfo = static_cast<dimeLayer*>(model->addLayer(this->layerName, DXFABS(this->colorNumber)));
+		this->layerInfo = model->addLayer(this->layerName, DXFABS(this->colorNumber));
 	}
 }

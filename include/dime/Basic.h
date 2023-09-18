@@ -43,7 +43,7 @@
 // we prefer to use floats to save mem. Applications needing
 // scientific calculations should typedef this to double
 // typedef float dxfdouble;
-typedef double dxfdouble;
+using dxfdouble = double;
 
 #include <float.h>
 
@@ -65,49 +65,50 @@ typedef double dxfdouble;
 #endif // __sgi
 
 
-template <class T> inline
+template <class T>
 T DXFSQR(const T x)
 {
-  return x*x;
+	return x * x;
 }
 
 #if defined(__BEOS__)
 #include <support/SupportDefs.h>
 #else // ! defined(__BEOS__)
-typedef signed char int8;
-typedef unsigned char uint8;
-typedef signed short int16;
-typedef unsigned short uint16;
+using int8 = signed char;
+using uint8 = unsigned char;
+using int16 = signed short;
+using uint16 = unsigned short;
 #ifdef _WIN32
-typedef long int32;
+using int32 = long;
 #else // ! defined(_WIN32)
 typedef signed int int32;
 #endif // ! defined(_WIN32)
-typedef unsigned int uint32;
+using uint32 = unsigned int;
 #endif // ! defined(__BEOS__)
 
 #ifdef macintosh
  char* strdup( const char* );
 #endif
- 
+
 #define ARRAY_NEW(memh, type, num) \
 memh ? (type*) memh->allocMem((num)*sizeof(type)) : new type[num]
 
 #define DXF_STRCPY(mh, d, s) \
 mh ? d = mh->stringAlloc(s) : d = new char[strlen(s)+1]; if (d) strcpy(d,s)
 
-typedef bool dimeCallbackFunc(const class dimeState * const, class dimeEntity *, void *);
-typedef dimeCallbackFunc * dimeCallback;
+using dimeCallbackFunc = bool(const class dimeState*, class dimeEntity*, void*);
+using dimeCallback = dimeCallbackFunc*;
 
-typedef union {
-  int8  int8_data;
-  int16 int16_data;
-  int32 int32_data;
-  float float_data;
-  dxfdouble double_data;
-  const char *string_data;
-  const char *hex_data;
-} dimeParam;
+using dimeParam = union
+{
+	int8 int8_data;
+	int16 int16_data;
+	int32 int32_data;
+	float float_data;
+	dxfdouble double_data;
+	const char* string_data;
+	const char* hex_data;
+};
 
 /* ********************************************************************** */
 /* Precaution to avoid an some errors easily made by the application

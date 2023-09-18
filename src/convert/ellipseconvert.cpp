@@ -42,123 +42,133 @@
 // and return the number of subdivisions necessary
 // to respect the maxerr parameter.
 //
-static int 
+static int
 calc_num_sub(dxfdouble maxerr, dxfdouble a, dxfdouble b)
 {
-  dxfdouble minrad = a < b ? a : b;
+	dxfdouble minrad = a < b ? a : b;
 
-  if (maxerr >= minrad) maxerr = minrad / 40.0f;
+	if (maxerr >= minrad) maxerr = minrad / 40.0f;
 
-  dxfdouble x,y;
-  
-  if (a >= b) {
-    x = a-maxerr;
-    y = sqrt((1.0-(x*x)/(a*a))*b*b);
-  }
-  else {
-    x = b-maxerr;
-    y = sqrt((1.0-(x*x)/(b*b))*a*a);
-  }
-  
-  dxfdouble rad = atan(y/x);  
-  return int(M_PI/fabs(rad)) + 1;
+	dxfdouble x, y;
+
+	if (a >= b)
+	{
+		x = a - maxerr;
+		y = sqrt((1.0 - (x * x) / (a * a)) * b * b);
+	}
+	else
+	{
+		x = b - maxerr;
+		y = sqrt((1.0 - (x * x) / (b * b)) * a * a);
+	}
+
+	dxfdouble rad = atan(y / x);
+	return static_cast<int>(M_PI / fabs(rad)) + 1;
 }
 
 
-void 
-convert_ellipse(const dimeEntity *entity, const dimeState *state, 
-		dxfLayerData *layerData, dxfConverter *converter)
+void
+convert_ellipse(const dimeEntity* entity, const dimeState* state,
+                dxfLayerData* layerData, dxfConverter* converter)
 {
-  dimeEllipse *ellipse = (dimeEllipse*) entity;
+	auto ellipse = (dimeEllipse*)entity;
 
-  dimeMatrix matrix;
-  state->getMatrix(matrix);
+	dimeMatrix matrix;
+	state->getMatrix(matrix);
 
-  dimeVec3f e = ellipse->getExtrusionDir();
-  dxfdouble thickness = ellipse->getThickness();
-  
-  // According to the DXF Intern, Ellipse has no Element coordinate
-  // system, so this code is disabled
+	dimeVec3f e = ellipse->getExtrusionDir();
+	dxfdouble thickness = ellipse->getThickness();
 
-//   if (e != dimeVec3f(0,0,1) && e != dimeVec3f(0,0,-1)) {
-//     dimeMatrix m;
-//     dimeEntity::generateUCS(e, m);
-//     matrix.multRight(m);
-//   }
+	// According to the DXF Intern, Ellipse has no Element coordinate
+	// system, so this code is disabled
 
-  e *= thickness;
+	//   if (e != dimeVec3f(0,0,1) && e != dimeVec3f(0,0,-1)) {
+	//     dimeMatrix m;
+	//     dimeEntity::generateUCS(e, m);
+	//     matrix.multRight(m);
+	//   }
 
-  dimeVec3f center = ellipse->getCenter();
+	e *= thickness;
 
-  // do some cross product magic to calculate minor axis
-  dimeVec3f xaxis = ellipse->getMajorAxisEndpoint();
+	dimeVec3f center = ellipse->getCenter();
 
-  dimeParam param;
-  if (ellipse->getRecord(38, param)) {
-    center[2] = param.double_data;
-    xaxis[2] = param.double_data;
-  }
+	// do some cross product magic to calculate minor axis
+	dimeVec3f xaxis = ellipse->getMajorAxisEndpoint();
 
-  dxfdouble xlen = xaxis.length() * 0.5;
-  xaxis.normalize();
-  dimeVec3f yaxis = dimeVec3f(0,0,1).cross(xaxis);
-  yaxis.normalize();
-  dimeVec3f zaxis = xaxis.cross(yaxis);
-  zaxis.normalize();
-  yaxis = zaxis.cross(xaxis);
-  yaxis.normalize();
-    
-  yaxis *= ellipse->getMinorMajorRatio() * xlen;
-  xaxis *= xlen;
+	dimeParam param;
+	if (ellipse->getRecord(38, param))
+	{
+		center[2] = param.double_data;
+		xaxis[2] = param.double_data;
+	}
 
-  dxfdouble numpts = (dxfdouble) converter->getNumSub();
-  if (numpts <= 0.0) { // use maxerr
-    numpts = calc_num_sub(converter->getMaxerr(), 
-			  xlen, xlen*ellipse->getMinorMajorRatio());
-  }
-  
-  dxfdouble rad = ellipse->getStartParam();
-  dxfdouble end = ellipse->getEndParam();
+	dxfdouble xlen = xaxis.length() * 0.5;
+	xaxis.normalize();
+	dimeVec3f yaxis = dimeVec3f(0, 0, 1).cross(xaxis);
+	yaxis.normalize();
+	dimeVec3f zaxis = xaxis.cross(yaxis);
+	zaxis.normalize();
+	yaxis = zaxis.cross(xaxis);
+	yaxis.normalize();
 
-  while (end <= rad) end += M_PI*2.0;
+	yaxis *= ellipse->getMinorMajorRatio() * xlen;
+	xaxis *= xlen;
 
-  // taendl 2012-07-21 substituted the line below
-  // by the following line 
-  //dxfdouble size = (2*M_PI) / (end-rad);
-  dxfdouble size = (end-rad)/(2*M_PI);
-  dxfdouble inc = (end-rad) / (numpts * size);  
+	dxfdouble numpts = converter->getNumSub();
+	if (numpts <= 0.0)
+	{
+		// use maxerr
+		numpts = calc_num_sub(converter->getMaxerr(),
+		                      xlen, xlen * ellipse->getMinorMajorRatio());
+	}
 
-  dimeVec3f v;
-  dimeVec3f prev(center[0] + xaxis[0] * cos(rad) + yaxis[0] * sin(rad),
-		 center[1] + xaxis[1] * cos(rad) + yaxis[1] * sin(rad),
-		 center[2] + xaxis[2] * cos(rad) + yaxis[2] * sin(rad));
-  rad += inc;
-  
-  for (; rad < end; rad += inc) {
-    v =   dimeVec3f(center[0] + xaxis[0] * cos(rad) + yaxis[0] * sin(rad),
-		    center[1] + xaxis[1] * cos(rad) + yaxis[1] * sin(rad),
-		    center[2] + xaxis[2] * cos(rad) + yaxis[2] * sin(rad));
-    
-    if (thickness == 0.0) {
-      layerData->addLine(prev, v, &matrix);
-    }
-    else {
-      layerData->addQuad(prev, v, v + e, prev + e,
-			 &matrix);
-    }
-    prev = v;
-    rad += inc;
-  }
+	dxfdouble rad = ellipse->getStartParam();
+	dxfdouble end = ellipse->getEndParam();
 
-  rad = end;
-  v =   dimeVec3f(center[0] + xaxis[0] * cos(rad) + yaxis[0] * sin(rad),
-		  center[1] + xaxis[1] * cos(rad) + yaxis[1] * sin(rad),
-		  center[2] + xaxis[2] * cos(rad) + yaxis[2] * sin(rad));
-  if (thickness == 0.0) {
-    layerData->addLine(prev, v, &matrix);
-  }
-  else {
-    layerData->addQuad(prev, v, v + e, prev + e,
-                       &matrix);
-  }
+	while (end <= rad) end += M_PI * 2.0;
+
+	// taendl 2012-07-21 substituted the line below
+	// by the following line 
+	//dxfdouble size = (2*M_PI) / (end-rad);
+	dxfdouble size = (end - rad) / (2 * M_PI);
+	dxfdouble inc = (end - rad) / (numpts * size);
+
+	dimeVec3f v;
+	dimeVec3f prev(center[0] + xaxis[0] * cos(rad) + yaxis[0] * sin(rad),
+	               center[1] + xaxis[1] * cos(rad) + yaxis[1] * sin(rad),
+	               center[2] + xaxis[2] * cos(rad) + yaxis[2] * sin(rad));
+	rad += inc;
+
+	for (; rad < end; rad += inc)
+	{
+		v = dimeVec3f(center[0] + xaxis[0] * cos(rad) + yaxis[0] * sin(rad),
+		              center[1] + xaxis[1] * cos(rad) + yaxis[1] * sin(rad),
+		              center[2] + xaxis[2] * cos(rad) + yaxis[2] * sin(rad));
+
+		if (thickness == 0.0)
+		{
+			layerData->addLine(prev, v, &matrix);
+		}
+		else
+		{
+			layerData->addQuad(prev, v, v + e, prev + e,
+			                   &matrix);
+		}
+		prev = v;
+		rad += inc;
+	}
+
+	rad = end;
+	v = dimeVec3f(center[0] + xaxis[0] * cos(rad) + yaxis[0] * sin(rad),
+	              center[1] + xaxis[1] * cos(rad) + yaxis[1] * sin(rad),
+	              center[2] + xaxis[2] * cos(rad) + yaxis[2] * sin(rad));
+	if (thickness == 0.0)
+	{
+		layerData->addLine(prev, v, &matrix);
+	}
+	else
+	{
+		layerData->addQuad(prev, v, v + e, prev + e,
+		                   &matrix);
+	}
 }

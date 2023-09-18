@@ -112,31 +112,31 @@ dimeBase::~dimeBase()
   do not have to implement this method.
 */
 
-bool 
+bool
 dimeBase::isOfType(const int thetypeid) const
 {
-  return this->typeId() == thetypeid ||
-    thetypeid == dimeBaseType;
+	return this->typeId() == thetypeid ||
+		thetypeid == dimeBaseType;
 }
 
-void *
-dimeBase::operator new(size_t size, dimeMemHandler *memhandler, 
-		      const int alignment)
+void*
+dimeBase::operator new(size_t size, dimeMemHandler* memhandler,
+                       const int alignment)
 {
-  if (memhandler)
-    return memhandler->allocMem(size, alignment);
-  else return ::operator new(size);
+	if (memhandler)
+		return memhandler->allocMem(size, alignment);
+	return ::operator new(size);
 }
 
 void dimeBase::operator delete(void* ptr, dimeMemHandler* memhandler, int alignment)
 {
-    assert(!memhandler);
-    ::operator delete(ptr);
+	assert(!memhandler);
+	::operator delete(ptr);
 }
 
-void 
-dimeBase::operator delete(void * ptr)
+void
+dimeBase::operator delete(void* ptr)
 {
-  // will only get here if we don't use a memory handler
-  ::operator delete(ptr);
+	// will only get here if we don't use a memory handler
+	::operator delete(ptr);
 }

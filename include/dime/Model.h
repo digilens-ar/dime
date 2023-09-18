@@ -75,27 +75,27 @@ public:
 	void* findReference(const char* name) const;
 	const char* findRefStringPtr(const char* name) const;
 	void removeReference(const char* name);
-	class dimeMemHandler* getMemHandler();
+	dimeMemHandler* getMemHandler();
 
 	int getNumLayers() const;
-	const class dimeLayer* getLayer(int idx) const;
-	const class dimeLayer* getLayer(const char* layername) const;
-	const class dimeLayer* addLayer(const char* layername,
-	                                int16 colnum = 7,
-	                                int16 flags = 0);
+	const  dimeLayer* getLayer(int idx) const;
+	const  dimeLayer* getLayer(const char* layername) const;
+	dimeLayer* addLayer(const char* layername,
+	                    int16 colnum = 7,
+	                    int16 flags = 0);
 
 	const char* getDxfVersion() const;
 
 	static const char* getVersionString();
 	static void getVersion(int& major, int& minor);
 	const char* addBlock(const char* blockname, dimeBlock* block);
-	class dimeBlock* findBlock(const char* blockname);
+	dimeBlock* findBlock(const char* blockname);
 
-	class dimeSection* findSection(const char* sectionname);
-	const class dimeSection* findSection(const char* sectionname) const;
+	dimeSection* findSection(const char* sectionname);
+	const dimeSection* findSection(const char* sectionname) const;
 
 	int getNumSections() const;
-	class dimeSection* getSection(int idx);
+	dimeSection* getSection(int idx);
 	void insertSection(dimeSection* section, int idx = -1);
 	void removeSection(int idx);
 
@@ -106,11 +106,11 @@ public:
 	void addEntity(dimeEntity* entity);
 
 private:
-	class dimeDict* refDict;
-	class dimeDict* layerDict;
-	class dimeMemHandler* memoryHandler;
-	dimeArray<class dimeSection*> sections;
-	dimeArray<class dimeLayer*> layers;
+	dimeDict* refDict;
+	dimeDict* layerDict;
+	dimeMemHandler* memoryHandler;
+	dimeArray<dimeSection*> sections;
+	dimeArray<dimeLayer*> layers;
 	dimeArray<dimeRecord*> headerComments;
 
 	int largestHandle;

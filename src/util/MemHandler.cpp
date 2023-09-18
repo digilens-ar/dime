@@ -65,44 +65,47 @@
 
 class dimeMemNode
 {
-  friend class dimeMemHandler;
+	friend class dimeMemHandler;
+
 public:
-  dimeMemNode(const size_t numbytes, dimeMemNode *next_node)
-    : next( next_node ), currPos( 0 ), size( numbytes )
-  {
-    this->block = (unsigned char*)malloc(numbytes);
-  }
+	dimeMemNode(const size_t numbytes, dimeMemNode* next_node)
+		: next(next_node), currPos(0), size(numbytes)
+	{
+		this->block = static_cast<unsigned char*>(malloc(numbytes));
+	}
 
-  ~dimeMemNode()
-  {
-    free(this->block);
-  }
+	~dimeMemNode()
+	{
+		free(this->block);
+	}
 
-  bool initOk() const
-  {
-    return (this->block != NULL);
-  }
+	bool initOk() const
+	{
+		return (this->block != nullptr);
+	}
 
-  void *alloc(const size_t numbytes, const int alignment)
-  {
-    const size_t mask = alignment - 1;
-    unsigned char *ret = NULL;
-    if (alignment > 1) {
-      if (this->currPos & mask) 
-        this->currPos = (this->currPos & ~mask) + alignment;
-    }
-    if (this->currPos + numbytes <= this->size) {
-      ret = &this->block[currPos];
-      this->currPos += numbytes;
-    }
-    return ret;
-  }
+	void* alloc(const size_t numbytes, const int alignment)
+	{
+		const size_t mask = alignment - 1;
+		unsigned char* ret = nullptr;
+		if (alignment > 1)
+		{
+			if (this->currPos & mask)
+				this->currPos = (this->currPos & ~mask) + alignment;
+		}
+		if (this->currPos + numbytes <= this->size)
+		{
+			ret = &this->block[currPos];
+			this->currPos += numbytes;
+		}
+		return ret;
+	}
 
 private:
-  dimeMemNode *next;
-  unsigned char *block;
-  size_t currPos;
-  size_t size;
+	dimeMemNode* next;
+	unsigned char* block;
+	size_t currPos;
+	size_t size;
 }; // class dimeMemNode
 
 /*!
@@ -110,9 +113,9 @@ private:
 */
 
 dimeMemHandler::dimeMemHandler()
-  : bigmemnode( NULL )
+	: bigmemnode(nullptr)
 {
-  this->memnode = new dimeMemNode(MEMBLOCK_SIZE, NULL);
+	this->memnode = new dimeMemNode(MEMBLOCK_SIZE, nullptr);
 }
 
 /*!
@@ -121,21 +124,23 @@ dimeMemHandler::dimeMemHandler()
 
 dimeMemHandler::~dimeMemHandler()
 {
-  dimeMemNode *curr = this->memnode;
-  dimeMemNode *next;
+	dimeMemNode* curr = this->memnode;
+	dimeMemNode* next;
 
-  while (curr) {
-    next = curr->next;
-    delete curr;
-    curr = next;
-  }
+	while (curr)
+	{
+		next = curr->next;
+		delete curr;
+		curr = next;
+	}
 
-  curr = this->bigmemnode;
-  while (curr) {
-    next = curr->next;
-    delete curr;
-    curr = next;
-  }
+	curr = this->bigmemnode;
+	while (curr)
+	{
+		next = curr->next;
+		delete curr;
+		curr = next;
+	}
 }
 
 /*!
@@ -146,7 +151,7 @@ dimeMemHandler::~dimeMemHandler()
 bool
 dimeMemHandler::initOk() const
 {
-  return this->memnode && this->memnode->initOk();
+	return this->memnode && this->memnode->initOk();
 }
 
 /*!
@@ -154,15 +159,16 @@ dimeMemHandler::initOk() const
   returns the new string pointer.
 */
 
-char *
-dimeMemHandler::stringAlloc(const char * const string)
+char*
+dimeMemHandler::stringAlloc(const char* const string)
 {
-  size_t len = strlen(string)+1;
-  char *ret = (char*)this->allocMem(len, 1);
-  if (ret) {
-    strcpy(ret, string);
-  }
-  return ret;
+	size_t len = strlen(string) + 1;
+	auto ret = static_cast<char*>(this->allocMem(len, 1));
+	if (ret)
+	{
+		strcpy(ret, string);
+	}
+	return ret;
 }
 
 /*!
@@ -174,22 +180,26 @@ dimeMemHandler::stringAlloc(const char * const string)
   should probably be changed to eight.
 */
 
-void *
+void*
 dimeMemHandler::allocMem(const size_t size, const int alignment)
 {
-  void *ret = NULL;
-  if (size > MEMBLOCK_SIZE/2) { // big blocks is allocated separately.
-    this->bigmemnode = new dimeMemNode(size, this->bigmemnode);
-    if (!this->bigmemnode || !this->bigmemnode->initOk()) return NULL;
-    ret = (void*) this->bigmemnode->block;
-  }
-  else {
-    ret = this->memnode->alloc(size, alignment);
-    if (ret == NULL) {
-      this->memnode = new dimeMemNode(MEMBLOCK_SIZE, this->memnode);
-      if (!this->memnode || !this->memnode->initOk()) return NULL;
-      ret = this->memnode->alloc(size, alignment);
-    }
-  }
-  return ret;
+	void* ret = nullptr;
+	if (size > MEMBLOCK_SIZE / 2)
+	{
+		// big blocks is allocated separately.
+		this->bigmemnode = new dimeMemNode(size, this->bigmemnode);
+		if (!this->bigmemnode || !this->bigmemnode->initOk()) return nullptr;
+		ret = static_cast<void*>(this->bigmemnode->block);
+	}
+	else
+	{
+		ret = this->memnode->alloc(size, alignment);
+		if (ret == nullptr)
+		{
+			this->memnode = new dimeMemNode(MEMBLOCK_SIZE, this->memnode);
+			if (!this->memnode || !this->memnode->initOk()) return nullptr;
+			ret = this->memnode->alloc(size, alignment);
+		}
+	}
+	return ret;
 }

@@ -371,9 +371,8 @@ dimeModel::getMemHandler()
   pointer to the existing layer will be returned.
 */
 
-const dimeLayer*
-dimeModel::addLayer(const char* const name, const int16 colnum,
-                    const int16 flags)
+dimeLayer* dimeModel::addLayer(const char* const name, const int16 colnum,
+                               const int16 flags)
 {
 	void* temp = nullptr;
 	if (!this->layerDict->find(name, temp))

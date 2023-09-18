@@ -122,7 +122,7 @@ dimeBlock::copy(dimeModel* const model) const
 	int n = this->entities.count();
 	if (n)
 	{
-		ok = dimeEntity::copyEntityArray(static_cast<const dimeEntity**>(this->entities.constArrayPointer()),
+		ok = dimeEntity::copyEntityArray(this->entities.constArrayPointer(),
 		                                 n,
 		                                 model,
 		                                 bl->entities);

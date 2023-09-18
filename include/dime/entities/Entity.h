@@ -135,11 +135,11 @@ public:
 	                         dimeArray<dimeEntity*>& array,
 	                         const char* stopat);
 
-	static bool copyEntityArray(const dimeEntity** const array,
+	static bool copyEntityArray(const dimeEntity* const* const array,
 	                            int nument,
 	                            dimeModel* model,
 	                            dimeArray<dimeEntity*>& destarray);
-	static dimeEntity** copyEntityArray(const dimeEntity** const array,
+	static dimeEntity** copyEntityArray(const dimeEntity* const* const array,
 	                                    int& nument,
 	                                    dimeModel* model);
 

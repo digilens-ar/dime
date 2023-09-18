@@ -38,20 +38,17 @@
 class DIME_DLL_API dimeMemHandler
 {
 public:
-  dimeMemHandler();
-  ~dimeMemHandler();
+	dimeMemHandler();
+	~dimeMemHandler();
 
-  bool initOk() const;
+	bool initOk() const;
 
-  char *stringAlloc(const char * string);
-  void *allocMem(size_t size, int alignment = 4);
-  
+	char* stringAlloc(const char* string);
+	void* allocMem(size_t size, int alignment = 4);
+
 private:
-
-  class dimeMemNode *bigmemnode; // linked list of big memory chunks 
-  class dimeMemNode *memnode;   // linked list of memory nodes.
-
+	class dimeMemNode* bigmemnode; // linked list of big memory chunks 
+	class dimeMemNode* memnode; // linked list of memory nodes.
 }; // class dimeMemHandler
 
 #endif // ! DIME_MEMHANDLER_H
-

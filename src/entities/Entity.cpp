@@ -437,8 +437,7 @@ dimeEntity::copyEntityArray(const dimeEntity* const* const array,
   \a array of length \a nument into \a destarray.
 */
 
-bool
-dimeEntity::copyEntityArray(const dimeEntity* const* const array,
+bool dimeEntity::copyEntityArray(const dimeEntity* const* const array,
                             const int nument,
                             dimeModel* const model,
                             dimeArray<dimeEntity*>& destarray)
