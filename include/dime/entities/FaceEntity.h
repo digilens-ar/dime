@@ -37,70 +37,67 @@
 #include <dime/entities/Entity.h>
 #include <dime/util/Linear.h>
 
-class DIME_DLL_API dimeFaceEntity : public dimeEntity 
+class DIME_DLL_API dimeFaceEntity : public dimeEntity
 {
 public:
-  bool isQuad() const;
-  
-  virtual bool getRecord(const int groupcode,
-			 dimeParam &param,
-			 const int index = 0) const;
-  
-  void setVertex(const int idx, const dimeVec3f &v);
-  void setTriangle(const dimeVec3f &v0, const dimeVec3f &v1,
-		   const dimeVec3f &v2);
-  void setQuad(const dimeVec3f &v0, const dimeVec3f &v1,
-	       const dimeVec3f &v2, const dimeVec3f &v3);
-  const dimeVec3f &getVertex(const int idx) const;
-  void getVertices(dimeVec3f &v0, dimeVec3f &v1,
-		   dimeVec3f &v2, dimeVec3f &v3) const;
-  
-  virtual dxfdouble getThickness() const;
-  virtual void getExtrusionDir(dimeVec3f &ed) const;
-  
-  GeometryType extractGeometry(dimeArray <dimeVec3f> &verts,
-			       dimeArray <int> &indices,
-			       dimeVec3f &extrusionDir,
-			       dxfdouble &thickness);
-  
-  virtual int typeId() const;
-  virtual bool isOfType(const int thetypeid) const;
-  virtual int countRecords() const;
+	bool isQuad() const;
+
+	bool getRecord(int groupcode,
+	               dimeParam& param,
+	               int index = 0) const override;
+
+	void setVertex(int idx, const dimeVec3f& v);
+	void setTriangle(const dimeVec3f& v0, const dimeVec3f& v1,
+	                 const dimeVec3f& v2);
+	void setQuad(const dimeVec3f& v0, const dimeVec3f& v1,
+	             const dimeVec3f& v2, const dimeVec3f& v3);
+	const dimeVec3f& getVertex(int idx) const;
+	void getVertices(dimeVec3f& v0, dimeVec3f& v1,
+	                 dimeVec3f& v2, dimeVec3f& v3) const;
+
+	virtual dxfdouble getThickness() const;
+	virtual void getExtrusionDir(dimeVec3f& ed) const;
+
+	GeometryType extractGeometry(dimeArray<dimeVec3f>& verts,
+	                             dimeArray<int>& indices,
+	                             dimeVec3f& extrusionDir,
+	                             dxfdouble& thickness) override;
+
+	int typeId() const override;
+	bool isOfType(int thetypeid) const override;
+	int countRecords() const override;
 
 protected:
+	virtual bool swapQuadCoords() const;
 
-  virtual bool swapQuadCoords() const;
-  
-  virtual bool handleRecord(const int groupcode, 
-			    const dimeParam &param,
-			    dimeMemHandler * const memhandler);
-  void copyCoords(const dimeFaceEntity * const entity);
-  bool writeCoords(dimeOutput * const file);
-  
-  dimeFaceEntity();
-  dimeVec3f coords[4];
+	bool handleRecord(int groupcode,
+	                  const dimeParam& param,
+	                  dimeMemHandler* memhandler) override;
+	void copyCoords(const dimeFaceEntity* entity);
+	bool writeCoords(dimeOutput* file);
 
+	dimeFaceEntity();
+	dimeVec3f coords[4];
 }; // class dimeFaceEntity
 
-inline const dimeVec3f &
+inline const dimeVec3f&
 dimeFaceEntity::getVertex(const int idx) const
 {
-  assert(idx >= 0 && idx < 4);
-  return this->coords[idx]; 
+	assert(idx >= 0 && idx < 4);
+	return this->coords[idx];
 }
 
 inline bool
 dimeFaceEntity::isQuad() const
 {
-  return (coords[2] != coords[3]);
+	return (coords[2] != coords[3]);
 }
 
-inline void 
-dimeFaceEntity::setVertex(const int idx, const dimeVec3f &v)
+inline void
+dimeFaceEntity::setVertex(const int idx, const dimeVec3f& v)
 {
-  assert(idx >= 0 && idx < 4);
-  this->coords[idx] = v;
+	assert(idx >= 0 && idx < 4);
+	this->coords[idx] = v;
 }
 
 #endif // ! DIME_FACEENTITY_H
-

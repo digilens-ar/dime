@@ -54,68 +54,67 @@ class dimeRecord;
 class DIME_DLL_API dimeModel
 {
 public:
-  dimeModel(const bool usememhandler = false);
-  ~dimeModel();
-  
-  dimeModel *copy() const;
+	dimeModel(bool usememhandler = false);
+	~dimeModel();
 
-  bool init();
-  bool read(dimeInput * const in);
-  bool write(dimeOutput * const out);
+	dimeModel* copy() const;
 
-  int countRecords() const;
+	bool init();
+	bool read(dimeInput* in);
+	bool write(dimeOutput* out);
 
-  bool traverseEntities(dimeCallback callback, 
-			void *userdata = NULL,
-			bool traverseBlocksSection = false,
-			bool explodeInserts = true,
-			bool traversePolylineVertices = false);
-  
-  const char *addReference(const char * const name, void *id);
-  void *findReference(const char * const name) const;
-  const char *findRefStringPtr(const char * const name) const;
-  void removeReference(const char * const name);
-  class dimeMemHandler *getMemHandler();
-  
-  int getNumLayers() const;
-  const class dimeLayer *getLayer(const int idx) const;
-  const class dimeLayer *getLayer(const char * const layername) const;
-  const class dimeLayer *addLayer(const char * const layername, 
-				  const int16 colnum = 7,
-				  const int16 flags = 0); 
-  
-  const char * getDxfVersion() const;
-  
-  static const char *getVersionString();
-  static void getVersion(int &major, int &minor);
-  const char *addBlock(const char * const blockname, dimeBlock * const block);
-  class dimeBlock *findBlock(const char * const blockname);
+	int countRecords() const;
 
-  class dimeSection *findSection(const char * const sectionname);
-  const class dimeSection *findSection(const char * const sectionname) const;
+	bool traverseEntities(dimeCallback callback,
+	                      void* userdata = nullptr,
+	                      bool traverseBlocksSection = false,
+	                      bool explodeInserts = true,
+	                      bool traversePolylineVertices = false);
 
-  int getNumSections() const;
-  class dimeSection *getSection(const int idx);
-  void insertSection(dimeSection * const section, const int idx = -1);
-  void removeSection(const int idx);
+	const char* addReference(const char* name, void* id);
+	void* findReference(const char* name) const;
+	const char* findRefStringPtr(const char* name) const;
+	void removeReference(const char* name);
+	class dimeMemHandler* getMemHandler();
 
-  void registerHandle(const int handle);
-  void registerHandle(const char * const handle);
-  int getUniqueHandle();
-  const char *getUniqueHandle(char *buf, const int bufsize);
-  void addEntity(dimeEntity *entity);
+	int getNumLayers() const;
+	const class dimeLayer* getLayer(int idx) const;
+	const class dimeLayer* getLayer(const char* layername) const;
+	const class dimeLayer* addLayer(const char* layername,
+	                                int16 colnum = 7,
+	                                int16 flags = 0);
+
+	const char* getDxfVersion() const;
+
+	static const char* getVersionString();
+	static void getVersion(int& major, int& minor);
+	const char* addBlock(const char* blockname, dimeBlock* block);
+	class dimeBlock* findBlock(const char* blockname);
+
+	class dimeSection* findSection(const char* sectionname);
+	const class dimeSection* findSection(const char* sectionname) const;
+
+	int getNumSections() const;
+	class dimeSection* getSection(int idx);
+	void insertSection(dimeSection* section, int idx = -1);
+	void removeSection(int idx);
+
+	void registerHandle(int handle);
+	void registerHandle(const char* handle);
+	int getUniqueHandle();
+	const char* getUniqueHandle(char* buf, int bufsize);
+	void addEntity(dimeEntity* entity);
 
 private:
-  class dimeDict *refDict;
-  class dimeDict *layerDict;
-  class dimeMemHandler *memoryHandler;
-  dimeArray <class dimeSection*> sections;
-  dimeArray <class dimeLayer*> layers;
-  dimeArray <dimeRecord*> headerComments;
+	class dimeDict* refDict;
+	class dimeDict* layerDict;
+	class dimeMemHandler* memoryHandler;
+	dimeArray<class dimeSection*> sections;
+	dimeArray<class dimeLayer*> layers;
+	dimeArray<dimeRecord*> headerComments;
 
-  int largestHandle;
-  bool usememhandler;
+	int largestHandle;
+	bool usememhandler;
 }; // class dimeModel
 
 #endif // ! DIME_MODEL_H
-

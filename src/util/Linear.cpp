@@ -40,7 +40,7 @@
   \class dimeVec3f dime/util/Linear.h
   \brief The dimeVec3f class is for containing and operating on a 3D vector /
   coordinate.
-*/  
+*/
 
 /*!
   \class dimeMatrix dime/util/Linear.h
@@ -75,317 +75,326 @@
 #endif
 #endif // OBSOLETED
 
-void 
-dimeVec3f::normalize(void) 
+void
+dimeVec3f::normalize(void)
 {
-  dxfdouble dot = x*x + y*y + z*z;
-  if (dot > 0.0) {
-    dot = 1.0 / sqrt(dot);
-    x *= dot; y *= dot; z *= dot;
-  }
+	dxfdouble dot = x * x + y * y + z * z;
+	if (dot > 0.0)
+	{
+		dot = 1.0 / sqrt(dot);
+		x *= dot;
+		y *= dot;
+		z *= dot;
+	}
 }
 
-dxfdouble 
-dimeVec3f::angle(const dimeVec3f &v2)
+dxfdouble
+dimeVec3f::angle(const dimeVec3f& v2)
 {
-  dxfdouble cos,len;
-  if ((len=length()*v2.length())==0.0f) return 0.0;
-  cos = this->dot(v2) / len;
-  if (cos > 1.0) cos = 1.0;
-  if (cos < -1.0) cos = -1.0;
-  return acos(cos);
+	dxfdouble cos, len;
+	if ((len = length() * v2.length()) == 0.0f) return 0.0;
+	cos = this->dot(v2) / len;
+	if (cos > 1.0) cos = 1.0;
+	if (cos < -1.0) cos = -1.0;
+	return acos(cos);
 }
 
-dimeMatrix::dimeMatrix(const dimeMatrix &m)
+dimeMatrix::dimeMatrix(const dimeMatrix& m)
 {
-  dxfdouble *p1 = &this->matrix[0][0];
-  const dxfdouble *p2 = &m.matrix[0][0];
-  int n = 16;
-  while (n--) *p1++ = *p2++;
+	dxfdouble* p1 = &this->matrix[0][0];
+	const dxfdouble* p2 = &m.matrix[0][0];
+	int n = 16;
+	while (n--) *p1++ = *p2++;
 }
 
 dimeMatrix::dimeMatrix(dxfdouble a11, dxfdouble a12, dxfdouble a13, dxfdouble a14,
-		     dxfdouble a21, dxfdouble a22, dxfdouble a23, dxfdouble a24, 
-		     dxfdouble a31, dxfdouble a32, dxfdouble a33, dxfdouble a34, 
-		     dxfdouble a41, dxfdouble a42, dxfdouble a43, dxfdouble a44)
+                       dxfdouble a21, dxfdouble a22, dxfdouble a23, dxfdouble a24,
+                       dxfdouble a31, dxfdouble a32, dxfdouble a33, dxfdouble a34,
+                       dxfdouble a41, dxfdouble a42, dxfdouble a43, dxfdouble a44)
 {
-  this->matrix[0][0] = a11;
-  this->matrix[0][1] = a12;
-  this->matrix[0][2] = a13;
-  this->matrix[0][3] = a14;
-  this->matrix[1][0] = a21;
-  this->matrix[1][1] = a22;
-  this->matrix[1][2] = a23;
-  this->matrix[1][3] = a24;
-  this->matrix[2][0] = a31;
-  this->matrix[2][1] = a32;
-  this->matrix[2][2] = a33;
-  this->matrix[2][3] = a34;
-  this->matrix[3][0] = a41;
-  this->matrix[3][1] = a42;
-  this->matrix[3][2] = a43;
-  this->matrix[3][3] = a44;
+	this->matrix[0][0] = a11;
+	this->matrix[0][1] = a12;
+	this->matrix[0][2] = a13;
+	this->matrix[0][3] = a14;
+	this->matrix[1][0] = a21;
+	this->matrix[1][1] = a22;
+	this->matrix[1][2] = a23;
+	this->matrix[1][3] = a24;
+	this->matrix[2][0] = a31;
+	this->matrix[2][1] = a32;
+	this->matrix[2][2] = a33;
+	this->matrix[2][3] = a34;
+	this->matrix[3][0] = a41;
+	this->matrix[3][1] = a42;
+	this->matrix[3][2] = a43;
+	this->matrix[3][3] = a44;
 }
 
 void
 dimeMatrix::transpose()
 {
-  dxfdouble tmp;
-  for (int i = 0; i < 3; i++) {
-    for (int j = i+1; j < 4; j++) {
-      tmp = this->matrix[i][j];
-      this->matrix[i][j] = this->matrix[j][i];
-      this->matrix[j][i] = tmp;
-    }
-  }
+	dxfdouble tmp;
+	for (int i = 0; i < 3; i++)
+	{
+		for (int j = i + 1; j < 4; j++)
+		{
+			tmp = this->matrix[i][j];
+			this->matrix[i][j] = this->matrix[j][i];
+			this->matrix[j][i] = tmp;
+		}
+	}
 }
 
-void 
+void
 dimeMatrix::makeIdentity()
 {
-  matrix[0][0]=matrix[1][1]=matrix[2][2]=matrix[3][3]=1.0f;
-  matrix[0][1]=matrix[0][2]=matrix[0][3]=
-    matrix[1][0]=matrix[1][2]=matrix[1][3]=
-    matrix[2][0]=matrix[2][1]=matrix[2][3]=
-    matrix[3][0]=matrix[3][1]=matrix[3][2]=0.0f;
+	matrix[0][0] = matrix[1][1] = matrix[2][2] = matrix[3][3] = 1.0f;
+	matrix[0][1] = matrix[0][2] = matrix[0][3] =
+		matrix[1][0] = matrix[1][2] = matrix[1][3] =
+		matrix[2][0] = matrix[2][1] = matrix[2][3] =
+		matrix[3][0] = matrix[3][1] = matrix[3][2] = 0.0f;
 }
 
-bool 
+bool
 dimeMatrix::isIdentity() const
 {
-  return 
-    matrix[0][0] == 1.0f && 
-    matrix[1][1] == 1.0f &&
-    matrix[2][2] == 1.0f &&
-    matrix[3][3] == 1.0f &&
+	return
+		matrix[0][0] == 1.0f &&
+		matrix[1][1] == 1.0f &&
+		matrix[2][2] == 1.0f &&
+		matrix[3][3] == 1.0f &&
 
-    matrix[0][1] == 0.0f &&
-    matrix[0][2] == 0.0f &&
-    matrix[0][3] == 0.0f &&
+		matrix[0][1] == 0.0f &&
+		matrix[0][2] == 0.0f &&
+		matrix[0][3] == 0.0f &&
 
-    matrix[1][0] == 0.0f && 
-    matrix[1][2] == 0.0f &&
-    matrix[1][3] == 0.0f &&
+		matrix[1][0] == 0.0f &&
+		matrix[1][2] == 0.0f &&
+		matrix[1][3] == 0.0f &&
 
-    matrix[2][0] == 0.0f && 
-    matrix[2][1] == 0.0f &&
-    matrix[2][3] == 0.0f &&
+		matrix[2][0] == 0.0f &&
+		matrix[2][1] == 0.0f &&
+		matrix[2][3] == 0.0f &&
 
-    matrix[3][0] == 0.0f && 
-    matrix[3][1] == 0.0f &&
-    matrix[3][2] == 0.0f;
+		matrix[3][0] == 0.0f &&
+		matrix[3][1] == 0.0f &&
+		matrix[3][2] == 0.0f;
 }
 
 // FIXME: only 2D rotation is supported
 
-void 
-dimeMatrix::setTransform(const dimeVec3f &translation,
-			const dimeVec3f &scalefactor,
-			const dimeVec3f &rotAngles)
+void
+dimeMatrix::setTransform(const dimeVec3f& translation,
+                         const dimeVec3f& scalefactor,
+                         const dimeVec3f& rotAngles)
 {
-  /*
-  fprintf(stderr,"set transform: %.3f %.3f %.3f - %.3f %.3f %.3f - %.3f\n",
-	  translation[0], translation[1], translation[2],
-	  scalefactor[0], scalefactor[1], scalefactor[2],
-	  rotAngles[0]);*/
-  this->makeIdentity();
-  this->setTranslate(translation);
-  dimeMatrix m2, m3;
-  m2.makeIdentity();
-  m2.setRotate(rotAngles);
-  this->multRight(m2); // do rotate before translate
-  m3.makeIdentity();
-  m3.setScale(scalefactor);
-  this->multRight(m3);    // do scale before rotate
-  /*
-  fprintf(stderr,
-	  "%.3f %.3f %.3f %.3f\n"
-	  "%.3f %.3f %.3f %.3f\n"
-	  "%.3f %.3f %.3f %.3f\n"
-	  "%.3f %.3f %.3f %.3f\n",
-	  matrix[0][0], matrix[0][1], matrix[0][2], matrix[0][3],
-	  matrix[1][0], matrix[1][1], matrix[1][2], matrix[1][3],
-	  matrix[2][0], matrix[2][1], matrix[2][2], matrix[2][3],
-	  matrix[3][0], matrix[3][1], matrix[3][2], matrix[3][3]);
-  */
+	/*
+	fprintf(stderr,"set transform: %.3f %.3f %.3f - %.3f %.3f %.3f - %.3f\n",
+		translation[0], translation[1], translation[2],
+		scalefactor[0], scalefactor[1], scalefactor[2],
+		rotAngles[0]);*/
+	this->makeIdentity();
+	this->setTranslate(translation);
+	dimeMatrix m2, m3;
+	m2.makeIdentity();
+	m2.setRotate(rotAngles);
+	this->multRight(m2); // do rotate before translate
+	m3.makeIdentity();
+	m3.setScale(scalefactor);
+	this->multRight(m3); // do scale before rotate
+	/*
+	fprintf(stderr,
+		"%.3f %.3f %.3f %.3f\n"
+		"%.3f %.3f %.3f %.3f\n"
+		"%.3f %.3f %.3f %.3f\n"
+		"%.3f %.3f %.3f %.3f\n",
+		matrix[0][0], matrix[0][1], matrix[0][2], matrix[0][3],
+		matrix[1][0], matrix[1][1], matrix[1][2], matrix[1][3],
+		matrix[2][0], matrix[2][1], matrix[2][2], matrix[2][3],
+		matrix[3][0], matrix[3][1], matrix[3][2], matrix[3][3]);
+	*/
 }
 
-dimeMatrix &
-dimeMatrix::multRight(const dimeMatrix &m) // this = this * m
+dimeMatrix&
+dimeMatrix::multRight(const dimeMatrix& m) // this = this * m
 {
-  dimeMatrix copy = *this;
-  dxfdouble (*mat1)[4] = (dxfdouble (*)[4])copy.matrix;
-  dxfdouble (*mat2)[4] = (dxfdouble (*)[4])m.matrix;
-  
-  int i, j, n;
-  
-  for (i = 0; i < 4; i++) {
-    for (j = 0; j < 4; j++) {
-      matrix[i][j] = 0.0f;
-      for (n = 0; n < 4; n++) matrix[i][j] += mat1[i][n] * mat2[n][j];
-    }
-  }
-  return *this;
+	dimeMatrix copy = *this;
+	auto mat1 = copy.matrix;
+	auto mat2 = (dxfdouble (*)[4])m.matrix;
+
+	int i, j, n;
+
+	for (i = 0; i < 4; i++)
+	{
+		for (j = 0; j < 4; j++)
+		{
+			matrix[i][j] = 0.0f;
+			for (n = 0; n < 4; n++) matrix[i][j] += mat1[i][n] * mat2[n][j];
+		}
+	}
+	return *this;
 }
 
-dimeMatrix &
-dimeMatrix::multLeft(const dimeMatrix &m)   // this = m * this
+dimeMatrix&
+dimeMatrix::multLeft(const dimeMatrix& m) // this = m * this
 {
-  dimeMatrix copy = *this;
-  dxfdouble (*mat1)[4] = (dxfdouble (*)[4])m.matrix;
-  dxfdouble (*mat2)[4] = (dxfdouble (*)[4])copy.matrix;
-  
-  int i, j, n;
-  
-  for (i = 0; i < 4; i++) {
-    for (j = 0; j < 4; j++) {
-      matrix[i][j] = 0.0f;
-      for (n = 0; n < 4; n++) matrix[i][j] += mat1[i][n] * mat2[n][j];
-    }
-  }
-  return *this;
+	dimeMatrix copy = *this;
+	auto mat1 = (dxfdouble (*)[4])m.matrix;
+	auto mat2 = copy.matrix;
+
+	int i, j, n;
+
+	for (i = 0; i < 4; i++)
+	{
+		for (j = 0; j < 4; j++)
+		{
+			matrix[i][j] = 0.0f;
+			for (n = 0; n < 4; n++) matrix[i][j] += mat1[i][n] * mat2[n][j];
+		}
+	}
+	return *this;
 }
 
 // FIXME: only XY rotation supported
 
-void 
-dimeMatrix::setRotate(const dimeVec3f &rot)
+void
+dimeMatrix::setRotate(const dimeVec3f& rot)
 {
-  dxfdouble s = sin(DXFDEG2RAD(rot.z));
-  dxfdouble c = cos(DXFDEG2RAD(rot.z));
-  this->matrix[0][0] = c;
-  this->matrix[0][1] = -s;
-  this->matrix[1][0] = s;
-  this->matrix[1][1] = c;
+	dxfdouble s = sin(DXFDEG2RAD(rot.z));
+	dxfdouble c = cos(DXFDEG2RAD(rot.z));
+	this->matrix[0][0] = c;
+	this->matrix[0][1] = -s;
+	this->matrix[1][0] = s;
+	this->matrix[1][1] = c;
 }
 
-void 
-dimeMatrix::setRotate(const dimeVec3f &x, const dimeVec3f &y, const dimeVec3f &z)
+void
+dimeMatrix::setRotate(const dimeVec3f& x, const dimeVec3f& y, const dimeVec3f& z)
 {
-  this->matrix[0][0] = x.x;
-  this->matrix[1][0] = x.y;
-  this->matrix[2][0] = x.z;
-  this->matrix[3][0] = 0.0f;
+	this->matrix[0][0] = x.x;
+	this->matrix[1][0] = x.y;
+	this->matrix[2][0] = x.z;
+	this->matrix[3][0] = 0.0f;
 
-  this->matrix[0][1] = y.x;
-  this->matrix[1][1] = y.y;
-  this->matrix[2][1] = y.z;
-  this->matrix[3][1] = 0.0f;
+	this->matrix[0][1] = y.x;
+	this->matrix[1][1] = y.y;
+	this->matrix[2][1] = y.z;
+	this->matrix[3][1] = 0.0f;
 
-  this->matrix[0][2] = z.x;
-  this->matrix[1][2] = z.y;
-  this->matrix[2][2] = z.z;
-  this->matrix[3][2] = 0.0f;
+	this->matrix[0][2] = z.x;
+	this->matrix[1][2] = z.y;
+	this->matrix[2][2] = z.z;
+	this->matrix[3][2] = 0.0f;
 
-  this->matrix[0][3] = this->matrix[1][3] = this->matrix[2][3] = 0.0f;
-  this->matrix[3][3] = 1.0f;
+	this->matrix[0][3] = this->matrix[1][3] = this->matrix[2][3] = 0.0f;
+	this->matrix[3][3] = 1.0f;
 }
 
-void 
-dimeMatrix::setRotation(const dimeVec3f &u, const dxfdouble angle)
+void
+dimeMatrix::setRotation(const dimeVec3f& u, const dxfdouble angle)
 {
-  dxfdouble cost,sint;
-  
-  cost=cos(angle);
-  sint=sin(angle);
+	dxfdouble cost, sint;
 
-  matrix[3][0]=matrix[3][1]=matrix[3][2]=
-    matrix[0][3]=matrix[1][3]=matrix[2][3]=0.0f;
-  matrix[3][3]=1.0f;
-  
-  matrix[0][0]=u[0]*u[0]+cost*(1-u[0]*u[0]);
-  matrix[0][1]=u[0]*u[1]*(1-cost)-u[2]*sint;
-  matrix[0][2]=u[2]*u[0]*(1-cost)+u[1]*sint;
-  matrix[1][0]=u[0]*u[1]*(1-cost)+u[2]*sint;
-  matrix[1][1]=u[1]*u[1]+cost*(1-u[1]*u[1]);
-  matrix[1][2]=u[1]*u[2]*(1-cost)-u[0]*sint;
-  matrix[2][0]=u[2]*u[0]*(1-cost)-u[1]*sint;
-  matrix[2][1]=u[1]*u[2]*(1-cost)+u[0]*sint;
-  matrix[2][2]=u[2]*u[2]+cost*(1-u[2]*u[2]);
+	cost = cos(angle);
+	sint = sin(angle);
+
+	matrix[3][0] = matrix[3][1] = matrix[3][2] =
+		matrix[0][3] = matrix[1][3] = matrix[2][3] = 0.0f;
+	matrix[3][3] = 1.0f;
+
+	matrix[0][0] = u[0] * u[0] + cost * (1 - u[0] * u[0]);
+	matrix[0][1] = u[0] * u[1] * (1 - cost) - u[2] * sint;
+	matrix[0][2] = u[2] * u[0] * (1 - cost) + u[1] * sint;
+	matrix[1][0] = u[0] * u[1] * (1 - cost) + u[2] * sint;
+	matrix[1][1] = u[1] * u[1] + cost * (1 - u[1] * u[1]);
+	matrix[1][2] = u[1] * u[2] * (1 - cost) - u[0] * sint;
+	matrix[2][0] = u[2] * u[0] * (1 - cost) - u[1] * sint;
+	matrix[2][1] = u[1] * u[2] * (1 - cost) + u[0] * sint;
+	matrix[2][2] = u[2] * u[2] + cost * (1 - u[2] * u[2]);
 }
 
-void 
+void
 dimeMatrix::setScale(const dxfdouble s)
 {
-  this->matrix[0][0] = this->matrix[1][1] = this->matrix[2][2] = s;  
+	this->matrix[0][0] = this->matrix[1][1] = this->matrix[2][2] = s;
 }
 
-void 
-dimeMatrix::setScale(const dimeVec3f &s)
+void
+dimeMatrix::setScale(const dimeVec3f& s)
 {
-  this->matrix[0][0] = s.x;
-  this->matrix[1][1] = s.y;
-  this->matrix[2][2] = s.z;
+	this->matrix[0][0] = s.x;
+	this->matrix[1][1] = s.y;
+	this->matrix[2][2] = s.z;
 }
 
-void 
-dimeMatrix::setTranslate(const dimeVec3f &t)
+void
+dimeMatrix::setTranslate(const dimeVec3f& t)
 {
-  this->matrix[0][3] = t.x;
-  this->matrix[1][3] = t.y;
-  this->matrix[2][3] = t.z;
+	this->matrix[0][3] = t.x;
+	this->matrix[1][3] = t.y;
+	this->matrix[2][3] = t.z;
 }
 
-void 
-dimeMatrix::multMatrixVec(dimeVec3f &vec) const
+void
+dimeMatrix::multMatrixVec(dimeVec3f& vec) const
 {
-  dimeVec3f copy = vec;
-  multMatrixVec(copy, vec);
+	dimeVec3f copy = vec;
+	multMatrixVec(copy, vec);
 }
 
 // Multiplies matrix by given column vector, giving vector result
 
-void 
-dimeMatrix::multMatrixVec(const dimeVec3f &src, dimeVec3f &dst) const
+void
+dimeMatrix::multMatrixVec(const dimeVec3f& src, dimeVec3f& dst) const
 {
-  dxfdouble W = 
-    src.x*matrix[3][0]+
-    src.y*matrix[3][1]+
-    src.z*matrix[3][2]+
-    matrix[3][3];
-  dst.x =
-    (src.x*matrix[0][0]+
-     src.y*matrix[0][1]+
-     src.z*matrix[0][2]+
-     matrix[0][3])/W;
-  dst.y =
-    (src.x*matrix[1][0]+
-     src.y*matrix[1][1]+
-     src.z*matrix[1][2]+
-     matrix[1][3])/W;
-  dst.z =
-    (src.x*matrix[2][0]+
-     src.y*matrix[2][1]+
-     src.z*matrix[2][2]+
-     matrix[2][3])/W; 
+	dxfdouble W =
+		src.x * matrix[3][0] +
+		src.y * matrix[3][1] +
+		src.z * matrix[3][2] +
+		matrix[3][3];
+	dst.x =
+	(src.x * matrix[0][0] +
+		src.y * matrix[0][1] +
+		src.z * matrix[0][2] +
+		matrix[0][3]) / W;
+	dst.y =
+	(src.x * matrix[1][0] +
+		src.y * matrix[1][1] +
+		src.z * matrix[1][2] +
+		matrix[1][3]) / W;
+	dst.z =
+	(src.x * matrix[2][0] +
+		src.y * matrix[2][1] +
+		src.z * matrix[2][2] +
+		matrix[2][3]) / W;
 }
 
-dimeMatrix &
-dimeMatrix::operator =(const dimeMatrix &m)
+dimeMatrix&
+dimeMatrix::operator =(const dimeMatrix& m)
 {
-  dxfdouble *p1 = &this->matrix[0][0];
-  const dxfdouble *p2 = &m.matrix[0][0];
-  int n = 16;
-  while (n--) *p1++ = *p2++;
-  return *this;
+	dxfdouble* p1 = &this->matrix[0][0];
+	const dxfdouble* p2 = &m.matrix[0][0];
+	int n = 16;
+	while (n--) *p1++ = *p2++;
+	return *this;
 }
 
 
-dimeMatrix 
+dimeMatrix
 dimeMatrix::identity()
 {
-  return dimeMatrix(1.0f, 0.0f, 0.0f, 0.0f, 
-		   0.0f, 1.0f, 0.0f ,0.0f, 
-		   0.0f, 0.0f, 1.0f, 0.0f,
-		   0.0f, 0.0f, 0.0f, 1.0f);
+	return dimeMatrix(1.0f, 0.0f, 0.0f, 0.0f,
+	                  0.0f, 1.0f, 0.0f, 0.0f,
+	                  0.0f, 0.0f, 1.0f, 0.0f,
+	                  0.0f, 0.0f, 0.0f, 1.0f);
 }
 
 void
 dimeMatrix::operator*=(const dxfdouble s)
 {
-  dxfdouble *ptr = &this->matrix[0][0];
-  int n = 16;
-  while (n--) *ptr++ *= s;
+	dxfdouble* ptr = &this->matrix[0][0];
+	int n = 16;
+	while (n--) *ptr++ *= s;
 }
 
 bool
@@ -424,94 +433,119 @@ dimeMatrix::inverse2()
   *this = A_;
   return true;
 #else // OBSOLETED
-  return false;
+	return false;
 #endif // OBSOLETED
 }
 
 dxfdouble
 dimeMatrix::determinant(const int i, const int j)
 {
-  int a,t;
-  dxfdouble det=0.0f;
+	int a, t;
+	dxfdouble det = 0.0f;
 
-  if (i==-1 && j==-1) {   //4x4 determinant
-    det+=matrix[0][0]*determinant(0,0);
-    det-=matrix[1][0]*determinant(1,0);
-    det+=matrix[2][0]*determinant(2,0);
-    det-=matrix[3][0]*determinant(3,0);
-    return det;
-  }
-  else { //3x3 determinant
-    int x[3],y[3];
-    for (a=0,t=0;a<3;a++) if (t!=i) x[a]=t++;else {t++;x[a]=t++;} 
-    for (a=0,t=0;a<3;a++) if (t!=j) y[a]=t++;else {t++;y[a]=t++;} 
-    
-    det += matrix[x[0]][y[0]]*(matrix[x[1]][y[1]]*matrix[x[2]][y[2]] -
-                               matrix[x[2]][y[1]]*matrix[x[1]][y[2]]);
-    det -= matrix[x[1]][y[0]]*(matrix[x[0]][y[1]]*matrix[x[2]][y[2]] -
-                               matrix[x[2]][y[1]]*matrix[x[0]][y[2]]);
-    det += matrix[x[2]][y[0]]*(matrix[x[0]][y[1]]*matrix[x[1]][y[2]] -
-                               matrix[x[1]][y[1]]*matrix[x[0]][y[2]]);
-  }
-  return det;
+	if (i == -1 && j == -1)
+	{
+		//4x4 determinant
+		det += matrix[0][0] * determinant(0, 0);
+		det -= matrix[1][0] * determinant(1, 0);
+		det += matrix[2][0] * determinant(2, 0);
+		det -= matrix[3][0] * determinant(3, 0);
+		return det;
+	}
+	//3x3 determinant
+	int x[3], y[3];
+	for (a = 0, t = 0; a < 3; a++) if (t != i) x[a] = t++;
+	else
+	{
+		t++;
+		x[a] = t++;
+	}
+	for (a = 0, t = 0; a < 3; a++) if (t != j) y[a] = t++;
+	else
+	{
+		t++;
+		y[a] = t++;
+	}
+
+	det += matrix[x[0]][y[0]] * (matrix[x[1]][y[1]] * matrix[x[2]][y[2]] -
+		matrix[x[2]][y[1]] * matrix[x[1]][y[2]]);
+	det -= matrix[x[1]][y[0]] * (matrix[x[0]][y[1]] * matrix[x[2]][y[2]] -
+		matrix[x[2]][y[1]] * matrix[x[0]][y[2]]);
+	det += matrix[x[2]][y[0]] * (matrix[x[0]][y[1]] * matrix[x[1]][y[2]] -
+		matrix[x[1]][y[1]] * matrix[x[0]][y[2]]);
+	return det;
 }
 
-bool 
+bool
 dimeMatrix::inverse()
 {
-  int n = 4;
+	int n = 4;
 
-  dxfdouble (*a)[4];
-  a = (dxfdouble (*)[4])&this->matrix[0][0];
-  
-  dxfdouble max, s, h, q, pivot;
-  int p[4];
-  int i, j, k;
+	dxfdouble (*a)[4];
+	a = (dxfdouble (*)[4])&this->matrix[0][0];
 
-  for (k = 0; k < n; k++) { 
-    max = 0.0f;
-    p[k] = 0;
+	dxfdouble max, s, h, q, pivot;
+	int p[4];
+	int i, j, k;
 
-    for (i = k; i < n; i++) { 
-      s = 0.0;
-      for (j = k; j < n; j++)
-        s += fabs(a[i][j]);
-      q = fabs(a[i][k]) / s;
-      if (q > max) { 
-	max = q;  
-        p[k] = i;
-      }
-    }
+	for (k = 0; k < n; k++)
+	{
+		max = 0.0f;
+		p[k] = 0;
 
-    if (max == 0.0f) return false;
+		for (i = k; i < n; i++)
+		{
+			s = 0.0;
+			for (j = k; j < n; j++)
+				s += fabs(a[i][j]);
+			q = fabs(a[i][k]) / s;
+			if (q > max)
+			{
+				max = q;
+				p[k] = i;
+			}
+		}
 
-    if (p[k] != k) {
-      for (j = 0; j < n; j++) {
-	h = a[k][j];  a[k][j] = a[p[k]][j];  a[p[k]][j] = h;
-      }
-    }
+		if (max == 0.0f) return false;
 
-    pivot = a[k][k];
-    for (j = 0; j < n; j++) {
-      if (j != k) {
-	a[k][j] = - a[k][j] / pivot;
-        for (i = 0; i < n; i++) {
-          if (i != k) a[i][j] += a[i][k] * a[k][j];
+		if (p[k] != k)
+		{
+			for (j = 0; j < n; j++)
+			{
+				h = a[k][j];
+				a[k][j] = a[p[k]][j];
+				a[p[k]][j] = h;
+			}
+		}
+
+		pivot = a[k][k];
+		for (j = 0; j < n; j++)
+		{
+			if (j != k)
+			{
+				a[k][j] = -a[k][j] / pivot;
+				for (i = 0; i < n; i++)
+				{
+					if (i != k) a[i][j] += a[i][k] * a[k][j];
+				}
+			}
+		}
+
+		for (i = 0; i < n; i++) a[i][k] /= pivot;
+		a[k][k] = 1 / pivot;
 	}
-      }
-    }
 
-    for (i = 0; i < n; i++) a[i][k] /= pivot;
-    a[k][k] = 1 / pivot;
-  }
-
-  for (k = n-2; k >= 0; k--) {
-    if (p [k] != k) {
-      for (i = 0; i < n; i++) {
-	h = a [i][k];  a [i][k] = a [i][p[k]];  a [i][p[k]] = h;
-      }
-    }
-  }
-  return true; 
+	for (k = n - 2; k >= 0; k--)
+	{
+		if (p[k] != k)
+		{
+			for (i = 0; i < n; i++)
+			{
+				h = a[i][k];
+				a[i][k] = a[i][p[k]];
+				a[i][p[k]] = h;
+			}
+		}
+	}
+	return true;
 }
-

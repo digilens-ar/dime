@@ -39,34 +39,32 @@
 class DIME_DLL_API dimeHeaderSection : public dimeSection
 {
 public:
-  dimeHeaderSection(dimeMemHandler * const memhandler);
-  virtual ~dimeHeaderSection();
+	dimeHeaderSection(dimeMemHandler* memhandler);
+	~dimeHeaderSection() override;
 
-  int getVariable(const char * const variableName,
-		  int * const groupcodes,
-		  dimeParam * const params,
-		  const int maxparams) const;
-  
-  int setVariable(const char * const variableName,
-		  const int * const groupcodes,
-		  const dimeParam * const params,
-		  const int numparams,
-		  dimeMemHandler * const memhandler = NULL);
+	int getVariable(const char* variableName,
+	                int* groupcodes,
+	                dimeParam* params,
+	                int maxparams) const;
 
-  virtual const char *getSectionName() const;
-  virtual dimeSection *copy(dimeModel * const model) const;
+	int setVariable(const char* variableName,
+	                const int* groupcodes,
+	                const dimeParam* params,
+	                int numparams,
+	                dimeMemHandler* memhandler = nullptr);
 
-  virtual bool read(dimeInput * const file);
-  virtual bool write(dimeOutput * const file);
-  virtual int typeId() const;
-  virtual int countRecords() const;
-  
+	const char* getSectionName() const override;
+	dimeSection* copy(dimeModel* model) const override;
+
+	bool read(dimeInput* file) override;
+	bool write(dimeOutput* file) override;
+	int typeId() const override;
+	int countRecords() const override;
+
 private:
-  int findVariable(const char * const name) const;
+	int findVariable(const char* name) const;
 
-  dimeArray <class dimeRecord*> records;
-
+	dimeArray<class dimeRecord*> records;
 }; // class dimeHeaderSection
 
 #endif // ! DIME_HEADERSECTION_H
-

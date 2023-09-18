@@ -36,30 +36,28 @@
 #include <dime/sections/Section.h>
 #include <dime/util/Array.h>
 
-class DIME_DLL_API dimeTablesSection : public dimeSection 
+class DIME_DLL_API dimeTablesSection : public dimeSection
 {
 public:
-  dimeTablesSection(dimeMemHandler * const memhandler = NULL);
-  virtual ~dimeTablesSection();
+	dimeTablesSection(dimeMemHandler* memhandler = nullptr);
+	~dimeTablesSection() override;
 
-  virtual const char *getSectionName() const;
-  virtual dimeSection *copy(dimeModel * const model) const;
-  
+	const char* getSectionName() const override;
+	dimeSection* copy(dimeModel* model) const override;
+
 public:
-  virtual bool read(dimeInput * const file);
-  virtual bool write(dimeOutput * const file);
-  virtual int typeId() const;
-  virtual int countRecords() const;
+	bool read(dimeInput* file) override;
+	bool write(dimeOutput* file) override;
+	int typeId() const override;
+	int countRecords() const override;
 
-  int getNumTables() const;
-  class dimeTable *getTable(const int idx);
-  void removeTable(const int idx);
-  void insertTable(dimeTable * const table, const int idx = -1); 
+	int getNumTables() const;
+	class dimeTable* getTable(int idx);
+	void removeTable(int idx);
+	void insertTable(dimeTable* table, int idx = -1);
 
 private:
-  dimeArray <dimeTable*> tables;
-
+	dimeArray<dimeTable*> tables;
 }; // class dimeTablesSection
 
 #endif // ! DIME_TABLESSECTION_H
-

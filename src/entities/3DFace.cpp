@@ -49,94 +49,97 @@ static char entityName[] = "3DFACE";
 */
 
 dime3DFace::dime3DFace()
-  : flags( 0 )
+	: flags(0)
 {
 #ifndef NO_RR_DATA
-  this->block = NULL;
+	this->block = nullptr;
 #endif
 }
 
 //!
 
-dimeEntity *
-dime3DFace::copy(dimeModel * const model) const
+dimeEntity*
+dime3DFace::copy(dimeModel* const model) const
 {
-  dime3DFace *f = new(model->getMemHandler()) dime3DFace;
-  if (!f) return NULL;
-  
-  f->copyCoords(this);
-  f->flags = this->flags;
-  
-  if (!this->copyRecords(f, model)) {
-    // check if allocated on heap.
-    if (!model->getMemHandler()) delete f;
-    f = NULL;
-  }
-  return f;
+	auto f = new(model->getMemHandler()) dime3DFace;
+	if (!f) return nullptr;
+
+	f->copyCoords(this);
+	f->flags = this->flags;
+
+	if (!this->copyRecords(f, model))
+	{
+		// check if allocated on heap.
+		if (!model->getMemHandler()) delete f;
+		f = nullptr;
+	}
+	return f;
 }
 
 //!
 
-const char *
+const char*
 dime3DFace::getEntityName() const
 {
-  return entityName;
+	return entityName;
 }
 
 //!
 
-bool 
-dime3DFace::write(dimeOutput * const file)
+bool
+dime3DFace::write(dimeOutput* const file)
 {
-  bool ret = true;
-  if (!this->isDeleted()) {
-    this->preWrite(file);
-    this->writeCoords(file);
-    if (flags != 0) {
-      file->writeGroupCode(70);
-      file->writeInt16(flags);
-    }
-    ret = dimeEntity::write(file);
-  }
-  return ret;
+	bool ret = true;
+	if (!this->isDeleted())
+	{
+		this->preWrite(file);
+		this->writeCoords(file);
+		if (flags != 0)
+		{
+			file->writeGroupCode(70);
+			file->writeInt16(flags);
+		}
+		ret = dimeEntity::write(file);
+	}
+	return ret;
 }
 
 //!
 
-int 
+int
 dime3DFace::typeId() const
 {
-  return dimeBase::dime3DFaceType;
+	return dimeBase::dime3DFaceType;
 }
 
 //!
 
-bool 
-dime3DFace::handleRecord(const int groupcode, 
-			const dimeParam &param,
-			dimeMemHandler * const memhandler)
+bool
+dime3DFace::handleRecord(const int groupcode,
+                         const dimeParam& param,
+                         dimeMemHandler* const memhandler)
 {
-  if (groupcode == 70) {
-    this->flags = param.int16_data;
-    return true;
-  }
-  else {
-    return dimeFaceEntity::handleRecord(groupcode, param, memhandler);
-  }
+	if (groupcode == 70)
+	{
+		this->flags = param.int16_data;
+		return true;
+	}
+	return dimeFaceEntity::handleRecord(groupcode, param, memhandler);
 }
 
 //!
 
-bool 
+bool
 dime3DFace::getRecord(const int groupcode,
-		     dimeParam &param,
-		     const int index) const
+                      dimeParam& param,
+                      const int index) const
 {
-  if (groupcode == 70) {
-    param.int16_data = this->flags;
-    return true;
-  }
-  return dimeFaceEntity::getRecord(groupcode, param, index);
+	if (groupcode == 70)
+	{
+		param.int16_data = this->flags;
+		return true;
+	}
+	return dimeFaceEntity::getRecord(groupcode, param, index);
 }
 
 //!
@@ -144,13 +147,13 @@ dime3DFace::getRecord(const int groupcode,
 void
 dime3DFace::print() const
 {
-  fprintf(stderr,"3DFACE:\n");
-  int stop = this->isQuad() ? 4 : 3;
-  for (int i = 0; i < stop; i++) { 
-    fprintf(stderr,"coord: %f %f %f\n", coords[i][0], 
-	    coords[i][1], coords[i][2]); 
-    
-  } 
+	fprintf(stderr, "3DFACE:\n");
+	int stop = this->isQuad() ? 4 : 3;
+	for (int i = 0; i < stop; i++)
+	{
+		fprintf(stderr, "coord: %f %f %f\n", coords[i][0],
+		        coords[i][1], coords[i][2]);
+	}
 }
 
 //!
@@ -158,24 +161,24 @@ dime3DFace::print() const
 int
 dime3DFace::countRecords() const
 {
-  int cnt = 0;
-  if (!this->isDeleted()) {
-    cnt++; // header
-    if (this->flags != 0) cnt++;
-    cnt += dimeFaceEntity::countRecords();
-  }
-  return cnt;   
+	int cnt = 0;
+	if (!this->isDeleted())
+	{
+		cnt++; // header
+		if (this->flags != 0) cnt++;
+		cnt += dimeFaceEntity::countRecords();
+	}
+	return cnt;
 }
 
-void 
+void
 dime3DFace::setFlags(const int16 flags)
 {
-  this->flags = flags;
+	this->flags = flags;
 }
 
-int16 
+int16
 dime3DFace::getFlags() const
 {
-  return this->flags;
+	return this->flags;
 }
-

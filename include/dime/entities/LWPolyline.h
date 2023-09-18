@@ -38,110 +38,108 @@
 class DIME_DLL_API dimeLWPolyline : public dimeExtrusionEntity
 {
 public:
-  dimeLWPolyline();
-  virtual ~dimeLWPolyline();
+	dimeLWPolyline();
+	~dimeLWPolyline() override;
 
-  virtual dimeEntity *copy(dimeModel * const model) const;
-  virtual bool getRecord(const int groupcode,
-			 dimeParam &param,
-			 const int index) const;
-  virtual const char *getEntityName() const;
+	dimeEntity* copy(dimeModel* model) const override;
+	bool getRecord(int groupcode,
+	               dimeParam& param,
+	               int index) const override;
+	const char* getEntityName() const override;
 
-  virtual void print() const;
-  virtual bool write(dimeOutput * const out);
-  virtual int typeId() const;
-  virtual int countRecords() const;
-  
-  virtual GeometryType extractGeometry(dimeArray <dimeVec3f> &verts,
-				       dimeArray <int> &indices,
-				       dimeVec3f &extrusionDir,
-				       dxfdouble &thickness);
-  int getNumVertices() const;
-  const dxfdouble *getXCoords() const;
-  const dxfdouble *getYCoords() const;
-  const dxfdouble *getStartingWidths() const;
-  const dxfdouble *getEndWidths() const;
-  const dxfdouble *getBulges() const;
+	void print() const override;
+	bool write(dimeOutput* out) override;
+	int typeId() const override;
+	int countRecords() const override;
 
-  dxfdouble getElevation() const;
-  dxfdouble getConstantWidth() const;
-  int16 getFlags() const;
- 
+	GeometryType extractGeometry(dimeArray<dimeVec3f>& verts,
+	                             dimeArray<int>& indices,
+	                             dimeVec3f& extrusionDir,
+	                             dxfdouble& thickness) override;
+	int getNumVertices() const;
+	const dxfdouble* getXCoords() const;
+	const dxfdouble* getYCoords() const;
+	const dxfdouble* getStartingWidths() const;
+	const dxfdouble* getEndWidths() const;
+	const dxfdouble* getBulges() const;
+
+	dxfdouble getElevation() const;
+	dxfdouble getConstantWidth() const;
+	int16 getFlags() const;
+
 protected:
-  virtual bool handleRecord(const int groupcode,
-			    const dimeParam &param,
-                            dimeMemHandler * const memhandler);
+	bool handleRecord(int groupcode,
+	                  const dimeParam& param,
+	                  dimeMemHandler* memhandler) override;
 
 private:
-  dxfdouble constantWidth;
-  dxfdouble elevation;
-  int16 flags;
-  int32 numVertices;
-  int16 tmpCounter; // used during loading only
-  int16 tmpFlags;   //     ""
-  dxfdouble *xcoord;
-  dxfdouble *ycoord;
-  dxfdouble *startingWidth;
-  dxfdouble *endWidth;
-  dxfdouble *bulge;
-
+	dxfdouble constantWidth;
+	dxfdouble elevation;
+	int16 flags;
+	int32 numVertices;
+	int16 tmpCounter; // used during loading only
+	int16 tmpFlags; //     ""
+	dxfdouble* xcoord;
+	dxfdouble* ycoord;
+	dxfdouble* startingWidth;
+	dxfdouble* endWidth;
+	dxfdouble* bulge;
 }; // class dimeLWPolyLine
 
 
-inline int 
+inline int
 dimeLWPolyline::getNumVertices() const
 {
-  return this->numVertices;
+	return this->numVertices;
 }
 
-inline const dxfdouble *
+inline const dxfdouble*
 dimeLWPolyline::getXCoords() const
 {
-  return this->xcoord;
+	return this->xcoord;
 }
-inline const dxfdouble *
+
+inline const dxfdouble*
 dimeLWPolyline::getYCoords() const
 {
-  return this->ycoord;
+	return this->ycoord;
 }
 
-inline const dxfdouble *
+inline const dxfdouble*
 dimeLWPolyline::getStartingWidths() const
 {
-  return this->startingWidth;
-
+	return this->startingWidth;
 }
 
-inline const dxfdouble *
+inline const dxfdouble*
 dimeLWPolyline::getEndWidths() const
 {
-  return this->endWidth;
+	return this->endWidth;
 }
 
-inline const dxfdouble *
+inline const dxfdouble*
 dimeLWPolyline::getBulges() const
 {
-  return this->bulge;
+	return this->bulge;
 }
 
-inline dxfdouble 
+inline dxfdouble
 dimeLWPolyline::getElevation() const
 {
-  return this->elevation;
+	return this->elevation;
 }
 
-inline dxfdouble 
+inline dxfdouble
 dimeLWPolyline::getConstantWidth() const
 {
-  return this->constantWidth;
+	return this->constantWidth;
 }
 
-inline int16 
+inline int16
 dimeLWPolyline::getFlags() const
 {
-  return this->flags;
+	return this->flags;
 }
 
 
 #endif // ! DIME_LWPOLYLINE_H
-

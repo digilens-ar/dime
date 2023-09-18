@@ -44,105 +44,104 @@
 class DIME_DLL_API dimeEllipse : public dimeExtrusionEntity
 {
 public:
-  dimeEllipse();
+	dimeEllipse();
 
-  void setCenter(const dimeVec3f &c);
-  const dimeVec3f &getCenter() const;
+	void setCenter(const dimeVec3f& c);
+	const dimeVec3f& getCenter() const;
 
-  void setMajorAxisEndpoint(const dimeVec3f &v);
-  const dimeVec3f &getMajorAxisEndpoint() const;
-  
-  void setMinorMajorRatio(const dxfdouble ratio);
-  dxfdouble getMinorMajorRatio() const;
+	void setMajorAxisEndpoint(const dimeVec3f& v);
+	const dimeVec3f& getMajorAxisEndpoint() const;
 
-  void setStartParam(const dxfdouble p);
-  dxfdouble getStartParam() const;
+	void setMinorMajorRatio(dxfdouble ratio);
+	dxfdouble getMinorMajorRatio() const;
 
-  void setEndParam(const dxfdouble p);
-  dxfdouble getEndParam() const;
-  
-  virtual dimeEntity *copy(dimeModel * const model) const;
-  virtual bool getRecord(const int groupcode,
-			 dimeParam &param,
-			 const int index = 0) const;
-  virtual const char *getEntityName() const;
-  virtual void print() const;
-  virtual bool write(dimeOutput * const out);
-  virtual int typeId() const;
-  virtual int countRecords() const;
+	void setStartParam(dxfdouble p);
+	dxfdouble getStartParam() const;
 
-protected:  
-  virtual bool handleRecord(const int groupcode,
-			    const dimeParam &param,
-			    dimeMemHandler * const memhandler);  
+	void setEndParam(dxfdouble p);
+	dxfdouble getEndParam() const;
+
+	virtual dimeEntity* copy(dimeModel* model) const;
+	bool getRecord(int groupcode,
+	               dimeParam& param,
+	               int index = 0) const override;
+	virtual const char* getEntityName() const;
+	virtual void print() const;
+	virtual bool write(dimeOutput* out);
+	int typeId() const override;
+	int countRecords() const override;
+
+protected:
+	bool handleRecord(int groupcode,
+	                  const dimeParam& param,
+	                  dimeMemHandler* memhandler) override;
+
 private:
-  dimeVec3f center;
-  dimeVec3f majorAxisEndpoint;
-  dxfdouble ratio;
-  dxfdouble startParam;
-  dxfdouble endParam;
-
+	dimeVec3f center;
+	dimeVec3f majorAxisEndpoint;
+	dxfdouble ratio;
+	dxfdouble startParam;
+	dxfdouble endParam;
 }; // class dimeEllipse
 
-inline const dimeVec3f &
+inline const dimeVec3f&
 dimeEllipse::getCenter() const
 {
-  return this->center;
-}
-
-inline void 
-dimeEllipse::setCenter(const dimeVec3f &c)
-{
-  this->center = c;
+	return this->center;
 }
 
 inline void
-dimeEllipse::setMajorAxisEndpoint(const dimeVec3f &v)
+dimeEllipse::setCenter(const dimeVec3f& c)
 {
-  this->majorAxisEndpoint = v;
+	this->center = c;
 }
 
-inline const dimeVec3f &
+inline void
+dimeEllipse::setMajorAxisEndpoint(const dimeVec3f& v)
+{
+	this->majorAxisEndpoint = v;
+}
+
+inline const dimeVec3f&
 dimeEllipse::getMajorAxisEndpoint() const
 {
-  return this->majorAxisEndpoint;
+	return this->majorAxisEndpoint;
 }
-  
-inline void 
+
+inline void
 dimeEllipse::setMinorMajorRatio(const dxfdouble ratio)
 {
-  this->ratio = ratio;
+	this->ratio = ratio;
 }
 
-inline dxfdouble 
+inline dxfdouble
 dimeEllipse::getMinorMajorRatio() const
 {
-  return this->ratio;
+	return this->ratio;
 }
 
-inline void 
+inline void
 dimeEllipse::setStartParam(const dxfdouble p)
 {
-  this->startParam = p;
+	this->startParam = p;
 }
 
-inline dxfdouble 
+inline dxfdouble
 dimeEllipse::getStartParam() const
 {
-  return this->startParam;
+	return this->startParam;
 }
 
-inline void 
+inline void
 dimeEllipse::setEndParam(const dxfdouble p)
 {
-  this->endParam = p;
+	this->endParam = p;
 }
 
-inline dxfdouble 
+inline dxfdouble
 dimeEllipse::getEndParam() const
 {
-  return this->endParam;
+	return this->endParam;
 }
 
 #endif // ! DIME_ELLIPSE_H
-

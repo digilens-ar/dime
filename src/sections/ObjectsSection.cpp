@@ -44,14 +44,14 @@
 #include <dime/Model.h>
 #include <string.h>
 
-static const char sectionName[] = "OBJECTS";
+static constexpr char sectionName[] = "OBJECTS";
 
 /*!
   Constructor.
 */
 
-dimeObjectsSection::dimeObjectsSection(dimeMemHandler * const memhandler)
-  : dimeSection(memhandler)
+dimeObjectsSection::dimeObjectsSection(dimeMemHandler* const memhandler)
+	: dimeSection(memhandler)
 {
 }
 
@@ -61,110 +61,121 @@ dimeObjectsSection::dimeObjectsSection(dimeMemHandler * const memhandler)
 
 dimeObjectsSection::~dimeObjectsSection()
 {
-  if (!this->memHandler) {
-    for (int i = 0; i < this->objects.count(); i++)
-      delete this->objects[i];
-  }
+	if (!this->memHandler)
+	{
+		for (int i = 0; i < this->objects.count(); i++)
+			delete this->objects[i];
+	}
 }
 
 //!
 
-dimeSection *
-dimeObjectsSection::copy(dimeModel * const model) const
+dimeSection*
+dimeObjectsSection::copy(dimeModel* const model) const
 {
-  dimeMemHandler *memh = model->getMemHandler();
-  dimeObjectsSection *os = new dimeObjectsSection(memh); 
-  bool ok = os != NULL;
+	dimeMemHandler* memh = model->getMemHandler();
+	auto os = new dimeObjectsSection(memh);
+	bool ok = os != nullptr;
 
-  int num  = this->objects.count();
-  if (ok && num) {
-    os->objects.makeEmpty(num);
-    for (int i = 0; i < num; i++) {
-      os->objects.append(this->objects[i]->copy(model));
-      if (os->objects[i] == NULL) {
-	ok = false;
-	break;
-      }
-    }
-  }
-  
-  if (!ok) {
-    if (!memh) delete os;
-    os = NULL;
-  }
-//  sim_trace("objects section copy: %p\n", os);
-  return os;
+	int num = this->objects.count();
+	if (ok && num)
+	{
+		os->objects.makeEmpty(num);
+		for (int i = 0; i < num; i++)
+		{
+			os->objects.append(this->objects[i]->copy(model));
+			if (os->objects[i] == NULL)
+			{
+				ok = false;
+				break;
+			}
+		}
+	}
+
+	if (!ok)
+	{
+		if (!memh) delete os;
+		os = nullptr;
+	}
+	//  sim_trace("objects section copy: %p\n", os);
+	return os;
 }
 
 //!
 
-bool 
-dimeObjectsSection::read(dimeInput * const file)
+bool
+dimeObjectsSection::read(dimeInput* const file)
 {
-  int32 groupcode;
-  const char *string;
-  bool ok = true;
-  dimeObject *object = NULL;
-  dimeMemHandler *memhandler = file->getMemHandler();
-  this->objects.makeEmpty(64);
+	int32 groupcode;
+	const char* string;
+	bool ok = true;
+	dimeObject* object = nullptr;
+	dimeMemHandler* memhandler = file->getMemHandler();
+	this->objects.makeEmpty(64);
 
-//  sim_trace("Reading section: OBJECTS\n");
+	//  sim_trace("Reading section: OBJECTS\n");
 
-  while (true) {
-    if (!file->readGroupCode(groupcode) || groupcode != 0) {
-      fprintf(stderr,"Error reading objects groupcode: %d.\n", groupcode);
-//      sim_warning("Error reading objects groupcode: %d.\n", groupcode);
-      ok = false;
-      break;
-    }
-    string = file->readString();
-    if (!strcmp(string, "ENDSEC")) break; 
-    object = dimeObject::createObject(string, memhandler);
-    if (object == NULL) {
-      fprintf(stderr,"error creating object: %s.\n", string);
-//      sim_warning("error creating object: %s.\n", string);
-      ok = false;
-      break;
-    }
-    if (!object->read(file)) {
-      fprintf(stderr,"error reading object: %s.\n", string);
-//      sim_warning("error reading object: %s.\n", string);
-      ok = false;
-      break;
-    }
-    this->objects.append(object);
-  }
-  return ok;
+	while (true)
+	{
+		if (!file->readGroupCode(groupcode) || groupcode != 0)
+		{
+			fprintf(stderr, "Error reading objects groupcode: %d.\n", groupcode);
+			//      sim_warning("Error reading objects groupcode: %d.\n", groupcode);
+			ok = false;
+			break;
+		}
+		string = file->readString();
+		if (!strcmp(string, "ENDSEC")) break;
+		object = dimeObject::createObject(string, memhandler);
+		if (object == nullptr)
+		{
+			fprintf(stderr, "error creating object: %s.\n", string);
+			//      sim_warning("error creating object: %s.\n", string);
+			ok = false;
+			break;
+		}
+		if (!object->read(file))
+		{
+			fprintf(stderr, "error reading object: %s.\n", string);
+			//      sim_warning("error reading object: %s.\n", string);
+			ok = false;
+			break;
+		}
+		this->objects.append(object);
+	}
+	return ok;
 }
 
 //!
 
-bool 
-dimeObjectsSection::write(dimeOutput * const file)
+bool
+dimeObjectsSection::write(dimeOutput* const file)
 {
-//  sim_trace("Writing section: OBJECTS\n");
+	//  sim_trace("Writing section: OBJECTS\n");
 
-  file->writeGroupCode(2);
-  file->writeString(sectionName);
- 
-  int i, n = this->objects.count();
-  for (i = 0; i < n; i++) {
-    if (!this->objects[i]->write(file)) break;
-  }
-  if (i == n) {
-    file->writeGroupCode(0);
-    file->writeString("ENDSEC");
-    return true;
-  }
-  return false;
+	file->writeGroupCode(2);
+	file->writeString(sectionName);
+
+	int i, n = this->objects.count();
+	for (i = 0; i < n; i++)
+	{
+		if (!this->objects[i]->write(file)) break;
+	}
+	if (i == n)
+	{
+		file->writeGroupCode(0);
+		file->writeString("ENDSEC");
+		return true;
+	}
+	return false;
 }
 
 //!
 
-int 
+int
 dimeObjectsSection::typeId() const
 {
-  return dimeBase::dimeObjectsSectionType;
+	return dimeBase::dimeObjectsSectionType;
 }
 
 //!
@@ -172,52 +183,52 @@ dimeObjectsSection::typeId() const
 int
 dimeObjectsSection::countRecords() const
 {
-  int cnt = 0;
-  int n = this->objects.count();
-  for (int i = 0; i < n; i++)
-    cnt += this->objects[i]->countRecords();
-  return cnt + 2; // two additional records are written in write()
+	int cnt = 0;
+	int n = this->objects.count();
+	for (int i = 0; i < n; i++)
+		cnt += this->objects[i]->countRecords();
+	return cnt + 2; // two additional records are written in write()
 }
 
 //!
 
-const char *
+const char*
 dimeObjectsSection::getSectionName() const
 {
-  return sectionName;
+	return sectionName;
 }
 
 /*!
   Returns the number of objects in this section. 
 */
 
-int 
+int
 dimeObjectsSection::getNumObjects() const
 {
-  return this->objects.count();
+	return this->objects.count();
 }
 
 /*!
   Returns the object at index \a idx.
 */
 
-dimeObject *
+dimeObject*
 dimeObjectsSection::getObject(const int idx)
 {
-  assert(idx >= 0 && idx < this->objects.count());
-  return this->objects[idx];
+	assert(idx >= 0 && idx < this->objects.count());
+	return this->objects[idx];
 }
 
 /*!
   Removes (and deletes if no memory handler is used) the object at index \a idx.
 */
 
-void 
+void
 dimeObjectsSection::removeObject(const int idx)
 {
-  assert(idx >= 0 && idx < this->objects.count());
-  if (!this->memHandler) delete this->objects[idx];
-  this->objects.removeElem(idx);
+	assert(idx >= 0 && idx < this->objects.count());
+	if (!this->memHandler) delete this->objects[idx];
+	this->objects.removeElem(idx);
 }
 
 /*!
@@ -225,13 +236,13 @@ dimeObjectsSection::removeObject(const int idx)
   object will be inserted at the end of the list of objects.
 */
 
-void 
-dimeObjectsSection::insertObject(dimeObject * const object, const int idx)
+void
+dimeObjectsSection::insertObject(dimeObject* const object, const int idx)
 {
-  if (idx < 0) this->objects.append(object);
-  else {
-    assert(idx <= this->objects.count());
-    this->objects.insertElem(idx, object);
-  }
+	if (idx < 0) this->objects.append(object);
+	else
+	{
+		assert(idx <= this->objects.count());
+		this->objects.insertElem(idx, object);
+	}
 }
-

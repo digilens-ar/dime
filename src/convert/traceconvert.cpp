@@ -41,35 +41,36 @@
 //
 // implementation in solid.cpp
 //
-extern void 
-convert_solid_data(dimeVec3f *v, dimeVec3f &e, dxfdouble thickness,
-		   const dimeState *state,
-		   dxfLayerData *layerData);
+extern void
+convert_solid_data(dimeVec3f* v, dimeVec3f& e, dxfdouble thickness,
+                   const dimeState* state,
+                   dxfLayerData* layerData);
 
 
-void 
-convert_trace(const dimeEntity *entity, const dimeState *state, 
-	      dxfLayerData *layerData, dxfConverter *converter)
+void
+convert_trace(const dimeEntity* entity, const dimeState* state,
+              dxfLayerData* layerData, dxfConverter* converter)
 {
-  dimeTrace *trace = (dimeTrace*)entity;
-  
-  // respect the value in the $FILLMODE header variable
-  layerData->setFillmode(converter->getFillmode());
+	auto trace = (dimeTrace*)entity;
 
-  dimeVec3f v[4];
-  trace->getVertices(v[0], v[1], v[2], v[3]);
+	// respect the value in the $FILLMODE header variable
+	layerData->setFillmode(converter->getFillmode());
 
-  dimeParam param;
-  if (trace->getRecord(38, param)) {
-    v[0][2] = param.double_data;
-    v[1][2] = param.double_data;
-    v[2][2] = param.double_data;
-    v[3][2] = param.double_data;
-  }
-   
-  dimeVec3f e;
-  trace->getExtrusionDir(e);
-  dxfdouble thickness = trace->getThickness();
-  
-  convert_solid_data(v, e, thickness, state, layerData);
+	dimeVec3f v[4];
+	trace->getVertices(v[0], v[1], v[2], v[3]);
+
+	dimeParam param;
+	if (trace->getRecord(38, param))
+	{
+		v[0][2] = param.double_data;
+		v[1][2] = param.double_data;
+		v[2][2] = param.double_data;
+		v[3][2] = param.double_data;
+	}
+
+	dimeVec3f e;
+	trace->getExtrusionDir(e);
+	dxfdouble thickness = trace->getThickness();
+
+	convert_solid_data(v, e, thickness, state, layerData);
 }

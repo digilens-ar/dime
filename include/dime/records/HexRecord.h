@@ -38,12 +38,10 @@
 class DIME_DLL_API dimeHexRecord : public dimeStringRecord
 {
 public:
-  dimeHexRecord(const int group_code = 0);
+	dimeHexRecord(int group_code = 0);
 
 public:
-  int typeId() const;
-  
+	int typeId() const;
 }; // class dimeHexRecord
 
 #endif // ! DIME_HEXRECORD_H
-

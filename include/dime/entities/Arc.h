@@ -32,7 +32,7 @@
 
 #ifndef DIME_ARC_H
 #define DIME_ARC_H
-  
+
 #include <dime/Basic.h>
 #include <dime/entities/ExtrusionEntity.h>
 #include <dime/util/Linear.h>
@@ -40,98 +40,96 @@
 class DIME_DLL_API dimeArc : public dimeExtrusionEntity
 {
 public:
-  dimeArc();
+	dimeArc();
 
-  void setCenter(const dimeVec3f &c);
-  void getCenter(dimeVec3f &c) const;
-  void setRadius(const dxfdouble r);
-  dxfdouble getRadius() const;
-  void setStartAngle(const dxfdouble a);
-  dxfdouble getStartAngle() const;
-  void setEndAngle(const dxfdouble a);
-  dxfdouble getEndAngle() const;
-  
-  virtual bool getRecord(const int groupcode,
-			 dimeParam &param,
-			 const int index = 0) const;
-  virtual const char *getEntityName() const;
+	void setCenter(const dimeVec3f& c);
+	void getCenter(dimeVec3f& c) const;
+	void setRadius(dxfdouble r);
+	dxfdouble getRadius() const;
+	void setStartAngle(dxfdouble a);
+	dxfdouble getStartAngle() const;
+	void setEndAngle(dxfdouble a);
+	dxfdouble getEndAngle() const;
 
-  virtual dimeEntity *copy(dimeModel * const model) const;
-  
-  virtual void print() const;
-  virtual bool write(dimeOutput * const out);
-  virtual int typeId() const;
-  virtual int countRecords() const;
-  
-  virtual GeometryType extractGeometry(dimeArray <dimeVec3f> &verts,
-				       dimeArray <int> &indices,
-				       dimeVec3f &extrusionDir,
-				       dxfdouble &thickness);
-  
+	bool getRecord(int groupcode,
+	               dimeParam& param,
+	               int index = 0) const override;
+	virtual const char* getEntityName() const;
+
+	virtual dimeEntity* copy(dimeModel* model) const;
+
+	virtual void print() const;
+	virtual bool write(dimeOutput* out);
+	int typeId() const override;
+	int countRecords() const override;
+
+	virtual GeometryType extractGeometry(dimeArray<dimeVec3f>& verts,
+	                                     dimeArray<int>& indices,
+	                                     dimeVec3f& extrusionDir,
+	                                     dxfdouble& thickness);
+
 protected:
-  virtual bool handleRecord(const int groupcode, 
-			    const dimeParam &param,
-                            dimeMemHandler * const memhandler);
-    
-private:
-  dimeVec3f center;
-  dxfdouble radius;
-  dxfdouble startAngle;
-  dxfdouble endAngle;
+	bool handleRecord(int groupcode,
+	                  const dimeParam& param,
+	                  dimeMemHandler* memhandler) override;
 
+private:
+	dimeVec3f center;
+	dxfdouble radius;
+	dxfdouble startAngle;
+	dxfdouble endAngle;
 }; // class dimeArc
 
 //
 // inline methods
 //
 
-inline void 
-dimeArc::setCenter(const dimeVec3f &c)
+inline void
+dimeArc::setCenter(const dimeVec3f& c)
 {
-  this->center = c;
+	this->center = c;
 }
 
-inline void 
-dimeArc::getCenter(dimeVec3f &c) const
+inline void
+dimeArc::getCenter(dimeVec3f& c) const
 {
-  c = this->center;
+	c = this->center;
 }
 
-inline void 
+inline void
 dimeArc::setRadius(const dxfdouble r)
 {
-  this->radius = r;
+	this->radius = r;
 }
 
-inline dxfdouble 
+inline dxfdouble
 dimeArc::getRadius() const
 {
-  return this->radius;
+	return this->radius;
 }
 
-inline void 
+inline void
 dimeArc::setStartAngle(const dxfdouble a)
 {
-  this->startAngle = a;
+	this->startAngle = a;
 }
 
-inline dxfdouble 
+inline dxfdouble
 dimeArc::getStartAngle() const
 {
-  return this->startAngle;
+	return this->startAngle;
 }
 
-inline void 
+inline void
 dimeArc::setEndAngle(const dxfdouble a)
 {
-  this->endAngle = a;
+	this->endAngle = a;
 }
 
-inline dxfdouble 
+inline dxfdouble
 dimeArc::getEndAngle() const
 {
-  return this->endAngle;
+	return this->endAngle;
 }
- 
-#endif // ! DIME_ARC_H
 
+#endif // ! DIME_ARC_H

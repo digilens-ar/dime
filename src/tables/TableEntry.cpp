@@ -53,7 +53,7 @@
 */
 
 dimeTableEntry::dimeTableEntry()
-  : dimeRecordHolder(0)  // table entries are separated by group code 0
+	: dimeRecordHolder(0) // table entries are separated by group code 0
 {
 }
 
@@ -70,45 +70,46 @@ dimeTableEntry::~dimeTableEntry()
 */
 
 bool
-dimeTableEntry::copyRecords(dimeTableEntry * const table,
-                           dimeModel * const model) const
+dimeTableEntry::copyRecords(dimeTableEntry* const table,
+                            dimeModel* const model) const
 {
-  return dimeRecordHolder::copyRecords(table, model->getMemHandler());
+	return dimeRecordHolder::copyRecords(table, model->getMemHandler());
 }
 
 //!
 
-bool 
-dimeTableEntry::write(dimeOutput * const /* file */)
+bool
+dimeTableEntry::write(dimeOutput* const /* file */)
 {
-  // moved to preWrite()
-  //return dimeRecordHolder::write(file);
-  return true;
+	// moved to preWrite()
+	//return dimeRecordHolder::write(file);
+	return true;
 }
 
 //!
 
-bool 
-dimeTableEntry::read(dimeInput * const file)
+bool
+dimeTableEntry::read(dimeInput* const file)
 {
-  return dimeRecordHolder::read(file);
+	return dimeRecordHolder::read(file);
 }
 
 /*!
   Static function that creates a table based on its name. 
 */
 
-dimeTableEntry *
-dimeTableEntry::createTableEntry(const char * const name, 
-				dimeMemHandler * const memhandler)
+dimeTableEntry*
+dimeTableEntry::createTableEntry(const char* const name,
+                                 dimeMemHandler* const memhandler)
 {
-  if (!strcmp(name, "LAYER")) {
-    return new(memhandler) dimeLayerTable;
-  }
-  //if (!strcmp(name, "UCS")) // UCS is not used for the moment
-  //  return new(memhandler) dimeUCSTable;
+	if (!strcmp(name, "LAYER"))
+	{
+		return new(memhandler) dimeLayerTable;
+	}
+	//if (!strcmp(name, "UCS")) // UCS is not used for the moment
+	//  return new(memhandler) dimeUCSTable;
 
-  return new(memhandler) dimeUnknownTable(name, memhandler);
+	return new(memhandler) dimeUnknownTable(name, memhandler);
 }
 
 /*!
@@ -118,39 +119,39 @@ dimeTableEntry::createTableEntry(const char * const name,
   of records.
 */
 
-int 
+int
 dimeTableEntry::countRecords() const
 {
-  return dimeRecordHolder::countRecords();
-}
-
-//!
-
-bool 
-dimeTableEntry::handleRecord(const int,
-			     const dimeParam &,
-			     dimeMemHandler * const)
-{
-  return false;
-}
-
-//!
-
-bool 
-dimeTableEntry::isOfType(const int thetypeid) const
-{
-  return thetypeid == dimeBase::dimeTableEntryType ||
-    dimeRecordHolder::isOfType(thetypeid);
+	return dimeRecordHolder::countRecords();
 }
 
 //!
 
 bool
-dimeTableEntry::preWrite(dimeOutput * const file)
+dimeTableEntry::handleRecord(const int,
+                             const dimeParam&,
+                             dimeMemHandler* const)
 {
-  return file->writeGroupCode(0) && 
-    file->writeString(this->getTableName()) &&
-    dimeRecordHolder::write(file);
+	return false;
+}
+
+//!
+
+bool
+dimeTableEntry::isOfType(const int thetypeid) const
+{
+	return thetypeid == dimeBase::dimeTableEntryType ||
+		dimeRecordHolder::isOfType(thetypeid);
+}
+
+//!
+
+bool
+dimeTableEntry::preWrite(dimeOutput* const file)
+{
+	return file->writeGroupCode(0) &&
+		file->writeString(this->getTableName()) &&
+		dimeRecordHolder::write(file);
 }
 
 /*!
@@ -164,4 +165,3 @@ dimeTableEntry::preWrite(dimeOutput * const file)
 /*!
   \fn int dimeTableEntry::typeId() const = 0
 */
-

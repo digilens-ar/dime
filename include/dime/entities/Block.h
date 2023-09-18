@@ -44,93 +44,91 @@ class dimeOutput;
 
 class DIME_DLL_API dimeBlock : public dimeEntity
 {
-  friend class dimeBlocksSection;
-  friend class dimeEntitiesSection;
-  friend class dimeInsert;
-  friend class dimeModel;
-  
+	friend class dimeBlocksSection;
+	friend class dimeEntitiesSection;
+	friend class dimeInsert;
+	friend class dimeModel;
+
 public:
-  dimeBlock(dimeMemHandler * const memhandler);
-  virtual ~dimeBlock();
+	dimeBlock(dimeMemHandler* memhandler);
+	~dimeBlock() override;
 
-  const dimeVec3f &getBasePoint() const;
-  void setBasePoint(const dimeVec3f &v);
-  int getNumEntities() const;
-  dimeEntity *getEntity(const int idx);
-  void insertEntity(dimeEntity * const entity, const int idx = -1);
-  void removeEntity(const int idx, const bool deleteIt = true);
-  void fitEntities();
+	const dimeVec3f& getBasePoint() const;
+	void setBasePoint(const dimeVec3f& v);
+	int getNumEntities() const;
+	dimeEntity* getEntity(int idx);
+	void insertEntity(dimeEntity* entity, int idx = -1);
+	void removeEntity(int idx, bool deleteIt = true);
+	void fitEntities();
 
-  const char *getName() const;
-  void setName(const char * const name);
- 
-  dimeEntity *copy(dimeModel * const model) const;
-  virtual bool getRecord(const int groupcode,
-			 dimeParam &param,
-			 const int index = 0) const;
-  virtual const char *getEntityName() const;
+	const char* getName() const;
+	void setName(const char* name);
 
-  virtual bool read(dimeInput * const in);
-  virtual bool write(dimeOutput * const out);
-  virtual int typeId() const;
-  virtual int countRecords() const;
+	dimeEntity* copy(dimeModel* model) const override;
+	bool getRecord(int groupcode,
+	               dimeParam& param,
+	               int index = 0) const override;
+	const char* getEntityName() const override;
 
-protected:  
-  virtual bool handleRecord(const int groupcode, 
-                            const dimeParam & param,
-			    dimeMemHandler * const memhandler);
-  
-  virtual void fixReferences(dimeModel * const model);
-  virtual bool traverse(const dimeState * const state, 
-                        dimeCallback callback,
-                        void *userdata);
-  
+	bool read(dimeInput* in) override;
+	bool write(dimeOutput* out) override;
+	virtual int typeId() const;
+	int countRecords() const override;
+
+protected:
+	bool handleRecord(int groupcode,
+	                  const dimeParam& param,
+	                  dimeMemHandler* memhandler) override;
+
+	void fixReferences(dimeModel* model) override;
+	bool traverse(const dimeState* state,
+	              dimeCallback callback,
+	              void* userdata) override;
+
 private:
-  int16 flags;
-  const char *name;
-  dimeVec3f basePoint;
-  dimeArray <dimeEntity*> entities;
-  dimeEntity *endblock;
-  dimeMemHandler *memHandler;
-
+	int16 flags;
+	const char* name;
+	dimeVec3f basePoint;
+	dimeArray<dimeEntity*> entities;
+	dimeEntity* endblock;
+	dimeMemHandler* memHandler;
 }; // class dimeBlock
 
-inline const dimeVec3f &
-dimeBlock::getBasePoint() const 
+inline const dimeVec3f&
+dimeBlock::getBasePoint() const
 {
-  return this->basePoint;
+	return this->basePoint;
 }
 
-inline void 
-dimeBlock::setBasePoint(const dimeVec3f &v)
+inline void
+dimeBlock::setBasePoint(const dimeVec3f& v)
 {
-  this->basePoint = v;
+	this->basePoint = v;
 }
 
-inline int 
+inline int
 dimeBlock::getNumEntities() const
 {
-  return this->entities.count();
+	return this->entities.count();
 }
 
-inline dimeEntity *
+inline dimeEntity*
 dimeBlock::getEntity(const int idx)
 {
-  assert(idx >= 0 && idx < this->entities.count());
-  return this->entities[idx];
+	assert(idx >= 0 && idx < this->entities.count());
+	return this->entities[idx];
 }
 
-inline const char *
+inline const char*
 dimeBlock::getName() const
 {
-  return this->name;
+	return this->name;
 }
 
-inline void 
-dimeBlock::setName(const char * const name)
+inline void
+dimeBlock::setName(const char* const name)
 {
-  this->name = name;
+	this->name = name;
 }
 
 #endif // ! DIME_BLOCK_H
-

@@ -39,52 +39,50 @@
 
 class DIME_DLL_API dime3DFace : public dimeFaceEntity
 {
-  friend class dimeEntitiesSection;
-  friend class dimeBlock;
-  friend class dimeModel;
-  friend class dimeEntity;
-  friend class dimeSolid;
-  friend class dimeTrace;
-  
+	friend class dimeEntitiesSection;
+	friend class dimeBlock;
+	friend class dimeModel;
+	friend class dimeEntity;
+	friend class dimeSolid;
+	friend class dimeTrace;
+
 public:
-  dime3DFace();
-  
-  virtual dimeEntity *copy(dimeModel * const model) const;
+	dime3DFace();
 
-  virtual bool getRecord(const int groupcode,
-			 dimeParam &param,
-			 const int index = 0) const;
-  virtual const char *getEntityName() const;
+	virtual dimeEntity* copy(dimeModel* model) const;
 
-  enum Flags {
-    EDGE1_INVISIBLE = 0x0001,
-    EDGE2_INVISIBLE = 0x0002,
-    EDGE3_INVISIBLE = 0x0004,
-    EDGE4_INVISIBLE = 0x0008
-  };
+	bool getRecord(int groupcode,
+	               dimeParam& param,
+	               int index = 0) const override;
+	virtual const char* getEntityName() const;
 
-  void setFlags(const int16 flags);
-  int16 getFlags() const;
+	enum Flags
+	{
+		EDGE1_INVISIBLE = 0x0001,
+		EDGE2_INVISIBLE = 0x0002,
+		EDGE3_INVISIBLE = 0x0004,
+		EDGE4_INVISIBLE = 0x0008
+	};
 
-  virtual void print() const;
-  virtual bool write(dimeOutput * const out);
-  virtual int typeId() const;
-  virtual int countRecords() const;
-    
+	void setFlags(int16 flags);
+	int16 getFlags() const;
+
+	virtual void print() const;
+	virtual bool write(dimeOutput* out);
+	int typeId() const override;
+	int countRecords() const override;
+
 protected:
+	bool handleRecord(int groupcode,
+	                  const dimeParam& param,
+	                  dimeMemHandler* memhandler) override;
 
-  virtual bool handleRecord(const int groupcode,
-			    const dimeParam &param, 
-			    dimeMemHandler * const memhandler);
-  
-  int16 flags; 
-
+	int16 flags;
 
 public:
 #ifndef NO_RR_DATA
-  class dimeBlock *block; // ugly, needed for RR
+	class dimeBlock* block; // ugly, needed for RR
 #endif
 }; // class dime3DFace
 
 #endif // ! DIME_3DFACE_H
-

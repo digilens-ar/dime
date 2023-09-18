@@ -38,31 +38,29 @@
 
 class DIME_DLL_API dimeEntitiesSection : public dimeSection
 {
-  friend class dimeModel;
+	friend class dimeModel;
 
 public:
-  dimeEntitiesSection(dimeMemHandler * const memhandler = NULL);
-  virtual ~dimeEntitiesSection();
+	dimeEntitiesSection(dimeMemHandler* memhandler = nullptr);
+	~dimeEntitiesSection() override;
 
-  virtual const char *getSectionName() const; 
-  virtual dimeSection *copy(dimeModel * const model) const;
-  
-  virtual bool read(dimeInput * const file);
-  virtual bool write(dimeOutput * const file);
-  virtual int typeId() const;
-  virtual int countRecords() const;
-  
-  void fixReferences(dimeModel * const model);
+	const char* getSectionName() const override;
+	dimeSection* copy(dimeModel* model) const override;
 
-  int getNumEntities() const;
-  dimeEntity *getEntity(const int idx);
-  void removeEntity(const int idx);
-  void insertEntity(dimeEntity * const entity, const int idx = -1); 
-  
+	bool read(dimeInput* file) override;
+	bool write(dimeOutput* file) override;
+	int typeId() const override;
+	int countRecords() const override;
+
+	void fixReferences(dimeModel* model);
+
+	int getNumEntities() const;
+	dimeEntity* getEntity(int idx);
+	void removeEntity(int idx);
+	void insertEntity(dimeEntity* entity, int idx = -1);
+
 private:
-  dimeArray <dimeEntity*> entities;
-
+	dimeArray<dimeEntity*> entities;
 }; // class dimeEntitiesSection
 
 #endif // ! DIME_ENTITIESSECTION_H
-

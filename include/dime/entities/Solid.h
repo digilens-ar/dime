@@ -39,35 +39,32 @@
 class DIME_DLL_API dimeSolid : public dimeFaceEntity
 {
 public:
-  dimeSolid();
+	dimeSolid();
 
-  virtual dxfdouble getThickness() const;
-  virtual void getExtrusionDir(dimeVec3f &ed) const;
-  void setThickness(const dxfdouble &thickness);
-  void setExtrusionDir(const dimeVec3f &ed);
+	dxfdouble getThickness() const override;
+	void getExtrusionDir(dimeVec3f& ed) const override;
+	void setThickness(const dxfdouble& thickness);
+	void setExtrusionDir(const dimeVec3f& ed);
 
-  virtual bool write(dimeOutput * const out);
-  virtual int typeId() const;
-  virtual dimeEntity *copy(dimeModel * const model) const;
-  virtual bool getRecord(const int groupcode,
-			 dimeParam &param,
-			 const int index = 0) const;
-  virtual const char *getEntityName() const;
-  virtual int countRecords() const;
-  
+	bool write(dimeOutput* out) override;
+	int typeId() const override;
+	dimeEntity* copy(dimeModel* model) const override;
+	bool getRecord(int groupcode,
+	               dimeParam& param,
+	               int index = 0) const override;
+	const char* getEntityName() const override;
+	int countRecords() const override;
+
 protected:
-  virtual bool swapQuadCoords() const;
+	bool swapQuadCoords() const override;
 
-  virtual bool handleRecord(const int groupcode, 
-			    const dimeParam &param,
-                            dimeMemHandler * const memhandler);
-  
-  
+	bool handleRecord(int groupcode,
+	                  const dimeParam& param,
+	                  dimeMemHandler* memhandler) override;
+
 private:
-  dimeVec3f extrusionDir;
-  dxfdouble thickness;
-
+	dimeVec3f extrusionDir;
+	dxfdouble thickness;
 }; // class dimeSolid
 
 #endif // ! DIME_SOLID_H
-

@@ -60,8 +60,8 @@
   Constructor.
 */
 
-dimeObject::dimeObject() 
-  : dimeRecordHolder(0) // objects are separated by group code 0
+dimeObject::dimeObject()
+	: dimeRecordHolder(0) // objects are separated by group code 0
 {
 }
 
@@ -78,49 +78,49 @@ dimeObject::~dimeObject()
 */
 
 bool
-dimeObject::copyRecords(dimeObject * const myobject, dimeModel * const model) const
+dimeObject::copyRecords(dimeObject* const myobject, dimeModel* const model) const
 {
-  dimeMemHandler *memh = model->getMemHandler();
-  bool ok = dimeRecordHolder::copyRecords(myobject, memh);
-  return ok;
+	dimeMemHandler* memh = model->getMemHandler();
+	bool ok = dimeRecordHolder::copyRecords(myobject, memh);
+	return ok;
 }
 
 /*!
   Writes common and unknown object records to file.
 */
 
-bool 
-dimeObject::write(dimeOutput * const file)
+bool
+dimeObject::write(dimeOutput* const file)
 {
-  return dimeRecordHolder::write(file);
+	return dimeRecordHolder::write(file);
 }
 
 /*!
   Static function which creates an object based on its name. 
 */
 
-dimeObject *
-dimeObject::createObject(const char * const name, 
-		      dimeMemHandler * const memhandler)
+dimeObject*
+dimeObject::createObject(const char* const name,
+                         dimeMemHandler* const memhandler)
 {
-  return new(memhandler) dimeUnknownObject(name, memhandler);
+	return new(memhandler) dimeUnknownObject(name, memhandler);
 }
 
 //!
 
-int 
+int
 dimeObject::countRecords() const
 {
-  return dimeRecordHolder::countRecords();
+	return dimeRecordHolder::countRecords();
 }
 
 //!
 
-bool 
+bool
 dimeObject::isOfType(const int thetypeid) const
 {
-  return thetypeid == dimeObjectType ||
-    dimeRecordHolder::isOfType(thetypeid);
+	return thetypeid == dimeObjectType ||
+		dimeRecordHolder::isOfType(thetypeid);
 }
 
 /*!
@@ -130,24 +130,23 @@ dimeObject::isOfType(const int thetypeid) const
   \sa dimeObject::handleRecord().
 */
 
-bool 
-dimeObject::read(dimeInput * const file)
+bool
+dimeObject::read(dimeInput* const file)
 {
-  return dimeRecordHolder::read(file);
+	return dimeRecordHolder::read(file);
 }
 
 //!
 
-bool 
+bool
 dimeObject::handleRecord(const int /*groupcode*/,
-			const dimeParam &/*param*/,
-			dimeMemHandler * const /*memhandler*/)
+                         const dimeParam&/*param*/,
+                         dimeMemHandler* const /*memhandler*/)
 {
-  // no groupcodes supported yet...
-  return false;
+	// no groupcodes supported yet...
+	return false;
 }
 
 /*!
   \fn void dimeObject::print() const
 */
-

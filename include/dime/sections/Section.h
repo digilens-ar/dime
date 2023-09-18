@@ -43,26 +43,24 @@ class dimeOutput;
 class DIME_DLL_API dimeSection : public dimeBase
 {
 public:
-  dimeSection(dimeMemHandler * const memhandler);
-  virtual ~dimeSection();
+	dimeSection(dimeMemHandler* memhandler);
+	~dimeSection() override;
 
-  virtual const char *getSectionName() const = 0;
-  virtual dimeSection *copy(dimeModel * const model) const = 0;
+	virtual const char* getSectionName() const = 0;
+	virtual dimeSection* copy(dimeModel* model) const = 0;
 
-  virtual bool read(dimeInput * const file) = 0;
-  virtual bool write(dimeOutput * const file) = 0;
-  virtual int typeId() const = 0;
-  virtual bool isOfType(const int thetypeid) const;
-  virtual int countRecords() const = 0;
-  
+	virtual bool read(dimeInput* file) = 0;
+	virtual bool write(dimeOutput* file) = 0;
+	int typeId() const override = 0;
+	bool isOfType(int thetypeid) const override;
+	virtual int countRecords() const = 0;
+
 public:
-  static dimeSection *createSection(const char * const sectionname,
-				   dimeMemHandler *memhandler);
+	static dimeSection* createSection(const char* sectionname,
+	                                  dimeMemHandler* memhandler);
 
 protected:
-  dimeMemHandler *memHandler;
-
+	dimeMemHandler* memHandler;
 }; // class dimeSection
 
 #endif // ! DIME_SECTION_H
-

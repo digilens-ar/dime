@@ -47,15 +47,14 @@
 */
 
 dimeHexRecord::dimeHexRecord(const int group_code)
-  : dimeStringRecord(group_code)
+	: dimeStringRecord(group_code)
 {
 }
 
 //!
 
-int 
+int
 dimeHexRecord::typeId() const
 {
-  return dimeBase::dimeHexRecordType;
+	return dimeBase::dimeHexRecordType;
 }
-

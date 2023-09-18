@@ -93,15 +93,15 @@
   \fn void dimeClass::setFlag281(const int8 flag)
   Sets the group code for the flag with group code 281.
 */
- 
+
 /*!
   Constructor.
 */
 
-dimeClass::dimeClass() 
-  : dimeRecordHolder( 0 ), // classes are separated by group code 0
-    className( NULL ), appName( NULL ), versionNumber( 0 ), flag1( 0 ),
-    flag2( 0 )
+dimeClass::dimeClass()
+	: dimeRecordHolder(0), // classes are separated by group code 0
+	  className(nullptr), appName(nullptr), versionNumber(0), flag1(0),
+	  flag2(0)
 {
 }
 
@@ -111,8 +111,8 @@ dimeClass::dimeClass()
 
 dimeClass::~dimeClass()
 {
-  delete [] this->className;
-  delete [] this->appName;
+	delete [] this->className;
+	delete [] this->appName;
 }
 
 /*!
@@ -120,56 +120,59 @@ dimeClass::~dimeClass()
 */
 
 bool
-dimeClass::copyRecords(dimeClass * const myclass, dimeModel * const model) const
+dimeClass::copyRecords(dimeClass* const myclass, dimeModel* const model) const
 {
-  dimeMemHandler *memh = model->getMemHandler();
-  bool ok = dimeRecordHolder::copyRecords(myclass, memh);
-  
-  if (ok && this->className) {
-    DXF_STRCPY(memh, myclass->className, this->className);
-    ok = myclass->className != NULL;
-  }
-  if (ok && this->appName) {
-    DXF_STRCPY(memh, myclass->appName, this->appName);
-    ok = myclass->className != NULL;
-  }
-  if (ok) {
-    myclass->versionNumber = this->versionNumber;
-    myclass->flag1 = this->flag1;
-    myclass->flag2 = this->flag2;
-  }
-  return ok;
+	dimeMemHandler* memh = model->getMemHandler();
+	bool ok = dimeRecordHolder::copyRecords(myclass, memh);
+
+	if (ok && this->className)
+	{
+		DXF_STRCPY(memh, myclass->className, this->className);
+		ok = myclass->className != nullptr;
+	}
+	if (ok && this->appName)
+	{
+		DXF_STRCPY(memh, myclass->appName, this->appName);
+		ok = myclass->className != nullptr;
+	}
+	if (ok)
+	{
+		myclass->versionNumber = this->versionNumber;
+		myclass->flag1 = this->flag1;
+		myclass->flag2 = this->flag2;
+	}
+	return ok;
 }
 
 /*!
   Writes common and unknown class records to file.
 */
 
-bool 
-dimeClass::write(dimeOutput * const file)
+bool
+dimeClass::write(dimeOutput* const file)
 {
-  file->writeGroupCode(1);
-  file->writeString(this->className ? this->className : "Default class name");
-  file->writeGroupCode(2);
-  file->writeString(this->appName ? this->appName : "Default app name");
-  file->writeGroupCode(90);
-  file->writeInt32(this->versionNumber);
-  file->writeGroupCode(280);
-  file->writeInt8(this->flag1);
-  file->writeGroupCode(281);
-  file->writeInt8(this->flag2);
-  return dimeRecordHolder::write(file);
+	file->writeGroupCode(1);
+	file->writeString(this->className ? this->className : "Default class name");
+	file->writeGroupCode(2);
+	file->writeString(this->appName ? this->appName : "Default app name");
+	file->writeGroupCode(90);
+	file->writeInt32(this->versionNumber);
+	file->writeGroupCode(280);
+	file->writeInt8(this->flag1);
+	file->writeGroupCode(281);
+	file->writeInt8(this->flag2);
+	return dimeRecordHolder::write(file);
 }
 
 /*!
   Static function which creates a class based on its name. 
 */
 
-dimeClass *
-dimeClass::createClass(const char * const name,
-                       dimeMemHandler * const memhandler)
+dimeClass*
+dimeClass::createClass(const char* const name,
+                       dimeMemHandler* const memhandler)
 {
-  return new(memhandler) dimeUnknownClass(name, memhandler);
+	return new(memhandler) dimeUnknownClass(name, memhandler);
 }
 
 //!
@@ -177,7 +180,7 @@ dimeClass::createClass(const char * const name,
 int
 dimeClass::countRecords() const
 {
-  return 5 + dimeRecordHolder::countRecords();
+	return 5 + dimeRecordHolder::countRecords();
 }
 
 //!
@@ -185,7 +188,7 @@ dimeClass::countRecords() const
 bool
 dimeClass::isOfType(const int thetypeid) const
 {
-  return thetypeid == dimeClassType || dimeRecordHolder::isOfType(thetypeid);
+	return thetypeid == dimeClassType || dimeRecordHolder::isOfType(thetypeid);
 }
 
 /*!
@@ -196,36 +199,37 @@ dimeClass::isOfType(const int thetypeid) const
 */
 
 bool
-dimeClass::read(dimeInput * const file)
+dimeClass::read(dimeInput* const file)
 {
-  return dimeRecordHolder::read(file);
+	return dimeRecordHolder::read(file);
 }
 
 //!
 
 bool
 dimeClass::handleRecord(const int groupcode,
-                        const dimeParam &param,
-                        dimeMemHandler * const memhandler)
+                        const dimeParam& param,
+                        dimeMemHandler* const memhandler)
 {
-  switch (groupcode) {
-  case 1:
-    DXF_STRCPY(memhandler, this->className, param.string_data);
-    return true;
-  case 2:
-    DXF_STRCPY(memhandler, this->appName, param.string_data);
-    return true;
-  case 90:
-    this->versionNumber = param.int32_data;
-    return true;
-  case 280:
-    this->flag1 = param.int8_data;
-    return true;
-  case 281:
-    this->flag2 = param.int8_data;
-    return true;
-  }
-  return false;
+	switch (groupcode)
+	{
+	case 1:
+		DXF_STRCPY(memhandler, this->className, param.string_data);
+		return true;
+	case 2:
+		DXF_STRCPY(memhandler, this->appName, param.string_data);
+		return true;
+	case 90:
+		this->versionNumber = param.int32_data;
+		return true;
+	case 280:
+		this->flag1 = param.int8_data;
+		return true;
+	case 281:
+		this->flag2 = param.int8_data;
+		return true;
+	}
+	return false;
 }
 
 /*!
@@ -233,11 +237,11 @@ dimeClass::handleRecord(const int groupcode,
 */
 
 void
-dimeClass::setClassName(const char * const classname,
-                        dimeMemHandler * const memhandler)
+dimeClass::setClassName(const char* const classname,
+                        dimeMemHandler* const memhandler)
 {
-  if (!memhandler) delete [] this->className;
-  DXF_STRCPY(memhandler, this->className, classname);
+	if (!memhandler) delete [] this->className;
+	DXF_STRCPY(memhandler, this->className, classname);
 }
 
 /*!
@@ -245,9 +249,9 @@ dimeClass::setClassName(const char * const classname,
 */
 
 void
-dimeClass::setApplicationName(const char * const appname,
-                              dimeMemHandler * const memhandler)
+dimeClass::setApplicationName(const char* const appname,
+                              dimeMemHandler* const memhandler)
 {
-  if (!memhandler) delete [] this->appName;
-  DXF_STRCPY(memhandler, this->appName, appname);
+	if (!memhandler) delete [] this->appName;
+	DXF_STRCPY(memhandler, this->appName, appname);
 }

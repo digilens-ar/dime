@@ -42,41 +42,38 @@ class dimeOutput;
 
 class DIME_DLL_API dimeRecord : public dimeBase
 {
-public: 
-  dimeRecord(const int group_code);
-  virtual ~dimeRecord();
-  
-  virtual void setValue(const dimeParam &param, dimeMemHandler * const memhandler = NULL) = 0;
-  virtual void getValue(dimeParam &param) const = 0;
-  virtual dimeRecord *copy(dimeMemHandler * const memhandler) const = 0;
-  
-  void setGroupCode(const int group_code);
-  int getGroupCode() const;
+public:
+	dimeRecord(int group_code);
+	~dimeRecord() override;
 
-  
-public:    
-  virtual bool isEndOfSectionRecord() const;
-  virtual bool isEndOfFileRecord() const;
-  virtual int typeId() const = 0;
-  virtual bool read(dimeInput * const in) = 0;
-  virtual bool write(dimeOutput * const out);
-  virtual void print() const {fprintf(stderr, "rec: %d\n", groupCode);}
+	virtual void setValue(const dimeParam& param, dimeMemHandler* memhandler = nullptr) = 0;
+	virtual void getValue(dimeParam& param) const = 0;
+	virtual dimeRecord* copy(dimeMemHandler* memhandler) const = 0;
+
+	void setGroupCode(int group_code);
+	int getGroupCode() const;
 
 public:
-  static bool readRecordData(dimeInput * const in, const int group_code,
-			     dimeParam &param);
-  static dimeRecord *readRecord(dimeInput * const in);
-  static dimeRecord *createRecord(const int group_code, 
-				 dimeMemHandler * const memhandler);
-  static dimeRecord *createRecord(const int group_code,
-				 const dimeParam &param,
-				 dimeMemHandler * const memhandler);
-  static int getRecordType(const int group_code);
-  
-protected:
-  int groupCode;
+	virtual bool isEndOfSectionRecord() const;
+	virtual bool isEndOfFileRecord() const;
+	int typeId() const override = 0;
+	virtual bool read(dimeInput* in) = 0;
+	virtual bool write(dimeOutput* out);
+	virtual void print() const { fprintf(stderr, "rec: %d\n", groupCode); }
 
+public:
+	static bool readRecordData(dimeInput* in, int group_code,
+	                           dimeParam& param);
+	static dimeRecord* readRecord(dimeInput* in);
+	static dimeRecord* createRecord(int group_code,
+	                                dimeMemHandler* memhandler);
+	static dimeRecord* createRecord(int group_code,
+	                                const dimeParam& param,
+	                                dimeMemHandler* memhandler);
+	static int getRecordType(int group_code);
+
+protected:
+	int groupCode;
 }; // class dimeRecord
 
 #endif // ! DIME_RECORD_H
-

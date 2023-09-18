@@ -32,41 +32,39 @@
 
 #ifndef DIME_TRACE_H
 #define DIME_TRACE_H
-  
+
 #include <dime/entities/FaceEntity.h>
 #include <dime/util/Linear.h>
 
 class DIME_DLL_API dimeTrace : public dimeFaceEntity
 {
 public:
-  dimeTrace();
+	dimeTrace();
 
-  virtual dxfdouble getThickness() const;
-  virtual void getExtrusionDir(dimeVec3f &ed) const;
-  void setThickness(const dxfdouble &thickness);
-  void setExtrusionDir(const dimeVec3f &ed);
+	dxfdouble getThickness() const override;
+	void getExtrusionDir(dimeVec3f& ed) const override;
+	void setThickness(const dxfdouble& thickness);
+	void setExtrusionDir(const dimeVec3f& ed);
 
-  virtual bool write(dimeOutput * const out);
-  virtual int typeId() const;
-  virtual dimeEntity *copy(dimeModel * const model) const;
-  virtual bool getRecord(const int groupcode,
-			 dimeParam &param,
-			 const int index = 0) const;
-  virtual const char *getEntityName() const;
-  virtual int countRecords() const;
-  
+	bool write(dimeOutput* out) override;
+	int typeId() const override;
+	dimeEntity* copy(dimeModel* model) const override;
+	bool getRecord(int groupcode,
+	               dimeParam& param,
+	               int index = 0) const override;
+	const char* getEntityName() const override;
+	int countRecords() const override;
+
 protected:
-  virtual bool swapQuadCoords() const;
-  
-  virtual bool handleRecord(const int groupcode, 
-			    const dimeParam &param,
-                            dimeMemHandler * const memhandler);
-    
-private:
-  dimeVec3f extrusionDir;
-  dxfdouble thickness;
+	bool swapQuadCoords() const override;
 
+	bool handleRecord(int groupcode,
+	                  const dimeParam& param,
+	                  dimeMemHandler* memhandler) override;
+
+private:
+	dimeVec3f extrusionDir;
+	dxfdouble thickness;
 }; // class dimeTrace
 
 #endif // ! DIME_TRACE_H
-

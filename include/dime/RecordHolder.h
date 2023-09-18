@@ -43,54 +43,52 @@ class dimeRecord;
 class DIME_DLL_API dimeRecordHolder : public dimeBase
 {
 public:
-  dimeRecordHolder(const int separator);
-  virtual ~dimeRecordHolder();
+	dimeRecordHolder(int separator);
+	~dimeRecordHolder() override;
 
-  void setRecord(const int groupcode, const dimeParam &value, 
-		 dimeMemHandler * const memhandler = NULL);
-  void setRecords(const int * const groupcodes,
-		  const dimeParam * const params,
-		  const int numrecords,
-		  dimeMemHandler * const memhandler = NULL);
-  void setIndexedRecord(const int groupcode, 
-                        const dimeParam &value,
-                        const int index,
-                        dimeMemHandler * const memhandler = NULL);
-  
-  virtual bool getRecord(const int groupcode,
-			 dimeParam &param,
-			 const int index = 0) const;
-  
-  virtual bool read(dimeInput * const in);
-  virtual bool write(dimeOutput * const out);
-  virtual bool isOfType(const int thetypeid) const;
-  virtual int countRecords() const;
+	void setRecord(int groupcode, const dimeParam& value,
+	               dimeMemHandler* memhandler = nullptr);
+	void setRecords(const int* groupcodes,
+	                const dimeParam* params,
+	                int numrecords,
+	                dimeMemHandler* memhandler = nullptr);
+	void setIndexedRecord(int groupcode,
+	                      const dimeParam& value,
+	                      int index,
+	                      dimeMemHandler* memhandler = nullptr);
 
-  dimeRecord *findRecord(const int groupcode, const int index = 0);
+	virtual bool getRecord(int groupcode,
+	                       dimeParam& param,
+	                       int index = 0) const;
 
-  int getNumRecordsInRecordHolder(void) const;
-  dimeRecord * getRecordInRecordHolder(const int idx) const;
+	virtual bool read(dimeInput* in);
+	virtual bool write(dimeOutput* out);
+	bool isOfType(int thetypeid) const override;
+	virtual int countRecords() const;
 
-protected:
-  virtual bool handleRecord(const int groupcode,
-			    const dimeParam &param,
-			    dimeMemHandler * const memhandler);
-  
-  bool copyRecords(dimeRecordHolder * const rh, 
-		   dimeMemHandler * const memhandler) const;
+	dimeRecord* findRecord(int groupcode, int index = 0);
 
-  virtual bool shouldWriteRecord(const int groupcode) const;
+	int getNumRecordsInRecordHolder(void) const;
+	dimeRecord* getRecordInRecordHolder(int idx) const;
 
 protected:
-  dimeRecord **records;
-  int numRecords;
-  // int separator; // not needed ?
+	virtual bool handleRecord(int groupcode,
+	                          const dimeParam& param,
+	                          dimeMemHandler* memhandler);
+
+	bool copyRecords(dimeRecordHolder* rh,
+	                 dimeMemHandler* memhandler) const;
+
+	virtual bool shouldWriteRecord(int groupcode) const;
+
+protected:
+	dimeRecord** records;
+	int numRecords;
+	// int separator; // not needed ?
 
 private:
-  void setRecordCommon(const int groupcode, const dimeParam &param,
-                       const int index, dimeMemHandler * const memhandler);
-
+	void setRecordCommon(int groupcode, const dimeParam& param,
+	                     int index, dimeMemHandler* memhandler);
 }; // class dimeRecordHolder
 
 #endif // ! DIME_RECORDHOLDER_H
-

@@ -36,32 +36,30 @@
 #include <dime/sections/Section.h>
 #include <dime/util/Array.h>
 
-class DIME_DLL_API dimeBlocksSection : public dimeSection 
+class DIME_DLL_API dimeBlocksSection : public dimeSection
 {
 public:
-  dimeBlocksSection(dimeMemHandler * const memhandler = NULL);
-  virtual ~dimeBlocksSection();
-  
-  virtual const char *getSectionName() const;
-  virtual dimeSection *copy(dimeModel * const model) const;
-  
-public:
-  virtual bool read(dimeInput * const file);
-  virtual bool write(dimeOutput * const file);
-  virtual int typeId() const;
-  virtual int countRecords() const;
+	dimeBlocksSection(dimeMemHandler* memhandler = nullptr);
+	~dimeBlocksSection() override;
 
-  void fixReferences(dimeModel * const model);
-  
-  int getNumBlocks() const;
-  class dimeBlock *getBlock(const int idx);
-  void removeBlock(const int idx);
-  void insertBlock(dimeBlock * const block, const int idx = -1); 
+	const char* getSectionName() const override;
+	dimeSection* copy(dimeModel* model) const override;
+
+public:
+	bool read(dimeInput* file) override;
+	bool write(dimeOutput* file) override;
+	int typeId() const override;
+	int countRecords() const override;
+
+	void fixReferences(dimeModel* model);
+
+	int getNumBlocks() const;
+	class dimeBlock* getBlock(int idx);
+	void removeBlock(int idx);
+	void insertBlock(dimeBlock* block, int idx = -1);
 
 private:
-  dimeArray <dimeBlock*> blocks;
-
+	dimeArray<dimeBlock*> blocks;
 }; // class dimeBlocksSection
 
 #endif // ! DIME_BLOCKSSECTION_H
-

@@ -43,31 +43,30 @@ class dime_bspnode;
 class DIME_DLL_API dimeBSPTree
 {
 public:
-  dimeBSPTree(const int maxnodepts = 64, const int initsize = 4);
-  ~dimeBSPTree();
-  
-  int numPoints() const;
-  void getPoint(const int idx, dimeVec3f &pt);
-  void *getUserData(const int idx) const;
-  
-  void setUserData(const int idx, void * const data);
-  
-  int addPoint(const dimeVec3f &pt, void * const userdata = NULL);
-  int removePoint(const dimeVec3f &pt);
-  void removePoint(const int idx);
-  int findPoint(const dimeVec3f &pos) const;
-  void clear(const int initsize = 4);
-  
-  const dimeBox *getBBox() const;
-  
+	dimeBSPTree(int maxnodepts = 64, int initsize = 4);
+	~dimeBSPTree();
+
+	int numPoints() const;
+	void getPoint(int idx, dimeVec3f& pt);
+	void* getUserData(int idx) const;
+
+	void setUserData(int idx, void* data);
+
+	int addPoint(const dimeVec3f& pt, void* userdata = nullptr);
+	int removePoint(const dimeVec3f& pt);
+	void removePoint(int idx);
+	int findPoint(const dimeVec3f& pos) const;
+	void clear(int initsize = 4);
+
+	const dimeBox* getBBox() const;
+
 private:
-  friend class dime_bspnode;
-  dimeArray <dimeVec3f> pointsArray;
-  dimeArray <void*> userdataArray;
-  dime_bspnode *topnode;
-  int maxnodepoints;
-  dimeBox *boundingBox;
+	friend class dime_bspnode;
+	dimeArray<dimeVec3f> pointsArray;
+	dimeArray<void*> userdataArray;
+	dime_bspnode* topnode;
+	int maxnodepoints;
+	dimeBox* boundingBox;
 }; // class dimeBSPTree
 
 #endif // ! DIME_BSPTREE_H
-

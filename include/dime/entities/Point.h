@@ -40,47 +40,45 @@
 class DIME_DLL_API dimePoint : public dimeExtrusionEntity
 {
 public:
-  dimePoint();
+	dimePoint();
 
-  const dimeVec3f &getCoords() const;
-  void setCoords(const dimeVec3f &v);
+	const dimeVec3f& getCoords() const;
+	void setCoords(const dimeVec3f& v);
 
-  virtual dimeEntity *copy(dimeModel * const model) const;
-  virtual bool getRecord(const int groupcode,
-			 dimeParam &param,
-			 const int index = 0) const;
-  virtual const char *getEntityName() const;
+	dimeEntity* copy(dimeModel* model) const override;
+	bool getRecord(int groupcode,
+	               dimeParam& param,
+	               int index = 0) const override;
+	const char* getEntityName() const override;
 
-  virtual bool write(dimeOutput * const out);
-  virtual int typeId() const;
-  virtual int countRecords() const;
+	bool write(dimeOutput* out) override;
+	int typeId() const override;
+	int countRecords() const override;
 
-  virtual GeometryType extractGeometry(dimeArray <dimeVec3f> &verts,
-				       dimeArray <int> &indices,
-				       dimeVec3f &extrusionDir,
-				       dxfdouble &thickness);
-  
+	GeometryType extractGeometry(dimeArray<dimeVec3f>& verts,
+	                             dimeArray<int>& indices,
+	                             dimeVec3f& extrusionDir,
+	                             dxfdouble& thickness) override;
+
 protected:
-  virtual bool handleRecord(const int groupcode, 
-                            const dimeParam &param,
-			    dimeMemHandler * const memhandler);
+	bool handleRecord(int groupcode,
+	                  const dimeParam& param,
+	                  dimeMemHandler* memhandler) override;
 
 private:
-  dimeVec3f coords;
-
+	dimeVec3f coords;
 }; // class dimePoint
 
-inline const dimeVec3f &
+inline const dimeVec3f&
 dimePoint::getCoords() const
 {
-  return coords;
+	return coords;
 }
 
-inline void 
-dimePoint::setCoords(const dimeVec3f &v)
+inline void
+dimePoint::setCoords(const dimeVec3f& v)
 {
-  this->coords = v;
+	this->coords = v;
 }
 
 #endif // ! DIME_POINT_H
-

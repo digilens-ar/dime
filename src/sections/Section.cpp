@@ -63,11 +63,11 @@
   Constructor
 */
 
-dimeSection::dimeSection(dimeMemHandler * const memhandler)
-  : memHandler( memhandler )
+dimeSection::dimeSection(dimeMemHandler* const memhandler)
+	: memHandler(memhandler)
 {
 }
- 
+
 /*!
   Empty virtual destructor.
 */
@@ -81,34 +81,34 @@ dimeSection::~dimeSection()
   from a text string.
 */
 
-dimeSection *
-dimeSection::createSection(const char * const sectionname,
-			  dimeMemHandler *memhandler)
+dimeSection*
+dimeSection::createSection(const char* const sectionname,
+                           dimeMemHandler* memhandler)
 {
-  if (!strcmp(sectionname, "HEADER"))
-    return new dimeHeaderSection(memhandler);
+	if (!strcmp(sectionname, "HEADER"))
+		return new dimeHeaderSection(memhandler);
 #if 0 // passthrough for the moment. I can't imaging anybody is using them 
   if (!strcmp(sectionname, "CLASSES"))
     return new dimeClassesSection(memhandler);
   if (!strcmp(sectionname, "OBJECTS"))
     return new dimeObjectsSection(memhandler);
 #endif
-  if (!strcmp(sectionname, "TABLES"))
-    return new dimeTablesSection(memhandler);
-  if (!strcmp(sectionname, "BLOCKS"))
-    return new dimeBlocksSection(memhandler);
-  if (!strcmp(sectionname, "ENTITIES"))
-    return new dimeEntitiesSection(memhandler);
-  return new dimeUnknownSection(sectionname, memhandler);
+	if (!strcmp(sectionname, "TABLES"))
+		return new dimeTablesSection(memhandler);
+	if (!strcmp(sectionname, "BLOCKS"))
+		return new dimeBlocksSection(memhandler);
+	if (!strcmp(sectionname, "ENTITIES"))
+		return new dimeEntitiesSection(memhandler);
+	return new dimeUnknownSection(sectionname, memhandler);
 }
 
 //!
 
-bool 
+bool
 dimeSection::isOfType(const int thetypeid) const
 {
-  return thetypeid == dimeSectionType ||
-    dimeBase::isOfType(thetypeid);
+	return thetypeid == dimeSectionType ||
+		dimeBase::isOfType(thetypeid);
 }
 
 /*!
@@ -130,4 +130,3 @@ dimeSection::isOfType(const int thetypeid) const
 /*!
   \fn int dimeSection::typeId() const = 0
 */
-

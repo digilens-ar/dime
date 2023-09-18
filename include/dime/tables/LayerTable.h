@@ -35,40 +35,37 @@
 
 #include <dime/tables/TableEntry.h>
 
-class DIME_DLL_API dimeLayerTable : public dimeTableEntry 
+class DIME_DLL_API dimeLayerTable : public dimeTableEntry
 {
 public:
-  dimeLayerTable();
-  virtual ~dimeLayerTable();
-  
-  void setLayerName(const char * name, dimeMemHandler * const memhandler);
-  const char * getLayerName(void) const;
-  
-  void setColorNumber(const int16 colnum);
-  int16 getColorNumber(void) const;
+	dimeLayerTable();
+	~dimeLayerTable() override;
 
-  void registerLayer(dimeModel * model);
+	void setLayerName(const char* name, dimeMemHandler* memhandler);
+	const char* getLayerName(void) const;
 
-  virtual dimeTableEntry *copy(dimeModel * const model) const;
+	void setColorNumber(int16 colnum);
+	int16 getColorNumber(void) const;
 
-  virtual const char *getTableName() const;
-  virtual bool read(dimeInput * const in);
-  virtual bool write(dimeOutput * const out);
-  virtual int typeId() const;
-  virtual int countRecords() const;
+	void registerLayer(dimeModel* model);
+
+	dimeTableEntry* copy(dimeModel* model) const override;
+
+	const char* getTableName() const override;
+	bool read(dimeInput* in) override;
+	bool write(dimeOutput* out) override;
+	int typeId() const override;
+	int countRecords() const override;
 
 protected:
-
-  virtual bool handleRecord(const int groupcode,
-			    const dimeParam &param,
-			    dimeMemHandler * const memhandler);
+	bool handleRecord(int groupcode,
+	                  const dimeParam& param,
+	                  dimeMemHandler* memhandler) override;
 
 private:
-  int16 colorNumber;
-  char * layerName;
-  class dimeLayer * layerInfo;
-
+	int16 colorNumber;
+	char* layerName;
+	class dimeLayer* layerInfo;
 }; // class dimeLayerTable
 
 #endif // ! DIME_LAYERTABLE_H
-

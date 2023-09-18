@@ -46,101 +46,100 @@ class dimeModel;
 
 class DIME_DLL_API dimeClass : public dimeRecordHolder
 {
-  friend class dimeClassesSection;
-  friend class dimeModel;
-  
+	friend class dimeClassesSection;
+	friend class dimeModel;
+
 public:
-  dimeClass();
-  virtual ~dimeClass();
-  
-  virtual const char *getDxfClassName() const = 0;  
-  virtual dimeClass *copy(dimeModel * const model) const = 0; 
-  virtual bool read(dimeInput * const in);
-  virtual bool write(dimeOutput * const out);
-  virtual bool isOfType(const int thetypeid) const;
-  virtual int countRecords() const;
+	dimeClass();
+	~dimeClass() override;
 
-  const char *getClassName() const;
-  const char *getApplicationName() const;
-  int32 getVersionNumber() const;
-  int8 getFlag280() const;
-  int8 getFlag281() const;
+	virtual const char* getDxfClassName() const = 0;
+	virtual dimeClass* copy(dimeModel* model) const = 0;
+	bool read(dimeInput* in) override;
+	bool write(dimeOutput* out) override;
+	bool isOfType(int thetypeid) const override;
+	int countRecords() const override;
 
-  void setClassName(const char * const classname, 
-		    dimeMemHandler * const memhandler = NULL);
-  void setApplicationName(const char * const appname, 
-			  dimeMemHandler * const memhandler = NULL);
-  void setVersionNumber(const int32 v);
-  void setFlag280(const int8 flag);
-  void setFlag281(const int8 flag);
+	const char* getClassName() const;
+	const char* getApplicationName() const;
+	int32 getVersionNumber() const;
+	int8 getFlag280() const;
+	int8 getFlag281() const;
+
+	void setClassName(const char* classname,
+	                  dimeMemHandler* memhandler = nullptr);
+	void setApplicationName(const char* appname,
+	                        dimeMemHandler* memhandler = nullptr);
+	void setVersionNumber(int32 v);
+	void setFlag280(int8 flag);
+	void setFlag281(int8 flag);
 
 protected:
-  virtual bool handleRecord(const int groupcode,
-			    const dimeParam &param,
-			    dimeMemHandler * const memhandler);
-  
+	bool handleRecord(int groupcode,
+	                  const dimeParam& param,
+	                  dimeMemHandler* memhandler) override;
+
 public:
-  static dimeClass *createClass(const char * const name,
-			       dimeMemHandler * const memhandler = NULL);    
+	static dimeClass* createClass(const char* name,
+	                              dimeMemHandler* memhandler = nullptr);
+
 protected:
-  bool copyRecords(dimeClass * const newclass, dimeModel * const model) const;
+	bool copyRecords(dimeClass* newclass, dimeModel* model) const;
 
 private:
-  char *className;
-  char *appName;
-  int32 versionNumber;
-  int8 flag1;
-  int8 flag2;
-
+	char* className;
+	char* appName;
+	int32 versionNumber;
+	int8 flag1;
+	int8 flag2;
 }; // class dimeClass
 
-inline const char *
+inline const char*
 dimeClass::getClassName() const
 {
-  return this->className;
+	return this->className;
 }
 
-inline const char *
+inline const char*
 dimeClass::getApplicationName() const
 {
-  return this->appName;
+	return this->appName;
 }
 
-inline int32 
+inline int32
 dimeClass::getVersionNumber() const
 {
-  return this->versionNumber;
+	return this->versionNumber;
 }
 
-inline int8 
+inline int8
 dimeClass::getFlag280() const
 {
-  return this->flag1;
+	return this->flag1;
 }
 
-inline int8 
+inline int8
 dimeClass::getFlag281() const
 {
-  return this->flag2;
+	return this->flag2;
 }
 
-inline void 
+inline void
 dimeClass::setVersionNumber(const int32 v)
 {
-  this->versionNumber = v;
+	this->versionNumber = v;
 }
 
-inline void 
+inline void
 dimeClass::setFlag280(const int8 flag)
 {
-  this->flag1 = flag;
+	this->flag1 = flag;
 }
 
-inline void 
+inline void
 dimeClass::setFlag281(const int8 flag)
 {
-  this->flag2 = flag;
+	this->flag2 = flag;
 }
 
 #endif // ! DIME_CLASS_H
-

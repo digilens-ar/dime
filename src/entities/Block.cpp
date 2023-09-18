@@ -88,9 +88,9 @@ static char entityName[] = "BLOCK";
   Constructor.
 */
 
-dimeBlock::dimeBlock(dimeMemHandler * const memhandler)
-  : flags( 0 ), name( NULL ), basePoint( 0, 0, 0 ), endblock( NULL ),
-    memHandler( memhandler )
+dimeBlock::dimeBlock(dimeMemHandler* const memhandler)
+	: flags(0), name(nullptr), basePoint(0, 0, 0), endblock(nullptr),
+	  memHandler(memhandler)
 {
 }
 
@@ -100,49 +100,54 @@ dimeBlock::dimeBlock(dimeMemHandler * const memhandler)
 
 dimeBlock::~dimeBlock()
 {
-  if (!this->memHandler) {
-    for (int i = 0; i < this->entities.count(); i++) {
-      delete this->entities[i];
-    }
-    delete this->endblock;
-  }
+	if (!this->memHandler)
+	{
+		for (int i = 0; i < this->entities.count(); i++)
+		{
+			delete this->entities[i];
+		}
+		delete this->endblock;
+	}
 }
 
 //!
 
-dimeEntity *
-dimeBlock::copy(dimeModel * const model) const
+dimeEntity*
+dimeBlock::copy(dimeModel* const model) const
 {
-  dimeMemHandler *memh = model->getMemHandler();
-  dimeBlock *bl = new dimeBlock(memh);
-  bool ok = true;
+	dimeMemHandler* memh = model->getMemHandler();
+	auto bl = new dimeBlock(memh);
+	bool ok = true;
 
-  int n = this->entities.count();
-  if (n) {
-    ok = dimeEntity::copyEntityArray((const dimeEntity**)
-				     this->entities.constArrayPointer(),
-				     n,
-				     model,
-				     bl->entities);
-  }
-  
-  if (ok) {
-    bl->basePoint = this->basePoint;
-    bl->flags = this->flags;
-    if (this->endblock)
-      bl->endblock = this->endblock->copy(model);
-    
-    if (this->name) {
-      bl->name = (char*)model->addBlock(this->name, bl);
-      if (!bl->name) ok = false;
-    }
-  }
-  
-  if (!ok || !this->copyRecords(bl, model)) {
-    if (!memh) delete bl; // delete if allocated on heap
-    bl = NULL; // just return NULL
-  }
-  return bl;
+	int n = this->entities.count();
+	if (n)
+	{
+		ok = dimeEntity::copyEntityArray(static_cast<const dimeEntity**>(this->entities.constArrayPointer()),
+		                                 n,
+		                                 model,
+		                                 bl->entities);
+	}
+
+	if (ok)
+	{
+		bl->basePoint = this->basePoint;
+		bl->flags = this->flags;
+		if (this->endblock)
+			bl->endblock = this->endblock->copy(model);
+
+		if (this->name)
+		{
+			bl->name = (char*)model->addBlock(this->name, bl);
+			if (!bl->name) ok = false;
+		}
+	}
+
+	if (!ok || !this->copyRecords(bl, model))
+	{
+		if (!memh) delete bl; // delete if allocated on heap
+		bl = nullptr; // just return NULL
+	}
+	return bl;
 }
 
 /*!
@@ -150,165 +155,179 @@ dimeBlock::copy(dimeModel * const model) const
 */
 
 bool
-dimeBlock::read(dimeInput * const file)
+dimeBlock::read(dimeInput* const file)
 {
-  this->name = NULL;
-  bool ret = dimeEntity::read(file);
-  if (ret && this->name) {
-    // see handleRecord() to understand this code. Yup, ugly :)
-    char *tmp = (char*)this->name;
-    this->name = file->getModel()->addBlock(tmp, this);
-    delete [] tmp;
-  }
-  
-  // got to do some reading to get all entities in the block
-  if (ret) {
-    dimeMemHandler *memhandler = file->getMemHandler();
-    this->entities.makeEmpty(1024); // begin with a fairly large array
-    ret = dimeEntity::readEntities(file, this->entities, "ENDBLK");
-    if (ret) {
-      this->endblock = dimeEntity::createEntity("ENDBLK", memhandler);
-      // read the ENDBLOCK entity
-      if (!this->endblock || !this->endblock->read(file)) ret = false;
-    }
-    this->entities.shrinkToFit(); // don't waste too much memory
-  }
+	this->name = nullptr;
+	bool ret = dimeEntity::read(file);
+	if (ret && this->name)
+	{
+		// see handleRecord() to understand this code. Yup, ugly :)
+		auto tmp = (char*)this->name;
+		this->name = file->getModel()->addBlock(tmp, this);
+		delete [] tmp;
+	}
+
+	// got to do some reading to get all entities in the block
+	if (ret)
+	{
+		dimeMemHandler* memhandler = file->getMemHandler();
+		this->entities.makeEmpty(1024); // begin with a fairly large array
+		ret = dimeEntity::readEntities(file, this->entities, "ENDBLK");
+		if (ret)
+		{
+			this->endblock = dimeEntity::createEntity("ENDBLK", memhandler);
+			// read the ENDBLOCK entity
+			if (!this->endblock || !this->endblock->read(file)) ret = false;
+		}
+		this->entities.shrinkToFit(); // don't waste too much memory
+	}
 
 #ifndef NDEBUG
-  dimeParam param;
-  if (getRecord(67, param) && param.int16_data == 1) {
-    fprintf(stderr,"paperspace block name: %s\n", 
-	    ((dimeBlock*)this)->getName());
-  }
+	dimeParam param;
+	if (getRecord(67, param) && param.int16_data == 1)
+	{
+		fprintf(stderr, "paperspace block name: %s\n",
+		        this->getName());
+	}
 #endif
-  return ret;
+	return ret;
 }
 
 /*!
   This methods writes a BLOCK entity to \a file.
 */
 
-bool 
-dimeBlock::write(dimeOutput * const file)
+bool
+dimeBlock::write(dimeOutput* const file)
 {
-  this->preWrite(file);
+	this->preWrite(file);
 
-  file->writeGroupCode(2);
-  file->writeString(this->name);
-  file->writeGroupCode(70);
-  file->writeInt16(this->flags);
-  
-  file->writeGroupCode(10);
-  file->writeDouble(this->basePoint[0]);
-  file->writeGroupCode(20);
-  file->writeDouble(this->basePoint[1]);
-  file->writeGroupCode(30);
-  file->writeDouble(this->basePoint[2]);
+	file->writeGroupCode(2);
+	file->writeString(this->name);
+	file->writeGroupCode(70);
+	file->writeInt16(this->flags);
 
-  // write unknown records.
-  bool ret = dimeEntity::write(file);
+	file->writeGroupCode(10);
+	file->writeDouble(this->basePoint[0]);
+	file->writeGroupCode(20);
+	file->writeDouble(this->basePoint[1]);
+	file->writeGroupCode(30);
+	file->writeDouble(this->basePoint[2]);
 
-  if (ret) {
-    int i, n = this->entities.count();
-    for (i = 0; i < n; i++) {
-      if (!this->entities[i]->write(file)) break;
-    }
-    if (i == n) {
-      if (this->endblock) {
-	ret = this->endblock->write(file);
-      }
-      else { // just put a minimal ENDBLK there
-	file->writeGroupCode(0);
-	file->writeString("ENDBLK");
-	file->writeGroupCode(8);
-	ret = file->writeString(this->getLayerName());
-      }
-    }
-    else ret = false;
-  }
-  return ret;
+	// write unknown records.
+	bool ret = dimeEntity::write(file);
+
+	if (ret)
+	{
+		int i, n = this->entities.count();
+		for (i = 0; i < n; i++)
+		{
+			if (!this->entities[i]->write(file)) break;
+		}
+		if (i == n)
+		{
+			if (this->endblock)
+			{
+				ret = this->endblock->write(file);
+			}
+			else
+			{
+				// just put a minimal ENDBLK there
+				file->writeGroupCode(0);
+				file->writeString("ENDBLK");
+				file->writeGroupCode(8);
+				ret = file->writeString(this->getLayerName());
+			}
+		}
+		else ret = false;
+	}
+	return ret;
 }
 
 //!
 
-int 
+int
 dimeBlock::typeId() const
 {
-  return dimeBase::dimeBlockType;
+	return dimeBase::dimeBlockType;
 }
 
 //!
 
-bool 
-dimeBlock::handleRecord(const int groupcode, 
-		       const dimeParam &param,
-		       dimeMemHandler * const memhandler)
+bool
+dimeBlock::handleRecord(const int groupcode,
+                        const dimeParam& param,
+                        dimeMemHandler* const memhandler)
 {
-  switch(groupcode) {
-  case 2:
-    {
-      const char *str = param.string_data;
-      if (str) {
-	// this->name is used as a temporary storage space...
-	// see read() to see what is done later.
-	this->name = new char[strlen(str)+1];
-	if (this->name) {
-	  strcpy((char*)this->name, str);
+	switch (groupcode)
+	{
+	case 2:
+		{
+			const char* str = param.string_data;
+			if (str)
+			{
+				// this->name is used as a temporary storage space...
+				// see read() to see what is done later.
+				this->name = new char[strlen(str) + 1];
+				if (this->name)
+				{
+					strcpy((char*)this->name, str);
+				}
+			}
+			return true;
+		}
+	case 70:
+		this->flags = param.int16_data;
+		return true;
+	case 10:
+	case 20:
+	case 30:
+		this->basePoint[groupcode / 10 - 1] = param.double_data;
+		return true;
 	}
-      }
-      return true;
-    }
-  case 70:
-    this->flags = param.int16_data;
-    return true;
-  case 10:
-  case 20:
-  case 30:
-    this->basePoint[groupcode/10-1] = param.double_data;
-    return true;
-  }
-  return dimeEntity::handleRecord(groupcode, param, memhandler);
+	return dimeEntity::handleRecord(groupcode, param, memhandler);
 }
 
 //!
 
-const char *
+const char*
 dimeBlock::getEntityName() const
 {
-  return entityName;
+	return entityName;
 }
 
 //!
 
-bool 
+bool
 dimeBlock::getRecord(const int groupcode,
-		    dimeParam &param,
-		    const int index) const
+                     dimeParam& param,
+                     const int index) const
 {
-  switch(groupcode) {
-  case 2:
-    param.string_data = this->name;
-    return true;
-  case 70:
-    param.int16_data = this->flags;
-    return true;
-  case 10:
-  case 20:
-  case 30:
-    param.double_data = this->basePoint[groupcode/10-1];
-    return true;
-  }
-  return dimeEntity::getRecord(groupcode, param, index);
+	switch (groupcode)
+	{
+	case 2:
+		param.string_data = this->name;
+		return true;
+	case 70:
+		param.int16_data = this->flags;
+		return true;
+	case 10:
+	case 20:
+	case 30:
+		param.double_data = this->basePoint[groupcode / 10 - 1];
+		return true;
+	}
+	return dimeEntity::getRecord(groupcode, param, index);
 }
 
 //!
 
-void 
-dimeBlock::fixReferences(dimeModel * const model) 
+void
+dimeBlock::fixReferences(dimeModel* const model)
 {
-  int i, n = this->entities.count();
-  for (i = 0; i < n; i++) 
-    this->entities[i]->fixReferences(model);
+	int i, n = this->entities.count();
+	for (i = 0; i < n; i++)
+		this->entities[i]->fixReferences(model);
 }
 
 //!
@@ -316,29 +335,30 @@ dimeBlock::fixReferences(dimeModel * const model)
 int
 dimeBlock::countRecords() const
 {
-  int cnt = 0;
-  cnt += 3; // header
-  cnt += 3; // basePoint
-  
-  int n = this->entities.count();
-  for (int i = 0; i < n; i++)
-    cnt += this->entities[i]->countRecords();
-  
-  return cnt + dimeEntity::countRecords();
+	int cnt = 0;
+	cnt += 3; // header
+	cnt += 3; // basePoint
+
+	int n = this->entities.count();
+	for (int i = 0; i < n; i++)
+		cnt += this->entities[i]->countRecords();
+
+	return cnt + dimeEntity::countRecords();
 }
 
 /*!
   Inserts an entity in this block at position \a idx.
 */
 
-void 
-dimeBlock::insertEntity(dimeEntity * const entity, const int idx)
+void
+dimeBlock::insertEntity(dimeEntity* const entity, const int idx)
 {
-  if (idx < 0) this->entities.append(entity);
-  else {
-    assert(idx <= this->entities.count());
-    this->entities.insertElem(idx, entity);
-  }
+	if (idx < 0) this->entities.append(entity);
+	else
+	{
+		assert(idx <= this->entities.count());
+		this->entities.insertElem(idx, entity);
+	}
 }
 
 /*!
@@ -347,31 +367,33 @@ dimeBlock::insertEntity(dimeEntity * const entity, const int idx)
   returning from this method.
 */
 
-void 
+void
 dimeBlock::removeEntity(const int idx, const bool deleteIt)
 {
-  assert(idx >= 0 && idx < this->entities.count());
-  if (!this->memHandler && deleteIt) delete this->entities[idx];
-  this->entities.removeElem(idx);
+	assert(idx >= 0 && idx < this->entities.count());
+	if (!this->memHandler && deleteIt) delete this->entities[idx];
+	this->entities.removeElem(idx);
 }
 
 //!
 
-bool 
-dimeBlock::traverse(const dimeState * const state, 
-		   dimeCallback callback,
-		   void *userdata)
+bool
+dimeBlock::traverse(const dimeState* const state,
+                    dimeCallback callback,
+                    void* userdata)
 {
-  if (callback(state, this, userdata)) {
-    //FIXME: what to do with basePoint?
-    const int n = this->entities.count();
-    for (int i = 0; i < n; i++) {
-      if (!entities[i]->traverse(state, callback, userdata)) return false;
-    }
-  }
-  if (this->endblock) 
-    return callback(state, this->endblock, userdata);
-  return true;
+	if (callback(state, this, userdata))
+	{
+		//FIXME: what to do with basePoint?
+		const int n = this->entities.count();
+		for (int i = 0; i < n; i++)
+		{
+			if (!entities[i]->traverse(state, callback, userdata)) return false;
+		}
+	}
+	if (this->endblock)
+		return callback(state, this->endblock, userdata);
+	return true;
 }
 
 /*!
@@ -380,9 +402,8 @@ dimeBlock::traverse(const dimeState * const state,
   finished modifying a block if you want to free that overhead memory.
 */
 
-void 
+void
 dimeBlock::fitEntities()
 {
-  this->entities.shrinkToFit();
+	this->entities.shrinkToFit();
 }
-

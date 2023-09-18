@@ -47,10 +47,10 @@
   Constructor.
 */
 
-dimeUnknownTable::dimeUnknownTable(const char * const name,
-                                   dimeMemHandler * const memhandler)
+dimeUnknownTable::dimeUnknownTable(const char* const name,
+                                   dimeMemHandler* const memhandler)
 {
-  DXF_STRCPY(memhandler, this->tableName, name);
+	DXF_STRCPY(memhandler, this->tableName, name);
 }
 
 /*!
@@ -59,34 +59,36 @@ dimeUnknownTable::dimeUnknownTable(const char * const name,
 
 dimeUnknownTable::~dimeUnknownTable()
 {
-  delete [] this->tableName;
+	delete [] this->tableName;
 }
 
 //!
 
-dimeTableEntry *
-dimeUnknownTable::copy(dimeModel * const model) const
+dimeTableEntry*
+dimeUnknownTable::copy(dimeModel* const model) const
 {
-  dimeMemHandler *memh = model->getMemHandler();
-  dimeUnknownTable *u = new(memh) dimeUnknownTable(this->tableName, memh);
-  if (!this->copyRecords(u, model)) {
-    // check if allocated on heap.
-    if (!memh) delete u;
-    u = NULL;
-  }
-  return u;
+	dimeMemHandler* memh = model->getMemHandler();
+	auto u = new(memh) dimeUnknownTable(this->tableName, memh);
+	if (!this->copyRecords(u, model))
+	{
+		// check if allocated on heap.
+		if (!memh) delete u;
+		u = nullptr;
+	}
+	return u;
 }
 
 //!
 
 bool
-dimeUnknownTable::write(dimeOutput * const file)
+dimeUnknownTable::write(dimeOutput* const file)
 {
-  bool ret = dimeTableEntry::preWrite(file);
-  if (ret) {
-    ret = dimeTableEntry::write(file);
-  }
-  return ret;
+	bool ret = dimeTableEntry::preWrite(file);
+	if (ret)
+	{
+		ret = dimeTableEntry::write(file);
+	}
+	return ret;
 }
 
 //!
@@ -94,7 +96,7 @@ dimeUnknownTable::write(dimeOutput * const file)
 int
 dimeUnknownTable::typeId() const
 {
-  return dimeBase::dimeUnknownTableType;
+	return dimeBase::dimeUnknownTableType;
 }
 
 //!
@@ -102,13 +104,13 @@ dimeUnknownTable::typeId() const
 int
 dimeUnknownTable::countRecords() const
 {
-  return 1 + dimeTableEntry::countRecords();
+	return 1 + dimeTableEntry::countRecords();
 }
 
 //!
 
-const char *
+const char*
 dimeUnknownTable::getTableName() const
 {
-  return this->tableName;
+	return this->tableName;
 }

@@ -38,45 +38,46 @@
 #include <dime/util/BSPTree.h>
 #include <stdio.h>
 
-class DIME_DLL_API dxfLayerData {
+class DIME_DLL_API dxfLayerData
+{
 public:
-  dxfLayerData(const int colidx);
-  ~dxfLayerData();
+	dxfLayerData(int colidx);
+	~dxfLayerData();
 
-  void setFillmode(const bool fillmode);
-  
-  void addLine(const dimeVec3f &v0, const dimeVec3f &v1,
-	       const dimeMatrix * const matrix = NULL);
+	void setFillmode(bool fillmode);
 
-  void addPoint(const dimeVec3f &v,
-		const dimeMatrix * const matrix = NULL);
+	void addLine(const dimeVec3f& v0, const dimeVec3f& v1,
+	             const dimeMatrix* matrix = nullptr);
 
-  void addTriangle(const dimeVec3f &v0,
-		   const dimeVec3f &v1,
-		   const dimeVec3f &v2,
-		   const dimeMatrix * const matrix = NULL);
-  void addQuad(const dimeVec3f &v0,
-	       const dimeVec3f &v1,
-	       const dimeVec3f &v2,
-	       const dimeVec3f &v3,
-	       const dimeMatrix * const matrix = NULL);
-  
-  void writeWrl(FILE *fp, int indent, const bool vrml1,
-                const bool only2d);
+	void addPoint(const dimeVec3f& v,
+	              const dimeMatrix* matrix = nullptr);
 
-//private:
+	void addTriangle(const dimeVec3f& v0,
+	                 const dimeVec3f& v1,
+	                 const dimeVec3f& v2,
+	                 const dimeMatrix* matrix = nullptr);
+	void addQuad(const dimeVec3f& v0,
+	             const dimeVec3f& v1,
+	             const dimeVec3f& v2,
+	             const dimeVec3f& v3,
+	             const dimeMatrix* matrix = nullptr);
+
+	void writeWrl(FILE* fp, int indent, bool vrml1,
+	              bool only2d);
+
+	//private:
 public: // 20011001 thammer - please don't kill me for this ;-)
 
-  friend class dime2So;
-  friend class dime2Profit;
+	friend class dime2So;
+	friend class dime2Profit;
 
-  bool fillmode;
-  int colidx;
-  dimeBSPTree facebsp;
-  dimeArray <int> faceindices;
-  dimeBSPTree linebsp;
-  dimeArray <int> lineindices;
-  dimeArray <dimeVec3f> points;
+	bool fillmode;
+	int colidx;
+	dimeBSPTree facebsp;
+	dimeArray<int> faceindices;
+	dimeBSPTree linebsp;
+	dimeArray<int> lineindices;
+	dimeArray<dimeVec3f> points;
 };
 
 #endif // _DXF2VRML_LAYERDATA_H_

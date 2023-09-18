@@ -47,10 +47,10 @@
   Constructor.
 */
 
-dimeUnknownEntity::dimeUnknownEntity(const char * const name,
-                                     dimeMemHandler * const memhandler)
+dimeUnknownEntity::dimeUnknownEntity(const char* const name,
+                                     dimeMemHandler* const memhandler)
 {
-  DXF_STRCPY(memhandler, this->entityName, name);
+	DXF_STRCPY(memhandler, this->entityName, name);
 }
 
 /*!
@@ -59,31 +59,32 @@ dimeUnknownEntity::dimeUnknownEntity(const char * const name,
 
 dimeUnknownEntity::~dimeUnknownEntity()
 {
-  delete [] this->entityName;
+	delete [] this->entityName;
 }
 
 //!
 
-dimeEntity *
-dimeUnknownEntity::copy(dimeModel * const model) const
+dimeEntity*
+dimeUnknownEntity::copy(dimeModel* const model) const
 {
-  dimeMemHandler *memh = model->getMemHandler();
-  dimeUnknownEntity *u = new(memh) dimeUnknownEntity(this->entityName, memh);
-  if (!this->copyRecords(u, model)) {
-    // check if allocated on heap.
-    if (!memh) delete u;
-    u = NULL;
-  }
-  return u;
+	dimeMemHandler* memh = model->getMemHandler();
+	auto u = new(memh) dimeUnknownEntity(this->entityName, memh);
+	if (!this->copyRecords(u, model))
+	{
+		// check if allocated on heap.
+		if (!memh) delete u;
+		u = nullptr;
+	}
+	return u;
 }
 
 //!
 
 bool
-dimeUnknownEntity::write(dimeOutput * const file)
+dimeUnknownEntity::write(dimeOutput* const file)
 {
-  dimeEntity::preWrite(file);
-  return dimeEntity::write(file);
+	dimeEntity::preWrite(file);
+	return dimeEntity::write(file);
 }
 
 //!
@@ -91,7 +92,7 @@ dimeUnknownEntity::write(dimeOutput * const file)
 int
 dimeUnknownEntity::typeId() const
 {
-  return dimeBase::dimeUnknownEntityType;
+	return dimeBase::dimeUnknownEntityType;
 }
 
 //!
@@ -99,13 +100,13 @@ dimeUnknownEntity::typeId() const
 int
 dimeUnknownEntity::countRecords() const
 {
-  return 1 + dimeEntity::countRecords();
+	return 1 + dimeEntity::countRecords();
 }
 
 //!
 
-const char *
+const char*
 dimeUnknownEntity::getEntityName() const
 {
-  return this->entityName;
+	return this->entityName;
 }

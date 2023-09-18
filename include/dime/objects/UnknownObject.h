@@ -37,23 +37,21 @@
 
 class dimeMemHandler;
 
-class DIME_DLL_API dimeUnknownObject : public dimeObject 
+class DIME_DLL_API dimeUnknownObject : public dimeObject
 {
 public:
-  dimeUnknownObject(const char * const name, dimeMemHandler * const memhandler);
-  virtual ~dimeUnknownObject();
+	dimeUnknownObject(const char* name, dimeMemHandler* memhandler);
+	~dimeUnknownObject() override;
 
-  virtual dimeObject *copy(dimeModel * const model) const;
-  
-  virtual const char *getObjectName() const;
-  virtual bool write(dimeOutput * const out);
-  virtual int typeId() const;
-  virtual int countRecords() const;
-  
+	dimeObject* copy(dimeModel* model) const override;
+
+	const char* getObjectName() const override;
+	bool write(dimeOutput* out) override;
+	int typeId() const override;
+	int countRecords() const override;
+
 private:
-  char *objectName;
-  
+	char* objectName;
 }; // class dimeUnknownObject
 
 #endif // ! DIME_UNKNOWNOBJECT_H
-

@@ -45,27 +45,27 @@
 */
 
 dimeInt16Record::dimeInt16Record(const int group_code, const int16 val)
-  :dimeRecord(group_code)
+	: dimeRecord(group_code)
 {
-  this->setValue(val);
+	this->setValue(val);
 }
 
 //!
 
-dimeRecord *
-dimeInt16Record::copy(dimeMemHandler * const mh) const
+dimeRecord*
+dimeInt16Record::copy(dimeMemHandler* const mh) const
 {
-  return new(mh) dimeInt16Record(this->groupCode, this->value);
+	return new(mh) dimeInt16Record(this->groupCode, this->value);
 }
 
 /*!
   Sets the int16 value.
 */
 
-void 
+void
 dimeInt16Record::setValue(const int16 val)
 {
-  this->value = val;
+	this->value = val;
 }
 
 /*!
@@ -75,49 +75,49 @@ dimeInt16Record::setValue(const int16 val)
 int16
 dimeInt16Record::getValue() const
 {
-  return this->value;
+	return this->value;
 }
 
 //!
 
-int 
+int
 dimeInt16Record::typeId() const
 {
-  return dimeBase::dimeInt16RecordType;
+	return dimeBase::dimeInt16RecordType;
 }
 
 //!
 
-bool 
-dimeInt16Record::read(dimeInput * const in)
+bool
+dimeInt16Record::read(dimeInput* const in)
 {
-  return in->readInt16(this->value);
+	return in->readInt16(this->value);
 }
 
 //!
 
-bool 
-dimeInt16Record::write(dimeOutput * const out)
+bool
+dimeInt16Record::write(dimeOutput* const out)
 {
-  if (dimeRecord::write(out)) {
-    return out->writeInt16(this->value);
-  }
-  return false;
+	if (dimeRecord::write(out))
+	{
+		return out->writeInt16(this->value);
+	}
+	return false;
 }
 
 //!
 
-void 
-dimeInt16Record::setValue(const dimeParam &param, dimeMemHandler * const )
+void
+dimeInt16Record::setValue(const dimeParam& param, dimeMemHandler* const)
 {
-  this->value = param.int16_data;
+	this->value = param.int16_data;
 }
 
 //!
 
-void 
-dimeInt16Record::getValue(dimeParam &param) const
+void
+dimeInt16Record::getValue(dimeParam& param) const
 {
-  param.int16_data = this->value;
+	param.int16_data = this->value;
 }
-

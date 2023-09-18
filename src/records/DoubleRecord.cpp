@@ -46,27 +46,27 @@
 */
 
 dimeDoubleRecord::dimeDoubleRecord(const int group_code, const dxfdouble val)
-  : dimeRecord(group_code)
+	: dimeRecord(group_code)
 {
-  this->setValue(val);
+	this->setValue(val);
 }
 
 //!
 
-dimeRecord *
-dimeDoubleRecord::copy(dimeMemHandler * const mh) const
+dimeRecord*
+dimeDoubleRecord::copy(dimeMemHandler* const mh) const
 {
-  return new(mh) dimeDoubleRecord(this->groupCode, this->value);
+	return new(mh) dimeDoubleRecord(this->groupCode, this->value);
 }
 
 /*!
   Sets the floating point value.
 */
 
-void 
+void
 dimeDoubleRecord::setValue(const dxfdouble val)
 {
-  this->value = val;
+	this->value = val;
 }
 
 /*!
@@ -76,49 +76,49 @@ dimeDoubleRecord::setValue(const dxfdouble val)
 dxfdouble
 dimeDoubleRecord::getValue() const
 {
-  return this->value;
+	return this->value;
 }
 
 //!
 
-int 
+int
 dimeDoubleRecord::typeId() const
 {
-  return dimeBase::dimeDoubleRecordType;
+	return dimeBase::dimeDoubleRecordType;
 }
 
 //!
 
-bool 
-dimeDoubleRecord::read(dimeInput * const in)
+bool
+dimeDoubleRecord::read(dimeInput* const in)
 {
-  return in->readDouble(this->value);
+	return in->readDouble(this->value);
 }
 
 //!
 
-bool 
-dimeDoubleRecord::write(dimeOutput * const out)
+bool
+dimeDoubleRecord::write(dimeOutput* const out)
 {
-  if (dimeRecord::write(out)) {
-    return out->writeDouble(this->value);
-  }
-  return false;
+	if (dimeRecord::write(out))
+	{
+		return out->writeDouble(this->value);
+	}
+	return false;
 }
 
 //!
 
-void 
-dimeDoubleRecord::setValue(const dimeParam &param, dimeMemHandler * const)
+void
+dimeDoubleRecord::setValue(const dimeParam& param, dimeMemHandler* const)
 {
-  this->value = param.double_data;
+	this->value = param.double_data;
 }
 
 //!
 
-void 
-dimeDoubleRecord::getValue(dimeParam &param) const
+void
+dimeDoubleRecord::getValue(dimeParam& param) const
 {
-  param.double_data = this->value;
+	param.double_data = this->value;
 }
-

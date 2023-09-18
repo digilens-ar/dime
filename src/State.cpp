@@ -43,55 +43,57 @@
 */
 
 dimeState::dimeState(const bool traversePolylineVertices,
-		   const bool explodeInserts) 
+                     const bool explodeInserts)
 {
-  this->matrix.makeIdentity();
-  this->invmatrix.makeIdentity();
-  this->currentInsert = NULL;
-  this->flags = 0;
-  if (traversePolylineVertices) {
-    this->flags |= TRAVERSE_POLYLINE_VERTICES;
-  }
-  if (explodeInserts) {
-    this->flags |= EXPLODE_INSERTS;
-  }
+	this->matrix.makeIdentity();
+	this->invmatrix.makeIdentity();
+	this->currentInsert = nullptr;
+	this->flags = 0;
+	if (traversePolylineVertices)
+	{
+		this->flags |= TRAVERSE_POLYLINE_VERTICES;
+	}
+	if (explodeInserts)
+	{
+		this->flags |= EXPLODE_INSERTS;
+	}
 }
 
 /*!
   Constructor.
 */
 
-dimeState::dimeState(const dimeState &st) 
+dimeState::dimeState(const dimeState& st)
 {
-  this->matrix = st.matrix;
-  this->invmatrix = st.invmatrix;
-  this->flags = st.flags;
-  this->currentInsert = st.currentInsert;
+	this->matrix = st.matrix;
+	this->invmatrix = st.invmatrix;
+	this->flags = st.flags;
+	this->currentInsert = st.currentInsert;
 }
 
-void 
-dimeState::setMatrix(const dimeMatrix &m)
+void
+dimeState::setMatrix(const dimeMatrix& m)
 {
-  this->matrix = m;
-  this->flags |= INVMATRIX_DIRTY;
+	this->matrix = m;
+	this->flags |= INVMATRIX_DIRTY;
 }
 
 
-const dimeMatrix &
-dimeState::getInvMatrix() const 
+const dimeMatrix&
+dimeState::getInvMatrix() const
 {
-  if (this->flags & INVMATRIX_DIRTY) {
-    dimeState *thisp = (dimeState*)this;
-    thisp->invmatrix = thisp->matrix;
-    thisp->invmatrix.inverse();
-    thisp->flags ^= INVMATRIX_DIRTY;
-  }
-  return this->invmatrix;
+	if (this->flags & INVMATRIX_DIRTY)
+	{
+		auto thisp = (dimeState*)this;
+		thisp->invmatrix = thisp->matrix;
+		thisp->invmatrix.inverse();
+		thisp->flags ^= INVMATRIX_DIRTY;
+	}
+	return this->invmatrix;
 }
 
-void 
-dimeState::getMatrix(dimeMatrix &m) const 
+void
+dimeState::getMatrix(dimeMatrix& m) const
 {
-  m = this->matrix;
+	m = this->matrix;
 }
-

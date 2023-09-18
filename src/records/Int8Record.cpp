@@ -45,27 +45,27 @@
 */
 
 dimeInt8Record::dimeInt8Record(const int group_code, const int8 val)
-  : dimeRecord(group_code)
+	: dimeRecord(group_code)
 {
-  this->setValue(val);
+	this->setValue(val);
 }
 
 //!
 
-dimeRecord *
-dimeInt8Record::copy(dimeMemHandler * const mh) const
+dimeRecord*
+dimeInt8Record::copy(dimeMemHandler* const mh) const
 {
-  return new(mh) dimeInt8Record(this->groupCode, this->value);
+	return new(mh) dimeInt8Record(this->groupCode, this->value);
 }
 
 /*!
   Sets the value.
 */
 
-void 
+void
 dimeInt8Record::setValue(const int8 val)
 {
-  this->value = val;
+	this->value = val;
 }
 
 /*!
@@ -75,49 +75,49 @@ dimeInt8Record::setValue(const int8 val)
 int8
 dimeInt8Record::getValue() const
 {
-  return this->value;
+	return this->value;
 }
 
 //!
 
-int 
+int
 dimeInt8Record::typeId() const
 {
-  return dimeBase::dimeInt8RecordType;
+	return dimeBase::dimeInt8RecordType;
 }
 
 //!
 
-bool 
-dimeInt8Record::read(dimeInput * const in)
+bool
+dimeInt8Record::read(dimeInput* const in)
 {
-  return in->readInt8(this->value);
+	return in->readInt8(this->value);
 }
 
 //!
 
-bool 
-dimeInt8Record::write(dimeOutput * const out)
+bool
+dimeInt8Record::write(dimeOutput* const out)
 {
-  if (dimeRecord::write(out)) {
-    return out->writeInt8(this->value);
-  }
-  return false;
+	if (dimeRecord::write(out))
+	{
+		return out->writeInt8(this->value);
+	}
+	return false;
 }
 
 //!
 
-void 
-dimeInt8Record::setValue(const dimeParam &param, dimeMemHandler * const )
+void
+dimeInt8Record::setValue(const dimeParam& param, dimeMemHandler* const)
 {
-  this->value = param.int8_data;
+	this->value = param.int8_data;
 }
 
 //!
 
-void 
-dimeInt8Record::getValue(dimeParam &param) const
+void
+dimeInt8Record::getValue(dimeParam& param) const
 {
-  param.int8_data = this->value;
+	param.int8_data = this->value;
 }
-

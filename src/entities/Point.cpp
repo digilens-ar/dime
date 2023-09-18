@@ -49,111 +49,115 @@ static char entityName[] = "POINT";
 */
 
 dimePoint::dimePoint()
-  : coords(0, 0, 0)
+	: coords(0, 0, 0)
 {
 }
 
 //!
 
-dimeEntity *
-dimePoint::copy(dimeModel * const model) const
+dimeEntity*
+dimePoint::copy(dimeModel* const model) const
 {
-  dimePoint *p = new(model->getMemHandler()) dimePoint;
+	auto p = new(model->getMemHandler()) dimePoint;
 
-  p->coords = this->coords;
-  p->copyExtrusionData(this);
+	p->coords = this->coords;
+	p->copyExtrusionData(this);
 
-  if (!this->copyRecords(p, model)) {
-    // check if allocated on heap.
-    if (!model->getMemHandler()) delete p;
-    p = NULL;
-  }
-  return p;
+	if (!this->copyRecords(p, model))
+	{
+		// check if allocated on heap.
+		if (!model->getMemHandler()) delete p;
+		p = nullptr;
+	}
+	return p;
 }
 
 //!
 
-bool 
-dimePoint::write(dimeOutput * const file)
+bool
+dimePoint::write(dimeOutput* const file)
 {
-  bool ret = true;
-  if (!this->isDeleted()) {
-    this->preWrite(file);
+	bool ret = true;
+	if (!this->isDeleted())
+	{
+		this->preWrite(file);
 
-    file->writeGroupCode(10);
-    file->writeDouble(this->coords[0]);
-    file->writeGroupCode(20);
-    file->writeDouble(this->coords[1]);
-    file->writeGroupCode(30);
-    file->writeDouble(this->coords[2]);
-    
-    ret = this->writeExtrusionData(file) && dimeEntity::write(file);
-  }
-  return ret;
+		file->writeGroupCode(10);
+		file->writeDouble(this->coords[0]);
+		file->writeGroupCode(20);
+		file->writeDouble(this->coords[1]);
+		file->writeGroupCode(30);
+		file->writeDouble(this->coords[2]);
+
+		ret = this->writeExtrusionData(file) && dimeEntity::write(file);
+	}
+	return ret;
 }
 
 //!
 
-int 
+int
 dimePoint::typeId() const
 {
-  return dimeBase::dimePointType;
+	return dimeBase::dimePointType;
 }
 
 //!
 
-bool 
+bool
 dimePoint::handleRecord(const int groupcode,
-		       const dimeParam &param,
-		       dimeMemHandler * const memhandler)
+                        const dimeParam& param,
+                        dimeMemHandler* const memhandler)
 {
-  switch(groupcode) {
-  case 10:
-  case 20:
-  case 30:
-    this->coords[groupcode/10-1] = param.double_data;
-    return true;
-  }
-  return dimeExtrusionEntity::handleRecord(groupcode, param, memhandler); 
+	switch (groupcode)
+	{
+	case 10:
+	case 20:
+	case 30:
+		this->coords[groupcode / 10 - 1] = param.double_data;
+		return true;
+	}
+	return dimeExtrusionEntity::handleRecord(groupcode, param, memhandler);
 }
 
 //!
 
-const char *
+const char*
 dimePoint::getEntityName() const
 {
-  return entityName;
+	return entityName;
 }
 
 //!
 
-bool 
+bool
 dimePoint::getRecord(const int groupcode,
-		    dimeParam &param,
-		    const int index) const
+                     dimeParam& param,
+                     const int index) const
 {
-  switch(groupcode) {
-  case 10:
-  case 20:
-  case 30:
-    param.double_data = this->coords[groupcode/10-1];
-    return true;
-  }
-  return dimeExtrusionEntity::getRecord(groupcode, param, index); 
+	switch (groupcode)
+	{
+	case 10:
+	case 20:
+	case 30:
+		param.double_data = this->coords[groupcode / 10 - 1];
+		return true;
+	}
+	return dimeExtrusionEntity::getRecord(groupcode, param, index);
 }
 
 //!
 
-dimeEntity::GeometryType 
-dimePoint::extractGeometry(dimeArray <dimeVec3f> &verts,
-			  dimeArray <int> &/*indices*/,
-			  dimeVec3f &extrusionDir,
-			  dxfdouble &thickness)
+dimeEntity::GeometryType
+dimePoint::extractGeometry(dimeArray<dimeVec3f>& verts,
+                           dimeArray<int>&/*indices*/,
+                           dimeVec3f& extrusionDir,
+                           dxfdouble& thickness)
 {
-  thickness = this->thickness;
-  extrusionDir = this->extrusionDir;
-  verts.append(this->coords);
-  return dimeEntity::POINTS;
+	thickness = this->thickness;
+	extrusionDir = this->extrusionDir;
+	verts.append(this->coords);
+	return dimeEntity::POINTS;
 }
 
 //!
@@ -161,8 +165,7 @@ dimePoint::extractGeometry(dimeArray <dimeVec3f> &verts,
 int
 dimePoint::countRecords() const
 {
-  int cnt = 0;
-  cnt += 4; // header + coordinates
-  return cnt + dimeExtrusionEntity::countRecords();
+	int cnt = 0;
+	cnt += 4; // header + coordinates
+	return cnt + dimeExtrusionEntity::countRecords();
 }
-

@@ -38,104 +38,115 @@
 #include <dime/State.h>
 
 
-void 
-convert_solid_data(dimeVec3f *v, dimeVec3f &e, dxfdouble thickness,
-		   const dimeState *state,
-		   dxfLayerData *layerData)
+void
+convert_solid_data(dimeVec3f* v, dimeVec3f& e, dxfdouble thickness,
+                   const dimeState* state,
+                   dxfLayerData* layerData)
 {
-  dimeMatrix matrix;
-  state->getMatrix(matrix);
+	dimeMatrix matrix;
+	state->getMatrix(matrix);
 
-  if (e != dimeVec3f(0,0,1)) {
-    dimeMatrix m;
-    dimeEntity::generateUCS(e, m);
-    matrix.multRight(m);
-  }
-  e = dimeVec3f(0,0,1) * thickness;
-  
-  int numunique = 0;
-  dimeVec3f u[4];
-  
-  int i,j;
-  for (i = 0; i < 4; i++) {
-    for (j = 0; j < numunique; j++) {
-      if (u[j] == v[i]) break;
-    }
-    if (j == numunique) {
-      u[numunique++] = v[i];
-    }
-  }
+	if (e != dimeVec3f(0, 0, 1))
+	{
+		dimeMatrix m;
+		dimeEntity::generateUCS(e, m);
+		matrix.multRight(m);
+	}
+	e = dimeVec3f(0, 0, 1) * thickness;
 
-  switch (numunique) {
-  case 1:
-    if (thickness != 0.0) {
-      layerData->addLine(u[0], u[0]+e, &matrix);
-    }
-    else {
-      layerData->addPoint(u[0], &matrix);
-    }
-    break;
-  case 2:
-    if (thickness != 0.0) {
-      layerData->addQuad(u[0], u[1], u[1]+e, u[0]+e, &matrix);
-    }
-    else {
-      layerData->addLine(u[0], u[1], &matrix);
-    }
-    break;
-  case 3:
-    // FIXME: check fillmode
-    layerData->addTriangle(u[0], u[1], u[2], &matrix);
-    if (thickness != 0.0) {
-      layerData->addTriangle(u[0]+e, u[1]+e, u[2]+e, &matrix);
-      layerData->addQuad(u[0], u[1], u[1]+e, u[0]+e, &matrix);
-      layerData->addQuad(u[1], u[2], u[2]+e, u[1]+e, &matrix);
-      layerData->addQuad(u[2], u[0], u[0]+e, u[2]+e, &matrix);
-    }
-    break;
-  case 4:
-    // FIXME: check fillmode
-    layerData->addQuad(u[0], u[1], u[3], u[2], &matrix);
-    if (thickness != 0) {
-      layerData->addQuad(u[0]+e, u[1]+e, u[3]+e, u[2]+e, &matrix);
-      layerData->addQuad(u[0], u[1], u[1]+e, u[0]+e, &matrix);
-      layerData->addQuad(u[1], u[3], u[3]+e, u[1]+e, &matrix);
-      layerData->addQuad(u[3], u[2], u[2]+e, u[3]+e, &matrix);
-      layerData->addQuad(u[2], u[0], u[0]+e, u[2]+e, &matrix);
-    }
-    break;
-  default:
-    fprintf(stderr,"Unexpected error converting SOLID\n");
-    break;
-  }
+	int numunique = 0;
+	dimeVec3f u[4];
 
-}  
+	int i, j;
+	for (i = 0; i < 4; i++)
+	{
+		for (j = 0; j < numunique; j++)
+		{
+			if (u[j] == v[i]) break;
+		}
+		if (j == numunique)
+		{
+			u[numunique++] = v[i];
+		}
+	}
+
+	switch (numunique)
+	{
+	case 1:
+		if (thickness != 0.0)
+		{
+			layerData->addLine(u[0], u[0] + e, &matrix);
+		}
+		else
+		{
+			layerData->addPoint(u[0], &matrix);
+		}
+		break;
+	case 2:
+		if (thickness != 0.0)
+		{
+			layerData->addQuad(u[0], u[1], u[1] + e, u[0] + e, &matrix);
+		}
+		else
+		{
+			layerData->addLine(u[0], u[1], &matrix);
+		}
+		break;
+	case 3:
+		// FIXME: check fillmode
+		layerData->addTriangle(u[0], u[1], u[2], &matrix);
+		if (thickness != 0.0)
+		{
+			layerData->addTriangle(u[0] + e, u[1] + e, u[2] + e, &matrix);
+			layerData->addQuad(u[0], u[1], u[1] + e, u[0] + e, &matrix);
+			layerData->addQuad(u[1], u[2], u[2] + e, u[1] + e, &matrix);
+			layerData->addQuad(u[2], u[0], u[0] + e, u[2] + e, &matrix);
+		}
+		break;
+	case 4:
+		// FIXME: check fillmode
+		layerData->addQuad(u[0], u[1], u[3], u[2], &matrix);
+		if (thickness != 0)
+		{
+			layerData->addQuad(u[0] + e, u[1] + e, u[3] + e, u[2] + e, &matrix);
+			layerData->addQuad(u[0], u[1], u[1] + e, u[0] + e, &matrix);
+			layerData->addQuad(u[1], u[3], u[3] + e, u[1] + e, &matrix);
+			layerData->addQuad(u[3], u[2], u[2] + e, u[3] + e, &matrix);
+			layerData->addQuad(u[2], u[0], u[0] + e, u[2] + e, &matrix);
+		}
+		break;
+	default:
+		fprintf(stderr, "Unexpected error converting SOLID\n");
+		break;
+	}
+}
 
 
-void 
-convert_solid(const dimeEntity *entity, const dimeState *state, 
-	      dxfLayerData *layerData, dxfConverter *converter)
+void
+convert_solid(const dimeEntity* entity, const dimeState* state,
+              dxfLayerData* layerData, dxfConverter* converter)
 {
-  // respect the value in the $FILLMODE header variable
-  layerData->setFillmode(converter->getFillmode());
+	// respect the value in the $FILLMODE header variable
+	layerData->setFillmode(converter->getFillmode());
 
-  dimeSolid *solid = (dimeSolid*)entity;
-  
-  dimeVec3f v[4];
-  solid->getVertices(v[0], v[1], v[2], v[3]);
+	auto solid = (dimeSolid*)entity;
 
-  dimeParam param;
-  if (solid->getRecord(38, param)) {
-    v[0][2] = param.double_data;
-    v[1][2] = param.double_data;
-    v[2][2] = param.double_data;
-    v[3][2] = param.double_data;
-  }
+	dimeVec3f v[4];
+	solid->getVertices(v[0], v[1], v[2], v[3]);
 
-   
-  dimeVec3f e;
-  solid->getExtrusionDir(e);
-  dxfdouble thickness = solid->getThickness();
+	dimeParam param;
+	if (solid->getRecord(38, param))
+	{
+		v[0][2] = param.double_data;
+		v[1][2] = param.double_data;
+		v[2][2] = param.double_data;
+		v[3][2] = param.double_data;
+	}
 
-  convert_solid_data(v, e, thickness, state, layerData);
+
+	dimeVec3f e;
+	solid->getExtrusionDir(e);
+	dxfdouble thickness = solid->getThickness();
+
+	convert_solid_data(v, e, thickness, state, layerData);
 }

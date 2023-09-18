@@ -44,27 +44,27 @@
 */
 
 dimeInt32Record::dimeInt32Record(const int group_code, const int32 val)
-  : dimeRecord(group_code)
+	: dimeRecord(group_code)
 {
-  this->setValue(val);
+	this->setValue(val);
 }
 
 //!
 
-dimeRecord *
-dimeInt32Record::copy(dimeMemHandler * const mh) const
+dimeRecord*
+dimeInt32Record::copy(dimeMemHandler* const mh) const
 {
-  return new(mh) dimeInt32Record(this->groupCode, this->value);
+	return new(mh) dimeInt32Record(this->groupCode, this->value);
 }
 
 /*!
   Sets the int32 value to \a val.
 */
 
-void 
+void
 dimeInt32Record::setValue(const int32 val)
 {
-  this->value = val;
+	this->value = val;
 }
 
 /*!
@@ -74,49 +74,49 @@ dimeInt32Record::setValue(const int32 val)
 int32
 dimeInt32Record::getValue() const
 {
-  return this->value;
+	return this->value;
 }
 
 //!
 
-int 
+int
 dimeInt32Record::typeId() const
 {
-  return dimeBase::dimeInt32RecordType;
+	return dimeBase::dimeInt32RecordType;
 }
 
 //!
 
-bool 
-dimeInt32Record::read(dimeInput * const in)
+bool
+dimeInt32Record::read(dimeInput* const in)
 {
-  return in->readInt32(this->value);
+	return in->readInt32(this->value);
 }
 
 //!
 
-bool 
-dimeInt32Record::write(dimeOutput * const out)
+bool
+dimeInt32Record::write(dimeOutput* const out)
 {
-  if (dimeRecord::write(out)) {
-    return out->writeInt32(this->value);
-  }
-  return false;
+	if (dimeRecord::write(out))
+	{
+		return out->writeInt32(this->value);
+	}
+	return false;
 }
 
 //!
 
-void 
-dimeInt32Record::setValue(const dimeParam &param, dimeMemHandler * const )
+void
+dimeInt32Record::setValue(const dimeParam& param, dimeMemHandler* const)
 {
-  this->value = param.int32_data;
+	this->value = param.int32_data;
 }
 
 //!
 
-void 
-dimeInt32Record::getValue(dimeParam &param) const
+void
+dimeInt32Record::getValue(dimeParam& param) const
 {
-  param.int32_data = this->value;
+	param.int32_data = this->value;
 }
-

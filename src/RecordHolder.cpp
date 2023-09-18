@@ -55,10 +55,11 @@
 */
 
 dimeRecordHolder::dimeRecordHolder(const int sep)
-  : records( NULL ), numRecords( 0 )
+	: records(nullptr), numRecords(0)
 {
-  if (sep) assert(false);
-  // this->separator = sep;
+	if (sep)
+		assert(false);
+	// this->separator = sep;
 }
 
 /*!
@@ -67,18 +68,18 @@ dimeRecordHolder::dimeRecordHolder(const int sep)
 
 dimeRecordHolder::~dimeRecordHolder()
 {
-  int i, n = this->numRecords;
-  for (i = 0; i < n; i++) delete this->records[i];
-  delete [] records;
+	int i, n = this->numRecords;
+	for (i = 0; i < n; i++) delete this->records[i];
+	delete [] records;
 }
 
 //!
 
-bool 
+bool
 dimeRecordHolder::isOfType(const int thetypeid) const
 {
-  return thetypeid == dimeRecordHolderType ||
-    dimeBase::isOfType(thetypeid);
+	return thetypeid == dimeRecordHolderType ||
+		dimeBase::isOfType(thetypeid);
 }
 
 /*!
@@ -86,24 +87,27 @@ dimeRecordHolder::isOfType(const int thetypeid) const
 */
 
 bool
-dimeRecordHolder::copyRecords(dimeRecordHolder * const rh,
-                             dimeMemHandler * const memh) const
+dimeRecordHolder::copyRecords(dimeRecordHolder* const rh,
+                              dimeMemHandler* const memh) const
 {
-  bool ok = true;
-  if (this->numRecords) {
-    rh->records = ARRAY_NEW(memh, dimeRecord*, this->numRecords);
-    if (rh->records) {
-      rh->numRecords = this->numRecords;
-      for (int i = 0; i < this->numRecords; i++)
-	rh->records[i] = this->records[i]->copy(memh);
-    } 
-    else ok = false;
-  }
-  else {
-    rh->records = NULL;
-    rh->numRecords = 0;
-  }
-  return ok;
+	bool ok = true;
+	if (this->numRecords)
+	{
+		rh->records = ARRAY_NEW(memh, dimeRecord*, this->numRecords);
+		if (rh->records)
+		{
+			rh->numRecords = this->numRecords;
+			for (int i = 0; i < this->numRecords; i++)
+				rh->records[i] = this->records[i]->copy(memh);
+		}
+		else ok = false;
+	}
+	else
+	{
+		rh->records = nullptr;
+		rh->numRecords = 0;
+	}
+	return ok;
 }
 
 /*!
@@ -115,56 +119,62 @@ dimeRecordHolder::copyRecords(dimeRecordHolder * const rh,
   \sa dimeEntity::handleRecord().
 */
 
-bool 
-dimeRecordHolder::read(dimeInput * const file)
+bool
+dimeRecordHolder::read(dimeInput* const file)
 {
-  
-  dimeRecord *record;
-  bool ok = true;
-  int32 groupcode;
-  dimeArray <dimeRecord*> array(256); // temporary array
-  dimeMemHandler *memhandler = file->getMemHandler();
+	dimeRecord* record;
+	bool ok = true;
+	int32 groupcode;
+	dimeArray<dimeRecord*> array(256); // temporary array
+	dimeMemHandler* memhandler = file->getMemHandler();
 
-  while (true) {
-    if (!file->readGroupCode(groupcode)) {
-      ok = false;
-      break;
-    }
-    if (groupcode == 0 /*this->separator*/) {
-      file->putBackGroupCode(groupcode);
-      break;
-    }
-    else { // check if subclass will handle this record
-      dimeParam param;
-      ok = dimeRecord::readRecordData(file, groupcode, param);
-      if (!ok) {
-        fprintf( stderr, "Unable to read record data for groupcode: %d\n",groupcode);
-//	sim_warning("Unable to read record data for groupcode: %d\n",
-//		    groupcode);
-	break;
-      }
-      if (!this->handleRecord(groupcode, param, memhandler)) {
-	record = dimeRecord::createRecord(groupcode, param, memhandler);
-	if (!record) {
-          fprintf( stderr, "Could not create record for group code: %d\n", groupcode );
-//	  sim_warning("could not create record for group code: %d\n",
-//		      groupcode);
-	  ok = false;
-	  break;
+	while (true)
+	{
+		if (!file->readGroupCode(groupcode))
+		{
+			ok = false;
+			break;
+		}
+		if (groupcode == 0 /*this->separator*/)
+		{
+			file->putBackGroupCode(groupcode);
+			break;
+		}
+		// check if subclass will handle this record
+		dimeParam param;
+		ok = dimeRecord::readRecordData(file, groupcode, param);
+		if (!ok)
+		{
+			fprintf(stderr, "Unable to read record data for groupcode: %d\n", groupcode);
+			//	sim_warning("Unable to read record data for groupcode: %d\n",
+			//		    groupcode);
+			break;
+		}
+		if (!this->handleRecord(groupcode, param, memhandler))
+		{
+			record = dimeRecord::createRecord(groupcode, param, memhandler);
+			if (!record)
+			{
+				fprintf(stderr, "Could not create record for group code: %d\n", groupcode);
+				//	  sim_warning("could not create record for group code: %d\n",
+				//		      groupcode);
+				ok = false;
+				break;
+			}
+			array.append(record);
+		}
 	}
-	array.append(record);
-      }
-    }
-  }
-  int num = array.count();
-  if (ok && num) {
-    this->records = ARRAY_NEW(memhandler, dimeRecord*, num);
-    this->numRecords = num;
-    for (int i = 0; i < num; i++) {
-      this->records[i] = array[i];
-    }
-  }  
-  return ok;  
+	int num = array.count();
+	if (ok && num)
+	{
+		this->records = ARRAY_NEW(memhandler, dimeRecord*, num);
+		this->numRecords = num;
+		for (int i = 0; i < num; i++)
+		{
+			this->records[i] = array[i];
+		}
+	}
+	return ok;
 }
 
 /*!
@@ -172,16 +182,18 @@ dimeRecordHolder::read(dimeInput * const file)
 */
 
 bool
-dimeRecordHolder::write(dimeOutput * const file)
+dimeRecordHolder::write(dimeOutput* const file)
 {
-  int i, n = this->numRecords;
-  for (i = 0; i < n; i++) {
-    if (this->shouldWriteRecord(this->records[i]->getGroupCode())) {
-      if (!this->records[i]->write(file)) break;
-    }
-  }
-  if (i == n) return true;
-  return false;
+	int i, n = this->numRecords;
+	for (i = 0; i < n; i++)
+	{
+		if (this->shouldWriteRecord(this->records[i]->getGroupCode()))
+		{
+			if (!this->records[i]->write(file)) break;
+		}
+	}
+	if (i == n) return true;
+	return false;
 }
 
 /*!  
@@ -200,12 +212,12 @@ dimeRecordHolder::write(dimeOutput * const file)
   \sa dimeRecordHolder::read()
   \sa dimeRecordHolder::setRecord() */
 
-bool 
+bool
 dimeRecordHolder::handleRecord(const int,
-			      const dimeParam &,
-			      dimeMemHandler * const)
+                               const dimeParam&,
+                               dimeMemHandler* const)
 {
-  return false;
+	return false;
 }
 
 /*!
@@ -227,10 +239,10 @@ dimeRecordHolder::handleRecord(const int,
 */
 
 void
-dimeRecordHolder::setRecord(const int groupcode, const dimeParam &value, 
-			   dimeMemHandler * const memhandler)
+dimeRecordHolder::setRecord(const int groupcode, const dimeParam& value,
+                            dimeMemHandler* const memhandler)
 {
-  this->setRecordCommon(groupcode, value, 0, memhandler);
+	this->setRecordCommon(groupcode, value, 0, memhandler);
 }
 
 /*!  
@@ -239,14 +251,14 @@ dimeRecordHolder::setRecord(const int groupcode, const dimeParam &value,
   to set several records with the same group code.  
   \sa dimeRecordHolder::setRecord()
 */
-  
-void 
-dimeRecordHolder::setIndexedRecord(const int groupcode, 
-                                   const dimeParam &value,
+
+void
+dimeRecordHolder::setIndexedRecord(const int groupcode,
+                                   const dimeParam& value,
                                    const int index,
-                                   dimeMemHandler * const memhandler)
+                                   dimeMemHandler* const memhandler)
 {
-  this->setRecordCommon(groupcode, value, index, memhandler);
+	this->setRecordCommon(groupcode, value, index, memhandler);
 }
 
 /*!
@@ -257,22 +269,25 @@ dimeRecordHolder::setIndexedRecord(const int groupcode,
   subclass should call its parent's method.
 */
 
-bool 
+bool
 dimeRecordHolder::getRecord(const int groupcode,
-			   dimeParam &param,
-			   const int index) const
+                            dimeParam& param,
+                            const int index) const
 {
-  int i, n = this->numRecords;
-  int cnt = 0;
-  for (i = 0; i < n; i++) {
-    if (this->records[i]->getGroupCode() == groupcode) {
-      if (cnt++ == index) {
-	this->records[i]->getValue(param);
-	return true;
-      }
-    }
-  }
-  return false;
+	int i, n = this->numRecords;
+	int cnt = 0;
+	for (i = 0; i < n; i++)
+	{
+		if (this->records[i]->getGroupCode() == groupcode)
+		{
+			if (cnt++ == index)
+			{
+				this->records[i]->getValue(param);
+				return true;
+			}
+		}
+	}
+	return false;
 }
 
 /*!
@@ -282,59 +297,68 @@ dimeRecordHolder::getRecord(const int groupcode,
   dimeRecordHolder::setRecord().
 */
 
-void 
-dimeRecordHolder::setRecords(const int * const groupcodes,
-			    const dimeParam * const params,
-			    const int numrecords,
-			    dimeMemHandler * const memhandler)
+void
+dimeRecordHolder::setRecords(const int* const groupcodes,
+                             const dimeParam* const params,
+                             const int numrecords,
+                             dimeMemHandler* const memhandler)
 {
-  int i;
-  dimeArray <dimeRecord*> newrecords(64);
+	int i;
+	dimeArray<dimeRecord*> newrecords(64);
 
-  for (i = 0; i < numrecords; i++) {
-    const int groupcode = groupcodes[i];
-    const dimeParam &param = params[i];
+	for (i = 0; i < numrecords; i++)
+	{
+		const int groupcode = groupcodes[i];
+		const dimeParam& param = params[i];
 
-    if (groupcode == 8) {
-      fprintf( stderr, "Cannot set layer name in setRecords()!\n");
-//      sim_warning("Cannot set layer name in setRecords()!\n");
-      assert(0);
-    }
-    else if (groupcode == 2 && this->typeId() == dimeBase::dimeInsertType) {
-      fprintf( stderr, "Cannot set block name for INSERT entities using setRecords()\n");
-//      sim_warning("Cannot set block name for INSERT entities using setRecords()\n");
-      assert(0);
-    }
-    else if (!this->handleRecord(groupcode, param, memhandler)) {
-      dimeRecord *record = this->findRecord(groupcode);
-      if (record) {
-	record->setValue(param);
-      }
-      else {
-	dimeRecord *record = dimeRecord::createRecord(groupcode, 
-						    param,
-						    memhandler);
-	newrecords.append(record);
-	
-      }
-    }
-  }
-  if (newrecords.count()) {
-    // don't forget the old records...
-    for (i = 0; i < this->numRecords; i++) { 
-      newrecords.append(this->records[i]);
-    }
-    int n = newrecords.count();
-    if (!memhandler) delete [] this->records;
-    this->numRecords = 0;
-    this->records = ARRAY_NEW(memhandler, dimeRecord*, n);
-    if (this->records) {
-      this->numRecords = n;
-      for (i = 0; i < n; i++) {
-	this->records[i] = newrecords[i];
-      }
-    }
-  }
+		if (groupcode == 8)
+		{
+			fprintf(stderr, "Cannot set layer name in setRecords()!\n");
+			//      sim_warning("Cannot set layer name in setRecords()!\n");
+			assert(0);
+		}
+		else if (groupcode == 2 && this->typeId() == dimeBase::dimeInsertType)
+		{
+			fprintf(stderr, "Cannot set block name for INSERT entities using setRecords()\n");
+			//      sim_warning("Cannot set block name for INSERT entities using setRecords()\n");
+			assert(0);
+		}
+		else if (!this->handleRecord(groupcode, param, memhandler))
+		{
+			dimeRecord* record = this->findRecord(groupcode);
+			if (record)
+			{
+				record->setValue(param);
+			}
+			else
+			{
+				dimeRecord* record = dimeRecord::createRecord(groupcode,
+				                                              param,
+				                                              memhandler);
+				newrecords.append(record);
+			}
+		}
+	}
+	if (newrecords.count())
+	{
+		// don't forget the old records...
+		for (i = 0; i < this->numRecords; i++)
+		{
+			newrecords.append(this->records[i]);
+		}
+		int n = newrecords.count();
+		if (!memhandler) delete [] this->records;
+		this->numRecords = 0;
+		this->records = ARRAY_NEW(memhandler, dimeRecord*, n);
+		if (this->records)
+		{
+			this->numRecords = n;
+			for (i = 0; i < n; i++)
+			{
+				this->records[i] = newrecords[i];
+			}
+		}
+	}
 }
 
 /*!
@@ -344,10 +368,10 @@ dimeRecordHolder::setRecords(const int * const groupcodes,
   written. Very useful when progress information is needed during write().
 */
 
-int 
+int
 dimeRecordHolder::countRecords() const
 {
-  return this->numRecords;
+	return this->numRecords;
 }
 
 /*!  
@@ -357,18 +381,20 @@ dimeRecordHolder::countRecords() const
   out of bounds.
 */
 
-dimeRecord *
+dimeRecord*
 dimeRecordHolder::findRecord(const int groupcode, const int index)
 {
-  int i, n = this->numRecords;
-  int cnt = 0;
-  for (i = 0; i < n; i++) {
-    if (this->records[i]->getGroupCode() == groupcode) { 
-      if (cnt == index) return this->records[i];
-      cnt++;
-    }
-  }
-  return NULL;
+	int i, n = this->numRecords;
+	int cnt = 0;
+	for (i = 0; i < n; i++)
+	{
+		if (this->records[i]->getGroupCode() == groupcode)
+		{
+			if (cnt == index) return this->records[i];
+			cnt++;
+		}
+	}
+	return nullptr;
 }
 
 /*!
@@ -376,64 +402,69 @@ dimeRecordHolder::findRecord(const int groupcode, const int index)
   store a record, but handle writing themselves. Default
   method returns \a true for all group codes.
 */
-bool 
+bool
 dimeRecordHolder::shouldWriteRecord(const int /*groupcode*/) const
 {
-  return true;
+	return true;
 }
 
-void 
-dimeRecordHolder::setRecordCommon(const int groupcode, const dimeParam &param,
-                                  const int index, dimeMemHandler * const memhandler)
+void
+dimeRecordHolder::setRecordCommon(const int groupcode, const dimeParam& param,
+                                  const int index, dimeMemHandler* const memhandler)
 {
-  // some safety checks
-  if (groupcode == 8 && this->isOfType(dimeBase::dimeEntityType)) {
-    fprintf( stderr, "Cannot set layer name in setRecord()!\n");
-    assert(0);
-    return;
-  }
-  else if (groupcode == 2 && this->typeId() == dimeBase::dimeInsertType) {
-    fprintf( stderr, "Cannot set block name for INSERT entities using setRecord()\n");
-    assert(0);
-    return;
-  }
-  
-  if (!this->handleRecord(groupcode, param, memhandler)) {
-    dimeRecord *record = this->findRecord(groupcode, index);
-    if (!record) { // create new record
-      record = dimeRecord::createRecord(groupcode, memhandler);
-      if (!record) {
-	fprintf( stderr, "Could not create record for group code: %d\n", groupcode);
-	return;
-      }
-      dimeRecord **newarray = ARRAY_NEW(memhandler, dimeRecord*, 
-					this->numRecords+1); 
-      memcpy(newarray, this->records, this->numRecords*sizeof(dimeRecord*));
-      if (!memhandler) delete [] this->records;
-      this->records = newarray;
-      this->records[this->numRecords++] = record;
-    }
-    record->setValue(param);
-  }
+	// some safety checks
+	if (groupcode == 8 && this->isOfType(dimeBase::dimeEntityType))
+	{
+		fprintf(stderr, "Cannot set layer name in setRecord()!\n");
+		assert(0);
+		return;
+	}
+	if (groupcode == 2 && this->typeId() == dimeBase::dimeInsertType)
+	{
+		fprintf(stderr, "Cannot set block name for INSERT entities using setRecord()\n");
+		assert(0);
+		return;
+	}
+
+	if (!this->handleRecord(groupcode, param, memhandler))
+	{
+		dimeRecord* record = this->findRecord(groupcode, index);
+		if (!record)
+		{
+			// create new record
+			record = dimeRecord::createRecord(groupcode, memhandler);
+			if (!record)
+			{
+				fprintf(stderr, "Could not create record for group code: %d\n", groupcode);
+				return;
+			}
+			dimeRecord** newarray = ARRAY_NEW(memhandler, dimeRecord*,
+			                                  this->numRecords+1);
+			memcpy(newarray, this->records, this->numRecords * sizeof(dimeRecord*));
+			if (!memhandler) delete [] this->records;
+			this->records = newarray;
+			this->records[this->numRecords++] = record;
+		}
+		record->setValue(param);
+	}
 }
 
 /*!
   Returns the number of records stored in this record holder.
 */
-int 
+int
 dimeRecordHolder::getNumRecordsInRecordHolder(void) const
 {
-  return this->numRecords;
+	return this->numRecords;
 }
 
 /*!
   Returns the \a idx'th record in the record holder.
   \sa getNumRecordsInRecordHolder().
 */
-dimeRecord * 
+dimeRecord*
 dimeRecordHolder::getRecordInRecordHolder(const int idx) const
 {
-  assert(idx < this->numRecords);
-  return this->records[idx];
+	assert(idx < this->numRecords);
+	return this->records[idx];
 }
-

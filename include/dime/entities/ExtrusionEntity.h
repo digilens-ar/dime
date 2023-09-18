@@ -38,60 +38,57 @@
 class DIME_DLL_API dimeExtrusionEntity : public dimeEntity
 {
 public:
-  dimeExtrusionEntity();
+	dimeExtrusionEntity();
 
-  virtual bool getRecord(const int groupcode,
-			 dimeParam &param,
-			 const int index = 0) const;
+	bool getRecord(int groupcode,
+	               dimeParam& param,
+	               int index = 0) const override;
 
-  void setExtrusionDir(const dimeVec3f &v);
-  const dimeVec3f &getExtrusionDir() const;
+	void setExtrusionDir(const dimeVec3f& v);
+	const dimeVec3f& getExtrusionDir() const;
 
-  void setThickness(const dxfdouble val);
-  dxfdouble getThickness() const;
-    
-  virtual int typeId() const;
-  virtual bool isOfType(const int thtypeid) const;
-  virtual int countRecords() const;
+	void setThickness(dxfdouble val);
+	dxfdouble getThickness() const;
+
+	int typeId() const override;
+	bool isOfType(int thtypeid) const override;
+	int countRecords() const override;
 
 protected:
+	bool handleRecord(int groupcode,
+	                  const dimeParam& param,
+	                  dimeMemHandler* memhandler) override;
 
-  virtual bool handleRecord(const int groupcode,
-			    const dimeParam &param,
-			    dimeMemHandler * const memhandler);  
+	void copyExtrusionData(const dimeExtrusionEntity* entity);
+	bool writeExtrusionData(dimeOutput* out);
 
-  void copyExtrusionData(const dimeExtrusionEntity * const entity);
-  bool writeExtrusionData(dimeOutput * const out);
-  
 protected: // should be private :-(
-  dimeVec3f extrusionDir;
-  dxfdouble thickness;
-
+	dimeVec3f extrusionDir;
+	dxfdouble thickness;
 }; // class dimeExtrusionEntity
 
-inline void 
-dimeExtrusionEntity::setExtrusionDir(const dimeVec3f &v)
+inline void
+dimeExtrusionEntity::setExtrusionDir(const dimeVec3f& v)
 {
-  this->extrusionDir = v;
+	this->extrusionDir = v;
 }
 
-inline const dimeVec3f &
+inline const dimeVec3f&
 dimeExtrusionEntity::getExtrusionDir() const
 {
-  return this->extrusionDir;
+	return this->extrusionDir;
 }
 
-inline void 
+inline void
 dimeExtrusionEntity::setThickness(const dxfdouble val)
 {
-  this->thickness = val;
+	this->thickness = val;
 }
 
-inline dxfdouble 
+inline dxfdouble
 dimeExtrusionEntity::getThickness() const
 {
-  return this->thickness;
+	return this->thickness;
 }
 
 #endif // ! DIME_EXTRUSIONENTITY_H
-

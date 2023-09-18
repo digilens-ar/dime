@@ -40,16 +40,16 @@
 #include <dime/Output.h>
 #include <dime/util/MemHandler.h>
 #include <dime/Model.h>
-#include <string.h> 
+#include <string.h>
 
 /*!
   Constructor.
 */
 
-dimeUnknownObject::dimeUnknownObject(const char * const name,
-                                     dimeMemHandler * const memhandler)
+dimeUnknownObject::dimeUnknownObject(const char* const name,
+                                     dimeMemHandler* const memhandler)
 {
-  DXF_STRCPY(memhandler, this->objectName, name);
+	DXF_STRCPY(memhandler, this->objectName, name);
 }
 
 /*!
@@ -58,32 +58,33 @@ dimeUnknownObject::dimeUnknownObject(const char * const name,
 
 dimeUnknownObject::~dimeUnknownObject()
 {
-  delete [] this->objectName;
+	delete [] this->objectName;
 }
 
 //!
 
-dimeObject *
-dimeUnknownObject::copy(dimeModel * const model) const
+dimeObject*
+dimeUnknownObject::copy(dimeModel* const model) const
 {
-  dimeMemHandler *memh = model->getMemHandler();
-  dimeUnknownObject *u = new(memh) dimeUnknownObject(this->objectName, memh);
-  if (!this->copyRecords(u, model)) {
-    // check if allocated on heap.
-    if (!memh) delete u;
-    u = NULL;
-  }
-  return u;
+	dimeMemHandler* memh = model->getMemHandler();
+	auto u = new(memh) dimeUnknownObject(this->objectName, memh);
+	if (!this->copyRecords(u, model))
+	{
+		// check if allocated on heap.
+		if (!memh) delete u;
+		u = nullptr;
+	}
+	return u;
 }
 
 //!
 
 bool
-dimeUnknownObject::write(dimeOutput * const file)
+dimeUnknownObject::write(dimeOutput* const file)
 {
-  if (file->writeGroupCode(0) && file->writeString(this->objectName))
-    return dimeObject::write(file);
-  return false;
+	if (file->writeGroupCode(0) && file->writeString(this->objectName))
+		return dimeObject::write(file);
+	return false;
 }
 
 //!
@@ -91,7 +92,7 @@ dimeUnknownObject::write(dimeOutput * const file)
 int
 dimeUnknownObject::typeId() const
 {
-  return dimeBase::dimeUnknownObjectType;
+	return dimeBase::dimeUnknownObjectType;
 }
 
 //!
@@ -99,13 +100,13 @@ dimeUnknownObject::typeId() const
 int
 dimeUnknownObject::countRecords() const
 {
-  return 1 + dimeObject::countRecords();
+	return 1 + dimeObject::countRecords();
 }
 
 //!
 
-const char *
+const char*
 dimeUnknownObject::getObjectName() const
 {
-  return this->objectName;
+	return this->objectName;
 }

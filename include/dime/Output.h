@@ -41,41 +41,39 @@ class dimeModel;
 class DIME_DLL_API dimeOutput
 {
 public:
-  dimeOutput();
-  ~dimeOutput();
-  
-  void setCallback(const int numrecords,
-                   int (*cb)(float, void *), void *cbdata);
-  bool setFileHandle(FILE *fp);
-  bool setFilename(const char * const filename);
-  void setBinary(const bool state = true);
-  bool isBinary() const;
+	dimeOutput();
+	~dimeOutput();
 
-  bool writeHeader() {return true;}
-  bool writeGroupCode(const int groupcode);
-  bool writeInt8(const int8 val);
-  bool writeInt16(const int16 val);
-  bool writeInt32(const int32 val);
-  bool writeFloat(const float val);
-  bool writeDouble(const dxfdouble val);
-  bool writeString(const char * const str);
+	void setCallback(int numrecords,
+	                 int (*cb)(float, void*), void* cbdata);
+	bool setFileHandle(FILE* fp);
+	bool setFilename(const char* filename);
+	void setBinary(bool state = true);
+	bool isBinary() const;
 
-  int getUniqueHandleId();
+	bool writeHeader() { return true; }
+	bool writeGroupCode(int groupcode);
+	bool writeInt8(int8 val);
+	bool writeInt16(int16 val);
+	bool writeInt32(int32 val);
+	bool writeFloat(float val);
+	bool writeDouble(dxfdouble val);
+	bool writeString(const char* str);
+
+	int getUniqueHandleId();
 
 private:
-  friend class dimeModel;
-  dimeModel *model;
-  FILE *fp;
-  bool binary;
+	friend class dimeModel;
+	dimeModel* model;
+	FILE* fp;
+	bool binary;
 
-  int (*callback)(float, void*);
-  void *callbackdata;
-  int numrecords;
-  int numwrites;
-  bool aborted;
-  bool didOpenFile;
-
+	int (*callback)(float, void*);
+	void* callbackdata;
+	int numrecords;
+	int numwrites;
+	bool aborted;
+	bool didOpenFile;
 }; // class dimeOutput
 
 #endif // ! DIME_OUTPUT_H
-

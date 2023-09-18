@@ -40,49 +40,47 @@
 class DIME_DLL_API dimeLine : public dimeExtrusionEntity
 {
 public:
-  dimeLine();
+	dimeLine();
 
-  const dimeVec3f &getCoords(const int idx) const;
-  void setCoords(const int idx, const dimeVec3f &v);
+	const dimeVec3f& getCoords(int idx) const;
+	void setCoords(int idx, const dimeVec3f& v);
 
-  virtual dimeEntity *copy(dimeModel * const model) const;
-  virtual bool getRecord(const int groupcode,
-			 dimeParam &param,
-			 const int index = 0) const;
-  virtual const char *getEntityName() const;
-  virtual void print() const;
-  virtual bool write(dimeOutput * const out);
-  virtual int typeId() const;
-  virtual int countRecords() const;
+	dimeEntity* copy(dimeModel* model) const override;
+	bool getRecord(int groupcode,
+	               dimeParam& param,
+	               int index = 0) const override;
+	const char* getEntityName() const override;
+	void print() const override;
+	bool write(dimeOutput* out) override;
+	int typeId() const override;
+	int countRecords() const override;
 
-  virtual GeometryType extractGeometry(dimeArray <dimeVec3f> &verts,
-				       dimeArray <int> &indices,
-				       dimeVec3f &extrusionDir,
-				       dxfdouble &thickness);
-  
+	GeometryType extractGeometry(dimeArray<dimeVec3f>& verts,
+	                             dimeArray<int>& indices,
+	                             dimeVec3f& extrusionDir,
+	                             dxfdouble& thickness) override;
+
 protected:
-  virtual bool handleRecord(const int groupcode, 
-                            const dimeParam &param,
-			    dimeMemHandler * const memhandler);
-  
-private:
-  dimeVec3f coords[2];
+	bool handleRecord(int groupcode,
+	                  const dimeParam& param,
+	                  dimeMemHandler* memhandler) override;
 
+private:
+	dimeVec3f coords[2];
 }; // class dimeLine
 
-inline const dimeVec3f &
+inline const dimeVec3f&
 dimeLine::getCoords(const int idx) const
 {
-  assert(idx ==0 || idx == 1);
-  return this->coords[idx];
+	assert(idx ==0 || idx == 1);
+	return this->coords[idx];
 }
 
-inline void 
-dimeLine::setCoords(const int idx, const dimeVec3f &v)
+inline void
+dimeLine::setCoords(const int idx, const dimeVec3f& v)
 {
-  assert(idx ==0 || idx == 1);
-  this->coords[idx] = v;
+	assert(idx ==0 || idx == 1);
+	this->coords[idx] = v;
 }
 
 #endif // ! DIME_LINE_H
-

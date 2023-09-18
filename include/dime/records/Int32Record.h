@@ -38,24 +38,22 @@
 class DIME_DLL_API dimeInt32Record : public dimeRecord
 {
 public:
-  dimeInt32Record(const int group_code = 90, const int32 val = 0);
+	dimeInt32Record(int group_code = 90, int32 val = 0);
 
-  virtual dimeRecord *copy(dimeMemHandler * const mh) const;
-  virtual void setValue(const dimeParam &param, dimeMemHandler * const memhandler = NULL);
-  virtual void getValue(dimeParam &param) const;
-  
-  int32 getValue() const;
-  void setValue(const int32 val);
+	dimeRecord* copy(dimeMemHandler* mh) const override;
+	void setValue(const dimeParam& param, dimeMemHandler* memhandler = nullptr) override;
+	void getValue(dimeParam& param) const override;
+
+	int32 getValue() const;
+	void setValue(int32 val);
 
 public:
-  int typeId() const;
-  bool read(dimeInput * const in);
-  bool write(dimeOutput * const out);
-  
+	int typeId() const override;
+	bool read(dimeInput* in) override;
+	bool write(dimeOutput* out) override;
+
 private:
-  int32 value;
-  
+	int32 value;
 }; // class dimeInt32Record
 
 #endif // ! DIME_INT32RECORD_H
-

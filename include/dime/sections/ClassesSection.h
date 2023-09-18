@@ -38,29 +38,27 @@
 
 class DIME_DLL_API dimeClassesSection : public dimeSection
 {
-  friend class dimeModel;
+	friend class dimeModel;
 
 public:
-  dimeClassesSection(dimeMemHandler * const memhandler = NULL);
-  virtual ~dimeClassesSection();
+	dimeClassesSection(dimeMemHandler* memhandler = nullptr);
+	~dimeClassesSection() override;
 
-  virtual const char *getSectionName() const; 
-  virtual dimeSection *copy(dimeModel * const model) const;
-  
-  virtual bool read(dimeInput * const file);
-  virtual bool write(dimeOutput * const file);
-  virtual int typeId() const;
-  virtual int countRecords() const;
-  
-  int getNumClasses() const;
-  class dimeClass *getClass(const int idx);
-  void removeClass(const int idx);
-  void insertClass(dimeClass * const myclass, const int idx = -1); 
+	const char* getSectionName() const override;
+	dimeSection* copy(dimeModel* model) const override;
+
+	bool read(dimeInput* file) override;
+	bool write(dimeOutput* file) override;
+	int typeId() const override;
+	int countRecords() const override;
+
+	int getNumClasses() const;
+	class dimeClass* getClass(int idx);
+	void removeClass(int idx);
+	void insertClass(dimeClass* myclass, int idx = -1);
 
 private:
-  dimeArray <dimeClass*> classes;
-
+	dimeArray<dimeClass*> classes;
 }; // class dimeClassesSection
 
 #endif // ! DIME_CLASSESSECTION_H
-
