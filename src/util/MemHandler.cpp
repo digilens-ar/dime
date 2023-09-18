@@ -157,7 +157,7 @@ dimeMemHandler::initOk() const
 char *
 dimeMemHandler::stringAlloc(const char * const string)
 {
-  int len = strlen(string)+1;
+  size_t len = strlen(string)+1;
   char *ret = (char*)this->allocMem(len, 1);
   if (ret) {
     strcpy(ret, string);

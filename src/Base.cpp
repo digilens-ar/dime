@@ -128,6 +128,12 @@ dimeBase::operator new(size_t size, dimeMemHandler *memhandler,
   else return ::operator new(size);
 }
 
+void dimeBase::operator delete(void* ptr, dimeMemHandler* memhandler, int alignment)
+{
+    assert(!memhandler);
+    ::operator delete(ptr);
+}
+
 void 
 dimeBase::operator delete(void * ptr)
 {

@@ -188,8 +188,6 @@ dimeText::handleRecord(const int groupcode,
 		     dimeMemHandler * const memhandler)
 {
 
-  char subclass[80];
-
   switch(groupcode) {
   case 1:
     this->setTextString( param.string_data );

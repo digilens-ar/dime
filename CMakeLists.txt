@@ -143,10 +143,6 @@ if(WIN32)
     target_compile_definitions(${PROJECT_NAME} PRIVATE DIME_MAKE_DLL INTERFACE DIME_DLL)
   else()
     target_compile_definitions(${PROJECT_NAME} INTERFACE DIME_NOT_DLL)
-    if(MSVC)
-      set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} /Z7")                       # Override default /Zi to embed
-      set(CMAKE_CXX_FLAGS_RELWITHDEBINFO "${CMAKE_CXX_FLAGS_RELWITHDEBINFO} /Z7")     # debugging info in the .lib.
-    endif()
   endif()
 else()
   target_link_libraries(${PROJECT_NAME} m)

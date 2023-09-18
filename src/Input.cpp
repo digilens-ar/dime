@@ -655,7 +655,7 @@ dimeInput::doBufferRead()
   }
 #else // ! USE_GZFILE
   if (!this->fp) return false;
-  int len = fread(this->readbuf, 1, READBUFSIZE, this->fp);
+  size_t len = fread(this->readbuf, 1, READBUFSIZE, this->fp);
   if (len <= 0) {
     this->fpeof = true;
     this->readbufIndex = 0;
@@ -690,7 +690,7 @@ dimeInput::putBack(const char c)
 void
 dimeInput::putBack(const char * const string)
 {
-  int n = strlen(string);
+  size_t n = strlen(string);
   if (n <= readbufIndex && backBufIndex < 0)
     readbufIndex -= n;
   else {

@@ -72,7 +72,7 @@ main(int argc, char **argv)
 
   char *infile, *outfile;
   infile = outfile = NULL;
-  float maxerr = 0.1f;
+  double maxerr = 0.1f;
   int sub = -1;  
   int i = 1;
   

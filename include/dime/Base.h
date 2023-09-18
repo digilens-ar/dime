@@ -98,8 +98,8 @@ public:
   virtual int typeId() const = 0;
   virtual bool isOfType(const int thetypeid) const;
 public:
-  void *operator new(size_t size, dimeMemHandler *memhandler = NULL, 
-		     const int alignment = 4);
+  void *operator new(size_t size, dimeMemHandler *memhandler = NULL, int alignment = 4);
+  void operator delete(void* ptr, dimeMemHandler *memhandler, int alignment);
   void operator delete(void *ptr);
 
 }; // class dimeBase
