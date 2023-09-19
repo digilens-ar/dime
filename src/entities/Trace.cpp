@@ -31,7 +31,7 @@
 \**************************************************************************/
 
 /*!
-  \class dimeTrace dime/entities/Trace.h
+  \class DimeTrace dime/entities/Trace.h
   \brief The dimeTrace class handles a TRACE \e entity.
 */
 
@@ -49,17 +49,17 @@ static char entityName[] = "TRACE";
   Constructor.
 */
 
-dimeTrace::dimeTrace()
+DimeTrace::DimeTrace()
 	: extrusionDir(0, 0, 1), thickness(0)
 {
 }
 
 //!
 
-dimeEntity*
-dimeTrace::copy(dimeModel* const model) const
+DimeEntity*
+DimeTrace::copy(DimeModel* const model) const
 {
-	auto f = new(model->getMemHandler())dimeTrace;
+	auto f = new(model->getMemHandler())DimeTrace;
 	if (!f) return nullptr;
 
 	f->copyCoords(this);
@@ -78,7 +78,7 @@ dimeTrace::copy(dimeModel* const model) const
 //!
 
 bool
-dimeTrace::write(dimeOutput* const file)
+DimeTrace::write(DimeOutput* const file)
 {
 	bool ret = true;
 	if (!this->isDeleted())
@@ -99,7 +99,7 @@ dimeTrace::write(dimeOutput* const file)
 			file->writeGroupCode(230);
 			file->writeDouble(this->extrusionDir[2]);
 		}
-		ret = dimeEntity::write(file);
+		ret = DimeEntity::write(file);
 	}
 	return ret;
 }
@@ -107,7 +107,7 @@ dimeTrace::write(dimeOutput* const file)
 //!
 
 bool
-dimeTrace::handleRecord(const int groupcode, const dimeParam& param,
+DimeTrace::handleRecord(const int groupcode, const dimeParam& param,
                         DimeMemHandler* const memhandler)
 {
 	switch (groupcode)
@@ -127,7 +127,7 @@ dimeTrace::handleRecord(const int groupcode, const dimeParam& param,
 //!
 
 const char*
-dimeTrace::getEntityName() const
+DimeTrace::getEntityName() const
 {
 	return entityName;
 }
@@ -135,7 +135,7 @@ dimeTrace::getEntityName() const
 //!
 
 bool
-dimeTrace::getRecord(const int groupcode,
+DimeTrace::getRecord(const int groupcode,
                      dimeParam& param,
                      const int index) const
 {
@@ -156,37 +156,37 @@ dimeTrace::getRecord(const int groupcode,
 //!
 
 int
-dimeTrace::typeId() const
+DimeTrace::typeId() const
 {
 	return DimeBase::dimeTraceType;
 }
 
 dxfdouble
-dimeTrace::getThickness() const
+DimeTrace::getThickness() const
 {
 	return this->thickness;
 }
 
 void
-dimeTrace::getExtrusionDir(dimeVec3f& ed) const
+DimeTrace::getExtrusionDir(dimeVec3f& ed) const
 {
 	ed = this->extrusionDir;
 }
 
 bool
-dimeTrace::swapQuadCoords() const
+DimeTrace::swapQuadCoords() const
 {
 	return true;
 }
 
 void
-dimeTrace::setThickness(const dxfdouble& thickness)
+DimeTrace::setThickness(const dxfdouble& thickness)
 {
 	this->thickness = thickness;
 }
 
 void
-dimeTrace::setExtrusionDir(const dimeVec3f& ed)
+DimeTrace::setExtrusionDir(const dimeVec3f& ed)
 {
 	this->extrusionDir = ed;
 }
@@ -194,7 +194,7 @@ dimeTrace::setExtrusionDir(const dimeVec3f& ed)
 //!
 
 int
-dimeTrace::countRecords() const
+DimeTrace::countRecords() const
 {
 	int cnt = 0;
 	if (!this->isDeleted())

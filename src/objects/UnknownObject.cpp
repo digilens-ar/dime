@@ -63,8 +63,8 @@ dimeUnknownObject::~dimeUnknownObject()
 
 //!
 
-dimeObject*
-dimeUnknownObject::copy(dimeModel* const model) const
+DimeObject*
+dimeUnknownObject::copy(DimeModel* const model) const
 {
 	DimeMemHandler* memh = model->getMemHandler();
 	auto u = new(memh) dimeUnknownObject(this->objectName, memh);
@@ -80,10 +80,10 @@ dimeUnknownObject::copy(dimeModel* const model) const
 //!
 
 bool
-dimeUnknownObject::write(dimeOutput* const file)
+dimeUnknownObject::write(DimeOutput* const file)
 {
 	if (file->writeGroupCode(0) && file->writeString(this->objectName))
-		return dimeObject::write(file);
+		return DimeObject::write(file);
 	return false;
 }
 
@@ -100,7 +100,7 @@ dimeUnknownObject::typeId() const
 int
 dimeUnknownObject::countRecords() const
 {
-	return 1 + dimeObject::countRecords();
+	return 1 + DimeObject::countRecords();
 }
 
 //!

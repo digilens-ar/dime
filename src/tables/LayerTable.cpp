@@ -31,7 +31,7 @@
 \**************************************************************************/
 
 /*!
-  \class dimeLayerTable dime/tables/LayerTable.h
+  \class DimeLayerTable dime/tables/LayerTable.h
   \brief The dimeLayerTable class reads and writes LAYER \e tables.
 */
 
@@ -49,23 +49,23 @@ static constexpr char tableName[] = "LAYER";
   Constructor.
 */
 
-dimeLayerTable::dimeLayerTable()
+DimeLayerTable::DimeLayerTable()
 	: colorNumber(0), layerName(nullptr), layerInfo(nullptr)
 {
 }
 
-dimeLayerTable::~dimeLayerTable()
+DimeLayerTable::~DimeLayerTable()
 {
 	delete [] this->layerName;
 }
 
 //!
 
-dimeTableEntry*
-dimeLayerTable::copy(dimeModel* const model) const
+DimeTableEntry*
+DimeLayerTable::copy(DimeModel* const model) const
 {
 	DimeMemHandler* memh = model->getMemHandler();
-	auto l = new(memh) dimeLayerTable;
+	auto l = new(memh) DimeLayerTable;
 	l->colorNumber = this->colorNumber;
 	if (this->layerName)
 	{
@@ -87,7 +87,7 @@ dimeLayerTable::copy(dimeModel* const model) const
 //!
 
 const char*
-dimeLayerTable::getTableName() const
+DimeLayerTable::getTableName() const
 {
 	return tableName;
 }
@@ -95,9 +95,9 @@ dimeLayerTable::getTableName() const
 //!
 
 bool
-dimeLayerTable::read(dimeInput* const file)
+DimeLayerTable::read(DimeInput* const file)
 {
-	bool ret = dimeTableEntry::read(file);
+	bool ret = DimeTableEntry::read(file);
 	if (ret)
 	{
 		this->registerLayer(file->getModel());
@@ -108,9 +108,9 @@ dimeLayerTable::read(dimeInput* const file)
 //!
 
 bool
-dimeLayerTable::write(dimeOutput* const file)
+DimeLayerTable::write(DimeOutput* const file)
 {
-	bool ret = dimeTableEntry::preWrite(file);
+	bool ret = DimeTableEntry::preWrite(file);
 
 	if (this->layerName)
 	{
@@ -120,14 +120,14 @@ dimeLayerTable::write(dimeOutput* const file)
 	file->writeGroupCode(62);
 	file->writeInt16(this->colorNumber);
 
-	ret = dimeTableEntry::write(file);
+	ret = DimeTableEntry::write(file);
 	return ret;
 }
 
 //!
 
 int
-dimeLayerTable::typeId() const
+DimeLayerTable::typeId() const
 {
 	return DimeBase::dimeLayerTableType;
 }
@@ -135,7 +135,7 @@ dimeLayerTable::typeId() const
 //!
 
 bool
-dimeLayerTable::handleRecord(const int groupcode,
+DimeLayerTable::handleRecord(const int groupcode,
                              const dimeParam& param,
                              DimeMemHandler* const memhandler)
 {
@@ -148,25 +148,25 @@ dimeLayerTable::handleRecord(const int groupcode,
 		this->setColorNumber(param.int16_data);
 		return true;
 	}
-	return dimeTableEntry::handleRecord(groupcode, param, memhandler);
+	return DimeTableEntry::handleRecord(groupcode, param, memhandler);
 }
 
 //!
 
 int
-dimeLayerTable::countRecords() const
+DimeLayerTable::countRecords() const
 {
 	int cnt = 1; // header
 	if (this->layerInfo) cnt++;
 	cnt++; // colorNumber
-	return cnt + dimeTableEntry::countRecords();
+	return cnt + DimeTableEntry::countRecords();
 }
 
 /*!
   Sets the layer name.
 */
 void
-dimeLayerTable::setLayerName(const char* name, DimeMemHandler* const memhandler)
+DimeLayerTable::setLayerName(const char* name, DimeMemHandler* const memhandler)
 {
 	if (this->layerName && memhandler == nullptr)
 	{
@@ -179,7 +179,7 @@ dimeLayerTable::setLayerName(const char* name, DimeMemHandler* const memhandler)
   Returns the layer name.
  */
 const char*
-dimeLayerTable::getLayerName(void) const
+DimeLayerTable::getLayerName(void) const
 {
 	return this->layerName;
 }
@@ -188,7 +188,7 @@ dimeLayerTable::getLayerName(void) const
   Sets the color number.
  */
 void
-dimeLayerTable::setColorNumber(const int16 colnum)
+DimeLayerTable::setColorNumber(const int16 colnum)
 {
 	this->colorNumber = colnum;
 	if (this->layerInfo) this->layerInfo->setColorNumber(DXFABS(this->colorNumber));
@@ -198,7 +198,7 @@ dimeLayerTable::setColorNumber(const int16 colnum)
   Returns the color number.
  */
 int16
-dimeLayerTable::getColorNumber(void) const
+DimeLayerTable::getColorNumber(void) const
 {
 	return this->colorNumber;
 }
@@ -211,7 +211,7 @@ dimeLayerTable::getColorNumber(void) const
   entities using this layer.
 */
 void
-dimeLayerTable::registerLayer(dimeModel* model)
+DimeLayerTable::registerLayer(DimeModel* model)
 {
 	if (this->layerInfo == nullptr && this->layerName != nullptr)
 	{

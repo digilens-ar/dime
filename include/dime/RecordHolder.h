@@ -35,16 +35,16 @@
 
 #include <dime/Base.h>
 
-class dimeInput;
+class DimeInput;
 class DimeMemHandler;
-class dimeOutput;
-class dimeRecord;
+class DimeOutput;
+class DimeRecord;
 
-class DIME_DLL_API dimeRecordHolder : public DimeBase
+class DIME_DLL_API DimeRecordHolder : public DimeBase
 {
 public:
-	dimeRecordHolder(int separator);
-	~dimeRecordHolder() override;
+	DimeRecordHolder(int separator);
+	~DimeRecordHolder() override;
 
 	void setRecord(int groupcode, const dimeParam& value,
 	               DimeMemHandler* memhandler = nullptr);
@@ -61,28 +61,28 @@ public:
 	                       dimeParam& param,
 	                       int index = 0) const;
 
-	virtual bool read(dimeInput* in);
-	virtual bool write(dimeOutput* out);
+	virtual bool read(DimeInput* in);
+	virtual bool write(DimeOutput* out);
 	bool isOfType(int thetypeid) const override;
 	virtual int countRecords() const;
 
-	dimeRecord* findRecord(int groupcode, int index = 0);
+	DimeRecord* findRecord(int groupcode, int index = 0);
 
 	int getNumRecordsInRecordHolder(void) const;
-	dimeRecord* getRecordInRecordHolder(int idx) const;
+	DimeRecord* getRecordInRecordHolder(int idx) const;
 
 protected:
 	virtual bool handleRecord(int groupcode,
 	                          const dimeParam& param,
 	                          DimeMemHandler* memhandler);
 
-	bool copyRecords(dimeRecordHolder* rh,
+	bool copyRecords(DimeRecordHolder* rh,
 	                 DimeMemHandler* memhandler) const;
 
 	virtual bool shouldWriteRecord(int groupcode) const;
 
 protected:
-	dimeRecord** records;
+	DimeRecord** records;
 	int numRecords;
 	// int separator; // not needed ?
 

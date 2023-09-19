@@ -35,20 +35,20 @@
 
 #include <dime/entities/ExtrusionEntity.h>
 
-class DIME_DLL_API dimeLWPolyline : public dimeExtrusionEntity
+class DIME_DLL_API DimeLWPolyline : public DimeExtrusionEntity
 {
 public:
-	dimeLWPolyline();
-	~dimeLWPolyline() override;
+	DimeLWPolyline();
+	~DimeLWPolyline() override;
 
-	dimeEntity* copy(dimeModel* model) const override;
+	DimeEntity* copy(DimeModel* model) const override;
 	bool getRecord(int groupcode,
 	               dimeParam& param,
 	               int index) const override;
 	const char* getEntityName() const override;
 
 	void print() const override;
-	bool write(dimeOutput* out) override;
+	bool write(DimeOutput* out) override;
 	int typeId() const override;
 	int countRecords() const override;
 
@@ -88,55 +88,55 @@ private:
 
 
 inline int
-dimeLWPolyline::getNumVertices() const
+DimeLWPolyline::getNumVertices() const
 {
 	return this->numVertices;
 }
 
 inline const dxfdouble*
-dimeLWPolyline::getXCoords() const
+DimeLWPolyline::getXCoords() const
 {
 	return this->xcoord;
 }
 
 inline const dxfdouble*
-dimeLWPolyline::getYCoords() const
+DimeLWPolyline::getYCoords() const
 {
 	return this->ycoord;
 }
 
 inline const dxfdouble*
-dimeLWPolyline::getStartingWidths() const
+DimeLWPolyline::getStartingWidths() const
 {
 	return this->startingWidth;
 }
 
 inline const dxfdouble*
-dimeLWPolyline::getEndWidths() const
+DimeLWPolyline::getEndWidths() const
 {
 	return this->endWidth;
 }
 
 inline const dxfdouble*
-dimeLWPolyline::getBulges() const
+DimeLWPolyline::getBulges() const
 {
 	return this->bulge;
 }
 
 inline dxfdouble
-dimeLWPolyline::getElevation() const
+DimeLWPolyline::getElevation() const
 {
 	return this->elevation;
 }
 
 inline dxfdouble
-dimeLWPolyline::getConstantWidth() const
+DimeLWPolyline::getConstantWidth() const
 {
 	return this->constantWidth;
 }
 
 inline int16
-dimeLWPolyline::getFlags() const
+DimeLWPolyline::getFlags() const
 {
 	return this->flags;
 }

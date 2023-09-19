@@ -117,7 +117,7 @@ bool
 dimeFaceEntity::isOfType(const int thetypeid) const
 {
 	return thetypeid == dimeFaceEntityType ||
-		dimeEntity::isOfType(thetypeid);
+		DimeEntity::isOfType(thetypeid);
 }
 
 //!
@@ -125,7 +125,7 @@ dimeFaceEntity::isOfType(const int thetypeid) const
 int
 dimeFaceEntity::countRecords() const
 {
-	return 12 + dimeEntity::countRecords();
+	return 12 + DimeEntity::countRecords();
 }
 
 /*!
@@ -134,7 +134,7 @@ dimeFaceEntity::countRecords() const
 */
 
 bool
-dimeFaceEntity::writeCoords(dimeOutput* const file)
+dimeFaceEntity::writeCoords(DimeOutput* const file)
 {
 	for (int i = 0; i < 4; i++)
 	{
@@ -170,7 +170,7 @@ dimeFaceEntity::handleRecord(const int groupcode,
 		this->coords[groupcode % 10][groupcode / 10 - 1] = param.double_data;
 		return true;
 	}
-	return dimeEntity::handleRecord(groupcode, param, memhandler);
+	return DimeEntity::handleRecord(groupcode, param, memhandler);
 }
 
 //!
@@ -197,12 +197,12 @@ dimeFaceEntity::getRecord(const int groupcode,
 			this->coords[groupcode % 10][groupcode / 10 - 1];
 		return true;
 	}
-	return dimeEntity::getRecord(groupcode, param, index);
+	return DimeEntity::getRecord(groupcode, param, index);
 }
 
 //!
 
-dimeEntity::GeometryType
+DimeEntity::GeometryType
 dimeFaceEntity::extractGeometry(dimeArray<dimeVec3f>& verts,
                                 dimeArray<int>& indices,
                                 dimeVec3f& extrusionDir,
@@ -234,7 +234,7 @@ dimeFaceEntity::extractGeometry(dimeArray<dimeVec3f>& verts,
 	thickness = getThickness();
 	getExtrusionDir(extrusionDir);
 
-	return dimeEntity::POLYGONS;
+	return DimeEntity::POLYGONS;
 }
 
 /*!

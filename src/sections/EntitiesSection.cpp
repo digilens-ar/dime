@@ -56,7 +56,7 @@ static constexpr char sectionName[] = "ENTITIES";
 */
 
 DimeEntitiesSection::DimeEntitiesSection(DimeMemHandler* const memhandler)
-	: dimeSection(memhandler)
+	: DimeSection(memhandler)
 {
 }
 
@@ -75,8 +75,8 @@ DimeEntitiesSection::~DimeEntitiesSection()
 
 //!
 
-dimeSection*
-DimeEntitiesSection::copy(dimeModel* const model) const
+DimeSection*
+DimeEntitiesSection::copy(DimeModel* const model) const
 {
 	DimeMemHandler* memh = model->getMemHandler();
 	auto es = new DimeEntitiesSection(memh);
@@ -85,7 +85,7 @@ DimeEntitiesSection::copy(dimeModel* const model) const
 	int num = this->entities.count();
 	if (ok && num)
 	{
-		ok = dimeEntity::copyEntityArray(this->entities.constArrayPointer(),
+		ok = DimeEntity::copyEntityArray(this->entities.constArrayPointer(),
 		                                 num,
 		                                 model,
 		                                 es->entities);
@@ -106,12 +106,12 @@ DimeEntitiesSection::copy(dimeModel* const model) const
 //!
 
 bool
-DimeEntitiesSection::read(dimeInput* const file)
+DimeEntitiesSection::read(DimeInput* const file)
 {
 	int32 groupcode;
 	const char* string;
 	bool ok = true;
-	dimeEntity* entity = nullptr;
+	DimeEntity* entity = nullptr;
 	DimeMemHandler* memhandler = file->getMemHandler();
 	this->entities.makeEmpty(1024);
 
@@ -126,7 +126,7 @@ DimeEntitiesSection::read(dimeInput* const file)
 		string = file->readString();
 		if (!strcmp(string, "ENDSEC")) break;
 
-		entity = dimeEntity::createEntity(string, memhandler);
+		entity = DimeEntity::createEntity(string, memhandler);
 		if (entity == nullptr)
 		{
 			fprintf(stderr, "Error creating entity: %s.\n", string);
@@ -147,7 +147,7 @@ DimeEntitiesSection::read(dimeInput* const file)
 //!
 
 bool
-DimeEntitiesSection::write(dimeOutput* const file)
+DimeEntitiesSection::write(DimeOutput* const file)
 {
 	//  sim_trace("Writing section: ENTITIES\n");
 
@@ -182,7 +182,7 @@ DimeEntitiesSection::typeId() const
 */
 
 void
-DimeEntitiesSection::fixReferences(dimeModel* const model)
+DimeEntitiesSection::fixReferences(DimeModel* const model)
 {
 	int i, n = this->entities.count();
 	for (i = 0; i < n; i++)
@@ -224,7 +224,7 @@ DimeEntitiesSection::getNumEntities() const
   Returns the entity at index \a idx.
 */
 
-dimeEntity*
+DimeEntity*
 DimeEntitiesSection::getEntity(const int idx)
 {
 	assert(idx >= 0 && idx < this->entities.count());
@@ -252,7 +252,7 @@ DimeEntitiesSection::removeEntity(const int idx)
 */
 
 void
-DimeEntitiesSection::insertEntity(dimeEntity* const entity, const int idx)
+DimeEntitiesSection::insertEntity(DimeEntity* const entity, const int idx)
 {
 	if (idx < 0) this->entities.append(entity);
 	else

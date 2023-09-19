@@ -31,7 +31,7 @@
 \**************************************************************************/
 
 /*!
-  \class dimeText dime/entities/Text.h
+  \class DimeText dime/entities/Text.h
   \brief The dimeText class handles a Text \e entity.
 */
 
@@ -53,7 +53,7 @@ static char entityName[] = "TEXT";
   Constructor.
 */
 
-dimeText::dimeText()
+DimeText::DimeText()
 	: origin(0.0, 0.0, 0.0), second(0.0, 0.0, 0.0), haveSecond(false), height(0.0), width(0.0), rotation(0.0),
 	  wScale(0.0), hJust(0), vJust(0), text(nullptr)
 {
@@ -61,7 +61,7 @@ dimeText::dimeText()
 
 //!
 
-void dimeText::setTextString(const char* s)
+void DimeText::setTextString(const char* s)
 {
 	size_t l;
 	l = strlen(s);
@@ -79,10 +79,10 @@ void dimeText::setTextString(const char* s)
 
 //!
 
-dimeEntity*
-dimeText::copy(dimeModel* const model) const
+DimeEntity*
+DimeText::copy(DimeModel* const model) const
 {
-	auto t = new(model->getMemHandler()) dimeText;
+	auto t = new(model->getMemHandler()) DimeText;
 	if (!t) return nullptr;
 
 	if (!this->copyRecords(t, model))
@@ -115,7 +115,7 @@ dimeText::copy(dimeModel* const model) const
 //!
 
 bool
-dimeText::write(dimeOutput* const file)
+DimeText::write(DimeOutput* const file)
 {
 	this->preWrite(file);
 
@@ -176,13 +176,13 @@ dimeText::write(dimeOutput* const file)
 		file->writeInt16(static_cast<int16>(this->vJust));
 	}
 
-	return this->writeExtrusionData(file) && dimeEntity::write(file);
+	return this->writeExtrusionData(file) && DimeEntity::write(file);
 }
 
 //!
 
 int
-dimeText::typeId() const
+DimeText::typeId() const
 {
 	return DimeBase::dimeTextType;
 }
@@ -190,7 +190,7 @@ dimeText::typeId() const
 //!
 
 bool
-dimeText::handleRecord(const int groupcode,
+DimeText::handleRecord(const int groupcode,
                        const dimeParam& param,
                        DimeMemHandler* const memhandler)
 {
@@ -243,16 +243,16 @@ dimeText::handleRecord(const int groupcode,
 			{
 				return true;
 			}
-			return dimeExtrusionEntity::handleRecord(groupcode, param, memhandler);
+			return DimeExtrusionEntity::handleRecord(groupcode, param, memhandler);
 		}
 	}
-	return dimeExtrusionEntity::handleRecord(groupcode, param, memhandler);
+	return DimeExtrusionEntity::handleRecord(groupcode, param, memhandler);
 }
 
 //!
 
 const char*
-dimeText::getEntityName() const
+DimeText::getEntityName() const
 {
 	return entityName;
 }
@@ -260,7 +260,7 @@ dimeText::getEntityName() const
 //!
 
 bool
-dimeText::getRecord(const int groupcode,
+DimeText::getRecord(const int groupcode,
                     dimeParam& param,
                     const int index) const
 {
@@ -296,13 +296,13 @@ dimeText::getRecord(const int groupcode,
 		param.int32_data = this->vJust;
 		return true;
 	}
-	return dimeExtrusionEntity::getRecord(groupcode, param, index);
+	return DimeExtrusionEntity::getRecord(groupcode, param, index);
 }
 
 //!
 
 void
-dimeText::print() const
+DimeText::print() const
 {
 	fprintf(stderr, "Text:\n");
 	fprintf(stderr, " origin: %.3f %.3f %.3f\n",
@@ -324,8 +324,8 @@ dimeText::print() const
 
 //!
 
-dimeEntity::GeometryType
-dimeText::extractGeometry(dimeArray<dimeVec3f>& verts,
+DimeEntity::GeometryType
+DimeText::extractGeometry(dimeArray<dimeVec3f>& verts,
                           dimeArray<int>& indices,
                           dimeVec3f& extrusionDir,
                           dxfdouble& thickness)
@@ -342,17 +342,17 @@ dimeText::extractGeometry(dimeArray<dimeVec3f>& verts,
 	// close loop with first point.
 	verts.append(origin);
 
-	if (this->thickness == 0.0) return dimeEntity::LINES;
-	return dimeEntity::POLYGONS;
+	if (this->thickness == 0.0) return DimeEntity::LINES;
+	return DimeEntity::POLYGONS;
 }
 
 //!
 
 int
-dimeText::countRecords() const
+DimeText::countRecords() const
 {
 	int cnt = 1 + 3 + 3 + 1 + 1 + 1 + 1 + 1 + 1 + 1;
 	// header + origin + second + haveSecond + height + rotation + wScale + hJust + vJust + text
 
-	return cnt + dimeExtrusionEntity::countRecords();
+	return cnt + DimeExtrusionEntity::countRecords();
 }

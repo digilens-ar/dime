@@ -31,7 +31,7 @@
 \**************************************************************************/
 
 /*!
-  \class dimeEntity dime/entities/Entity.h
+  \class DimeEntity dime/entities/Entity.h
   \brief The dimeEntity class is the superclass of all \e entity classes.
 
   If you plan to implement your own entity you should inherit this
@@ -178,8 +178,8 @@
   Constructor.
 */
 
-dimeEntity::dimeEntity()
-	: dimeRecordHolder(0), entityFlags(0), colorNumber(256)
+DimeEntity::DimeEntity()
+	: DimeRecordHolder(0), entityFlags(0), colorNumber(256)
 {
 	this->layer = dimeLayer::getDefaultLayer();
 }
@@ -188,7 +188,7 @@ dimeEntity::dimeEntity()
   Destructor.
 */
 
-dimeEntity::~dimeEntity()
+DimeEntity::~DimeEntity()
 {
 }
 
@@ -197,10 +197,10 @@ dimeEntity::~dimeEntity()
 */
 
 bool
-dimeEntity::copyRecords(dimeEntity* const entity, dimeModel* const model) const
+DimeEntity::copyRecords(DimeEntity* const entity, DimeModel* const model) const
 {
 	DimeMemHandler* memh = model->getMemHandler();
-	bool ok = dimeRecordHolder::copyRecords(entity, memh);
+	bool ok = DimeRecordHolder::copyRecords(entity, memh);
 
 	if (ok && this->layer)
 	{
@@ -218,7 +218,7 @@ dimeEntity::copyRecords(dimeEntity* const entity, dimeModel* const model) const
 */
 
 bool
-dimeEntity::isDeleted() const
+DimeEntity::isDeleted() const
 {
 	return this->entityFlags & FLAG_DELETED;
 }
@@ -229,7 +229,7 @@ dimeEntity::isDeleted() const
 */
 
 void
-dimeEntity::setDeleted(const bool onOff)
+DimeEntity::setDeleted(const bool onOff)
 {
 	if (onOff)
 	{
@@ -246,7 +246,7 @@ dimeEntity::setDeleted(const bool onOff)
   \sa dimeEntity::setTagged()
 */
 bool
-dimeEntity::isTagged() const
+DimeEntity::isTagged() const
 {
 	return this->entityFlags & FLAG_TAGGED ? true : false;
 }
@@ -256,7 +256,7 @@ dimeEntity::isTagged() const
   \sa dimeEntity::isTagged()
 */
 void
-dimeEntity::setTagged(const bool onOff)
+DimeEntity::setTagged(const bool onOff)
 {
 	if (onOff)
 	{
@@ -272,17 +272,17 @@ dimeEntity::setTagged(const bool onOff)
 //!
 
 bool
-dimeEntity::write(dimeOutput* const file)
+DimeEntity::write(DimeOutput* const file)
 {
-	return dimeRecordHolder::write(file);
+	return DimeRecordHolder::write(file);
 }
 
 /*!
   Static function which creates an entity based on its name. 
 */
 
-dimeEntity*
-dimeEntity::createEntity(const char* const name,
+DimeEntity*
+DimeEntity::createEntity(const char* const name,
                          DimeMemHandler* const memhandler)
 {
 #ifndef NDEBUG
@@ -303,34 +303,34 @@ dimeEntity::createEntity(const char* const name,
 	if (!strcmp(name, "3DFACE"))
 		return new(memhandler) dime3DFace;
 	if (!strcmp(name, "VERTEX"))
-		return new(memhandler) dimeVertex;
+		return new(memhandler) DimeVertex;
 	if (!strcmp(name, "POLYLINE"))
-		return new(memhandler) dimePolyline;
+		return new(memhandler) DimePolyline;
 	if (!strcmp(name, "LINE"))
-		return new(memhandler) dimeLine;
+		return new(memhandler) DimeLine;
 	if (!strcmp(name, "TEXT"))
-		return new(memhandler) dimeText;
+		return new(memhandler) DimeText;
 	if (!strcmp(name, "INSERT"))
 		return new(memhandler) DimeInsert;
 	if (!strcmp(name, "BLOCK"))
-		return new(memhandler) dimeBlock(memhandler);
+		return new(memhandler) DimeBlock(memhandler);
 	if (!strcmp(name, "SOLID"))
-		return new(memhandler) dimeSolid;
+		return new(memhandler) DimeSolid;
 	if (!strcmp(name, "TRACE"))
-		return new(memhandler) dimeTrace;
+		return new(memhandler) DimeTrace;
 	if (!strcmp(name, "POINT"))
-		return new(memhandler) dimePoint;
+		return new(memhandler) DimePoint;
 	if (!strcmp(name, "CIRCLE"))
-		return new(memhandler) dimeCircle;
+		return new(memhandler) DimeCircle;
 	if (!strcmp(name, "LWPOLYLINE"))
-		return new(memhandler) dimeLWPolyline;
+		return new(memhandler) DimeLWPolyline;
 	if (!strcmp(name, "SPLINE"))
-		return new(memhandler) dimeSpline;
+		return new(memhandler) DimeSpline;
 	if (!strcmp(name, "ELLIPSE"))
-		return new(memhandler) dimeEllipse;
+		return new(memhandler) DimeEllipse;
 	if (!strcmp(name, "ARC"))
-		return new(memhandler) dimeArc;
-	return new(memhandler) dimeUnknownEntity(name, memhandler);
+		return new(memhandler) DimeArc;
+	return new(memhandler) DimeUnknownEntity(name, memhandler);
 }
 
 /*!
@@ -341,14 +341,14 @@ dimeEntity::createEntity(const char* const name,
 */
 
 bool
-dimeEntity::readEntities(dimeInput* const file,
-                         dimeArray<dimeEntity*>& array,
+DimeEntity::readEntities(DimeInput* const file,
+                         dimeArray<DimeEntity*>& array,
                          const char* const stopat)
 {
 	int32 groupcode;
 	const char* string;
 	bool ok = true;
-	dimeEntity* entity = nullptr;
+	DimeEntity* entity = nullptr;
 	DimeMemHandler* memhandler = file->getMemHandler();
 
 	while (true)
@@ -361,7 +361,7 @@ dimeEntity::readEntities(dimeInput* const file,
 		}
 		string = file->readString();
 		if (!strcmp(string, stopat)) break;
-		entity = dimeEntity::createEntity(string, memhandler);
+		entity = DimeEntity::createEntity(string, memhandler);
 		if (entity == nullptr)
 		{
 			fprintf(stderr, "error creating entity: %s\n", string);
@@ -387,10 +387,10 @@ dimeEntity::readEntities(dimeInput* const file,
   memory, or if there was no non-deleted entities.
 */
 
-dimeEntity**
-dimeEntity::copyEntityArray(const dimeEntity* const* const array,
+DimeEntity**
+DimeEntity::copyEntityArray(const DimeEntity* const* const array,
                             int& nument,
-                            dimeModel* const model)
+                            DimeModel* const model)
 {
 	int i;
 	int num = nument;
@@ -403,7 +403,7 @@ dimeEntity::copyEntityArray(const dimeEntity* const* const array,
 	}
 	if (nument == 0) return nullptr;
 
-	dimeEntity** newarr = ARRAY_NEW(memh, dimeEntity*, nument);
+	DimeEntity** newarr = ARRAY_NEW(memh, DimeEntity*, nument);
 
 	bool ok = newarr != nullptr;
 	if (ok)
@@ -429,7 +429,7 @@ dimeEntity::copyEntityArray(const dimeEntity* const* const array,
 			delete [] newarr;
 		}
 	}
-	return ok ? newarr : static_cast<dimeEntity**>(nullptr);
+	return ok ? newarr : static_cast<DimeEntity**>(nullptr);
 }
 
 /*!
@@ -437,10 +437,10 @@ dimeEntity::copyEntityArray(const dimeEntity* const* const array,
   \a array of length \a nument into \a destarray.
 */
 
-bool dimeEntity::copyEntityArray(const dimeEntity* const* const array,
+bool DimeEntity::copyEntityArray(const DimeEntity* const* const array,
                             const int nument,
-                            dimeModel* const model,
-                            dimeArray<dimeEntity*>& destarray)
+                            DimeModel* const model,
+                            dimeArray<DimeEntity*>& destarray)
 {
 	int i;
 	//  dimeMemHandler *memh = model->getMemHandler();
@@ -462,7 +462,7 @@ bool dimeEntity::copyEntityArray(const dimeEntity* const* const array,
 	{
 		if (!array[i]->isDeleted())
 		{
-			dimeEntity* entity = array[i]->copy(model);
+			DimeEntity* entity = array[i]->copy(model);
 			if (entity == nullptr)
 			{
 				destarray.setCount(0);
@@ -479,7 +479,7 @@ bool dimeEntity::copyEntityArray(const dimeEntity* const* const array,
 */
 
 const char*
-dimeEntity::getLayerName() const
+DimeEntity::getLayerName() const
 {
 	if (this->layer)
 		return this->layer->getLayerName();
@@ -492,7 +492,7 @@ dimeEntity::getLayerName() const
 */
 
 void
-dimeEntity::fixReferences(dimeModel* const)
+DimeEntity::fixReferences(DimeModel* const)
 {
 }
 
@@ -507,7 +507,7 @@ dimeEntity::fixReferences(dimeModel* const)
 */
 
 void
-dimeEntity::arbitraryAxis(const dimeVec3f& givenaxis, dimeVec3f& newaxis)
+DimeEntity::arbitraryAxis(const dimeVec3f& givenaxis, dimeVec3f& newaxis)
 {
 	dimeVec3f yaxis(0.0, 1.0, 0.0);
 	dimeVec3f zaxis(0.0, 0.0, 1.0);
@@ -529,10 +529,10 @@ dimeEntity::arbitraryAxis(const dimeVec3f& givenaxis, dimeVec3f& newaxis)
 */
 
 void
-dimeEntity::generateUCS(const dimeVec3f& givenaxis, dimeMatrix& m)
+DimeEntity::generateUCS(const dimeVec3f& givenaxis, dimeMatrix& m)
 {
 	dimeVec3f newaxis;
-	dimeEntity::arbitraryAxis(givenaxis, newaxis);
+	DimeEntity::arbitraryAxis(givenaxis, newaxis);
 	newaxis.normalize();
 	dimeVec3f yaxis = givenaxis.cross(newaxis);
 	yaxis.normalize();
@@ -542,12 +542,12 @@ dimeEntity::generateUCS(const dimeVec3f& givenaxis, dimeMatrix& m)
 //!
 
 int
-dimeEntity::countRecords() const
+DimeEntity::countRecords() const
 {
 	int cnt = 0;
 	if (this->layer) cnt++;
 	if (this->colorNumber != 256) cnt++;
-	return cnt + dimeRecordHolder::countRecords();
+	return cnt + DimeRecordHolder::countRecords();
 }
 
 /*!
@@ -557,7 +557,7 @@ dimeEntity::countRecords() const
 */
 
 bool
-dimeEntity::traverse(const DimeState* const state,
+DimeEntity::traverse(const DimeState* const state,
                      dimeCallback callback,
                      void* userdata)
 {
@@ -598,8 +598,8 @@ dimeEntity::traverse(const DimeState* const state,
 
 */
 
-dimeEntity::GeometryType
-dimeEntity::extractGeometry(dimeArray<dimeVec3f>& verts,
+DimeEntity::GeometryType
+DimeEntity::extractGeometry(dimeArray<dimeVec3f>& verts,
                             dimeArray<int>& indices,
                             dimeVec3f& extrusionDir,
                             dxfdouble& thickness)
@@ -614,10 +614,10 @@ dimeEntity::extractGeometry(dimeArray<dimeVec3f>& verts,
 //!
 
 bool
-dimeEntity::isOfType(const int thetypeid) const
+DimeEntity::isOfType(const int thetypeid) const
 {
 	return thetypeid == dimeEntityType ||
-		dimeRecordHolder::isOfType(thetypeid);
+		DimeRecordHolder::isOfType(thetypeid);
 }
 
 /*!
@@ -628,7 +628,7 @@ dimeEntity::isOfType(const int thetypeid) const
 */
 
 bool
-dimeEntity::read(dimeInput* const file)
+DimeEntity::read(DimeInput* const file)
 {
 	// a little hack to avoid storing a useless extra pointer in the class.
 	// this->layer is used as a temporary char * pointer which will
@@ -644,7 +644,7 @@ dimeEntity::read(dimeInput* const file)
 	const dimeLayer* tmplayer = this->layer;
 	this->layer = (const dimeLayer*)tmpbuffer;
 	this->entityFlags |= FLAG_TMP_BUFFER_SET;
-	bool ok = dimeRecordHolder::read(file); // handleRecord() will change tmpbuffer...
+	bool ok = DimeRecordHolder::read(file); // handleRecord() will change tmpbuffer...
 	this->entityFlags &= ~FLAG_TMP_BUFFER_SET;
 	this->layer = tmplayer; // reset pointer and flag immediately
 	if (ok)
@@ -666,7 +666,7 @@ dimeEntity::read(dimeInput* const file)
 */
 
 void
-dimeEntity::setLayer(const dimeLayer* const layer)
+DimeEntity::setLayer(const dimeLayer* const layer)
 {
 	if (layer == nullptr)
 		this->layer = dimeLayer::getDefaultLayer();
@@ -677,7 +677,7 @@ dimeEntity::setLayer(const dimeLayer* const layer)
 //!
 
 bool
-dimeEntity::handleRecord(const int groupcode,
+DimeEntity::handleRecord(const int groupcode,
                          const dimeParam& param,
                          DimeMemHandler* const memhandler)
 {
@@ -745,7 +745,7 @@ dimeEntity::handleRecord(const int groupcode,
 //!
 
 bool
-dimeEntity::getRecord(const int groupcode,
+DimeEntity::getRecord(const int groupcode,
                       dimeParam& param,
                       const int index) const
 {
@@ -758,7 +758,7 @@ dimeEntity::getRecord(const int groupcode,
 		param.int16_data = this->colorNumber;
 		return true;
 	}
-	return dimeRecordHolder::getRecord(groupcode, param, index);
+	return DimeRecordHolder::getRecord(groupcode, param, index);
 }
 
 //
@@ -769,7 +769,7 @@ dimeEntity::getRecord(const int groupcode,
   Writes the group code 0, layer name, and some other stuff.
 */
 bool
-dimeEntity::preWrite(dimeOutput* const file)
+DimeEntity::preWrite(DimeOutput* const file)
 {
 	file->writeGroupCode(0);
 	bool ret = file->writeString(this->getEntityName());
@@ -866,7 +866,7 @@ dimeEntity::preWrite(dimeOutput* const file)
 
 //!
 bool
-dimeEntity::shouldWriteRecord(const int groupcode) const
+DimeEntity::shouldWriteRecord(const int groupcode) const
 {
 	switch (groupcode)
 	{

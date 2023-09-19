@@ -35,12 +35,12 @@
 
 #include <dime/records/Record.h>
 
-class DIME_DLL_API dimeInt32Record : public dimeRecord
+class DIME_DLL_API dimeInt32Record : public DimeRecord
 {
 public:
 	dimeInt32Record(int group_code = 90, int32 val = 0);
 
-	dimeRecord* copy(DimeMemHandler* mh) const override;
+	DimeRecord* copy(DimeMemHandler* mh) const override;
 	void setValue(const dimeParam& param, DimeMemHandler* memhandler = nullptr) override;
 	void getValue(dimeParam& param) const override;
 
@@ -49,8 +49,8 @@ public:
 
 public:
 	int typeId() const override;
-	bool read(dimeInput* in) override;
-	bool write(dimeOutput* out) override;
+	bool read(DimeInput* in) override;
+	bool write(DimeOutput* out) override;
 
 private:
 	int32 value;

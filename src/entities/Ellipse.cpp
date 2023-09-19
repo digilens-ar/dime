@@ -31,7 +31,7 @@
 \**************************************************************************/
 
 /*!
-  \class dimeEllipse dime/entities/Ellipse.h
+  \class DimeEllipse dime/entities/Ellipse.h
   \brief The dimeEllipse class handles an ELLIPSE \e entity.
 */
 
@@ -115,7 +115,7 @@ static char entityName[] = "ELLIPSE";
   Constructor.
 */
 
-dimeEllipse::dimeEllipse()
+DimeEllipse::DimeEllipse()
 	: center(0, 0, 0), majorAxisEndpoint(0, 0, 1), ratio(1.0), startParam(0.0),
 	  endParam(M_PI * 2)
 {
@@ -123,10 +123,10 @@ dimeEllipse::dimeEllipse()
 
 //!
 
-dimeEntity*
-dimeEllipse::copy(dimeModel* const model) const
+DimeEntity*
+DimeEllipse::copy(DimeModel* const model) const
 {
-	auto e = new(model->getMemHandler()) dimeEllipse;
+	auto e = new(model->getMemHandler()) DimeEllipse;
 	if (!e) return nullptr;
 
 	if (!this->copyRecords(e, model))
@@ -150,9 +150,9 @@ dimeEllipse::copy(dimeModel* const model) const
 //!
 
 bool
-dimeEllipse::write(dimeOutput* const file)
+DimeEllipse::write(DimeOutput* const file)
 {
-	dimeEntity::preWrite(file);
+	DimeEntity::preWrite(file);
 
 	file->writeGroupCode(10);
 	file->writeDouble(this->center[0]);
@@ -179,13 +179,13 @@ dimeEllipse::write(dimeOutput* const file)
 
 	this->writeExtrusionData(file);
 
-	return dimeExtrusionEntity::write(file);
+	return DimeExtrusionEntity::write(file);
 }
 
 //!
 
 int
-dimeEllipse::typeId() const
+DimeEllipse::typeId() const
 {
 	return DimeBase::dimeEllipseType;
 }
@@ -193,7 +193,7 @@ dimeEllipse::typeId() const
 //!
 
 bool
-dimeEllipse::handleRecord(const int groupcode,
+DimeEllipse::handleRecord(const int groupcode,
                           const dimeParam& param,
                           DimeMemHandler* const memhandler)
 {
@@ -219,13 +219,13 @@ dimeEllipse::handleRecord(const int groupcode,
 		this->endParam = param.double_data;
 		return true;
 	}
-	return dimeExtrusionEntity::handleRecord(groupcode, param, memhandler);
+	return DimeExtrusionEntity::handleRecord(groupcode, param, memhandler);
 }
 
 //!
 
 const char*
-dimeEllipse::getEntityName() const
+DimeEllipse::getEntityName() const
 {
 	return entityName;
 }
@@ -233,7 +233,7 @@ dimeEllipse::getEntityName() const
 //!
 
 bool
-dimeEllipse::getRecord(const int groupcode,
+DimeEllipse::getRecord(const int groupcode,
                        dimeParam& param,
                        const int index) const
 {
@@ -260,13 +260,13 @@ dimeEllipse::getRecord(const int groupcode,
 		return true;
 	}
 
-	return dimeExtrusionEntity::getRecord(groupcode, param, index);
+	return DimeExtrusionEntity::getRecord(groupcode, param, index);
 }
 
 //!
 
 void
-dimeEllipse::print() const
+DimeEllipse::print() const
 {
 	fprintf(stderr, "ELLIPSE:\n");
 }
@@ -274,8 +274,8 @@ dimeEllipse::print() const
 //!
 
 int
-dimeEllipse::countRecords() const
+DimeEllipse::countRecords() const
 {
 	// header + center point + major endpoint + ratio + start + end
-	return 10 + dimeExtrusionEntity::countRecords();
+	return 10 + DimeExtrusionEntity::countRecords();
 }

@@ -31,7 +31,7 @@
 \**************************************************************************/
 
 /*!
-  \class dimeUnknownEntity dime/entities/UnknownEntity.h
+  \class DimeUnknownEntity dime/entities/UnknownEntity.h
   \brief The dimeUnknownEntity class reads and writes undefined \e entity classes.
 */
 
@@ -47,7 +47,7 @@
   Constructor.
 */
 
-dimeUnknownEntity::dimeUnknownEntity(const char* const name,
+DimeUnknownEntity::DimeUnknownEntity(const char* const name,
                                      DimeMemHandler* const memhandler)
 {
 	DXF_STRCPY(memhandler, this->entityName, name);
@@ -57,18 +57,18 @@ dimeUnknownEntity::dimeUnknownEntity(const char* const name,
   Destructor. Should only be called if no memory handler is used.
 */
 
-dimeUnknownEntity::~dimeUnknownEntity()
+DimeUnknownEntity::~DimeUnknownEntity()
 {
 	delete [] this->entityName;
 }
 
 //!
 
-dimeEntity*
-dimeUnknownEntity::copy(dimeModel* const model) const
+DimeEntity*
+DimeUnknownEntity::copy(DimeModel* const model) const
 {
 	DimeMemHandler* memh = model->getMemHandler();
-	auto u = new(memh) dimeUnknownEntity(this->entityName, memh);
+	auto u = new(memh) DimeUnknownEntity(this->entityName, memh);
 	if (!this->copyRecords(u, model))
 	{
 		// check if allocated on heap.
@@ -81,16 +81,16 @@ dimeUnknownEntity::copy(dimeModel* const model) const
 //!
 
 bool
-dimeUnknownEntity::write(dimeOutput* const file)
+DimeUnknownEntity::write(DimeOutput* const file)
 {
-	dimeEntity::preWrite(file);
-	return dimeEntity::write(file);
+	DimeEntity::preWrite(file);
+	return DimeEntity::write(file);
 }
 
 //!
 
 int
-dimeUnknownEntity::typeId() const
+DimeUnknownEntity::typeId() const
 {
 	return DimeBase::dimeUnknownEntityType;
 }
@@ -98,15 +98,15 @@ dimeUnknownEntity::typeId() const
 //!
 
 int
-dimeUnknownEntity::countRecords() const
+DimeUnknownEntity::countRecords() const
 {
-	return 1 + dimeEntity::countRecords();
+	return 1 + DimeEntity::countRecords();
 }
 
 //!
 
 const char*
-dimeUnknownEntity::getEntityName() const
+DimeUnknownEntity::getEntityName() const
 {
 	return this->entityName;
 }

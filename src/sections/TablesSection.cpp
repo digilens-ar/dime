@@ -31,7 +31,7 @@
 \**************************************************************************/
 
 /*!
-  \class dimeTablesSection dime/sections/TablesSection.h
+  \class DimeTablesSection dime/sections/TablesSection.h
   \brief The dimeTablesSection class handles a TABLES \e section.
 */
 
@@ -49,8 +49,8 @@ static constexpr char sectionName[] = "TABLES";
   Constructor.
 */
 
-dimeTablesSection::dimeTablesSection(DimeMemHandler* const memhandler)
-	: dimeSection(memhandler)
+DimeTablesSection::DimeTablesSection(DimeMemHandler* const memhandler)
+	: DimeSection(memhandler)
 {
 }
 
@@ -58,7 +58,7 @@ dimeTablesSection::dimeTablesSection(DimeMemHandler* const memhandler)
   Destructor.
 */
 
-dimeTablesSection::~dimeTablesSection()
+DimeTablesSection::~DimeTablesSection()
 {
 	for (int i = 0; i < this->tables.count(); i++)
 		delete this->tables[i];
@@ -66,11 +66,11 @@ dimeTablesSection::~dimeTablesSection()
 
 //!
 
-dimeSection*
-dimeTablesSection::copy(dimeModel* const model) const
+DimeSection*
+DimeTablesSection::copy(DimeModel* const model) const
 {
 	DimeMemHandler* memh = model->getMemHandler();
-	auto ts = new dimeTablesSection(memh);
+	auto ts = new DimeTablesSection(memh);
 	int n = this->tables.count();
 	if (n)
 	{
@@ -78,7 +78,7 @@ dimeTablesSection::copy(dimeModel* const model) const
 		ts->tables.makeEmpty(n);
 		for (i = 0; i < n; i++)
 		{
-			dimeTable* cp = this->tables[i]->copy(model);
+			DimeTable* cp = this->tables[i]->copy(model);
 			if (!cp) break;
 			ts->tables.append(cp);
 		}
@@ -97,12 +97,12 @@ dimeTablesSection::copy(dimeModel* const model) const
 */
 
 bool
-dimeTablesSection::read(dimeInput* const file)
+DimeTablesSection::read(DimeInput* const file)
 {
 	int32 groupcode;
 	const char* string;
 	bool ok = true;
-	dimeTable* table = nullptr;
+	DimeTable* table = nullptr;
 	DimeMemHandler* memhandler = file->getMemHandler();
 
 	//  sim_trace("Reading section: TABLES\n");
@@ -126,7 +126,7 @@ dimeTablesSection::read(dimeInput* const file)
 			break;
 		}
 
-		table = new dimeTable(memhandler);
+		table = new DimeTable(memhandler);
 		if (table == nullptr)
 		{
 			fprintf(stderr, "error creating table: %s\n", string);
@@ -149,7 +149,7 @@ dimeTablesSection::read(dimeInput* const file)
 //!
 
 bool
-dimeTablesSection::write(dimeOutput* const file)
+DimeTablesSection::write(DimeOutput* const file)
 {
 	if (file->writeGroupCode(2) && file->writeString(sectionName))
 	{
@@ -169,7 +169,7 @@ dimeTablesSection::write(dimeOutput* const file)
 //!
 
 int
-dimeTablesSection::typeId() const
+DimeTablesSection::typeId() const
 {
 	return DimeBase::dimeTablesSectionType;
 }
@@ -177,7 +177,7 @@ dimeTablesSection::typeId() const
 //!
 
 int
-dimeTablesSection::countRecords() const
+DimeTablesSection::countRecords() const
 {
 	int cnt = 0;
 	int i, n = this->tables.count();
@@ -189,7 +189,7 @@ dimeTablesSection::countRecords() const
 //!
 
 const char*
-dimeTablesSection::getSectionName() const
+DimeTablesSection::getSectionName() const
 {
 	return sectionName;
 }
@@ -199,7 +199,7 @@ dimeTablesSection::getSectionName() const
 */
 
 int
-dimeTablesSection::getNumTables() const
+DimeTablesSection::getNumTables() const
 {
 	return this->tables.count();
 }
@@ -208,8 +208,8 @@ dimeTablesSection::getNumTables() const
   Returns the table at index \a idx.
 */
 
-dimeTable*
-dimeTablesSection::getTable(const int idx)
+DimeTable*
+DimeTablesSection::getTable(const int idx)
 {
 	assert(idx >= 0 && idx < this->tables.count());
 	return this->tables[idx];
@@ -220,7 +220,7 @@ dimeTablesSection::getTable(const int idx)
 */
 
 void
-dimeTablesSection::removeTable(const int idx)
+DimeTablesSection::removeTable(const int idx)
 {
 	assert(idx >= 0 && idx < this->tables.count());
 	if (!this->memHandler) delete this->tables[idx];
@@ -235,7 +235,7 @@ dimeTablesSection::removeTable(const int idx)
 */
 
 void
-dimeTablesSection::insertTable(dimeTable* const table, const int idx)
+DimeTablesSection::insertTable(DimeTable* const table, const int idx)
 {
 	if (idx < 0) this->tables.append(table);
 	else

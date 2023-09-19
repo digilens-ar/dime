@@ -36,10 +36,10 @@
 #include <dime/Basic.h>
 #include <dime/entities/ExtrusionEntity.h>
 
-class DIME_DLL_API dimeText : public dimeExtrusionEntity
+class DIME_DLL_API DimeText : public DimeExtrusionEntity
 {
 public:
-	dimeText();
+	DimeText();
 	//  dimeText(const char* s);
 
 	void setOrigin(const dimeVec3f& o);
@@ -64,10 +64,10 @@ public:
 	               int index = 0) const override;
 	const char* getEntityName() const override;
 
-	dimeEntity* copy(dimeModel* model) const override;
+	DimeEntity* copy(DimeModel* model) const override;
 
 	void print() const override;
-	bool write(dimeOutput* out) override;
+	bool write(DimeOutput* out) override;
 	int typeId() const override;
 	int countRecords() const override;
 
@@ -100,25 +100,25 @@ private:
 
 
 inline void
-dimeText::setOrigin(const dimeVec3f& o)
+DimeText::setOrigin(const dimeVec3f& o)
 {
 	this->origin = o;
 }
 
 inline void
-dimeText::getOrigin(dimeVec3f& o) const
+DimeText::getOrigin(dimeVec3f& o) const
 {
 	o = this->origin;
 }
 
 inline void
-dimeText::setSecond(const dimeVec3f& s)
+DimeText::setSecond(const dimeVec3f& s)
 {
 	this->second = s;
 }
 
 inline bool
-dimeText::getSecond(dimeVec3f& s) const
+DimeText::getSecond(dimeVec3f& s) const
 {
 	if (haveSecond)
 	{
@@ -129,61 +129,61 @@ dimeText::getSecond(dimeVec3f& s) const
 }
 
 inline void
-dimeText::setHeight(const dxfdouble h)
+DimeText::setHeight(const dxfdouble h)
 {
 	this->height = h;
 }
 
 inline dxfdouble
-dimeText::getHeight() const
+DimeText::getHeight() const
 {
 	return this->height;
 }
 
 inline void
-dimeText::setWidth(const dxfdouble w)
+DimeText::setWidth(const dxfdouble w)
 {
 	this->width = w;
 }
 
 inline dxfdouble
-dimeText::getWidth() const
+DimeText::getWidth() const
 {
 	return this->width;
 }
 
 inline void
-dimeText::setRotation(const dxfdouble a)
+DimeText::setRotation(const dxfdouble a)
 {
 	this->rotation = a;
 }
 
 inline dxfdouble
-dimeText::getRotation() const
+DimeText::getRotation() const
 {
 	return this->rotation;
 }
 
 inline void
-dimeText::setHJust(const int32 h)
+DimeText::setHJust(const int32 h)
 {
 	this->hJust = h;
 }
 
 inline int32
-dimeText::getHJust() const
+DimeText::getHJust() const
 {
 	return this->hJust;
 }
 
 inline void
-dimeText::setVJust(const int32 v)
+DimeText::setVJust(const int32 v)
 {
 	this->vJust = v;
 }
 
 inline int32
-dimeText::getVJust() const
+DimeText::getVJust() const
 {
 	return this->vJust;
 }
@@ -195,7 +195,7 @@ dimeText::getVJust() const
 //}
 
 inline char*
-dimeText::getTextString() const
+DimeText::getTextString() const
 {
 	return this->text;
 }

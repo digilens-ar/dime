@@ -31,7 +31,7 @@
 \**************************************************************************/
 
 /*!
-  \class dimeCircle dime/entities/Circle.h
+  \class DimeCircle dime/entities/Circle.h
   \brief The dimeCircle class handles a CIRCLE \e entity.
 */
 
@@ -57,17 +57,17 @@ static char entityName[] = "CIRCLE";
   Constructor.
 */
 
-dimeCircle::dimeCircle()
+DimeCircle::DimeCircle()
 	: center(0, 0, 0), radius(0.0)
 {
 }
 
 //!
 
-dimeEntity*
-dimeCircle::copy(dimeModel* const model) const
+DimeEntity*
+DimeCircle::copy(DimeModel* const model) const
 {
-	auto c = new(model->getMemHandler()) dimeCircle;
+	auto c = new(model->getMemHandler()) DimeCircle;
 	if (!c) return nullptr;
 
 	if (!this->copyRecords(c, model))
@@ -90,9 +90,9 @@ dimeCircle::copy(dimeModel* const model) const
 */
 
 bool
-dimeCircle::write(dimeOutput* const file)
+DimeCircle::write(DimeOutput* const file)
 {
-	dimeEntity::preWrite(file);
+	DimeEntity::preWrite(file);
 
 	file->writeGroupCode(10);
 	file->writeDouble(this->center[0]);
@@ -106,13 +106,13 @@ dimeCircle::write(dimeOutput* const file)
 
 	this->writeExtrusionData(file);
 
-	return dimeEntity::write(file); // write unknown records.
+	return DimeEntity::write(file); // write unknown records.
 }
 
 //!
 
 int
-dimeCircle::typeId() const
+DimeCircle::typeId() const
 {
 	return DimeBase::dimeCircleType;
 }
@@ -122,7 +122,7 @@ dimeCircle::typeId() const
 */
 
 bool
-dimeCircle::handleRecord(const int groupcode,
+DimeCircle::handleRecord(const int groupcode,
                          const dimeParam& param,
                          DimeMemHandler* const memhandler)
 {
@@ -137,13 +137,13 @@ dimeCircle::handleRecord(const int groupcode,
 		this->radius = param.double_data;
 		return true;
 	}
-	return dimeExtrusionEntity::handleRecord(groupcode, param, memhandler);
+	return DimeExtrusionEntity::handleRecord(groupcode, param, memhandler);
 }
 
 //!
 
 const char*
-dimeCircle::getEntityName() const
+DimeCircle::getEntityName() const
 {
 	return entityName;
 }
@@ -151,7 +151,7 @@ dimeCircle::getEntityName() const
 //!
 
 bool
-dimeCircle::getRecord(const int groupcode,
+DimeCircle::getRecord(const int groupcode,
                       dimeParam& param,
                       const int index) const
 {
@@ -166,13 +166,13 @@ dimeCircle::getRecord(const int groupcode,
 		param.double_data = this->radius;
 		return true;
 	}
-	return dimeExtrusionEntity::getRecord(groupcode, param, index);
+	return DimeExtrusionEntity::getRecord(groupcode, param, index);
 }
 
 //!
 
 void
-dimeCircle::print() const
+DimeCircle::print() const
 {
 	fprintf(stderr, "CIRCLE:\n");
 	fprintf(stderr, " center: %.3f %.3f %.3f\n", center[0], center[1], center[2]);
@@ -181,8 +181,8 @@ dimeCircle::print() const
 
 //!
 
-dimeEntity::GeometryType
-dimeCircle::extractGeometry(dimeArray<dimeVec3f>& verts,
+DimeEntity::GeometryType
+DimeCircle::extractGeometry(dimeArray<dimeVec3f>& verts,
                             dimeArray<int>&/*indices*/,
                             dimeVec3f& extrusionDir,
                             dxfdouble& thickness)
@@ -205,15 +205,15 @@ dimeCircle::extractGeometry(dimeArray<dimeVec3f>& verts,
 	dimeVec3f tmp = verts[0];
 	verts.append(tmp); // closed line/polygon
 
-	if (this->thickness == 0.0) return dimeEntity::LINES;
-	return dimeEntity::POLYGONS;
+	if (this->thickness == 0.0) return DimeEntity::LINES;
+	return DimeEntity::POLYGONS;
 }
 
 //!
 
 int
-dimeCircle::countRecords() const
+DimeCircle::countRecords() const
 {
 	// header + center point + radius
-	return 5 + dimeExtrusionEntity::countRecords();
+	return 5 + DimeExtrusionEntity::countRecords();
 }

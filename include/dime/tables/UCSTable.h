@@ -36,12 +36,12 @@
 #include <dime/tables/TableEntry.h>
 #include <dime/util/Linear.h>
 
-class DIME_DLL_API dimeUCSTable : public dimeTableEntry
+class DIME_DLL_API DimeUCSTable : public DimeTableEntry
 {
 public:
-	dimeUCSTable();
+	DimeUCSTable();
 
-	dimeTableEntry* copy(dimeModel* model) const override;
+	DimeTableEntry* copy(DimeModel* model) const override;
 	const char* getTableName() const override;
 
 	const dimeVec3f& getOrigin() const;
@@ -52,7 +52,7 @@ public:
 	void setXaxis(const dimeVec3f& v);
 	void setYaxis(const dimeVec3f& v);
 
-	bool write(dimeOutput* out) override;
+	bool write(DimeOutput* out) override;
 	int typeId() const override;
 	int countRecords() const override;
 
@@ -68,37 +68,37 @@ private:
 }; // class dimeUCSTable
 
 inline const dimeVec3f&
-dimeUCSTable::getOrigin() const
+DimeUCSTable::getOrigin() const
 {
 	return this->origin;
 }
 
 inline const dimeVec3f&
-dimeUCSTable::getXaxis() const
+DimeUCSTable::getXaxis() const
 {
 	return this->xaxis;
 }
 
 inline const dimeVec3f&
-dimeUCSTable::getYaxis() const
+DimeUCSTable::getYaxis() const
 {
 	return this->yaxis;
 }
 
 inline void
-dimeUCSTable::setOrigin(const dimeVec3f& v)
+DimeUCSTable::setOrigin(const dimeVec3f& v)
 {
 	this->origin = v;
 }
 
 inline void
-dimeUCSTable::setXaxis(const dimeVec3f& v)
+DimeUCSTable::setXaxis(const dimeVec3f& v)
 {
 	this->origin = v;
 }
 
 inline void
-dimeUCSTable::setYaxis(const dimeVec3f& v)
+DimeUCSTable::setYaxis(const dimeVec3f& v)
 {
 	this->origin = v;
 }

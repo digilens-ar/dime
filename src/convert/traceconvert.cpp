@@ -48,10 +48,10 @@ convert_solid_data(dimeVec3f* v, dimeVec3f& e, dxfdouble thickness,
 
 
 void
-convert_trace(const dimeEntity* entity, const DimeState* state,
+convert_trace(const DimeEntity* entity, const DimeState* state,
               dxfLayerData* layerData, dxfConverter* converter)
 {
-	auto trace = (dimeTrace*)entity;
+	auto trace = (DimeTrace*)entity;
 
 	// respect the value in the $FILLMODE header variable
 	layerData->setFillmode(converter->getFillmode());

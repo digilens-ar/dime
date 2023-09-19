@@ -31,7 +31,7 @@
 \**************************************************************************/
 
 /*!
-  \class dimeUnknownTable dime/tables/UnknownTable.h
+  \class DimeUnknownTable dime/tables/UnknownTable.h
   \brief The dimeUnknownTable class reads and writes undefined tables.
 */
 
@@ -47,7 +47,7 @@
   Constructor.
 */
 
-dimeUnknownTable::dimeUnknownTable(const char* const name,
+DimeUnknownTable::DimeUnknownTable(const char* const name,
                                    DimeMemHandler* const memhandler)
 {
 	DXF_STRCPY(memhandler, this->tableName, name);
@@ -57,18 +57,18 @@ dimeUnknownTable::dimeUnknownTable(const char* const name,
   Destructor. Should only be called if no memory handler is used.
 */
 
-dimeUnknownTable::~dimeUnknownTable()
+DimeUnknownTable::~DimeUnknownTable()
 {
 	delete [] this->tableName;
 }
 
 //!
 
-dimeTableEntry*
-dimeUnknownTable::copy(dimeModel* const model) const
+DimeTableEntry*
+DimeUnknownTable::copy(DimeModel* const model) const
 {
 	DimeMemHandler* memh = model->getMemHandler();
-	auto u = new(memh) dimeUnknownTable(this->tableName, memh);
+	auto u = new(memh) DimeUnknownTable(this->tableName, memh);
 	if (!this->copyRecords(u, model))
 	{
 		// check if allocated on heap.
@@ -81,12 +81,12 @@ dimeUnknownTable::copy(dimeModel* const model) const
 //!
 
 bool
-dimeUnknownTable::write(dimeOutput* const file)
+DimeUnknownTable::write(DimeOutput* const file)
 {
-	bool ret = dimeTableEntry::preWrite(file);
+	bool ret = DimeTableEntry::preWrite(file);
 	if (ret)
 	{
-		ret = dimeTableEntry::write(file);
+		ret = DimeTableEntry::write(file);
 	}
 	return ret;
 }
@@ -94,7 +94,7 @@ dimeUnknownTable::write(dimeOutput* const file)
 //!
 
 int
-dimeUnknownTable::typeId() const
+DimeUnknownTable::typeId() const
 {
 	return DimeBase::dimeUnknownTableType;
 }
@@ -102,15 +102,15 @@ dimeUnknownTable::typeId() const
 //!
 
 int
-dimeUnknownTable::countRecords() const
+DimeUnknownTable::countRecords() const
 {
-	return 1 + dimeTableEntry::countRecords();
+	return 1 + DimeTableEntry::countRecords();
 }
 
 //!
 
 const char*
-dimeUnknownTable::getTableName() const
+DimeUnknownTable::getTableName() const
 {
 	return this->tableName;
 }

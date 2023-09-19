@@ -36,10 +36,10 @@
 #include <stdio.h>
 #include <dime/Basic.h>
 
-class dimeModel;
+class DimeModel;
 class dxfLayerData;
 class DimeState;
-class dimeEntity;
+class DimeEntity;
 
 class DIME_DLL_API dxfConverter
 {
@@ -52,8 +52,8 @@ public:
 		this->maxerr = maxerr;
 	}
 
-	void findHeaderVariables(dimeModel& model);
-	bool doConvert(dimeModel& model);
+	void findHeaderVariables(DimeModel& model);
+	bool doConvert(DimeModel& model);
 	bool writeVrml(const char* filename, bool vrml1 = false,
 	               bool only2d = false);
 	bool writeVrml(FILE* out, bool vrml1 = false,
@@ -95,9 +95,9 @@ public:
 	}
 
 	dxfLayerData* getLayerData(int colidx);
-	dxfLayerData* getLayerData(const dimeEntity* entity);
+	dxfLayerData* getLayerData(const DimeEntity* entity);
 	dxfLayerData** getLayerData();
-	int getColorIndex(const dimeEntity* entity);
+	int getColorIndex(const DimeEntity* entity);
 
 	int getCurrentInsertColorIndex() const
 	{
@@ -112,15 +112,15 @@ private:
 	int dummy[4];
 	dxfdouble maxerr;
 	int currentInsertColorIndex;
-	dimeEntity* currentPolyline;
+	DimeEntity* currentPolyline;
 	int numsub;
 	bool fillmode;
 	bool layercol;
 
 	bool private_callback(const DimeState* state,
-	                      dimeEntity* entity);
+	                      DimeEntity* entity);
 	static bool dime_callback(const DimeState* state,
-	                          dimeEntity* entity, void*);
+	                          DimeEntity* entity, void*);
 };
 
 #endif // _DXF2VRML_CONVERT_H_

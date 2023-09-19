@@ -31,7 +31,7 @@
 \**************************************************************************/
 
 /*!
-  \class dimeObjectsSection dime/sections/ObjectsSection.h
+  \class DimeObjectsSection dime/sections/ObjectsSection.h
   \brief The dimeObjectsSection object handles an OBJECTS \e section.
 */
 
@@ -50,8 +50,8 @@ static constexpr char sectionName[] = "OBJECTS";
   Constructor.
 */
 
-dimeObjectsSection::dimeObjectsSection(DimeMemHandler* const memhandler)
-	: dimeSection(memhandler)
+DimeObjectsSection::DimeObjectsSection(DimeMemHandler* const memhandler)
+	: DimeSection(memhandler)
 {
 }
 
@@ -59,7 +59,7 @@ dimeObjectsSection::dimeObjectsSection(DimeMemHandler* const memhandler)
   Destructor.
 */
 
-dimeObjectsSection::~dimeObjectsSection()
+DimeObjectsSection::~DimeObjectsSection()
 {
 	if (!this->memHandler)
 	{
@@ -70,11 +70,11 @@ dimeObjectsSection::~dimeObjectsSection()
 
 //!
 
-dimeSection*
-dimeObjectsSection::copy(dimeModel* const model) const
+DimeSection*
+DimeObjectsSection::copy(DimeModel* const model) const
 {
 	DimeMemHandler* memh = model->getMemHandler();
-	auto os = new dimeObjectsSection(memh);
+	auto os = new DimeObjectsSection(memh);
 	bool ok = os != nullptr;
 
 	int num = this->objects.count();
@@ -104,12 +104,12 @@ dimeObjectsSection::copy(dimeModel* const model) const
 //!
 
 bool
-dimeObjectsSection::read(dimeInput* const file)
+DimeObjectsSection::read(DimeInput* const file)
 {
 	int32 groupcode;
 	const char* string;
 	bool ok = true;
-	dimeObject* object = nullptr;
+	DimeObject* object = nullptr;
 	DimeMemHandler* memhandler = file->getMemHandler();
 	this->objects.makeEmpty(64);
 
@@ -126,7 +126,7 @@ dimeObjectsSection::read(dimeInput* const file)
 		}
 		string = file->readString();
 		if (!strcmp(string, "ENDSEC")) break;
-		object = dimeObject::createObject(string, memhandler);
+		object = DimeObject::createObject(string, memhandler);
 		if (object == nullptr)
 		{
 			fprintf(stderr, "error creating object: %s.\n", string);
@@ -149,7 +149,7 @@ dimeObjectsSection::read(dimeInput* const file)
 //!
 
 bool
-dimeObjectsSection::write(dimeOutput* const file)
+DimeObjectsSection::write(DimeOutput* const file)
 {
 	//  sim_trace("Writing section: OBJECTS\n");
 
@@ -173,7 +173,7 @@ dimeObjectsSection::write(dimeOutput* const file)
 //!
 
 int
-dimeObjectsSection::typeId() const
+DimeObjectsSection::typeId() const
 {
 	return DimeBase::dimeObjectsSectionType;
 }
@@ -181,7 +181,7 @@ dimeObjectsSection::typeId() const
 //!
 
 int
-dimeObjectsSection::countRecords() const
+DimeObjectsSection::countRecords() const
 {
 	int cnt = 0;
 	int n = this->objects.count();
@@ -193,7 +193,7 @@ dimeObjectsSection::countRecords() const
 //!
 
 const char*
-dimeObjectsSection::getSectionName() const
+DimeObjectsSection::getSectionName() const
 {
 	return sectionName;
 }
@@ -203,7 +203,7 @@ dimeObjectsSection::getSectionName() const
 */
 
 int
-dimeObjectsSection::getNumObjects() const
+DimeObjectsSection::getNumObjects() const
 {
 	return this->objects.count();
 }
@@ -212,8 +212,8 @@ dimeObjectsSection::getNumObjects() const
   Returns the object at index \a idx.
 */
 
-dimeObject*
-dimeObjectsSection::getObject(const int idx)
+DimeObject*
+DimeObjectsSection::getObject(const int idx)
 {
 	assert(idx >= 0 && idx < this->objects.count());
 	return this->objects[idx];
@@ -224,7 +224,7 @@ dimeObjectsSection::getObject(const int idx)
 */
 
 void
-dimeObjectsSection::removeObject(const int idx)
+DimeObjectsSection::removeObject(const int idx)
 {
 	assert(idx >= 0 && idx < this->objects.count());
 	if (!this->memHandler) delete this->objects[idx];
@@ -237,7 +237,7 @@ dimeObjectsSection::removeObject(const int idx)
 */
 
 void
-dimeObjectsSection::insertObject(dimeObject* const object, const int idx)
+DimeObjectsSection::insertObject(DimeObject* const object, const int idx)
 {
 	if (idx < 0) this->objects.append(object);
 	else

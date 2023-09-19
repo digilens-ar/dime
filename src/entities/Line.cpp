@@ -31,7 +31,7 @@
 \**************************************************************************/
 
 /*!
-  \class dimeLine dime/entities/Line.h
+  \class DimeLine dime/entities/Line.h
   \brief The dimeLine class handles a LINE \e entity.
 */
 
@@ -47,7 +47,7 @@ static char entityName[] = "LINE";
   Constructor.
 */
 
-dimeLine::dimeLine()
+DimeLine::DimeLine()
 {
 	coords[0].setValue(0, 0, 0);
 	coords[1].setValue(0, 0, 0);
@@ -55,10 +55,10 @@ dimeLine::dimeLine()
 
 //!
 
-dimeEntity*
-dimeLine::copy(dimeModel* const model) const
+DimeEntity*
+DimeLine::copy(DimeModel* const model) const
 {
-	auto l = new(model->getMemHandler()) dimeLine;
+	auto l = new(model->getMemHandler()) DimeLine;
 	if (!l) return nullptr;
 
 	for (int i = 0; i < 2; i++)
@@ -82,7 +82,7 @@ dimeLine::copy(dimeModel* const model) const
 */
 
 bool
-dimeLine::write(dimeOutput* const file)
+DimeLine::write(DimeOutput* const file)
 {
 	this->preWrite(file);
 
@@ -95,13 +95,13 @@ dimeLine::write(dimeOutput* const file)
 		}
 	}
 	return this->writeExtrusionData(file) &&
-		dimeEntity::write(file);
+		DimeEntity::write(file);
 }
 
 //!
 
 int
-dimeLine::typeId() const
+DimeLine::typeId() const
 {
 	return DimeBase::dimeLineType;
 }
@@ -111,7 +111,7 @@ dimeLine::typeId() const
 */
 
 bool
-dimeLine::handleRecord(const int groupcode,
+DimeLine::handleRecord(const int groupcode,
                        const dimeParam& param,
                        DimeMemHandler* const memhandler)
 {
@@ -126,13 +126,13 @@ dimeLine::handleRecord(const int groupcode,
 		this->coords[groupcode % 10][groupcode / 10 - 1] = param.double_data;
 		return true;
 	}
-	return dimeExtrusionEntity::handleRecord(groupcode, param, memhandler);
+	return DimeExtrusionEntity::handleRecord(groupcode, param, memhandler);
 }
 
 //!
 
 const char*
-dimeLine::getEntityName() const
+DimeLine::getEntityName() const
 {
 	return entityName;
 }
@@ -140,7 +140,7 @@ dimeLine::getEntityName() const
 //!
 
 bool
-dimeLine::getRecord(const int groupcode,
+DimeLine::getRecord(const int groupcode,
                     dimeParam& param,
                     const int index) const
 {
@@ -155,13 +155,13 @@ dimeLine::getRecord(const int groupcode,
 		param.double_data = this->coords[groupcode % 10][groupcode / 10 - 1];
 		return true;
 	}
-	return dimeExtrusionEntity::getRecord(groupcode, param, index);
+	return DimeExtrusionEntity::getRecord(groupcode, param, index);
 }
 
 //!
 
 void
-dimeLine::print() const
+DimeLine::print() const
 {
 	fprintf(stderr, "LINE:\n");
 	for (int i = 0; i < 2; i++)
@@ -173,8 +173,8 @@ dimeLine::print() const
 
 //!
 
-dimeEntity::GeometryType
-dimeLine::extractGeometry(dimeArray<dimeVec3f>& verts,
+DimeEntity::GeometryType
+DimeLine::extractGeometry(dimeArray<dimeVec3f>& verts,
                           dimeArray<int>&/*indices*/,
                           dimeVec3f& extrusionDir,
                           dxfdouble& thickness)
@@ -184,15 +184,15 @@ dimeLine::extractGeometry(dimeArray<dimeVec3f>& verts,
 
 	verts.append(coords[0]);
 	verts.append(coords[1]);
-	return dimeEntity::LINES;
+	return DimeEntity::LINES;
 }
 
 //!
 
 int
-dimeLine::countRecords() const
+DimeLine::countRecords() const
 {
 	int cnt = 1; // header
 	cnt += 6; // coordinates
-	return cnt + dimeExtrusionEntity::countRecords();
+	return cnt + DimeExtrusionEntity::countRecords();
 }

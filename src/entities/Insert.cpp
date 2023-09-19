@@ -82,8 +82,8 @@ DimeInsert::~DimeInsert()
 
 //!
 
-dimeEntity*
-DimeInsert::copy(dimeModel* const model) const
+DimeEntity*
+DimeInsert::copy(DimeModel* const model) const
 {
 	DimeMemHandler* memh = model->getMemHandler();
 	auto inst = new(memh) DimeInsert;
@@ -92,7 +92,7 @@ DimeInsert::copy(dimeModel* const model) const
 	if (this->numEntities)
 	{
 		int realnum = this->numEntities;
-		inst->entities = dimeEntity::copyEntityArray(this->entities,
+		inst->entities = DimeEntity::copyEntityArray(this->entities,
 		                                             realnum,
 		                                             model);
 		if (realnum > 0 && inst->entities == nullptr)
@@ -123,7 +123,7 @@ DimeInsert::copy(dimeModel* const model) const
 		inst->blockName = model->findRefStringPtr(this->blockName);
 		if (inst->blockName)
 		{
-			inst->block = static_cast<dimeBlock*>(model->findReference(inst->blockName));
+			inst->block = static_cast<DimeBlock*>(model->findReference(inst->blockName));
 		}
 		else
 		{
@@ -146,19 +146,19 @@ DimeInsert::copy(dimeModel* const model) const
 */
 
 bool
-DimeInsert::read(dimeInput* const file)
+DimeInsert::read(DimeInput* const file)
 {
 	// see handleRecord() to understand what is done with
 	// blockName here... Ugly code, but who cares :-)
 	this->blockName = nullptr;
-	bool ret = dimeEntity::read(file);
+	bool ret = DimeEntity::read(file);
 	if (ret && this->blockName)
 	{
 		auto tmp = (char*)this->blockName;
 		this->blockName = file->getModel()->findRefStringPtr(tmp);
 		if (this->blockName)
 		{
-			this->block = static_cast<dimeBlock*>(file->getModel()->findReference(tmp));
+			this->block = static_cast<DimeBlock*>(file->getModel()->findReference(tmp));
 		}
 		else
 		{
@@ -172,18 +172,18 @@ DimeInsert::read(dimeInput* const file)
 	{
 		DimeMemHandler* memhandler = file->getMemHandler();
 		// read following entities.
-		dimeArray<dimeEntity*> array;
-		ret = dimeEntity::readEntities(file, array, "SEQEND");
+		dimeArray<DimeEntity*> array;
+		ret = DimeEntity::readEntities(file, array, "SEQEND");
 		if (ret)
 		{
-			this->seqend = dimeEntity::createEntity("SEQEND", memhandler);
+			this->seqend = DimeEntity::createEntity("SEQEND", memhandler);
 			// read the SEQEND entity
 			if (!this->seqend || !this->seqend->read(file)) ret = false;
 		}
 		int n = array.count();
 		if (ret && n)
 		{
-			this->entities = ARRAY_NEW(memhandler, dimeEntity*, n);
+			this->entities = ARRAY_NEW(memhandler, DimeEntity*, n);
 			if (this->entities)
 			{
 				this->numEntities = n;
@@ -203,7 +203,7 @@ DimeInsert::read(dimeInput* const file)
 */
 
 bool
-DimeInsert::write(dimeOutput* const file)
+DimeInsert::write(DimeOutput* const file)
 {
 	this->preWrite(file);
 
@@ -262,7 +262,7 @@ DimeInsert::write(dimeOutput* const file)
 		file->writeDouble(this->rowSpacing);
 	}
 
-	bool ret = dimeEntity::write(file); // write unknown records
+	bool ret = DimeEntity::write(file); // write unknown records
 
 	if (this->extrusionDir != dimeVec3f(0, 0, 1))
 	{
@@ -361,7 +361,7 @@ DimeInsert::handleRecord(const int groupcode,
 #endif
 		return true;
 	}
-	return dimeEntity::handleRecord(groupcode, param, memhandler);
+	return DimeEntity::handleRecord(groupcode, param, memhandler);
 }
 
 //!
@@ -422,7 +422,7 @@ DimeInsert::getRecord(const int groupcode,
 #endif
 		return true;
 	}
-	return dimeEntity::getRecord(groupcode, param, index);
+	return DimeEntity::getRecord(groupcode, param, index);
 }
 
 //!
@@ -473,11 +473,11 @@ DimeInsert::traverse(const DimeState* const state,
 //!
 
 void
-DimeInsert::fixReferences(dimeModel* const model)
+DimeInsert::fixReferences(DimeModel* const model)
 {
 	if (this->block == nullptr && this->blockName)
 	{
-		this->block = static_cast<dimeBlock*>(model->findReference(this->blockName));
+		this->block = static_cast<DimeBlock*>(model->findReference(this->blockName));
 		if (this->block == nullptr)
 		{
 			fprintf(stderr, "BLOCK %s not found!\n", blockName);
@@ -503,7 +503,7 @@ DimeInsert::makeMatrix(dimeMatrix& m) const
 	{
 		// this block has its own coordinate system
 		// generated from one vector (the z-vector)
-		dimeEntity::generateUCS(this->extrusionDir, m2);
+		DimeEntity::generateUCS(this->extrusionDir, m2);
 		m.multRight(m2);
 	}
 
@@ -552,7 +552,7 @@ DimeInsert::countRecords() const
 		}
 		cnt++; // seqend
 	}
-	return cnt + dimeEntity::countRecords();
+	return cnt + DimeEntity::countRecords();
 }
 
 /*!
@@ -561,7 +561,7 @@ DimeInsert::countRecords() const
 */
 
 void
-DimeInsert::setBlock(dimeBlock* const block)
+DimeInsert::setBlock(DimeBlock* const block)
 {
 	this->block = block;
 	this->blockName = block->getName();

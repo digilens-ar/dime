@@ -45,14 +45,14 @@
 */
 
 dimeInt8Record::dimeInt8Record(const int group_code, const int8 val)
-	: dimeRecord(group_code)
+	: DimeRecord(group_code)
 {
 	this->setValue(val);
 }
 
 //!
 
-dimeRecord*
+DimeRecord*
 dimeInt8Record::copy(DimeMemHandler* const mh) const
 {
 	return new(mh) dimeInt8Record(this->groupCode, this->value);
@@ -89,7 +89,7 @@ dimeInt8Record::typeId() const
 //!
 
 bool
-dimeInt8Record::read(dimeInput* const in)
+dimeInt8Record::read(DimeInput* const in)
 {
 	return in->readInt8(this->value);
 }
@@ -97,9 +97,9 @@ dimeInt8Record::read(dimeInput* const in)
 //!
 
 bool
-dimeInt8Record::write(dimeOutput* const out)
+dimeInt8Record::write(DimeOutput* const out)
 {
-	if (dimeRecord::write(out))
+	if (DimeRecord::write(out))
 	{
 		return out->writeInt8(this->value);
 	}

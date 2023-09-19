@@ -57,10 +57,10 @@ calc_num_sub(dxfdouble maxerr, dxfdouble radius)
 
 
 void
-convert_circle(const dimeEntity* entity, const DimeState* state,
+convert_circle(const DimeEntity* entity, const DimeState* state,
                dxfLayerData* layerData, dxfConverter* converter)
 {
-	auto circle = (dimeCircle*)entity;
+	auto circle = (DimeCircle*)entity;
 
 	dimeMatrix matrix;
 	state->getMatrix(matrix);
@@ -71,7 +71,7 @@ convert_circle(const dimeEntity* entity, const DimeState* state,
 	if (e != dimeVec3f(0, 0, 1))
 	{
 		dimeMatrix m;
-		dimeEntity::generateUCS(e, m);
+		DimeEntity::generateUCS(e, m);
 		matrix.multRight(m);
 	}
 	e = dimeVec3f(0, 0, 1) * thickness;

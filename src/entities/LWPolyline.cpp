@@ -31,7 +31,7 @@
 \**************************************************************************/
 
 /*!
-  \class dimeLWPolyline dime/entities/LWPolyline.h
+  \class DimeLWPolyline dime/entities/LWPolyline.h
   \brief The dimeLWPolyline class handles an LWPOLYLINE \e entity.
 */
 
@@ -55,7 +55,7 @@ static char entityName[] = "LWPOLYLINE";
   Constructor.
 */
 
-dimeLWPolyline::dimeLWPolyline()
+DimeLWPolyline::DimeLWPolyline()
 	: constantWidth(0.0), elevation(0.0), flags(0), numVertices(0),
 	  xcoord(nullptr), ycoord(nullptr), startingWidth(nullptr), endWidth(nullptr),
 	  bulge(nullptr)
@@ -66,7 +66,7 @@ dimeLWPolyline::dimeLWPolyline()
   Destructor.
 */
 
-dimeLWPolyline::~dimeLWPolyline()
+DimeLWPolyline::~DimeLWPolyline()
 {
 	delete[] this->xcoord;
 	delete[] this->ycoord;
@@ -77,10 +77,10 @@ dimeLWPolyline::~dimeLWPolyline()
 
 //!
 
-dimeEntity*
-dimeLWPolyline::copy(dimeModel* const model) const
+DimeEntity*
+DimeLWPolyline::copy(DimeModel* const model) const
 {
-	auto l = new(model->getMemHandler()) dimeLWPolyline;
+	auto l = new(model->getMemHandler()) DimeLWPolyline;
 	if (!l) return nullptr;
 
 	DimeMemHandler* mh = model->getMemHandler();
@@ -128,7 +128,7 @@ dimeLWPolyline::copy(dimeModel* const model) const
 //!
 
 bool
-dimeLWPolyline::write(dimeOutput* const file)
+DimeLWPolyline::write(DimeOutput* const file)
 {
 	this->preWrite(file);
 
@@ -157,7 +157,7 @@ dimeLWPolyline::write(dimeOutput* const file)
 
 	// write extrusion data and unksnown records
 	ret = this->writeExtrusionData(file) &&
-		dimeEntity::write(file);
+		DimeEntity::write(file);
 
 	if (ret)
 	{
@@ -196,7 +196,7 @@ dimeLWPolyline::write(dimeOutput* const file)
 //!
 
 int
-dimeLWPolyline::typeId() const
+DimeLWPolyline::typeId() const
 {
 	return DimeBase::dimeLWPolylineType;
 }
@@ -206,7 +206,7 @@ dimeLWPolyline::typeId() const
 */
 
 bool
-dimeLWPolyline::handleRecord(const int groupcode,
+DimeLWPolyline::handleRecord(const int groupcode,
                              const dimeParam& param,
                              DimeMemHandler* const mh)
 {
@@ -310,13 +310,13 @@ dimeLWPolyline::handleRecord(const int groupcode,
 		this->numVertices = param.int32_data;
 		return true;
 	}
-	return dimeExtrusionEntity::handleRecord(groupcode, param, mh);
+	return DimeExtrusionEntity::handleRecord(groupcode, param, mh);
 }
 
 //!
 
 const char*
-dimeLWPolyline::getEntityName() const
+DimeLWPolyline::getEntityName() const
 {
 	return entityName;
 }
@@ -324,7 +324,7 @@ dimeLWPolyline::getEntityName() const
 //!
 
 bool
-dimeLWPolyline::getRecord(const int groupcode,
+DimeLWPolyline::getRecord(const int groupcode,
                           dimeParam& param,
                           const int index) const
 {
@@ -378,13 +378,13 @@ dimeLWPolyline::getRecord(const int groupcode,
 		param.int32_data = this->numVertices;
 		return true;
 	}
-	return dimeExtrusionEntity::getRecord(groupcode, param, index);
+	return DimeExtrusionEntity::getRecord(groupcode, param, index);
 }
 
 //!
 
 void
-dimeLWPolyline::print() const
+DimeLWPolyline::print() const
 {
 	fprintf(stderr, "LWPOLYLINE:\n");
 	for (int i = 0; i < this->numVertices; i++)
@@ -395,8 +395,8 @@ dimeLWPolyline::print() const
 
 //!
 
-dimeEntity::GeometryType
-dimeLWPolyline::extractGeometry(dimeArray<dimeVec3f>& verts,
+DimeEntity::GeometryType
+DimeLWPolyline::extractGeometry(dimeArray<dimeVec3f>& verts,
                                 dimeArray<int>&/*indices*/,
                                 dimeVec3f& extrusionDir,
                                 dxfdouble& thickness)
@@ -418,13 +418,13 @@ dimeLWPolyline::extractGeometry(dimeArray<dimeVec3f>& verts,
 		                       this->ycoord[0],
 		                       this->elevation));
 	}
-	return dimeEntity::LINES;
+	return DimeEntity::LINES;
 }
 
 //!
 
 int
-dimeLWPolyline::countRecords() const
+DimeLWPolyline::countRecords() const
 {
 	int cnt = 2; // header + numVertices
 
@@ -441,5 +441,5 @@ dimeLWPolyline::countRecords() const
 		if (this->endWidth && this->endWidth[i] != 0.0) cnt++;
 	}
 
-	return cnt + dimeExtrusionEntity::countRecords();
+	return cnt + DimeExtrusionEntity::countRecords();
 }

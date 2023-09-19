@@ -50,8 +50,8 @@ static constexpr char sectionName[] = "BLOCKS";
   Constructor.
 */
 
-dimeBlocksSection::dimeBlocksSection(DimeMemHandler* const memhandler)
-	: dimeSection(memhandler)
+DimeBlocksSection::DimeBlocksSection(DimeMemHandler* const memhandler)
+	: DimeSection(memhandler)
 {
 }
 
@@ -59,7 +59,7 @@ dimeBlocksSection::dimeBlocksSection(DimeMemHandler* const memhandler)
   Destructor. Should only be called when no memory handler is used.
 */
 
-dimeBlocksSection::~dimeBlocksSection()
+DimeBlocksSection::~DimeBlocksSection()
 {
 	if (!this->memHandler)
 	{
@@ -70,13 +70,13 @@ dimeBlocksSection::~dimeBlocksSection()
 
 //!
 
-dimeSection*
-dimeBlocksSection::copy(dimeModel* const model) const
+DimeSection*
+DimeBlocksSection::copy(DimeModel* const model) const
 {
-	auto bs = new dimeBlocksSection(model->getMemHandler());
+	auto bs = new DimeBlocksSection(model->getMemHandler());
 	for (int i = 0; i < this->blocks.count(); i++)
 	{
-		bs->blocks.append(static_cast<dimeBlock*>(this->blocks[i]->copy(model)));
+		bs->blocks.append(static_cast<DimeBlock*>(this->blocks[i]->copy(model)));
 	}
 	return bs;
 }
@@ -86,12 +86,12 @@ dimeBlocksSection::copy(dimeModel* const model) const
 */
 
 bool
-dimeBlocksSection::read(dimeInput* const file)
+DimeBlocksSection::read(DimeInput* const file)
 {
 	int32 groupcode;
 	const char* string;
 	bool ok = true;
-	dimeBlock* block = nullptr;
+	DimeBlock* block = nullptr;
 	DimeMemHandler* memhandler = file->getMemHandler();
 
 	while (true)
@@ -110,7 +110,7 @@ dimeBlocksSection::read(dimeInput* const file)
 			ok = false;
 			break;
 		}
-		block = static_cast<dimeBlock*>(dimeEntity::createEntity(string, memhandler));
+		block = static_cast<DimeBlock*>(DimeEntity::createEntity(string, memhandler));
 		if (block == nullptr)
 		{
 			fprintf(stderr, "error creating block: %s\n", string);
@@ -133,7 +133,7 @@ dimeBlocksSection::read(dimeInput* const file)
 */
 
 bool
-dimeBlocksSection::write(dimeOutput* const file)
+DimeBlocksSection::write(DimeOutput* const file)
 {
 	if (file->writeGroupCode(2) && file->writeString(sectionName))
 	{
@@ -153,7 +153,7 @@ dimeBlocksSection::write(dimeOutput* const file)
 //!
 
 int
-dimeBlocksSection::typeId() const
+DimeBlocksSection::typeId() const
 {
 	return DimeBase::dimeBlocksSectionType;
 }
@@ -164,7 +164,7 @@ dimeBlocksSection::typeId() const
 */
 
 void
-dimeBlocksSection::fixReferences(dimeModel* const model)
+DimeBlocksSection::fixReferences(DimeModel* const model)
 {
 	int i, n = this->blocks.count();
 	for (i = 0; i < n; i++)
@@ -176,7 +176,7 @@ dimeBlocksSection::fixReferences(dimeModel* const model)
 //!
 
 int
-dimeBlocksSection::countRecords() const
+DimeBlocksSection::countRecords() const
 {
 	int cnt = 0;
 	int i, n = this->blocks.count();
@@ -188,7 +188,7 @@ dimeBlocksSection::countRecords() const
 //!
 
 const char*
-dimeBlocksSection::getSectionName() const
+DimeBlocksSection::getSectionName() const
 {
 	return sectionName;
 }
@@ -198,7 +198,7 @@ dimeBlocksSection::getSectionName() const
 */
 
 int
-dimeBlocksSection::getNumBlocks() const
+DimeBlocksSection::getNumBlocks() const
 {
 	return this->blocks.count();
 }
@@ -207,8 +207,8 @@ dimeBlocksSection::getNumBlocks() const
   Returns the block at index \a idx.
 */
 
-dimeBlock*
-dimeBlocksSection::getBlock(const int idx)
+DimeBlock*
+DimeBlocksSection::getBlock(const int idx)
 {
 	assert(idx >= 0 && idx < this->blocks.count());
 	return this->blocks[idx];
@@ -219,7 +219,7 @@ dimeBlocksSection::getBlock(const int idx)
 */
 
 void
-dimeBlocksSection::removeBlock(const int idx)
+DimeBlocksSection::removeBlock(const int idx)
 {
 	assert(idx >= 0 && idx < this->blocks.count());
 	if (!this->memHandler) delete this->blocks[idx];
@@ -232,7 +232,7 @@ dimeBlocksSection::removeBlock(const int idx)
 */
 
 void
-dimeBlocksSection::insertBlock(dimeBlock* const block, const int idx)
+DimeBlocksSection::insertBlock(DimeBlock* const block, const int idx)
 {
 	if (idx < 0) this->blocks.append(block);
 	else

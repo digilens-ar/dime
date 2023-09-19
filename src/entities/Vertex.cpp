@@ -31,7 +31,7 @@
 \**************************************************************************/
 
 /*!
-  \class dimeVertex dime/entities/Vertex.h
+  \class DimeVertex dime/entities/Vertex.h
   \brief The dimeVertex class handles a VERTEX \e entity.
 */
 
@@ -48,7 +48,7 @@ static char entityName[] = "VERTEX";
   Constructor.
 */
 
-dimeVertex::dimeVertex()
+DimeVertex::DimeVertex()
 {
 	this->polyline = nullptr;
 	this->flags = 0;
@@ -61,10 +61,10 @@ dimeVertex::dimeVertex()
 
 //!
 
-dimeEntity*
-dimeVertex::copy(dimeModel* const model) const
+DimeEntity*
+DimeVertex::copy(DimeModel* const model) const
 {
-	auto v = new(model->getMemHandler()) dimeVertex;
+	auto v = new(model->getMemHandler()) DimeVertex;
 
 	v->flags = this->flags;
 	v->indices[0] = this->indices[0];
@@ -86,7 +86,7 @@ dimeVertex::copy(dimeModel* const model) const
 //!
 
 bool
-dimeVertex::write(dimeOutput* const file)
+DimeVertex::write(DimeOutput* const file)
 {
 	bool ret = true;
 	if (!this->isDeleted())
@@ -111,7 +111,7 @@ dimeVertex::write(dimeOutput* const file)
 			file->writeInt16(this->indices[i]);
 #endif
 		}
-		ret = dimeEntity::write(file);
+		ret = DimeEntity::write(file);
 	}
 	return ret;
 }
@@ -121,7 +121,7 @@ dimeVertex::write(dimeOutput* const file)
 */
 
 int
-dimeVertex::numIndices() const
+DimeVertex::numIndices() const
 {
 	int cnt = 0;
 	if ((flags & 128) && !(flags & 64))
@@ -137,7 +137,7 @@ dimeVertex::numIndices() const
 */
 
 int
-dimeVertex::getIndex(const int num) const
+DimeVertex::getIndex(const int num) const
 {
 	return this->indices[num];
 }
@@ -145,7 +145,7 @@ dimeVertex::getIndex(const int num) const
 //!
 
 int
-dimeVertex::typeId() const
+DimeVertex::typeId() const
 {
 	return DimeBase::dimeVertexType;
 }
@@ -153,7 +153,7 @@ dimeVertex::typeId() const
 //!
 
 bool
-dimeVertex::handleRecord(const int groupcode,
+DimeVertex::handleRecord(const int groupcode,
                          const dimeParam& param,
                          DimeMemHandler* const memhandler)
 {
@@ -178,13 +178,13 @@ dimeVertex::handleRecord(const int groupcode,
 #endif
 		return true;
 	}
-	return dimeEntity::handleRecord(groupcode, param, memhandler);
+	return DimeEntity::handleRecord(groupcode, param, memhandler);
 }
 
 //!
 
 const char*
-dimeVertex::getEntityName() const
+DimeVertex::getEntityName() const
 {
 	return entityName;
 }
@@ -192,7 +192,7 @@ dimeVertex::getEntityName() const
 //!
 
 bool
-dimeVertex::getRecord(const int groupcode,
+DimeVertex::getRecord(const int groupcode,
                       dimeParam& param,
                       const int index) const
 {
@@ -217,20 +217,20 @@ dimeVertex::getRecord(const int groupcode,
 #endif
 		return true;
 	}
-	return dimeEntity::getRecord(groupcode, param, index);
+	return DimeEntity::getRecord(groupcode, param, index);
 }
 
 //!
 
 int
-dimeVertex::countRecords() const
+DimeVertex::countRecords() const
 {
 	int cnt = 0;
 	if (!this->isDeleted())
 	{
 		cnt += 5; // header + flags + coords
 		cnt += this->numIndices();
-		cnt += dimeEntity::countRecords();
+		cnt += DimeEntity::countRecords();
 	}
 	return cnt;
 }

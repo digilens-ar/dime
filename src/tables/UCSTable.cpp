@@ -31,7 +31,7 @@
 \**************************************************************************/
 
 /*!
-  \class dimeUCSTable dime/tables/UCSTable.h
+  \class DimeUCSTable dime/tables/UCSTable.h
   \brief The dimeUCSTable class reads and writes UCS tables.
 */
 
@@ -49,18 +49,18 @@ static constexpr char tableName[] = "UCS";
   Constructor.
 */
 
-dimeUCSTable::dimeUCSTable()
+DimeUCSTable::DimeUCSTable()
 	: origin(0, 0, 0), xaxis(1, 0, 0), yaxis(0, 1, 0)
 {
 }
 
 //!
 
-dimeTableEntry*
-dimeUCSTable::copy(dimeModel* const model) const
+DimeTableEntry*
+DimeUCSTable::copy(DimeModel* const model) const
 {
 	DimeMemHandler* memh = model->getMemHandler();
-	auto u = new(memh) dimeUCSTable;
+	auto u = new(memh) DimeUCSTable;
 	u->xaxis = this->xaxis;
 	u->yaxis = this->yaxis;
 	u->origin = this->origin;
@@ -76,7 +76,7 @@ dimeUCSTable::copy(dimeModel* const model) const
 //!
 
 const char*
-dimeUCSTable::getTableName() const
+DimeUCSTable::getTableName() const
 {
 	return tableName;
 }
@@ -84,7 +84,7 @@ dimeUCSTable::getTableName() const
 //!
 
 bool
-dimeUCSTable::write(dimeOutput* const file)
+DimeUCSTable::write(DimeOutput* const file)
 {
 	bool ret = true;
 	file->writeGroupCode(0);
@@ -110,14 +110,14 @@ dimeUCSTable::write(dimeOutput* const file)
 	file->writeGroupCode(32);
 	file->writeDouble(this->yaxis[2]);
 
-	ret = dimeTableEntry::write(file);
+	ret = DimeTableEntry::write(file);
 	return ret;
 }
 
 //!
 
 int
-dimeUCSTable::typeId() const
+DimeUCSTable::typeId() const
 {
 	return DimeBase::dimeUCSTableType;
 }
@@ -125,7 +125,7 @@ dimeUCSTable::typeId() const
 //!
 
 bool
-dimeUCSTable::handleRecord(const int groupcode,
+DimeUCSTable::handleRecord(const int groupcode,
                            const dimeParam& param,
                            DimeMemHandler* const memhandler)
 {
@@ -147,14 +147,14 @@ dimeUCSTable::handleRecord(const int groupcode,
 		this->yaxis[(groupcode / 10) - 1] = param.double_data;
 		return true;
 	}
-	return dimeTableEntry::handleRecord(groupcode, param, memhandler);
+	return DimeTableEntry::handleRecord(groupcode, param, memhandler);
 }
 
 //!
 
 int
-dimeUCSTable::countRecords() const
+DimeUCSTable::countRecords() const
 {
 	int cnt = 1 + 3 + 3 + 3; // header + origin + xaxis + yaxis
-	return cnt + dimeTableEntry::countRecords();
+	return cnt + DimeTableEntry::countRecords();
 }

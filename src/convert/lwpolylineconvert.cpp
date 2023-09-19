@@ -38,10 +38,10 @@
 #include <dime/State.h>
 
 void
-convert_lwpolyline(const dimeEntity* entity, const DimeState* state,
+convert_lwpolyline(const DimeEntity* entity, const DimeState* state,
                    dxfLayerData* layerData, dxfConverter*)
 {
-	auto pline = (dimeLWPolyline*)entity;
+	auto pline = (DimeLWPolyline*)entity;
 
 	dimeMatrix matrix;
 	state->getMatrix(matrix);
@@ -52,7 +52,7 @@ convert_lwpolyline(const dimeEntity* entity, const DimeState* state,
 	if (e != dimeVec3f(0, 0, 1))
 	{
 		dimeMatrix m;
-		dimeEntity::generateUCS(e, m);
+		DimeEntity::generateUCS(e, m);
 		matrix.multRight(m);
 	}
 	e = dimeVec3f(0, 0, 1) * thickness;

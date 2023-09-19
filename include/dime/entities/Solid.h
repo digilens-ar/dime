@@ -36,19 +36,19 @@
 #include <dime/entities/FaceEntity.h>
 #include <dime/util/Linear.h>
 
-class DIME_DLL_API dimeSolid : public dimeFaceEntity
+class DIME_DLL_API DimeSolid : public dimeFaceEntity
 {
 public:
-	dimeSolid();
+	DimeSolid();
 
 	dxfdouble getThickness() const override;
 	void getExtrusionDir(dimeVec3f& ed) const override;
 	void setThickness(const dxfdouble& thickness);
 	void setExtrusionDir(const dimeVec3f& ed);
 
-	bool write(dimeOutput* out) override;
+	bool write(DimeOutput* out) override;
 	int typeId() const override;
-	dimeEntity* copy(dimeModel* model) const override;
+	DimeEntity* copy(DimeModel* model) const override;
 	bool getRecord(int groupcode,
 	               dimeParam& param,
 	               int index = 0) const override;

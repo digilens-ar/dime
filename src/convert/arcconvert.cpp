@@ -59,10 +59,10 @@ calc_num_sub(dxfdouble maxerr, dxfdouble radius)
 
 
 void
-convert_arc(const dimeEntity* entity, const DimeState* state,
+convert_arc(const DimeEntity* entity, const DimeState* state,
             dxfLayerData* layerData, dxfConverter* converter)
 {
-	auto arc = (dimeArc*)entity;
+	auto arc = (DimeArc*)entity;
 
 	dimeMatrix matrix;
 	state->getMatrix(matrix);
@@ -73,7 +73,7 @@ convert_arc(const dimeEntity* entity, const DimeState* state,
 	if (e != dimeVec3f(0, 0, 1))
 	{
 		dimeMatrix m;
-		dimeEntity::generateUCS(e, m);
+		DimeEntity::generateUCS(e, m);
 		matrix.multRight(m);
 	}
 	e = dimeVec3f(0, 0, 1);

@@ -36,21 +36,21 @@
 #include <dime/Base.h>
 #include <dime/util/Array.h>
 
-class dimeInput;
-class dimeModel;
-class dimeOutput;
-class dimeTableEntry;
-class dimeRecord;
+class DimeInput;
+class DimeModel;
+class DimeOutput;
+class DimeTableEntry;
+class DimeRecord;
 
-class DIME_DLL_API dimeTable : public DimeBase
+class DIME_DLL_API DimeTable : public DimeBase
 {
 public:
-	dimeTable(DimeMemHandler* memhandler);
-	~dimeTable() override;
+	DimeTable(DimeMemHandler* memhandler);
+	~DimeTable() override;
 
-	bool read(dimeInput* in);
-	bool write(dimeOutput* out);
-	dimeTable* copy(dimeModel* model) const;
+	bool read(DimeInput* in);
+	bool write(DimeOutput* out);
+	DimeTable* copy(DimeModel* model) const;
 	int typeId() const override;
 	int countRecords() const;
 	int tableType() const;
@@ -59,20 +59,20 @@ public:
 	const char* tableName() const;
 
 	int getNumTableEntries() const;
-	dimeTableEntry* getTableEntry(int idx);
-	void insertTableEntry(dimeTableEntry* tableEntry, int idx = -1);
+	DimeTableEntry* getTableEntry(int idx);
+	void insertTableEntry(DimeTableEntry* tableEntry, int idx = -1);
 	void removeTableEntry(int idx);
 
 	int getNumTableRecords() const;
-	dimeRecord* getTableRecord(int idx);
-	void insertTableRecord(dimeRecord* record, int idx = -1);
+	DimeRecord* getTableRecord(int idx);
+	void insertTableRecord(DimeRecord* record, int idx = -1);
 	void removeTableRecord(int idx);
 
 private:
 	int16 maxEntries; // dummy variable read from file
 	char* tablename;
-	dimeArray<dimeTableEntry*> tableEntries;
-	dimeArray<dimeRecord*> records;
+	dimeArray<DimeTableEntry*> tableEntries;
+	dimeArray<DimeRecord*> records;
 	DimeMemHandler* memHandler;
 }; // class dimeTable
 

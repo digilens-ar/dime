@@ -37,10 +37,10 @@
 #include <dime/State.h>
 
 void
-convert_line(const dimeEntity* entity, const DimeState* state,
+convert_line(const DimeEntity* entity, const DimeState* state,
              dxfLayerData* layerData, dxfConverter*)
 {
-	auto line = (dimeLine*)entity;
+	auto line = (DimeLine*)entity;
 
 	dxfdouble thickness;
 	dimeVec3f v0, v1;

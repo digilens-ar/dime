@@ -37,21 +37,21 @@
 #include <dime/entities/ExtrusionEntity.h>
 #include <dime/util/Linear.h>
 
-class DIME_DLL_API dimePoint : public dimeExtrusionEntity
+class DIME_DLL_API DimePoint : public DimeExtrusionEntity
 {
 public:
-	dimePoint();
+	DimePoint();
 
 	const dimeVec3f& getCoords() const;
 	void setCoords(const dimeVec3f& v);
 
-	dimeEntity* copy(dimeModel* model) const override;
+	DimeEntity* copy(DimeModel* model) const override;
 	bool getRecord(int groupcode,
 	               dimeParam& param,
 	               int index = 0) const override;
 	const char* getEntityName() const override;
 
-	bool write(dimeOutput* out) override;
+	bool write(DimeOutput* out) override;
 	int typeId() const override;
 	int countRecords() const override;
 
@@ -70,13 +70,13 @@ private:
 }; // class dimePoint
 
 inline const dimeVec3f&
-dimePoint::getCoords() const
+DimePoint::getCoords() const
 {
 	return coords;
 }
 
 inline void
-dimePoint::setCoords(const dimeVec3f& v)
+DimePoint::setCoords(const dimeVec3f& v)
 {
 	this->coords = v;
 }

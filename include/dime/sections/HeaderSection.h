@@ -36,7 +36,7 @@
 #include <dime/sections/Section.h>
 #include <dime/util/Array.h>
 
-class DIME_DLL_API dimeHeaderSection : public dimeSection
+class DIME_DLL_API dimeHeaderSection : public DimeSection
 {
 public:
 	dimeHeaderSection(DimeMemHandler* memhandler);
@@ -54,17 +54,17 @@ public:
 	                DimeMemHandler* memhandler = nullptr);
 
 	const char* getSectionName() const override;
-	dimeSection* copy(dimeModel* model) const override;
+	DimeSection* copy(DimeModel* model) const override;
 
-	bool read(dimeInput* file) override;
-	bool write(dimeOutput* file) override;
+	bool read(DimeInput* file) override;
+	bool write(DimeOutput* file) override;
 	int typeId() const override;
 	int countRecords() const override;
 
 private:
 	int findVariable(const char* name) const;
 
-	dimeArray<class dimeRecord*> records;
+	dimeArray<class DimeRecord*> records;
 }; // class dimeHeaderSection
 
 #endif // ! DIME_HEADERSECTION_H

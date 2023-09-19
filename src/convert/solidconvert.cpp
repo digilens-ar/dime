@@ -49,7 +49,7 @@ convert_solid_data(dimeVec3f* v, dimeVec3f& e, dxfdouble thickness,
 	if (e != dimeVec3f(0, 0, 1))
 	{
 		dimeMatrix m;
-		dimeEntity::generateUCS(e, m);
+		DimeEntity::generateUCS(e, m);
 		matrix.multRight(m);
 	}
 	e = dimeVec3f(0, 0, 1) * thickness;
@@ -123,13 +123,13 @@ convert_solid_data(dimeVec3f* v, dimeVec3f& e, dxfdouble thickness,
 
 
 void
-convert_solid(const dimeEntity* entity, const DimeState* state,
+convert_solid(const DimeEntity* entity, const DimeState* state,
               dxfLayerData* layerData, dxfConverter* converter)
 {
 	// respect the value in the $FILLMODE header variable
 	layerData->setFillmode(converter->getFillmode());
 
-	auto solid = (dimeSolid*)entity;
+	auto solid = (DimeSolid*)entity;
 
 	dimeVec3f v[4];
 	solid->getVertices(v[0], v[1], v[2], v[3]);

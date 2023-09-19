@@ -35,16 +35,16 @@
 
 #include <dime/entities/Entity.h>
 
-class DIME_DLL_API dimeUnknownEntity : public dimeEntity
+class DIME_DLL_API DimeUnknownEntity : public DimeEntity
 {
 public:
-	dimeUnknownEntity(const char* name, DimeMemHandler* memhandler);
-	~dimeUnknownEntity() override;
+	DimeUnknownEntity(const char* name, DimeMemHandler* memhandler);
+	~DimeUnknownEntity() override;
 
-	dimeEntity* copy(dimeModel* model) const override;
+	DimeEntity* copy(DimeModel* model) const override;
 
 	const char* getEntityName() const override;
-	bool write(dimeOutput* out) override;
+	bool write(DimeOutput* out) override;
 	int typeId() const override;
 	int countRecords() const override;
 

@@ -31,7 +31,7 @@
 \**************************************************************************/
 
 /*!
-  \class dimeTableEntry dime/tables/TableEntry.h
+  \class DimeTableEntry dime/tables/TableEntry.h
   \brief The dimeTableEntry class is the superclass for all table classes.
 */
 
@@ -52,8 +52,8 @@
   Constructor.
 */
 
-dimeTableEntry::dimeTableEntry()
-	: dimeRecordHolder(0) // table entries are separated by group code 0
+DimeTableEntry::DimeTableEntry()
+	: DimeRecordHolder(0) // table entries are separated by group code 0
 {
 }
 
@@ -61,7 +61,7 @@ dimeTableEntry::dimeTableEntry()
   Destructor.
 */
 
-dimeTableEntry::~dimeTableEntry()
+DimeTableEntry::~DimeTableEntry()
 {
 }
 
@@ -70,16 +70,16 @@ dimeTableEntry::~dimeTableEntry()
 */
 
 bool
-dimeTableEntry::copyRecords(dimeTableEntry* const table,
-                            dimeModel* const model) const
+DimeTableEntry::copyRecords(DimeTableEntry* const table,
+                            DimeModel* const model) const
 {
-	return dimeRecordHolder::copyRecords(table, model->getMemHandler());
+	return DimeRecordHolder::copyRecords(table, model->getMemHandler());
 }
 
 //!
 
 bool
-dimeTableEntry::write(dimeOutput* const /* file */)
+DimeTableEntry::write(DimeOutput* const /* file */)
 {
 	// moved to preWrite()
 	//return dimeRecordHolder::write(file);
@@ -89,27 +89,27 @@ dimeTableEntry::write(dimeOutput* const /* file */)
 //!
 
 bool
-dimeTableEntry::read(dimeInput* const file)
+DimeTableEntry::read(DimeInput* const file)
 {
-	return dimeRecordHolder::read(file);
+	return DimeRecordHolder::read(file);
 }
 
 /*!
   Static function that creates a table based on its name. 
 */
 
-dimeTableEntry*
-dimeTableEntry::createTableEntry(const char* const name,
+DimeTableEntry*
+DimeTableEntry::createTableEntry(const char* const name,
                                  DimeMemHandler* const memhandler)
 {
 	if (!strcmp(name, "LAYER"))
 	{
-		return new(memhandler) dimeLayerTable;
+		return new(memhandler) DimeLayerTable;
 	}
 	//if (!strcmp(name, "UCS")) // UCS is not used for the moment
 	//  return new(memhandler) dimeUCSTable;
 
-	return new(memhandler) dimeUnknownTable(name, memhandler);
+	return new(memhandler) DimeUnknownTable(name, memhandler);
 }
 
 /*!
@@ -120,15 +120,15 @@ dimeTableEntry::createTableEntry(const char* const name,
 */
 
 int
-dimeTableEntry::countRecords() const
+DimeTableEntry::countRecords() const
 {
-	return dimeRecordHolder::countRecords();
+	return DimeRecordHolder::countRecords();
 }
 
 //!
 
 bool
-dimeTableEntry::handleRecord(const int,
+DimeTableEntry::handleRecord(const int,
                              const dimeParam&,
                              DimeMemHandler* const)
 {
@@ -138,20 +138,20 @@ dimeTableEntry::handleRecord(const int,
 //!
 
 bool
-dimeTableEntry::isOfType(const int thetypeid) const
+DimeTableEntry::isOfType(const int thetypeid) const
 {
 	return thetypeid == DimeBase::dimeTableEntryType ||
-		dimeRecordHolder::isOfType(thetypeid);
+		DimeRecordHolder::isOfType(thetypeid);
 }
 
 //!
 
 bool
-dimeTableEntry::preWrite(dimeOutput* const file)
+DimeTableEntry::preWrite(DimeOutput* const file)
 {
 	return file->writeGroupCode(0) &&
 		file->writeString(this->getTableName()) &&
-		dimeRecordHolder::write(file);
+		DimeRecordHolder::write(file);
 }
 
 /*!

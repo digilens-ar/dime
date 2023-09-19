@@ -31,7 +31,7 @@
 \**************************************************************************/
 
 /*!
-  \class dimeTable dime/tables/Table.h
+  \class DimeTable dime/tables/Table.h
   \brief The dimeTable class stores table entries.
 
   This class will not be allocated by the memory handler, but it will
@@ -54,7 +54,7 @@
   Constructor.
 */
 
-dimeTable::dimeTable(DimeMemHandler* const memhandler)
+DimeTable::DimeTable(DimeMemHandler* const memhandler)
 	: maxEntries(0), tablename(nullptr), memHandler(memhandler)
 {
 }
@@ -63,7 +63,7 @@ dimeTable::dimeTable(DimeMemHandler* const memhandler)
   Destructor.
 */
 
-dimeTable::~dimeTable()
+DimeTable::~DimeTable()
 {
 	int i;
 	if (!this->memHandler)
@@ -82,12 +82,12 @@ dimeTable::~dimeTable()
 
 //!
 
-dimeTable*
-dimeTable::copy(dimeModel* const model) const
+DimeTable*
+DimeTable::copy(DimeModel* const model) const
 {
 	DimeMemHandler* memh = model->getMemHandler();
 	int i;
-	auto t = new dimeTable(memh);
+	auto t = new DimeTable(memh);
 	int n = this->records.count();
 	if (n)
 	{
@@ -117,10 +117,10 @@ dimeTable::copy(dimeModel* const model) const
 */
 
 bool
-dimeTable::read(dimeInput* const file)
+DimeTable::read(DimeInput* const file)
 {
 	int32 groupcode;
-	dimeRecord* record = nullptr;
+	DimeRecord* record = nullptr;
 	bool ok = true;
 	DimeMemHandler* memh = file->getMemHandler();
 
@@ -151,7 +151,7 @@ dimeTable::read(dimeInput* const file)
 		}
 		else if (groupcode != 0)
 		{
-			record = dimeRecord::createRecord(groupcode, memh);
+			record = DimeRecord::createRecord(groupcode, memh);
 			if (!record || !record->read(file))
 			{
 				ok = false;
@@ -166,7 +166,7 @@ dimeTable::read(dimeInput* const file)
 	{
 		if (this->maxEntries) this->tableEntries.makeEmpty(this->maxEntries);
 		const char* string;
-		dimeTableEntry* entry;
+		DimeTableEntry* entry;
 		while (ok)
 		{
 			if (groupcode != 0)
@@ -181,7 +181,7 @@ dimeTable::read(dimeInput* const file)
 				break;
 			}
 			if (!strcmp(string, "ENDTAB")) break; // end of table
-			entry = dimeTableEntry::createTableEntry(string, memh);
+			entry = DimeTableEntry::createTableEntry(string, memh);
 			if (!entry->read(file))
 			{
 				ok = false;
@@ -200,7 +200,7 @@ dimeTable::read(dimeInput* const file)
 */
 
 bool
-dimeTable::write(dimeOutput* const file)
+DimeTable::write(DimeOutput* const file)
 {
 	bool ret = true;
 	file->writeGroupCode(0);
@@ -240,7 +240,7 @@ dimeTable::write(dimeOutput* const file)
 //!
 
 int
-dimeTable::typeId() const
+DimeTable::typeId() const
 {
 	return DimeBase::dimeTableType;
 }
@@ -248,7 +248,7 @@ dimeTable::typeId() const
 //!
 
 int
-dimeTable::tableType() const
+DimeTable::tableType() const
 {
 	if (this->tableEntries.count()) return this->tableEntries[0]->typeId();
 	return -1;
@@ -257,7 +257,7 @@ dimeTable::tableType() const
 //!
 
 const char*
-dimeTable::tableName() const
+DimeTable::tableName() const
 {
 	if (this->tablename) return this->tablename;
 	if (this->tableEntries.count()) return this->tableEntries[0]->getTableName();
@@ -265,7 +265,7 @@ dimeTable::tableName() const
 }
 
 void
-dimeTable::setTableName(const char* name)
+DimeTable::setTableName(const char* name)
 {
 	if (!this->memHandler)
 	{
@@ -279,7 +279,7 @@ dimeTable::setTableName(const char* name)
 */
 
 int
-dimeTable::countRecords() const
+DimeTable::countRecords() const
 {
 	int cnt = 2; // header + maxEntries
 	cnt += this->records.count();
@@ -297,7 +297,7 @@ dimeTable::countRecords() const
 */
 
 int
-dimeTable::getNumTableEntries() const
+DimeTable::getNumTableEntries() const
 {
 	return this->tableEntries.count();
 }
@@ -306,8 +306,8 @@ dimeTable::getNumTableEntries() const
   Returns the table entry at index \a idx.
 */
 
-dimeTableEntry*
-dimeTable::getTableEntry(const int idx)
+DimeTableEntry*
+DimeTable::getTableEntry(const int idx)
 {
 	assert(idx >= 0 && idx < this->tableEntries.count());
 	return this->tableEntries[idx];
@@ -319,7 +319,7 @@ dimeTable::getTableEntry(const int idx)
 */
 
 void
-dimeTable::removeTableEntry(const int idx)
+DimeTable::removeTableEntry(const int idx)
 {
 	assert(idx >= 0 && idx < this->tableEntries.count());
 	if (!this->memHandler) delete this->tableEntries[idx];
@@ -332,7 +332,7 @@ dimeTable::removeTableEntry(const int idx)
 */
 
 void
-dimeTable::insertTableEntry(dimeTableEntry* const tableEntry, const int idx)
+DimeTable::insertTableEntry(DimeTableEntry* const tableEntry, const int idx)
 {
 	if (idx < 0)
 		this->tableEntries.append(tableEntry);
@@ -351,7 +351,7 @@ dimeTable::insertTableEntry(dimeTableEntry* const tableEntry, const int idx)
 */
 
 int
-dimeTable::getNumTableRecords() const
+DimeTable::getNumTableRecords() const
 {
 	return this->records.count();
 }
@@ -360,8 +360,8 @@ dimeTable::getNumTableRecords() const
   Returns the table record at index \a idx.
 */
 
-dimeRecord*
-dimeTable::getTableRecord(const int idx)
+DimeRecord*
+DimeTable::getTableRecord(const int idx)
 {
 	assert(idx >= 0 && idx < this->records.count());
 	return this->records[idx];
@@ -372,7 +372,7 @@ dimeTable::getTableRecord(const int idx)
 */
 
 void
-dimeTable::removeTableRecord(const int idx)
+DimeTable::removeTableRecord(const int idx)
 {
 	assert(idx >= 0 && idx < this->records.count());
 	if (!this->memHandler) delete this->records[idx];
@@ -385,7 +385,7 @@ dimeTable::removeTableRecord(const int idx)
 */
 
 void
-dimeTable::insertTableRecord(dimeRecord* const record, const int idx)
+DimeTable::insertTableRecord(DimeRecord* const record, const int idx)
 {
 	assert(record->getGroupCode() != 70);
 	if (record->getGroupCode() == 2)

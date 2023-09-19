@@ -36,27 +36,27 @@
 #include <dime/Basic.h>
 #include <dime/Base.h>
 
-class dimeInput;
-class dimeModel;
-class dimeOutput;
+class DimeInput;
+class DimeModel;
+class DimeOutput;
 
-class DIME_DLL_API dimeSection : public DimeBase
+class DIME_DLL_API DimeSection : public DimeBase
 {
 public:
-	dimeSection(DimeMemHandler* memhandler);
-	~dimeSection() override;
+	DimeSection(DimeMemHandler* memhandler);
+	~DimeSection() override;
 
 	virtual const char* getSectionName() const = 0;
-	virtual dimeSection* copy(dimeModel* model) const = 0;
+	virtual DimeSection* copy(DimeModel* model) const = 0;
 
-	virtual bool read(dimeInput* file) = 0;
-	virtual bool write(dimeOutput* file) = 0;
+	virtual bool read(DimeInput* file) = 0;
+	virtual bool write(DimeOutput* file) = 0;
 	int typeId() const override = 0;
 	bool isOfType(int thetypeid) const override;
 	virtual int countRecords() const = 0;
 
 public:
-	static dimeSection* createSection(const char* sectionname,
+	static DimeSection* createSection(const char* sectionname,
 	                                  DimeMemHandler* memhandler);
 
 protected:

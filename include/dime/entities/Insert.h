@@ -37,28 +37,28 @@
 #include <dime/entities/Entity.h>
 #include <dime/util/Linear.h>
 
-class dimeBlock;
+class DimeBlock;
 
-class DIME_DLL_API DimeInsert : public dimeEntity
+class DIME_DLL_API DimeInsert : public DimeEntity
 {
 	friend class DimeEntitiesSection;
-	friend class dimeBlocksSection;
+	friend class DimeBlocksSection;
 
 public:
 	DimeInsert();
 	~DimeInsert() override;
 
-	void setBlock(dimeBlock* block);
-	dimeBlock* getBlock() const;
+	void setBlock(DimeBlock* block);
+	DimeBlock* getBlock() const;
 
-	dimeEntity* copy(dimeModel* model) const override;
+	DimeEntity* copy(DimeModel* model) const override;
 	bool getRecord(int groupcode,
 	               dimeParam& param,
 	               int index = 0) const override;
 	const char* getEntityName() const override;
 
-	bool read(dimeInput* in) override;
-	bool write(dimeOutput* out) override;
+	bool read(DimeInput* in) override;
+	bool write(DimeOutput* out) override;
 	int typeId() const override;
 	int countRecords() const override;
 
@@ -74,7 +74,7 @@ public:
 	// FIXME: more set and get methods
 
 protected:
-	void fixReferences(dimeModel* model) override;
+	void fixReferences(DimeModel* model) override;
 	bool handleRecord(int groupcode,
 	                  const dimeParam& param,
 	                  DimeMemHandler* memhandler) override;
@@ -91,7 +91,7 @@ private:
 	dimeVec3f extrusionDir;
 	dimeVec3f scale;
 	dxfdouble rotAngle;
-	dimeEntity** entities;
+	DimeEntity** entities;
 	int numEntities;
 #ifdef DIME_FIXBIG
   int32 rowCount;
@@ -101,8 +101,8 @@ private:
 	int16 columnCount;
 	dxfdouble rowSpacing;
 	dxfdouble columnSpacing;
-	dimeEntity* seqend;
-	dimeBlock* block;
+	DimeEntity* seqend;
+	DimeBlock* block;
 }; // class dimeInsert
 
 
@@ -118,7 +118,7 @@ DimeInsert::getInsertionPoint() const
 	return this->insertionPoint;
 }
 
-inline dimeBlock*
+inline DimeBlock*
 DimeInsert::getBlock() const
 {
 	return this->block;

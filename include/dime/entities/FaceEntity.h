@@ -37,7 +37,7 @@
 #include <dime/entities/Entity.h>
 #include <dime/util/Linear.h>
 
-class DIME_DLL_API dimeFaceEntity : public dimeEntity
+class DIME_DLL_API dimeFaceEntity : public DimeEntity
 {
 public:
 	bool isQuad() const;
@@ -74,7 +74,7 @@ protected:
 	                  const dimeParam& param,
 	                  DimeMemHandler* memhandler) override;
 	void copyCoords(const dimeFaceEntity* entity);
-	bool writeCoords(dimeOutput* file);
+	bool writeCoords(DimeOutput* file);
 
 	dimeFaceEntity();
 	dimeVec3f coords[4];

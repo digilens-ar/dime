@@ -37,15 +37,15 @@
 #include <dime/entities/Entity.h>
 #include <dime/util/Linear.h>
 
-class dimePolyline;
+class DimePolyline;
 
-class DIME_DLL_API dimeVertex : public dimeEntity
+class DIME_DLL_API DimeVertex : public DimeEntity
 {
-	friend class dimePolyline;
-	friend class dimeEntity;
+	friend class DimePolyline;
+	friend class DimeEntity;
 
 public:
-	dimeVertex();
+	DimeVertex();
 
 	enum Flags
 	{
@@ -58,7 +58,7 @@ public:
 		POLYFACE_MESH_VERTEX = 0x80
 	};
 
-	dimeEntity* copy(dimeModel* model) const override;
+	DimeEntity* copy(DimeModel* model) const override;
 	bool getRecord(int groupcode,
 	               dimeParam& param,
 	               int index = 0) const override;
@@ -74,7 +74,7 @@ public:
 	int getIndex(int idx) const;
 	void setIndex(int idx, int val);
 
-	bool write(dimeOutput* out) override;
+	bool write(DimeOutput* out) override;
 	int typeId() const override;
 	int countRecords() const override;
 
@@ -91,36 +91,36 @@ private:
 	int16 indices[4];
 #endif
 	dimeVec3f coords;
-	dimePolyline* polyline; // link back to polyline...
+	DimePolyline* polyline; // link back to polyline...
 }; // class dimeVertex
 
 inline void
-dimeVertex::setCoords(const dimeVec3f& v)
+DimeVertex::setCoords(const dimeVec3f& v)
 {
 	this->coords = v;
 }
 
 inline const dimeVec3f&
-dimeVertex::getCoords() const
+DimeVertex::getCoords() const
 {
 	return this->coords;
 }
 
 inline void
-dimeVertex::setIndex(const int idx, const int val)
+DimeVertex::setIndex(const int idx, const int val)
 {
 	assert(idx >= 0 && idx < 4);
 	this->indices[idx] = val;
 }
 
 inline int16
-dimeVertex::getFlags() const
+DimeVertex::getFlags() const
 {
 	return this->flags;
 }
 
 inline void
-dimeVertex::setFlags(const int16 flags)
+DimeVertex::setFlags(const int16 flags)
 {
 	this->flags = flags;
 }

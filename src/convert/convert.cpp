@@ -148,7 +148,7 @@ dxfConverter::getLayerData(const int colidx)
   Finds the color index for \a entity, and returns the dxfLayerData for it.
 */
 dxfLayerData*
-dxfConverter::getLayerData(const dimeEntity* entity)
+dxfConverter::getLayerData(const DimeEntity* entity)
 {
 	// special case for VERTEX
 	if (this->currentPolyline && entity->typeId() == DimeBase::dimeVertexType)
@@ -191,7 +191,7 @@ dxfConverter::getLayerData()
   \sa dxfConverter::writeWrl()
 */
 bool
-dxfConverter::doConvert(dimeModel& model)
+dxfConverter::doConvert(DimeModel& model)
 {
 	//
 	// remove these 6 lines, and you may merge several dxf
@@ -272,7 +272,7 @@ dxfConverter::writeVrml(FILE* out, const bool vrml1,
   Finds the correct color index for \a entity. Handles the BYLAYER case.
 */
 int
-dxfConverter::getColorIndex(const dimeEntity* entity)
+dxfConverter::getColorIndex(const DimeEntity* entity)
 {
 	int colnum = entity->getColorNumber();
 	if (this->layercol || colnum == 256)
@@ -288,7 +288,7 @@ dxfConverter::getColorIndex(const dimeEntity* entity)
 //
 bool
 dxfConverter::dime_callback(const DimeState* const state,
-                            dimeEntity* entity, void* data)
+                            DimeEntity* entity, void* data)
 {
 	return static_cast<dxfConverter*>(data)->private_callback(state, entity);
 }
@@ -298,7 +298,7 @@ dxfConverter::dime_callback(const DimeState* const state,
 //
 bool
 dxfConverter::private_callback(const DimeState* const state,
-                               dimeEntity* entity)
+                               DimeEntity* entity)
 {
 	if (entity->typeId() == DimeBase::dimePolylineType)
 	{
@@ -308,7 +308,7 @@ dxfConverter::private_callback(const DimeState* const state,
 	if (state->getCurrentInsert())
 	{
 		this->currentInsertColorIndex =
-			getColorIndex((dimeEntity*)state->getCurrentInsert());
+			getColorIndex((DimeEntity*)state->getCurrentInsert());
 	}
 	else
 	{
@@ -375,7 +375,7 @@ dxfConverter::private_callback(const DimeState* const state,
   method should be called before dxfxConverter::doConvert()
 */
 void
-dxfConverter::findHeaderVariables(dimeModel& model)
+dxfConverter::findHeaderVariables(DimeModel& model)
 {
 	auto hs = (dimeHeaderSection*)
 		model.findSection("HEADER");

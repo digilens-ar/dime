@@ -31,7 +31,7 @@
 \**************************************************************************/
 
 /*!
-  \class dimeSection dime/sections/Section.h
+  \class DimeSection dime/sections/Section.h
   \brief The dimeSection class is the superclass for all \e section classes.
   
   Currently supported sections are:
@@ -63,7 +63,7 @@
   Constructor
 */
 
-dimeSection::dimeSection(DimeMemHandler* const memhandler)
+DimeSection::DimeSection(DimeMemHandler* const memhandler)
 	: memHandler(memhandler)
 {
 }
@@ -72,7 +72,7 @@ dimeSection::dimeSection(DimeMemHandler* const memhandler)
   Empty virtual destructor.
 */
 
-dimeSection::~dimeSection()
+DimeSection::~DimeSection()
 {
 }
 
@@ -81,22 +81,20 @@ dimeSection::~dimeSection()
   from a text string.
 */
 
-dimeSection*
-dimeSection::createSection(const char* const sectionname,
+DimeSection*
+DimeSection::createSection(const char* const sectionname,
                            DimeMemHandler* memhandler)
 {
 	if (!strcmp(sectionname, "HEADER"))
 		return new dimeHeaderSection(memhandler);
-#if 0 // passthrough for the moment. I can't imaging anybody is using them 
-  if (!strcmp(sectionname, "CLASSES"))
-    return new dimeClassesSection(memhandler);
-  if (!strcmp(sectionname, "OBJECTS"))
-    return new dimeObjectsSection(memhandler);
-#endif
+	if (!strcmp(sectionname, "CLASSES"))
+		return new DimeClassesSection(memhandler);
+	if (!strcmp(sectionname, "OBJECTS"))
+		return new DimeObjectsSection(memhandler);
 	if (!strcmp(sectionname, "TABLES"))
-		return new dimeTablesSection(memhandler);
+		return new DimeTablesSection(memhandler);
 	if (!strcmp(sectionname, "BLOCKS"))
-		return new dimeBlocksSection(memhandler);
+		return new DimeBlocksSection(memhandler);
 	if (!strcmp(sectionname, "ENTITIES"))
 		return new DimeEntitiesSection(memhandler);
 	return new dimeUnknownSection(sectionname, memhandler);
@@ -105,7 +103,7 @@ dimeSection::createSection(const char* const sectionname,
 //!
 
 bool
-dimeSection::isOfType(const int thetypeid) const
+DimeSection::isOfType(const int thetypeid) const
 {
 	return thetypeid == dimeSectionType ||
 		DimeBase::isOfType(thetypeid);

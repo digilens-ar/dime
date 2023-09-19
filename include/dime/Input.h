@@ -38,11 +38,11 @@
 
 #define DXF_MAXLINELEN 4096
 
-class DIME_DLL_API dimeInput
+class DIME_DLL_API DimeInput
 {
 public:
-	dimeInput();
-	~dimeInput();
+	DimeInput();
+	~DimeInput();
 
 	bool setFileHandle(FILE* fp);
 	bool setFile(const char* filename);
@@ -61,7 +61,7 @@ public:
 	const char* readString();
 	const char* readStringNoSkip();
 
-	class dimeModel* getModel();
+	class DimeModel* getModel();
 	class DimeMemHandler* getMemHandler();
 
 	int getFilePosition() const;
@@ -71,8 +71,8 @@ public:
 	bool isAborted() const;
 
 private:
-	friend class dimeModel;
-	dimeModel* model; // set by the dimeModel class.
+	friend class DimeModel;
+	DimeModel* model; // set by the dimeModel class.
 	int filePosition;
 	bool binary;
 	bool binary16bit;

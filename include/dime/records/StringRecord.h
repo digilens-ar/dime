@@ -35,13 +35,13 @@
 
 #include <dime/records/Record.h>
 
-class DIME_DLL_API dimeStringRecord : public dimeRecord
+class DIME_DLL_API dimeStringRecord : public DimeRecord
 {
 public:
 	dimeStringRecord(int group_code = 0);
 	~dimeStringRecord() override;
 
-	dimeRecord* copy(DimeMemHandler* mh) const override;
+	DimeRecord* copy(DimeMemHandler* mh) const override;
 	void setValue(const dimeParam& param, DimeMemHandler* memhandler = nullptr) override;
 	void getValue(dimeParam& param) const override;
 
@@ -54,8 +54,8 @@ public:
 	bool isEndOfSectionRecord() const override;
 	bool isEndOfFileRecord() const override;
 	int typeId() const override;
-	bool read(dimeInput* in) override;
-	bool write(dimeOutput* out) override;
+	bool read(DimeInput* in) override;
+	bool write(DimeOutput* out) override;
 
 protected:
 	char* string;

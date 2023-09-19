@@ -52,7 +52,7 @@ static constexpr char sectionName[] = "HEADER";
 */
 
 dimeHeaderSection::dimeHeaderSection(DimeMemHandler* const memhandler)
-	: dimeSection(memhandler)
+	: DimeSection(memhandler)
 {
 }
 
@@ -121,14 +121,14 @@ dimeHeaderSection::setVariable(const char* const variableName,
 	if (i < 0)
 	{
 		i = this->records.count();
-		auto sr = static_cast<dimeStringRecord*>(dimeRecord::createRecord(9, memhandler));
+		auto sr = static_cast<dimeStringRecord*>(DimeRecord::createRecord(9, memhandler));
 		if (!sr) return false;
 		sr->setString(variableName, memhandler);
 
 		this->records.append(sr);
 		for (int j = 0; j < numparams; j++)
 		{
-			this->records.append(dimeRecord::createRecord(groupcodes[j], memhandler));
+			this->records.append(DimeRecord::createRecord(groupcodes[j], memhandler));
 		}
 	}
 	i++;
@@ -161,8 +161,8 @@ dimeHeaderSection::getSectionName() const
 
 //!
 
-dimeSection*
-dimeHeaderSection::copy(dimeModel* const model) const
+DimeSection*
+dimeHeaderSection::copy(DimeModel* const model) const
 {
 	DimeMemHandler* mh = model->getMemHandler();
 	auto hs = new dimeHeaderSection(mh);
@@ -178,15 +178,15 @@ dimeHeaderSection::copy(dimeModel* const model) const
 //!
 
 bool
-dimeHeaderSection::read(dimeInput* const file)
+dimeHeaderSection::read(DimeInput* const file)
 {
-	dimeRecord* record;
+	DimeRecord* record;
 	bool ok = true;
 	this->records.makeEmpty(512);
 
 	while (true)
 	{
-		record = dimeRecord::readRecord(file);
+		record = DimeRecord::readRecord(file);
 		if (record == nullptr)
 		{
 			ok = false;
@@ -206,7 +206,7 @@ dimeHeaderSection::read(dimeInput* const file)
 //!
 
 bool
-dimeHeaderSection::write(dimeOutput* const file)
+dimeHeaderSection::write(DimeOutput* const file)
 {
 	if (file->writeGroupCode(2) && file->writeString(sectionName))
 	{

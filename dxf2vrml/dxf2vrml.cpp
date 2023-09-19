@@ -131,7 +131,7 @@ main(int argc, char **argv)
     }
   }
 
-  dimeInput in;
+  DimeInput in;
 
   //
   // open file for reading (or use stdin) 
@@ -153,7 +153,7 @@ main(int argc, char **argv)
   //
   // try reading the file
   //
-  dimeModel model;
+  DimeModel model;
 
   if (!model.read(&in)) {
     fprintf(stderr,"DXF read error in line: %d\n", in.getFilePosition());

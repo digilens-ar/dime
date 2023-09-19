@@ -36,13 +36,13 @@
 #include <dime/Basic.h>
 #include <stdio.h>
 
-class dimeModel;
+class DimeModel;
 
-class DIME_DLL_API dimeOutput
+class DIME_DLL_API DimeOutput
 {
 public:
-	dimeOutput();
-	~dimeOutput();
+	DimeOutput();
+	~DimeOutput();
 
 	void setCallback(int numrecords,
 	                 int (*cb)(float, void*), void* cbdata);
@@ -63,8 +63,8 @@ public:
 	int getUniqueHandleId();
 
 private:
-	friend class dimeModel;
-	dimeModel* model;
+	friend class DimeModel;
+	DimeModel* model;
 	FILE* fp;
 	bool binary;
 

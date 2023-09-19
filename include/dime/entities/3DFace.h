@@ -40,16 +40,16 @@
 class DIME_DLL_API dime3DFace : public dimeFaceEntity
 {
 	friend class DimeEntitiesSection;
-	friend class dimeBlock;
-	friend class dimeModel;
-	friend class dimeEntity;
-	friend class dimeSolid;
-	friend class dimeTrace;
+	friend class DimeBlock;
+	friend class DimeModel;
+	friend class DimeEntity;
+	friend class DimeSolid;
+	friend class DimeTrace;
 
 public:
 	dime3DFace();
 
-	virtual dimeEntity* copy(dimeModel* model) const;
+	virtual DimeEntity* copy(DimeModel* model) const;
 
 	bool getRecord(int groupcode,
 	               dimeParam& param,
@@ -68,7 +68,7 @@ public:
 	int16 getFlags() const;
 
 	virtual void print() const;
-	virtual bool write(dimeOutput* out);
+	virtual bool write(DimeOutput* out);
 	int typeId() const override;
 	int countRecords() const override;
 
@@ -81,7 +81,7 @@ protected:
 
 public:
 #ifndef NO_RR_DATA
-	class dimeBlock* block; // ugly, needed for RR
+	class DimeBlock* block; // ugly, needed for RR
 #endif
 }; // class dime3DFace
 

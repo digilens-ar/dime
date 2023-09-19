@@ -31,7 +31,7 @@
 \**************************************************************************/
 
 /*!
-  \class dimeRecord dime/records/Record.h
+  \class DimeRecord dime/records/Record.h
   \brief The dimeRecord class is the superclass of all \e record classes.
 */
 
@@ -72,7 +72,7 @@
   Constructor which sets the group code.
 */
 
-dimeRecord::dimeRecord(const int group_code)
+DimeRecord::DimeRecord(const int group_code)
 	: groupCode(group_code)
 {
 }
@@ -81,7 +81,7 @@ dimeRecord::dimeRecord(const int group_code)
   Destructor.
 */
 
-dimeRecord::~dimeRecord()
+DimeRecord::~DimeRecord()
 {
 }
 
@@ -90,7 +90,7 @@ dimeRecord::~dimeRecord()
 */
 
 void
-dimeRecord::setGroupCode(const int group_code)
+DimeRecord::setGroupCode(const int group_code)
 {
 	this->groupCode = group_code;
 }
@@ -100,7 +100,7 @@ dimeRecord::setGroupCode(const int group_code)
 */
 
 int
-dimeRecord::getGroupCode() const
+DimeRecord::getGroupCode() const
 {
 	return this->groupCode;
 }
@@ -110,7 +110,7 @@ dimeRecord::getGroupCode() const
 */
 
 bool
-dimeRecord::isEndOfSectionRecord() const
+DimeRecord::isEndOfSectionRecord() const
 {
 	return false;
 }
@@ -120,7 +120,7 @@ dimeRecord::isEndOfSectionRecord() const
 */
 
 bool
-dimeRecord::isEndOfFileRecord() const
+DimeRecord::isEndOfFileRecord() const
 {
 	return false;
 }
@@ -140,7 +140,7 @@ dimeRecord::isEndOfFileRecord() const
 */
 
 bool
-dimeRecord::write(dimeOutput* const out)
+DimeRecord::write(DimeOutput* const out)
 {
 	return out->writeGroupCode(groupCode);
 }
@@ -151,11 +151,11 @@ dimeRecord::write(dimeOutput* const out)
   Reads and returns the next record int file \a in.
 */
 
-dimeRecord*
-dimeRecord::readRecord(dimeInput* const in)
+DimeRecord*
+DimeRecord::readRecord(DimeInput* const in)
 {
 	int32 groupcode;
-	dimeRecord* rec = nullptr;
+	DimeRecord* rec = nullptr;
 	if (in->readGroupCode(groupcode))
 	{
 		rec = createRecord(groupcode, in->getMemHandler());
@@ -170,12 +170,12 @@ dimeRecord::readRecord(dimeInput* const in)
   otherwise the default memory handler will be used.
 */
 
-dimeRecord*
-dimeRecord::createRecord(const int group_code,
+DimeRecord*
+DimeRecord::createRecord(const int group_code,
                          DimeMemHandler* const memhandler)
 {
 	int type = getRecordType(group_code);
-	dimeRecord* record = nullptr;
+	DimeRecord* record = nullptr;
 	switch (type)
 	{
 	case dimeStringRecordType:
@@ -208,12 +208,12 @@ dimeRecord::createRecord(const int group_code,
 
 //!
 
-dimeRecord*
-dimeRecord::createRecord(const int group_code,
+DimeRecord*
+DimeRecord::createRecord(const int group_code,
                          const dimeParam& param,
                          DimeMemHandler* const memhandler)
 {
-	dimeRecord* record = createRecord(group_code, memhandler);
+	DimeRecord* record = createRecord(group_code, memhandler);
 	if (record) record->setValue(param, memhandler);
 	return record;
 }
@@ -371,7 +371,7 @@ get_record_type(const int group_code)
 */
 
 int
-dimeRecord::getRecordType(const int group_code)
+DimeRecord::getRecordType(const int group_code)
 {
 	static int first = 1;
 	static int translation[1072];
@@ -394,7 +394,7 @@ dimeRecord::getRecordType(const int group_code)
 */
 
 bool
-dimeRecord::readRecordData(dimeInput* const in, const int group_code,
+DimeRecord::readRecordData(DimeInput* const in, const int group_code,
                            dimeParam& param)
 {
 	bool ret;

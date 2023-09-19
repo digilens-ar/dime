@@ -41,21 +41,21 @@
 #include <dime/State.h>
 
 
-static void convert_line_3d(dimePolyline* pline, const DimeState* state,
+static void convert_line_3d(DimePolyline* pline, const DimeState* state,
                             dxfLayerData* layerData, dxfConverter*);
 
-static void convert_line(dimePolyline* pline, const DimeState* state,
+static void convert_line(DimePolyline* pline, const DimeState* state,
                          dxfLayerData* layerData, dxfConverter*);
-static void convert_mesh(dimePolyline* pline, const DimeState* state,
+static void convert_mesh(DimePolyline* pline, const DimeState* state,
                          dxfLayerData* layerData, dxfConverter*);
-static void convert_face(dimePolyline* pline, const DimeState* state,
+static void convert_face(DimePolyline* pline, const DimeState* state,
                          dxfLayerData* layerData, dxfConverter*);
 
 void
-convert_polyline(const dimeEntity* entity, const DimeState* state,
+convert_polyline(const DimeEntity* entity, const DimeState* state,
                  dxfLayerData* layerData, dxfConverter* converter)
 {
-	auto pline = (dimePolyline*)entity;
+	auto pline = (DimePolyline*)entity;
 
 	if (pline->getFlags() & 16)
 		convert_mesh(pline, state, layerData, converter);
@@ -70,8 +70,8 @@ convert_polyline(const dimeEntity* entity, const DimeState* state,
 
 static void
 set_segment_data(dxfLineSegment* segment,
-                 dimeVertex* v, dimeVertex* next,
-                 dimePolyline* pline)
+                 DimeVertex* v, DimeVertex* next,
+                 DimePolyline* pline)
 {
 	dimeParam param;
 	dxfdouble w0, w1;
@@ -97,7 +97,7 @@ set_segment_data(dxfLineSegment* segment,
 
 
 static void
-convert_line(dimePolyline* pline, const DimeState* state,
+convert_line(DimePolyline* pline, const DimeState* state,
              dxfLayerData* layerData, dxfConverter* converter)
 {
 	// respect the value in the $FILLMODE header variable
@@ -115,7 +115,7 @@ convert_line(dimePolyline* pline, const DimeState* state,
 	if (e != dimeVec3f(0, 0, 1))
 	{
 		dimeMatrix m;
-		dimeEntity::generateUCS(e, m);
+		DimeEntity::generateUCS(e, m);
 		matrix.multRight(m);
 	}
 	e = dimeVec3f(0, 0, 1) * thickness;
@@ -124,8 +124,8 @@ convert_line(dimePolyline* pline, const DimeState* state,
 
 	dxfLineSegment prevseg, nextseg, segment;
 
-	dimeVertex* v = nullptr;
-	dimeVertex* next = nullptr;
+	DimeVertex* v = nullptr;
+	DimeVertex* next = nullptr;
 	dimeVec3f v0, v1;
 
 	bool closed = pline->getFlags() & 1;
@@ -150,7 +150,7 @@ convert_line(dimePolyline* pline, const DimeState* state,
 			}
 		}
 
-		dimeVertex* next2 = pline->getCoordVertex((i + 2) % n);
+		DimeVertex* next2 = pline->getCoordVertex((i + 2) % n);
 		set_segment_data(&nextseg, next, next2, pline);
 
 		dimeParam param;
@@ -228,7 +228,7 @@ convert_line(dimePolyline* pline, const DimeState* state,
 					a1 += 2 * M_PI;
 			}
 
-			dimeArc arc;
+			DimeArc arc;
 			arc.setLayer(v->getLayer());
 			arc.setColorNumber(v->getColorNumber());
 			arc.setExtrusionDir(pline->getExtrusionDir());
@@ -258,7 +258,7 @@ convert_line(dimePolyline* pline, const DimeState* state,
 }
 
 static void
-convert_line_3d(dimePolyline* pline, const DimeState* state,
+convert_line_3d(DimePolyline* pline, const DimeState* state,
                 dxfLayerData* layerData, dxfConverter* converter)
 {
 	int i, n = pline->getNumCoordVertices();
@@ -267,8 +267,8 @@ convert_line_3d(dimePolyline* pline, const DimeState* state,
 	dimeMatrix matrix;
 	state->getMatrix(matrix);
 
-	dimeVertex* v = nullptr;
-	dimeVertex* next = nullptr;
+	DimeVertex* v = nullptr;
+	DimeVertex* next = nullptr;
 	dimeVec3f v0, v1;
 
 	int stop = pline->getFlags() & 1 ? n : n - 1;
@@ -286,7 +286,7 @@ convert_line_3d(dimePolyline* pline, const DimeState* state,
 }
 
 static void
-convert_mesh(dimePolyline* pline, const DimeState* state,
+convert_mesh(DimePolyline* pline, const DimeState* state,
              dxfLayerData* layerData, dxfConverter*)
 {
 	int i;
@@ -379,7 +379,7 @@ convert_mesh(dimePolyline* pline, const DimeState* state,
 }
 
 static void
-convert_face(dimePolyline* pline, const DimeState* state,
+convert_face(DimePolyline* pline, const DimeState* state,
              dxfLayerData* layerData, dxfConverter* converter)
 {
 	dimeMatrix matrix;
@@ -389,7 +389,7 @@ convert_face(dimePolyline* pline, const DimeState* state,
 
 	for (i = 0; i < n; i++)
 	{
-		dimeVertex* v = pline->getIndexVertex(i);
+		DimeVertex* v = pline->getIndexVertex(i);
 		layerData = converter->getLayerData(v);
 		dimeVec3f c[4];
 		int num = v->numIndices();

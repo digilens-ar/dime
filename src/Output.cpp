@@ -31,7 +31,7 @@
 \**************************************************************************/
 
 /*!
-  \class dimeOutput dime/Output.h
+  \class DimeOutput dime/Output.h
   \brief The dimeOutput class handles writing of DXF and DXB files.
 */
 
@@ -48,7 +48,7 @@
   Constructor.
 */
 
-dimeOutput::dimeOutput()
+DimeOutput::DimeOutput()
 	: fp(nullptr), binary(false), callback(nullptr), callbackdata(nullptr),
 	  aborted(false), didOpenFile(false)
 {
@@ -58,7 +58,7 @@ dimeOutput::dimeOutput()
   Destructor.
 */
 
-dimeOutput::~dimeOutput()
+DimeOutput::~DimeOutput()
 {
 	if (this->fp && this->didOpenFile) fclose(this->fp);
 }
@@ -71,7 +71,7 @@ dimeOutput::~dimeOutput()
 */
 
 void
-dimeOutput::setCallback(const int num_records,
+DimeOutput::setCallback(const int num_records,
                         int (*cb)(float, void*), void* cbdata)
 {
 	this->callback = cb;
@@ -87,7 +87,7 @@ dimeOutput::setCallback(const int num_records,
 */
 
 bool
-dimeOutput::setFilename(const char* const filename)
+DimeOutput::setFilename(const char* const filename)
 {
 	if (this->fp && this->didOpenFile) fclose(this->fp);
 	this->fp = fopen(filename, "wb");
@@ -100,7 +100,7 @@ dimeOutput::setFilename(const char* const filename)
   it will not be closed in the destructor.
  */
 bool
-dimeOutput::setFileHandle(FILE* fp)
+DimeOutput::setFileHandle(FILE* fp)
 {
 	if (this->fp && this->didOpenFile) fclose(this->fp);
 
@@ -116,7 +116,7 @@ dimeOutput::setFileHandle(FILE* fp)
 */
 
 void
-dimeOutput::setBinary(const bool state)
+DimeOutput::setBinary(const bool state)
 {
 	this->binary = state;
 }
@@ -126,7 +126,7 @@ dimeOutput::setBinary(const bool state)
 */
 
 bool
-dimeOutput::isBinary() const
+DimeOutput::isBinary() const
 {
 	return this->binary;
 }
@@ -136,7 +136,7 @@ dimeOutput::isBinary() const
 */
 
 bool
-dimeOutput::writeGroupCode(const int groupcode)
+DimeOutput::writeGroupCode(const int groupcode)
 {
 	if (this->aborted) return false;
 	if (this->callback && this->numrecords)
@@ -157,7 +157,7 @@ dimeOutput::writeGroupCode(const int groupcode)
 */
 
 bool
-dimeOutput::writeInt8(const int8 val)
+DimeOutput::writeInt8(const int8 val)
 {
 	return fprintf(this->fp, "%6d\n", static_cast<int>(val)) > 0;
 }
@@ -167,7 +167,7 @@ dimeOutput::writeInt8(const int8 val)
 */
 
 bool
-dimeOutput::writeInt16(const int16 val)
+DimeOutput::writeInt16(const int16 val)
 {
 	return fprintf(this->fp, "%6d\n", static_cast<int>(val)) > 0;
 }
@@ -177,7 +177,7 @@ dimeOutput::writeInt16(const int16 val)
 */
 
 bool
-dimeOutput::writeInt32(const int32 val)
+DimeOutput::writeInt32(const int32 val)
 {
 	return fprintf(this->fp, "%6d\n", val) > 0;
 }
@@ -187,7 +187,7 @@ dimeOutput::writeInt32(const int32 val)
 */
 
 bool
-dimeOutput::writeFloat(const float val)
+DimeOutput::writeFloat(const float val)
 {
 	// Check for integer value, force decimal and one zero.
 	if (fabsf(val) < 1000000.0 && floorf(val) == val)
@@ -203,7 +203,7 @@ dimeOutput::writeFloat(const float val)
 */
 
 bool
-dimeOutput::writeDouble(const dxfdouble val)
+DimeOutput::writeDouble(const dxfdouble val)
 {
 	// Check for integer value, force decimal and one zero.
 	if (fabs(val) < 1000000.0 && floor(val) == val)
@@ -219,13 +219,13 @@ dimeOutput::writeDouble(const dxfdouble val)
 */
 
 bool
-dimeOutput::writeString(const char* const str)
+DimeOutput::writeString(const char* const str)
 {
 	return fprintf(this->fp, "%s\n", str) > 0;
 }
 
 int
-dimeOutput::getUniqueHandleId()
+DimeOutput::getUniqueHandleId()
 {
 	// FIXME
 	return 1;

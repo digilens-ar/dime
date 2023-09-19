@@ -62,7 +62,7 @@ public:
 	                       dxfdouble& r, dxfdouble& g, dxfdouble& b);
 
 private:
-	friend class dimeModel;
+	friend class DimeModel;
 
 	dimeLayer();
 	dimeLayer(const char* name, int num,

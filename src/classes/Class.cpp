@@ -31,7 +31,7 @@
 \**************************************************************************/
 
 /*!
-  \class dimeClass dime/classes/Class.h
+  \class DimeClass dime/classes/Class.h
   \brief The dimeClass class is the superclass for all the \e class classes.
 */
 
@@ -98,8 +98,8 @@
   Constructor.
 */
 
-dimeClass::dimeClass()
-	: dimeRecordHolder(0), // classes are separated by group code 0
+DimeClass::DimeClass()
+	: DimeRecordHolder(0), // classes are separated by group code 0
 	  className(nullptr), appName(nullptr), versionNumber(0), flag1(0),
 	  flag2(0)
 {
@@ -109,7 +109,7 @@ dimeClass::dimeClass()
   Destructor.
 */
 
-dimeClass::~dimeClass()
+DimeClass::~DimeClass()
 {
 	delete [] this->className;
 	delete [] this->appName;
@@ -120,10 +120,10 @@ dimeClass::~dimeClass()
 */
 
 bool
-dimeClass::copyRecords(dimeClass* const myclass, dimeModel* const model) const
+DimeClass::copyRecords(DimeClass* const myclass, DimeModel* const model) const
 {
 	DimeMemHandler* memh = model->getMemHandler();
-	bool ok = dimeRecordHolder::copyRecords(myclass, memh);
+	bool ok = DimeRecordHolder::copyRecords(myclass, memh);
 
 	if (ok && this->className)
 	{
@@ -149,7 +149,7 @@ dimeClass::copyRecords(dimeClass* const myclass, dimeModel* const model) const
 */
 
 bool
-dimeClass::write(dimeOutput* const file)
+DimeClass::write(DimeOutput* const file)
 {
 	file->writeGroupCode(1);
 	file->writeString(this->className ? this->className : "Default class name");
@@ -161,15 +161,15 @@ dimeClass::write(dimeOutput* const file)
 	file->writeInt8(this->flag1);
 	file->writeGroupCode(281);
 	file->writeInt8(this->flag2);
-	return dimeRecordHolder::write(file);
+	return DimeRecordHolder::write(file);
 }
 
 /*!
   Static function which creates a class based on its name. 
 */
 
-dimeClass*
-dimeClass::createClass(const char* const name,
+DimeClass*
+DimeClass::createClass(const char* const name,
                        DimeMemHandler* const memhandler)
 {
 	return new(memhandler) dimeUnknownClass(name, memhandler);
@@ -178,17 +178,17 @@ dimeClass::createClass(const char* const name,
 //!
 
 int
-dimeClass::countRecords() const
+DimeClass::countRecords() const
 {
-	return 5 + dimeRecordHolder::countRecords();
+	return 5 + DimeRecordHolder::countRecords();
 }
 
 //!
 
 bool
-dimeClass::isOfType(const int thetypeid) const
+DimeClass::isOfType(const int thetypeid) const
 {
-	return thetypeid == dimeClassType || dimeRecordHolder::isOfType(thetypeid);
+	return thetypeid == dimeClassType || DimeRecordHolder::isOfType(thetypeid);
 }
 
 /*!
@@ -199,15 +199,15 @@ dimeClass::isOfType(const int thetypeid) const
 */
 
 bool
-dimeClass::read(dimeInput* const file)
+DimeClass::read(DimeInput* const file)
 {
-	return dimeRecordHolder::read(file);
+	return DimeRecordHolder::read(file);
 }
 
 //!
 
 bool
-dimeClass::handleRecord(const int groupcode,
+DimeClass::handleRecord(const int groupcode,
                         const dimeParam& param,
                         DimeMemHandler* const memhandler)
 {
@@ -237,7 +237,7 @@ dimeClass::handleRecord(const int groupcode,
 */
 
 void
-dimeClass::setClassName(const char* const classname,
+DimeClass::setClassName(const char* const classname,
                         DimeMemHandler* const memhandler)
 {
 	if (!memhandler) delete [] this->className;
@@ -249,7 +249,7 @@ dimeClass::setClassName(const char* const classname,
 */
 
 void
-dimeClass::setApplicationName(const char* const appname,
+DimeClass::setApplicationName(const char* const appname,
                               DimeMemHandler* const memhandler)
 {
 	if (!memhandler) delete [] this->appName;

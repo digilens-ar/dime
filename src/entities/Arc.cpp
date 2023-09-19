@@ -31,7 +31,7 @@
 \**************************************************************************/
 
 /*!
-  \class dimeArc dime/entities/Arc.h
+  \class DimeArc dime/entities/Arc.h
   \brief The dimeArc class handles an ARC \e entity.
 */
 
@@ -57,17 +57,17 @@ static char entityName[] = "ARC";
   Constructor.
 */
 
-dimeArc::dimeArc()
+DimeArc::DimeArc()
 	: center(0, 0, 0), radius(0.0), startAngle(0.0), endAngle(2 * M_PI)
 {
 }
 
 //!
 
-dimeEntity*
-dimeArc::copy(dimeModel* const model) const
+DimeEntity*
+DimeArc::copy(DimeModel* const model) const
 {
-	auto a = new(model->getMemHandler()) dimeArc;
+	auto a = new(model->getMemHandler()) DimeArc;
 	if (!a) return nullptr;
 
 	if (!this->copyRecords(a, model))
@@ -90,7 +90,7 @@ dimeArc::copy(dimeModel* const model) const
 //!
 
 bool
-dimeArc::write(dimeOutput* const file)
+DimeArc::write(DimeOutput* const file)
 {
 	this->preWrite(file);
 
@@ -113,13 +113,13 @@ dimeArc::write(dimeOutput* const file)
 	file->writeGroupCode(51);
 	file->writeDouble(this->endAngle);
 
-	return this->writeExtrusionData(file) && dimeEntity::write(file);
+	return this->writeExtrusionData(file) && DimeEntity::write(file);
 }
 
 //!
 
 int
-dimeArc::typeId() const
+DimeArc::typeId() const
 {
 	return DimeBase::dimeArcType;
 }
@@ -127,7 +127,7 @@ dimeArc::typeId() const
 //!
 
 bool
-dimeArc::handleRecord(const int groupcode,
+DimeArc::handleRecord(const int groupcode,
                       const dimeParam& param,
                       DimeMemHandler* const memhandler)
 {
@@ -155,16 +155,16 @@ dimeArc::handleRecord(const int groupcode,
 			{
 				return true;
 			}
-			return dimeExtrusionEntity::handleRecord(groupcode, param, memhandler);
+			return DimeExtrusionEntity::handleRecord(groupcode, param, memhandler);
 		}
 	}
-	return dimeExtrusionEntity::handleRecord(groupcode, param, memhandler);
+	return DimeExtrusionEntity::handleRecord(groupcode, param, memhandler);
 }
 
 //!
 
 const char*
-dimeArc::getEntityName() const
+DimeArc::getEntityName() const
 {
 	return entityName;
 }
@@ -172,7 +172,7 @@ dimeArc::getEntityName() const
 //!
 
 bool
-dimeArc::getRecord(const int groupcode,
+DimeArc::getRecord(const int groupcode,
                    dimeParam& param,
                    const int index) const
 {
@@ -193,13 +193,13 @@ dimeArc::getRecord(const int groupcode,
 		param.double_data = this->endAngle;
 		return true;
 	}
-	return dimeExtrusionEntity::getRecord(groupcode, param, index);
+	return DimeExtrusionEntity::getRecord(groupcode, param, index);
 }
 
 //!
 
 void
-dimeArc::print() const
+DimeArc::print() const
 {
 	fprintf(stderr, "ARC:\n");
 	fprintf(stderr, " center: %.3f %.3f %.3f\n",
@@ -213,8 +213,8 @@ dimeArc::print() const
 
 //!
 
-dimeEntity::GeometryType
-dimeArc::extractGeometry(dimeArray<dimeVec3f>& verts,
+DimeEntity::GeometryType
+DimeArc::extractGeometry(dimeArray<dimeVec3f>& verts,
                          dimeArray<int>& indices,
                          dimeVec3f& extrusionDir,
                          dxfdouble& thickness)
@@ -264,15 +264,15 @@ dimeArc::extractGeometry(dimeArray<dimeVec3f>& verts,
 	                       this->center.y + this->radius * sin(rad),
 	                       this->center.z));
 
-	return dimeEntity::LINES;
+	return DimeEntity::LINES;
 }
 
 //!
 
 int
-dimeArc::countRecords() const
+DimeArc::countRecords() const
 {
 	int cnt = 1 + 3 + 1 + 2; // header + center point + radius + angles
 
-	return cnt + dimeExtrusionEntity::countRecords();
+	return cnt + DimeExtrusionEntity::countRecords();
 }

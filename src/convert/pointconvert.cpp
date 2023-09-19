@@ -37,10 +37,10 @@
 #include <dime/State.h>
 
 void
-convert_point(const dimeEntity* entity, const DimeState* state,
+convert_point(const DimeEntity* entity, const DimeState* state,
               dxfLayerData* layerData, dxfConverter*)
 {
-	auto point = (dimePoint*)entity;
+	auto point = (DimePoint*)entity;
 	dimeVec3f v0 = point->getCoords();
 
 	dimeParam param;

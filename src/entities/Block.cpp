@@ -31,7 +31,7 @@
 \**************************************************************************/
 
 /*!
-  \class dimeBlock dime/entities/Block.h
+  \class DimeBlock dime/entities/Block.h
   \brief The dimeBlock class handles a BLOCK \e entity.
 
   It cannot strictly be called an entity, as you will only find BLOCKs
@@ -88,7 +88,7 @@ static char entityName[] = "BLOCK";
   Constructor.
 */
 
-dimeBlock::dimeBlock(DimeMemHandler* const memhandler)
+DimeBlock::DimeBlock(DimeMemHandler* const memhandler)
 	: flags(0), name(nullptr), basePoint(0, 0, 0), endblock(nullptr),
 	  memHandler(memhandler)
 {
@@ -98,7 +98,7 @@ dimeBlock::dimeBlock(DimeMemHandler* const memhandler)
   Destructor.
 */
 
-dimeBlock::~dimeBlock()
+DimeBlock::~DimeBlock()
 {
 	if (!this->memHandler)
 	{
@@ -112,17 +112,17 @@ dimeBlock::~dimeBlock()
 
 //!
 
-dimeEntity*
-dimeBlock::copy(dimeModel* const model) const
+DimeEntity*
+DimeBlock::copy(DimeModel* const model) const
 {
 	DimeMemHandler* memh = model->getMemHandler();
-	auto bl = new dimeBlock(memh);
+	auto bl = new DimeBlock(memh);
 	bool ok = true;
 
 	int n = this->entities.count();
 	if (n)
 	{
-		ok = dimeEntity::copyEntityArray(this->entities.constArrayPointer(),
+		ok = DimeEntity::copyEntityArray(this->entities.constArrayPointer(),
 		                                 n,
 		                                 model,
 		                                 bl->entities);
@@ -155,10 +155,10 @@ dimeBlock::copy(dimeModel* const model) const
 */
 
 bool
-dimeBlock::read(dimeInput* const file)
+DimeBlock::read(DimeInput* const file)
 {
 	this->name = nullptr;
-	bool ret = dimeEntity::read(file);
+	bool ret = DimeEntity::read(file);
 	if (ret && this->name)
 	{
 		// see handleRecord() to understand this code. Yup, ugly :)
@@ -172,10 +172,10 @@ dimeBlock::read(dimeInput* const file)
 	{
 		DimeMemHandler* memhandler = file->getMemHandler();
 		this->entities.makeEmpty(1024); // begin with a fairly large array
-		ret = dimeEntity::readEntities(file, this->entities, "ENDBLK");
+		ret = DimeEntity::readEntities(file, this->entities, "ENDBLK");
 		if (ret)
 		{
-			this->endblock = dimeEntity::createEntity("ENDBLK", memhandler);
+			this->endblock = DimeEntity::createEntity("ENDBLK", memhandler);
 			// read the ENDBLOCK entity
 			if (!this->endblock || !this->endblock->read(file)) ret = false;
 		}
@@ -198,7 +198,7 @@ dimeBlock::read(dimeInput* const file)
 */
 
 bool
-dimeBlock::write(dimeOutput* const file)
+DimeBlock::write(DimeOutput* const file)
 {
 	this->preWrite(file);
 
@@ -215,7 +215,7 @@ dimeBlock::write(dimeOutput* const file)
 	file->writeDouble(this->basePoint[2]);
 
 	// write unknown records.
-	bool ret = dimeEntity::write(file);
+	bool ret = DimeEntity::write(file);
 
 	if (ret)
 	{
@@ -247,7 +247,7 @@ dimeBlock::write(dimeOutput* const file)
 //!
 
 int
-dimeBlock::typeId() const
+DimeBlock::typeId() const
 {
 	return DimeBase::dimeBlockType;
 }
@@ -255,7 +255,7 @@ dimeBlock::typeId() const
 //!
 
 bool
-dimeBlock::handleRecord(const int groupcode,
+DimeBlock::handleRecord(const int groupcode,
                         const dimeParam& param,
                         DimeMemHandler* const memhandler)
 {
@@ -285,13 +285,13 @@ dimeBlock::handleRecord(const int groupcode,
 		this->basePoint[groupcode / 10 - 1] = param.double_data;
 		return true;
 	}
-	return dimeEntity::handleRecord(groupcode, param, memhandler);
+	return DimeEntity::handleRecord(groupcode, param, memhandler);
 }
 
 //!
 
 const char*
-dimeBlock::getEntityName() const
+DimeBlock::getEntityName() const
 {
 	return entityName;
 }
@@ -299,7 +299,7 @@ dimeBlock::getEntityName() const
 //!
 
 bool
-dimeBlock::getRecord(const int groupcode,
+DimeBlock::getRecord(const int groupcode,
                      dimeParam& param,
                      const int index) const
 {
@@ -317,13 +317,13 @@ dimeBlock::getRecord(const int groupcode,
 		param.double_data = this->basePoint[groupcode / 10 - 1];
 		return true;
 	}
-	return dimeEntity::getRecord(groupcode, param, index);
+	return DimeEntity::getRecord(groupcode, param, index);
 }
 
 //!
 
 void
-dimeBlock::fixReferences(dimeModel* const model)
+DimeBlock::fixReferences(DimeModel* const model)
 {
 	int i, n = this->entities.count();
 	for (i = 0; i < n; i++)
@@ -333,7 +333,7 @@ dimeBlock::fixReferences(dimeModel* const model)
 //!
 
 int
-dimeBlock::countRecords() const
+DimeBlock::countRecords() const
 {
 	int cnt = 0;
 	cnt += 3; // header
@@ -343,7 +343,7 @@ dimeBlock::countRecords() const
 	for (int i = 0; i < n; i++)
 		cnt += this->entities[i]->countRecords();
 
-	return cnt + dimeEntity::countRecords();
+	return cnt + DimeEntity::countRecords();
 }
 
 /*!
@@ -351,7 +351,7 @@ dimeBlock::countRecords() const
 */
 
 void
-dimeBlock::insertEntity(dimeEntity* const entity, const int idx)
+DimeBlock::insertEntity(DimeEntity* const entity, const int idx)
 {
 	if (idx < 0) this->entities.append(entity);
 	else
@@ -368,7 +368,7 @@ dimeBlock::insertEntity(dimeEntity* const entity, const int idx)
 */
 
 void
-dimeBlock::removeEntity(const int idx, const bool deleteIt)
+DimeBlock::removeEntity(const int idx, const bool deleteIt)
 {
 	assert(idx >= 0 && idx < this->entities.count());
 	if (!this->memHandler && deleteIt) delete this->entities[idx];
@@ -378,7 +378,7 @@ dimeBlock::removeEntity(const int idx, const bool deleteIt)
 //!
 
 bool
-dimeBlock::traverse(const DimeState* const state,
+DimeBlock::traverse(const DimeState* const state,
                     dimeCallback callback,
                     void* userdata)
 {
@@ -403,7 +403,7 @@ dimeBlock::traverse(const DimeState* const state,
 */
 
 void
-dimeBlock::fitEntities()
+DimeBlock::fitEntities()
 {
 	this->entities.shrinkToFit();
 }

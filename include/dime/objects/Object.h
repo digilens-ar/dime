@@ -39,21 +39,21 @@
 #include <dime/util/Linear.h>
 #include <dime/RecordHolder.h>
 
-class dimeModel;
+class DimeModel;
 
-class DIME_DLL_API dimeObject : public dimeRecordHolder
+class DIME_DLL_API DimeObject : public DimeRecordHolder
 {
 	friend class dimeObjectesSection;
-	friend class dimeModel;
+	friend class DimeModel;
 
 public:
-	dimeObject();
-	~dimeObject() override;
+	DimeObject();
+	~DimeObject() override;
 
 	virtual const char* getObjectName() const = 0;
-	virtual dimeObject* copy(dimeModel* model) const = 0;
-	bool read(dimeInput* in) override;
-	bool write(dimeOutput* out) override;
+	virtual DimeObject* copy(DimeModel* model) const = 0;
+	bool read(DimeInput* in) override;
+	bool write(DimeOutput* out) override;
 	bool isOfType(int thetypeid) const override;
 	int typeId() const override = 0;
 	int countRecords() const override;
@@ -68,11 +68,11 @@ protected:
 	                  DimeMemHandler* memhandler) override;
 
 public:
-	static dimeObject* createObject(const char* name,
+	static DimeObject* createObject(const char* name,
 	                                DimeMemHandler* memhandler = nullptr);
 
 protected:
-	bool copyRecords(dimeObject* newobject, dimeModel* model) const;
+	bool copyRecords(DimeObject* newobject, DimeModel* model) const;
 }; // class dimeObject
 
 #endif // ! DIME_OBJECT_H

@@ -46,7 +46,7 @@
 */
 
 dimeStringRecord::dimeStringRecord(const int group_code)
-	: dimeRecord(group_code)
+	: DimeRecord(group_code)
 {
 	this->string = nullptr;
 }
@@ -62,7 +62,7 @@ dimeStringRecord::~dimeStringRecord()
 
 //!
 
-dimeRecord*
+DimeRecord*
 dimeStringRecord::copy(DimeMemHandler* const mh) const
 {
 	auto s = new(mh) dimeStringRecord(this->groupCode);
@@ -136,7 +136,7 @@ dimeStringRecord::typeId() const
 //!
 
 bool
-dimeStringRecord::read(dimeInput* const in)
+dimeStringRecord::read(DimeInput* const in)
 {
 	this->string = nullptr;
 	const char* ptr = in->readString();
@@ -147,9 +147,9 @@ dimeStringRecord::read(dimeInput* const in)
 //!
 
 bool
-dimeStringRecord::write(dimeOutput* const out)
+dimeStringRecord::write(DimeOutput* const out)
 {
-	if (dimeRecord::write(out))
+	if (DimeRecord::write(out))
 	{
 		// write group code
 		return out->writeString(this->string);

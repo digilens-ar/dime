@@ -35,11 +35,11 @@
 
 #include <dime/tables/TableEntry.h>
 
-class DIME_DLL_API dimeLayerTable : public dimeTableEntry
+class DIME_DLL_API DimeLayerTable : public DimeTableEntry
 {
 public:
-	dimeLayerTable();
-	~dimeLayerTable() override;
+	DimeLayerTable();
+	~DimeLayerTable() override;
 
 	void setLayerName(const char* name, DimeMemHandler* memhandler);
 	const char* getLayerName(void) const;
@@ -47,13 +47,13 @@ public:
 	void setColorNumber(int16 colnum);
 	int16 getColorNumber(void) const;
 
-	void registerLayer(dimeModel* model);
+	void registerLayer(DimeModel* model);
 
-	dimeTableEntry* copy(dimeModel* model) const override;
+	DimeTableEntry* copy(DimeModel* model) const override;
 
 	const char* getTableName() const override;
-	bool read(dimeInput* in) override;
-	bool write(dimeOutput* out) override;
+	bool read(DimeInput* in) override;
+	bool write(DimeOutput* out) override;
 	int typeId() const override;
 	int countRecords() const override;
 

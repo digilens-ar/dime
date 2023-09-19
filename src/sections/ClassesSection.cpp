@@ -52,7 +52,7 @@ static constexpr char sectionName[] = "CLASSES";
 */
 
 DimeClassesSection::DimeClassesSection(DimeMemHandler* const memhandler)
-	: dimeSection(memhandler)
+	: DimeSection(memhandler)
 {
 }
 
@@ -71,8 +71,8 @@ DimeClassesSection::~DimeClassesSection()
 
 //!
 
-dimeSection*
-DimeClassesSection::copy(dimeModel* const model) const
+DimeSection*
+DimeClassesSection::copy(DimeModel* const model) const
 {
 	DimeMemHandler* memh = model->getMemHandler();
 	auto cs = new DimeClassesSection(memh);
@@ -105,12 +105,12 @@ DimeClassesSection::copy(dimeModel* const model) const
 //!
 
 bool
-DimeClassesSection::read(dimeInput* const file)
+DimeClassesSection::read(DimeInput* const file)
 {
 	int32 groupcode;
 	const char* string;
 	bool ok = true;
-	dimeClass* myclass = nullptr;
+	DimeClass* myclass = nullptr;
 	DimeMemHandler* memhandler = file->getMemHandler();
 	this->classes.makeEmpty(64);
 
@@ -127,7 +127,7 @@ DimeClassesSection::read(dimeInput* const file)
 		}
 		string = file->readString();
 		if (!strcmp(string, "ENDSEC")) break;
-		myclass = dimeClass::createClass(string, memhandler);
+		myclass = DimeClass::createClass(string, memhandler);
 		if (myclass == nullptr)
 		{
 			fprintf(stderr, "error creating class: %s.\n", string);
@@ -150,7 +150,7 @@ DimeClassesSection::read(dimeInput* const file)
 //!
 
 bool
-DimeClassesSection::write(dimeOutput* const file)
+DimeClassesSection::write(DimeOutput* const file)
 {
 	//  sim_trace("Writing section: CLASSES\n");
 
@@ -213,7 +213,7 @@ DimeClassesSection::getNumClasses() const
   Returns the class at index \a idx.
 */
 
-dimeClass*
+DimeClass*
 DimeClassesSection::getClass(const int idx)
 {
 	assert(idx >= 0 && idx < this->classes.count());
@@ -238,7 +238,7 @@ DimeClassesSection::removeClass(const int idx)
 */
 
 void
-DimeClassesSection::insertClass(dimeClass* const myclass, const int idx)
+DimeClassesSection::insertClass(DimeClass* const myclass, const int idx)
 {
 	if (idx < 0) this->classes.append(myclass);
 	else

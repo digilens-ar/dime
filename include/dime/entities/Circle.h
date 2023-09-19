@@ -37,13 +37,13 @@
 #include <dime/entities/ExtrusionEntity.h>
 #include <dime/util/Linear.h>
 
-class dimeModel;
+class DimeModel;
 class DimeMemHandler;
 
-class DIME_DLL_API dimeCircle : public dimeExtrusionEntity
+class DIME_DLL_API DimeCircle : public DimeExtrusionEntity
 {
 public:
-	dimeCircle();
+	DimeCircle();
 
 	const dimeVec3f& getCenter() const;
 	void setCenter(const dimeVec3f& c);
@@ -51,13 +51,13 @@ public:
 	void setRadius(dxfdouble val);
 	dxfdouble getRadius() const;
 
-	virtual dimeEntity* copy(dimeModel* model) const;
+	virtual DimeEntity* copy(DimeModel* model) const;
 	bool getRecord(int groupcode,
 	               dimeParam& param,
 	               int index = 0) const override;
 	virtual const char* getEntityName() const;
 	virtual void print() const;
-	virtual bool write(dimeOutput* out);
+	virtual bool write(DimeOutput* out);
 	int typeId() const override;
 	int countRecords() const override;
 
@@ -77,25 +77,25 @@ private:
 }; // class dimeCircle
 
 inline const dimeVec3f&
-dimeCircle::getCenter() const
+DimeCircle::getCenter() const
 {
 	return this->center;
 }
 
 inline void
-dimeCircle::setCenter(const dimeVec3f& c)
+DimeCircle::setCenter(const dimeVec3f& c)
 {
 	this->center = c;
 }
 
 inline void
-dimeCircle::setRadius(const dxfdouble val)
+DimeCircle::setRadius(const dxfdouble val)
 {
 	this->radius = val;
 }
 
 inline dxfdouble
-dimeCircle::getRadius() const
+DimeCircle::getRadius() const
 {
 	return this->radius;
 }

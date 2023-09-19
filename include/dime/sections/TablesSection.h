@@ -36,28 +36,28 @@
 #include <dime/sections/Section.h>
 #include <dime/util/Array.h>
 
-class DIME_DLL_API dimeTablesSection : public dimeSection
+class DIME_DLL_API DimeTablesSection : public DimeSection
 {
 public:
-	dimeTablesSection(DimeMemHandler* memhandler = nullptr);
-	~dimeTablesSection() override;
+	DimeTablesSection(DimeMemHandler* memhandler = nullptr);
+	~DimeTablesSection() override;
 
 	const char* getSectionName() const override;
-	dimeSection* copy(dimeModel* model) const override;
+	DimeSection* copy(DimeModel* model) const override;
 
 public:
-	bool read(dimeInput* file) override;
-	bool write(dimeOutput* file) override;
+	bool read(DimeInput* file) override;
+	bool write(DimeOutput* file) override;
 	int typeId() const override;
 	int countRecords() const override;
 
 	int getNumTables() const;
-	class dimeTable* getTable(int idx);
+	class DimeTable* getTable(int idx);
 	void removeTable(int idx);
-	void insertTable(dimeTable* table, int idx = -1);
+	void insertTable(DimeTable* table, int idx = -1);
 
 private:
-	dimeArray<dimeTable*> tables;
+	dimeArray<DimeTable*> tables;
 }; // class dimeTablesSection
 
 #endif // ! DIME_TABLESSECTION_H

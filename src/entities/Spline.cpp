@@ -31,7 +31,7 @@
 \**************************************************************************/
 
 /*!
-  \class dimeSpline dime/entities/Spline.h
+  \class DimeSpline dime/entities/Spline.h
   \brief The dimeSpline class handles a SPLINE \e entity.
 */
 
@@ -52,7 +52,7 @@ static char entityName[] = "SPLINE";
   Constructor.
 */
 
-dimeSpline::dimeSpline()
+DimeSpline::DimeSpline()
 {
 	this->flags = PLANAR;
 	this->degree = 3; // FIXME: is this a correct default value
@@ -72,7 +72,7 @@ dimeSpline::dimeSpline()
   Destructor.
 */
 
-dimeSpline::~dimeSpline()
+DimeSpline::~DimeSpline()
 {
 	delete [] this->knots;
 	delete [] this->weights;
@@ -85,7 +85,7 @@ dimeSpline::~dimeSpline()
 */
 
 bool
-dimeSpline::hasWeights() const
+DimeSpline::hasWeights() const
 {
 	if (weights == nullptr) return false;
 	int i, n = this->numControlPoints;
@@ -98,11 +98,11 @@ dimeSpline::hasWeights() const
 
 //!
 
-dimeEntity*
-dimeSpline::copy(dimeModel* const model) const
+DimeEntity*
+DimeSpline::copy(DimeModel* const model) const
 {
 	DimeMemHandler* mh = model->getMemHandler();
-	auto s = new(mh) dimeSpline;
+	auto s = new(mh) DimeSpline;
 	if (!s) return nullptr;
 
 	if (!this->copyRecords(s, model))
@@ -165,13 +165,13 @@ dimeSpline::copy(dimeModel* const model) const
 //!
 
 bool
-dimeSpline::write(dimeOutput* const file)
+DimeSpline::write(DimeOutput* const file)
 {
 	int i;
 
-	dimeEntity::preWrite(file);
+	DimeEntity::preWrite(file);
 
-	bool ret = dimeEntity::write(file);
+	bool ret = DimeEntity::write(file);
 
 	// write counters first
 	file->writeGroupCode(70);
@@ -247,7 +247,7 @@ dimeSpline::write(dimeOutput* const file)
 //!
 
 int
-dimeSpline::typeId() const
+DimeSpline::typeId() const
 {
 	return DimeBase::dimeSplineType;
 }
@@ -255,7 +255,7 @@ dimeSpline::typeId() const
 //!
 
 bool
-dimeSpline::handleRecord(const int groupcode,
+DimeSpline::handleRecord(const int groupcode,
                          const dimeParam& param,
                          DimeMemHandler* const mh)
 {
@@ -354,13 +354,13 @@ dimeSpline::handleRecord(const int groupcode,
 #endif
 		return true;
 	}
-	return dimeEntity::handleRecord(groupcode, param, mh);
+	return DimeEntity::handleRecord(groupcode, param, mh);
 }
 
 //!
 
 const char*
-dimeSpline::getEntityName() const
+DimeSpline::getEntityName() const
 {
 	return entityName;
 }
@@ -368,7 +368,7 @@ dimeSpline::getEntityName() const
 //!
 
 bool
-dimeSpline::getRecord(const int groupcode,
+DimeSpline::getRecord(const int groupcode,
                       dimeParam& param,
                       const int index) const
 {
@@ -444,13 +444,13 @@ dimeSpline::getRecord(const int groupcode,
 #endif
 		return true;
 	}
-	return dimeEntity::getRecord(groupcode, param, index);
+	return DimeEntity::getRecord(groupcode, param, index);
 }
 
 //!
 
 void
-dimeSpline::print() const
+DimeSpline::print() const
 {
 	fprintf(stderr, "SPLINE:\n");
 	// FIXME
@@ -459,7 +459,7 @@ dimeSpline::print() const
 //!
 
 int
-dimeSpline::countRecords() const
+DimeSpline::countRecords() const
 {
 	int cnt = 7; // name + flags + degree + numKnots + numCP + knotTol + cpTol
 	cnt += this->numControlPoints * 3;
@@ -468,11 +468,11 @@ dimeSpline::countRecords() const
 	if (this->numFitPoints) cnt++; // fitTolerance
 	cnt += this->numKnots;
 
-	return cnt + dimeEntity::countRecords();
+	return cnt + DimeEntity::countRecords();
 }
 
 void
-dimeSpline::setKnotValues(const dxfdouble* const values, const int numvalues,
+DimeSpline::setKnotValues(const dxfdouble* const values, const int numvalues,
                           DimeMemHandler* const memhandler)
 {
 	if (memhandler == nullptr && this->numKnots != numvalues)
@@ -495,7 +495,7 @@ dimeSpline::setKnotValues(const dxfdouble* const values, const int numvalues,
 */
 
 void
-dimeSpline::setControlPoints(const dimeVec3f* const pts, const int numpts,
+DimeSpline::setControlPoints(const dimeVec3f* const pts, const int numpts,
                              DimeMemHandler* const memhandler)
 {
 	// update weights array (if present)
@@ -544,7 +544,7 @@ dimeSpline::setControlPoints(const dimeVec3f* const pts, const int numpts,
 */
 
 void
-dimeSpline::setWeight(const int idx, const dxfdouble w,
+DimeSpline::setWeight(const int idx, const dxfdouble w,
                       DimeMemHandler* const memhandler)
 {
 	if (!this->hasWeights() && w != 1.0)
@@ -564,7 +564,7 @@ dimeSpline::setWeight(const int idx, const dxfdouble w,
 }
 
 void
-dimeSpline::setFitPoints(const dimeVec3f* const pts, const int numpts,
+DimeSpline::setFitPoints(const dimeVec3f* const pts, const int numpts,
                          DimeMemHandler* const memhandler)
 {
 	if (memhandler == nullptr && this->numFitPoints != numpts)

@@ -58,8 +58,8 @@ dime3DFace::dime3DFace()
 
 //!
 
-dimeEntity*
-dime3DFace::copy(dimeModel* const model) const
+DimeEntity*
+dime3DFace::copy(DimeModel* const model) const
 {
 	auto f = new(model->getMemHandler()) dime3DFace;
 	if (!f) return nullptr;
@@ -87,7 +87,7 @@ dime3DFace::getEntityName() const
 //!
 
 bool
-dime3DFace::write(dimeOutput* const file)
+dime3DFace::write(DimeOutput* const file)
 {
 	bool ret = true;
 	if (!this->isDeleted())
@@ -99,7 +99,7 @@ dime3DFace::write(dimeOutput* const file)
 			file->writeGroupCode(70);
 			file->writeInt16(flags);
 		}
-		ret = dimeEntity::write(file);
+		ret = DimeEntity::write(file);
 	}
 	return ret;
 }

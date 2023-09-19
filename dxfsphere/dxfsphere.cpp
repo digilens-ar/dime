@@ -181,15 +181,15 @@ object unit_icosahedron(sizeof(icosahedron) / sizeof(icosahedron[0]),
 point *normalize(point * p);
 point *midpoint(point * a, point * b);
 void flip_object(object * obj);
-void print_object(object * obj, int level, dimeModel & model, const char * layername,
-                  dimeBlock * block = NULL);
-void print_triangle(triangle *t, dimeModel & model, const dimeLayer * layer,
-                    dimeBlock * block = NULL);
+void print_object(object * obj, int level, DimeModel & model, const char * layername,
+                  DimeBlock * block = NULL);
+void print_triangle(triangle *t, DimeModel & model, const dimeLayer * layer,
+                    DimeBlock * block = NULL);
 
 static void
-add_layer(const char * name, int colnum, dimeModel * model, dimeTable * layers)
+add_layer(const char * name, int colnum, DimeModel * model, DimeTable * layers)
 {
-  dimeLayerTable * layer = new dimeLayerTable;
+  DimeLayerTable * layer = new DimeLayerTable;
   layer->setLayerName(name, NULL);
   layer->setColorNumber(colnum); // the color numbers are defined in dime/Layer.cpp.
 
@@ -249,21 +249,21 @@ main(int ac, char ** av)
   }
 
   // DIME: initialize output file
-  dimeOutput out;
+  DimeOutput out;
   if (!outfile || !out.setFilename(outfile)) {
     out.setFileHandle(stdout);
   }
   // DIME: create dime model
-  dimeModel model;
+  DimeModel model;
 
   // DIME: only needed if you need your object to be in a layer
   {
     // DIME: add tables section (needed for layers).
-    dimeTablesSection * tables = new dimeTablesSection;
+    DimeTablesSection * tables = new DimeTablesSection;
     model.insertSection(tables);
 
     // DIME: set up a layer table to store our layers
-    dimeTable * layers = new dimeTable(NULL);
+    DimeTable * layers = new DimeTable(NULL);
 
     // DIME: set up our layers
     add_layer(LAYERNAME1, 16, &model, layers);
@@ -274,11 +274,11 @@ main(int ac, char ** av)
   }
 
   // DIME: only needed if you want to create the sphere as a BLOCK
-  dimeBlock * block = NULL;
+  DimeBlock * block = NULL;
   if (useblock) {
-    dimeBlocksSection * blocks = new dimeBlocksSection;
+    DimeBlocksSection * blocks = new DimeBlocksSection;
     model.insertSection(blocks);
-    block = new dimeBlock(NULL);
+    block = new DimeBlock(NULL);
     block->setName("MyBlock");
     blocks->insertBlock(block);
   }
@@ -426,8 +426,8 @@ void flip_object(object * obj)
 }
 
 /* Write out all triangles in an object */
-void print_object(object * obj, int level, dimeModel & model, const char * layername,
-                  dimeBlock * block)
+void print_object(object * obj, int level, DimeModel & model, const char * layername,
+                  DimeBlock * block)
 {
   int i;
 
@@ -440,8 +440,8 @@ void print_object(object * obj, int level, dimeModel & model, const char * layer
 
 
 /* Output a triangle */
-void print_triangle(triangle * t, dimeModel & model, const dimeLayer * layer,
-                    dimeBlock * block)
+void print_triangle(triangle * t, DimeModel & model, const dimeLayer * layer,
+                    DimeBlock * block)
 {
 #if defined(DXFSPHERE_FILLED) && !defined(DXFSPHERE_USE_UNKNOWNENTITY)
   // filled, create dime3DFace

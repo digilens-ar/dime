@@ -37,10 +37,10 @@
 #include <dime/entities/ExtrusionEntity.h>
 #include <dime/util/Linear.h>
 
-class DIME_DLL_API dimeArc : public dimeExtrusionEntity
+class DIME_DLL_API DimeArc : public DimeExtrusionEntity
 {
 public:
-	dimeArc();
+	DimeArc();
 
 	void setCenter(const dimeVec3f& c);
 	void getCenter(dimeVec3f& c) const;
@@ -56,10 +56,10 @@ public:
 	               int index = 0) const override;
 	virtual const char* getEntityName() const;
 
-	virtual dimeEntity* copy(dimeModel* model) const;
+	virtual DimeEntity* copy(DimeModel* model) const;
 
 	virtual void print() const;
-	virtual bool write(dimeOutput* out);
+	virtual bool write(DimeOutput* out);
 	int typeId() const override;
 	int countRecords() const override;
 
@@ -85,49 +85,49 @@ private:
 //
 
 inline void
-dimeArc::setCenter(const dimeVec3f& c)
+DimeArc::setCenter(const dimeVec3f& c)
 {
 	this->center = c;
 }
 
 inline void
-dimeArc::getCenter(dimeVec3f& c) const
+DimeArc::getCenter(dimeVec3f& c) const
 {
 	c = this->center;
 }
 
 inline void
-dimeArc::setRadius(const dxfdouble r)
+DimeArc::setRadius(const dxfdouble r)
 {
 	this->radius = r;
 }
 
 inline dxfdouble
-dimeArc::getRadius() const
+DimeArc::getRadius() const
 {
 	return this->radius;
 }
 
 inline void
-dimeArc::setStartAngle(const dxfdouble a)
+DimeArc::setStartAngle(const dxfdouble a)
 {
 	this->startAngle = a;
 }
 
 inline dxfdouble
-dimeArc::getStartAngle() const
+DimeArc::getStartAngle() const
 {
 	return this->startAngle;
 }
 
 inline void
-dimeArc::setEndAngle(const dxfdouble a)
+DimeArc::setEndAngle(const dxfdouble a)
 {
 	this->endAngle = a;
 }
 
 inline dxfdouble
-dimeArc::getEndAngle() const
+DimeArc::getEndAngle() const
 {
 	return this->endAngle;
 }

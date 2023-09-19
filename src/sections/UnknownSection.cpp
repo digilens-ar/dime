@@ -52,7 +52,7 @@
 
 dimeUnknownSection::dimeUnknownSection(const char* const sectionname,
                                        DimeMemHandler* memhandler)
-	: dimeSection(memhandler), records(nullptr), numRecords(0)
+	: DimeSection(memhandler), records(nullptr), numRecords(0)
 {
 	this->sectionName = new char[strlen(sectionname) + 1];
 	if (this->sectionName) strcpy(this->sectionName, sectionname);
@@ -75,8 +75,8 @@ dimeUnknownSection::~dimeUnknownSection()
 
 //!
 
-dimeSection*
-dimeUnknownSection::copy(dimeModel* const model) const
+DimeSection*
+dimeUnknownSection::copy(DimeModel* const model) const
 {
 	int i;
 	DimeMemHandler* memh = model->getMemHandler();
@@ -85,7 +85,7 @@ dimeUnknownSection::copy(dimeModel* const model) const
 	bool ok = us != nullptr;
 	if (ok && this->numRecords)
 	{
-		us->records = ARRAY_NEW(memh, dimeRecord*, this->numRecords);
+		us->records = ARRAY_NEW(memh, DimeRecord*, this->numRecords);
 		bool ok = us->records != nullptr;
 		if (ok)
 		{
@@ -109,16 +109,16 @@ dimeUnknownSection::copy(dimeModel* const model) const
 //!
 
 bool
-dimeUnknownSection::read(dimeInput* const file)
+dimeUnknownSection::read(DimeInput* const file)
 {
-	dimeRecord* record;
+	DimeRecord* record;
 	bool ok = true;
-	dimeArray<dimeRecord*> array(512);
+	dimeArray<DimeRecord*> array(512);
 	DimeMemHandler* memhandler = file->getMemHandler();
 
 	while (true)
 	{
-		record = dimeRecord::readRecord(file);
+		record = DimeRecord::readRecord(file);
 		if (record == nullptr)
 		{
 			fprintf(stderr, "could not create/read record (dimeUnknownSection.cpp)"
@@ -133,11 +133,11 @@ dimeUnknownSection::read(dimeInput* const file)
 	{
 		if (memhandler)
 		{
-			this->records = static_cast<dimeRecord**>(memhandler->allocMem(array.count() * sizeof(dimeRecord*)));
+			this->records = static_cast<DimeRecord**>(memhandler->allocMem(array.count() * sizeof(DimeRecord*)));
 		}
 		else
 		{
-			this->records = new dimeRecord*[array.count()];
+			this->records = new DimeRecord*[array.count()];
 		}
 		if (this->records)
 		{
@@ -152,7 +152,7 @@ dimeUnknownSection::read(dimeInput* const file)
 //!
 
 bool
-dimeUnknownSection::write(dimeOutput* const file)
+dimeUnknownSection::write(DimeOutput* const file)
 {
 	if (file->writeGroupCode(2) && file->writeString(this->sectionName))
 	{

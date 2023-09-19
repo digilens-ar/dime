@@ -96,7 +96,7 @@ memh ? (type*) memh->allocMem((num)*sizeof(type)) : new type[num]
 #define DXF_STRCPY(mh, d, s) \
 mh ? d = mh->stringAlloc(s) : d = new char[strlen(s)+1]; if (d) strcpy(d,s)
 
-using dimeCallbackFunc = bool(const class DimeState*, class dimeEntity*, void*);
+using dimeCallbackFunc = bool(const class DimeState*, class DimeEntity*, void*);
 using dimeCallback = dimeCallbackFunc*;
 
 using dimeParam = union

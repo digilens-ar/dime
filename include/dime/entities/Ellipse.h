@@ -41,10 +41,10 @@
 // please note that the thickness will always be 0.0 for this entity
 //
 
-class DIME_DLL_API dimeEllipse : public dimeExtrusionEntity
+class DIME_DLL_API DimeEllipse : public DimeExtrusionEntity
 {
 public:
-	dimeEllipse();
+	DimeEllipse();
 
 	void setCenter(const dimeVec3f& c);
 	const dimeVec3f& getCenter() const;
@@ -61,13 +61,13 @@ public:
 	void setEndParam(dxfdouble p);
 	dxfdouble getEndParam() const;
 
-	virtual dimeEntity* copy(dimeModel* model) const;
+	virtual DimeEntity* copy(DimeModel* model) const;
 	bool getRecord(int groupcode,
 	               dimeParam& param,
 	               int index = 0) const override;
 	virtual const char* getEntityName() const;
 	virtual void print() const;
-	virtual bool write(dimeOutput* out);
+	virtual bool write(DimeOutput* out);
 	int typeId() const override;
 	int countRecords() const override;
 
@@ -85,61 +85,61 @@ private:
 }; // class dimeEllipse
 
 inline const dimeVec3f&
-dimeEllipse::getCenter() const
+DimeEllipse::getCenter() const
 {
 	return this->center;
 }
 
 inline void
-dimeEllipse::setCenter(const dimeVec3f& c)
+DimeEllipse::setCenter(const dimeVec3f& c)
 {
 	this->center = c;
 }
 
 inline void
-dimeEllipse::setMajorAxisEndpoint(const dimeVec3f& v)
+DimeEllipse::setMajorAxisEndpoint(const dimeVec3f& v)
 {
 	this->majorAxisEndpoint = v;
 }
 
 inline const dimeVec3f&
-dimeEllipse::getMajorAxisEndpoint() const
+DimeEllipse::getMajorAxisEndpoint() const
 {
 	return this->majorAxisEndpoint;
 }
 
 inline void
-dimeEllipse::setMinorMajorRatio(const dxfdouble ratio)
+DimeEllipse::setMinorMajorRatio(const dxfdouble ratio)
 {
 	this->ratio = ratio;
 }
 
 inline dxfdouble
-dimeEllipse::getMinorMajorRatio() const
+DimeEllipse::getMinorMajorRatio() const
 {
 	return this->ratio;
 }
 
 inline void
-dimeEllipse::setStartParam(const dxfdouble p)
+DimeEllipse::setStartParam(const dxfdouble p)
 {
 	this->startParam = p;
 }
 
 inline dxfdouble
-dimeEllipse::getStartParam() const
+DimeEllipse::getStartParam() const
 {
 	return this->startParam;
 }
 
 inline void
-dimeEllipse::setEndParam(const dxfdouble p)
+DimeEllipse::setEndParam(const dxfdouble p)
 {
 	this->endParam = p;
 }
 
 inline dxfdouble
-dimeEllipse::getEndParam() const
+DimeEllipse::getEndParam() const
 {
 	return this->endParam;
 }

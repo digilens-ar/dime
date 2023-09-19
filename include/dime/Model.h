@@ -40,28 +40,28 @@
 #include <dime/Layer.h>
 #include <stdlib.h>
 
-class dimeInput;
-class dimeOutput;
+class DimeInput;
+class DimeOutput;
 class dimeDict;
 class DimeMemHandler;
-class dimeSection;
+class DimeSection;
 class DimeEntitiesSection;
-class dimeBlocksSection;
-class dimeBlock;
-class dimeEntity;
-class dimeRecord;
+class DimeBlocksSection;
+class DimeBlock;
+class DimeEntity;
+class DimeRecord;
 
-class DIME_DLL_API dimeModel
+class DIME_DLL_API DimeModel
 {
 public:
-	dimeModel(bool usememhandler = false);
-	~dimeModel();
+	DimeModel(bool usememhandler = false);
+	~DimeModel();
 
-	dimeModel* copy() const;
+	DimeModel* copy() const;
 
 	bool init();
-	bool read(dimeInput* in);
-	bool write(dimeOutput* out);
+	bool read(DimeInput* in);
+	bool write(DimeOutput* out);
 
 	int countRecords() const;
 
@@ -88,30 +88,30 @@ public:
 
 	static const char* getVersionString();
 	static void getVersion(int& major, int& minor);
-	const char* addBlock(const char* blockname, dimeBlock* block);
-	dimeBlock* findBlock(const char* blockname);
+	const char* addBlock(const char* blockname, DimeBlock* block);
+	DimeBlock* findBlock(const char* blockname);
 
-	dimeSection* findSection(const char* sectionname);
-	const dimeSection* findSection(const char* sectionname) const;
+	DimeSection* findSection(const char* sectionname);
+	const DimeSection* findSection(const char* sectionname) const;
 
 	int getNumSections() const;
-	dimeSection* getSection(int idx);
-	void insertSection(dimeSection* section, int idx = -1);
+	DimeSection* getSection(int idx);
+	void insertSection(DimeSection* section, int idx = -1);
 	void removeSection(int idx);
 
 	void registerHandle(int handle);
 	void registerHandle(const char* handle);
 	int getUniqueHandle();
 	const char* getUniqueHandle(char* buf, int bufsize);
-	void addEntity(dimeEntity* entity);
+	void addEntity(DimeEntity* entity);
 
 private:
 	dimeDict* refDict;
 	dimeDict* layerDict;
 	DimeMemHandler* memoryHandler;
-	dimeArray<dimeSection*> sections;
+	dimeArray<DimeSection*> sections;
 	dimeArray<dimeLayer*> layers;
-	dimeArray<dimeRecord*> headerComments;
+	dimeArray<DimeRecord*> headerComments;
 
 	int largestHandle;
 	bool usememhandler;

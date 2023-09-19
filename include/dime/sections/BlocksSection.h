@@ -36,30 +36,30 @@
 #include <dime/sections/Section.h>
 #include <dime/util/Array.h>
 
-class DIME_DLL_API dimeBlocksSection : public dimeSection
+class DIME_DLL_API DimeBlocksSection : public DimeSection
 {
 public:
-	dimeBlocksSection(DimeMemHandler* memhandler = nullptr);
-	~dimeBlocksSection() override;
+	DimeBlocksSection(DimeMemHandler* memhandler = nullptr);
+	~DimeBlocksSection() override;
 
 	const char* getSectionName() const override;
-	dimeSection* copy(dimeModel* model) const override;
+	DimeSection* copy(DimeModel* model) const override;
 
 public:
-	bool read(dimeInput* file) override;
-	bool write(dimeOutput* file) override;
+	bool read(DimeInput* file) override;
+	bool write(DimeOutput* file) override;
 	int typeId() const override;
 	int countRecords() const override;
 
-	void fixReferences(dimeModel* model);
+	void fixReferences(DimeModel* model);
 
 	int getNumBlocks() const;
-	class dimeBlock* getBlock(int idx);
+	class DimeBlock* getBlock(int idx);
 	void removeBlock(int idx);
-	void insertBlock(dimeBlock* block, int idx = -1);
+	void insertBlock(DimeBlock* block, int idx = -1);
 
 private:
-	dimeArray<dimeBlock*> blocks;
+	dimeArray<DimeBlock*> blocks;
 }; // class dimeBlocksSection
 
 #endif // ! DIME_BLOCKSSECTION_H

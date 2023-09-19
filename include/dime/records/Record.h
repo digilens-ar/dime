@@ -37,18 +37,18 @@
 #include <dime/Base.h>
 #include <stdio.h>
 
-class dimeInput;
-class dimeOutput;
+class DimeInput;
+class DimeOutput;
 
-class DIME_DLL_API dimeRecord : public DimeBase
+class DIME_DLL_API DimeRecord : public DimeBase
 {
 public:
-	dimeRecord(int group_code);
-	~dimeRecord() override;
+	DimeRecord(int group_code);
+	~DimeRecord() override;
 
 	virtual void setValue(const dimeParam& param, DimeMemHandler* memhandler = nullptr) = 0;
 	virtual void getValue(dimeParam& param) const = 0;
-	virtual dimeRecord* copy(DimeMemHandler* memhandler) const = 0;
+	virtual DimeRecord* copy(DimeMemHandler* memhandler) const = 0;
 
 	void setGroupCode(int group_code);
 	int getGroupCode() const;
@@ -57,17 +57,17 @@ public:
 	virtual bool isEndOfSectionRecord() const;
 	virtual bool isEndOfFileRecord() const;
 	int typeId() const override = 0;
-	virtual bool read(dimeInput* in) = 0;
-	virtual bool write(dimeOutput* out);
+	virtual bool read(DimeInput* in) = 0;
+	virtual bool write(DimeOutput* out);
 	virtual void print() const { fprintf(stderr, "rec: %d\n", groupCode); }
 
 public:
-	static bool readRecordData(dimeInput* in, int group_code,
+	static bool readRecordData(DimeInput* in, int group_code,
 	                           dimeParam& param);
-	static dimeRecord* readRecord(dimeInput* in);
-	static dimeRecord* createRecord(int group_code,
+	static DimeRecord* readRecord(DimeInput* in);
+	static DimeRecord* createRecord(int group_code,
 	                                DimeMemHandler* memhandler);
-	static dimeRecord* createRecord(int group_code,
+	static DimeRecord* createRecord(int group_code,
 	                                const dimeParam& param,
 	                                DimeMemHandler* memhandler);
 	static int getRecordType(int group_code);

@@ -63,8 +63,8 @@ dimeUnknownClass::~dimeUnknownClass()
 
 //!
 
-dimeClass*
-dimeUnknownClass::copy(dimeModel* const model) const
+DimeClass*
+dimeUnknownClass::copy(DimeModel* const model) const
 {
 	DimeMemHandler* memh = model->getMemHandler();
 	auto u = new(memh) dimeUnknownClass(this->dxfClassName, memh);
@@ -80,10 +80,10 @@ dimeUnknownClass::copy(dimeModel* const model) const
 //!
 
 bool
-dimeUnknownClass::write(dimeOutput* const file)
+dimeUnknownClass::write(DimeOutput* const file)
 {
 	if (file->writeGroupCode(9) && file->writeString(this->dxfClassName))
-		return dimeClass::write(file);
+		return DimeClass::write(file);
 	return false;
 }
 
@@ -100,7 +100,7 @@ dimeUnknownClass::typeId() const
 int
 dimeUnknownClass::countRecords() const
 {
-	return 1 + dimeClass::countRecords();
+	return 1 + DimeClass::countRecords();
 }
 
 //!

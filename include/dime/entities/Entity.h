@@ -55,19 +55,19 @@
 #define FLAG_FIRST_FREE       0x0800 // use this if you want to define your own flags
 
 class dimeLayer;
-class dimeModel;
+class DimeModel;
 
-class DIME_DLL_API dimeEntity : public dimeRecordHolder
+class DIME_DLL_API DimeEntity : public DimeRecordHolder
 {
 	friend class DimeEntitiesSection;
-	friend class dimeModel;
-	friend class dimePolyline;
-	friend class dimeBlock;
+	friend class DimeModel;
+	friend class DimePolyline;
+	friend class DimeBlock;
 	friend class DimeInsert;
 
 public:
-	dimeEntity();
-	~dimeEntity() override;
+	DimeEntity();
+	~DimeEntity() override;
 
 	int16 getEntityFlags() const;
 	void setEntityFlags(int16 flags);
@@ -81,9 +81,9 @@ public:
 	const dimeLayer* getLayer() const;
 	const char* getLayerName() const;
 
-	virtual dimeEntity* copy(dimeModel* model) const = 0;
-	bool read(dimeInput* in) override;
-	bool write(dimeOutput* out) override;
+	virtual DimeEntity* copy(DimeModel* model) const = 0;
+	bool read(DimeInput* in) override;
+	bool write(DimeOutput* out) override;
 	bool isOfType(int thetypeid) const override;
 	int countRecords() const override;
 
@@ -116,38 +116,38 @@ public:
 	                                     dxfdouble& thickness);
 
 protected:
-	bool preWrite(dimeOutput* file);
+	bool preWrite(DimeOutput* file);
 
 	virtual bool traverse(const DimeState* state,
 	                      dimeCallback callback,
 	                      void* userdata);
 
-	virtual void fixReferences(dimeModel* model);
+	virtual void fixReferences(DimeModel* model);
 	bool handleRecord(int groupcode,
 	                  const dimeParam& param,
 	                  DimeMemHandler* memhandler) override;
 	bool shouldWriteRecord(int groupcode) const override;
 
 public:
-	static dimeEntity* createEntity(const char* name,
+	static DimeEntity* createEntity(const char* name,
 	                                DimeMemHandler* memhandler = nullptr);
-	static bool readEntities(dimeInput* file,
-	                         dimeArray<dimeEntity*>& array,
+	static bool readEntities(DimeInput* file,
+	                         dimeArray<DimeEntity*>& array,
 	                         const char* stopat);
 
-	static bool copyEntityArray(const dimeEntity* const* const array,
+	static bool copyEntityArray(const DimeEntity* const* const array,
 	                            int nument,
-	                            dimeModel* model,
-	                            dimeArray<dimeEntity*>& destarray);
-	static dimeEntity** copyEntityArray(const dimeEntity* const* const array,
+	                            DimeModel* model,
+	                            dimeArray<DimeEntity*>& destarray);
+	static DimeEntity** copyEntityArray(const DimeEntity* const* const array,
 	                                    int& nument,
-	                                    dimeModel* model);
+	                                    DimeModel* model);
 
 	static void arbitraryAxis(const dimeVec3f& givenaxis, dimeVec3f& newaxis);
 	static void generateUCS(const dimeVec3f& givenaxis, dimeMatrix& m);
 
 protected:
-	bool copyRecords(dimeEntity* entity, dimeModel* model) const;
+	bool copyRecords(DimeEntity* entity, DimeModel* model) const;
 
 private:
 	const dimeLayer* layer;
@@ -156,31 +156,31 @@ private:
 }; // class dimeEntity
 
 inline const dimeLayer*
-dimeEntity::getLayer() const
+DimeEntity::getLayer() const
 {
 	return this->layer;
 }
 
 inline int16
-dimeEntity::getColorNumber() const
+DimeEntity::getColorNumber() const
 {
 	return this->colorNumber;
 }
 
 inline void
-dimeEntity::setColorNumber(const int16 c)
+DimeEntity::setColorNumber(const int16 c)
 {
 	this->colorNumber = c;
 }
 
 inline int16
-dimeEntity::getEntityFlags() const
+DimeEntity::getEntityFlags() const
 {
 	return this->entityFlags;
 }
 
 inline void
-dimeEntity::setEntityFlags(const int16 flags)
+DimeEntity::setEntityFlags(const int16 flags)
 {
 	this->entityFlags = flags;
 }
