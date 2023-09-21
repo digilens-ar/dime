@@ -76,7 +76,7 @@ convert_ellipse(const DimeEntity* entity, const DimeState* state,
 	dimeMatrix matrix;
 	state->getMatrix(matrix);
 
-	dimeVec3f e = ellipse->getExtrusionDir();
+	dimeVec3 e = ellipse->getExtrusionDir();
 	dxfdouble thickness = ellipse->getThickness();
 
 	// According to the DXF Intern, Ellipse has no Element coordinate
@@ -90,10 +90,10 @@ convert_ellipse(const DimeEntity* entity, const DimeState* state,
 
 	e *= thickness;
 
-	dimeVec3f center = ellipse->getCenter();
+	dimeVec3 center = ellipse->getCenter();
 
 	// do some cross product magic to calculate minor axis
-	dimeVec3f xaxis = ellipse->getMajorAxisEndpoint();
+	dimeVec3 xaxis = ellipse->getMajorAxisEndpoint();
 
 	dimeParam param;
 	if (ellipse->getRecord(38, param))
@@ -104,9 +104,9 @@ convert_ellipse(const DimeEntity* entity, const DimeState* state,
 
 	dxfdouble xlen = xaxis.length() * 0.5;
 	xaxis.normalize();
-	dimeVec3f yaxis = dimeVec3f(0, 0, 1).cross(xaxis);
+	dimeVec3 yaxis = dimeVec3(0, 0, 1).cross(xaxis);
 	yaxis.normalize();
-	dimeVec3f zaxis = xaxis.cross(yaxis);
+	dimeVec3 zaxis = xaxis.cross(yaxis);
 	zaxis.normalize();
 	yaxis = zaxis.cross(xaxis);
 	yaxis.normalize();
@@ -133,15 +133,15 @@ convert_ellipse(const DimeEntity* entity, const DimeState* state,
 	dxfdouble size = (end - rad) / (2 * M_PI);
 	dxfdouble inc = (end - rad) / (numpts * size);
 
-	dimeVec3f v;
-	dimeVec3f prev(center[0] + xaxis[0] * cos(rad) + yaxis[0] * sin(rad),
+	dimeVec3 v;
+	dimeVec3 prev(center[0] + xaxis[0] * cos(rad) + yaxis[0] * sin(rad),
 	               center[1] + xaxis[1] * cos(rad) + yaxis[1] * sin(rad),
 	               center[2] + xaxis[2] * cos(rad) + yaxis[2] * sin(rad));
 	rad += inc;
 
 	for (; rad < end; rad += inc)
 	{
-		v = dimeVec3f(center[0] + xaxis[0] * cos(rad) + yaxis[0] * sin(rad),
+		v = dimeVec3(center[0] + xaxis[0] * cos(rad) + yaxis[0] * sin(rad),
 		              center[1] + xaxis[1] * cos(rad) + yaxis[1] * sin(rad),
 		              center[2] + xaxis[2] * cos(rad) + yaxis[2] * sin(rad));
 
@@ -159,7 +159,7 @@ convert_ellipse(const DimeEntity* entity, const DimeState* state,
 	}
 
 	rad = end;
-	v = dimeVec3f(center[0] + xaxis[0] * cos(rad) + yaxis[0] * sin(rad),
+	v = dimeVec3(center[0] + xaxis[0] * cos(rad) + yaxis[0] * sin(rad),
 	              center[1] + xaxis[1] * cos(rad) + yaxis[1] * sin(rad),
 	              center[2] + xaxis[2] * cos(rad) + yaxis[2] * sin(rad));
 	if (thickness == 0.0)

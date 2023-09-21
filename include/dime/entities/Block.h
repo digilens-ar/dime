@@ -53,8 +53,8 @@ public:
 	DimeBlock(DimeMemHandler* memhandler);
 	~DimeBlock() override;
 
-	const dimeVec3f& getBasePoint() const;
-	void setBasePoint(const dimeVec3f& v);
+	const dimeVec3& getBasePoint() const;
+	void setBasePoint(const dimeVec3& v);
 	int getNumEntities() const;
 	DimeEntity* getEntity(int idx);
 	void insertEntity(DimeEntity* entity, int idx = -1);
@@ -87,20 +87,20 @@ protected:
 private:
 	int16 flags;
 	const char* name;
-	dimeVec3f basePoint;
+	dimeVec3 basePoint;
 	dimeArray<DimeEntity*> entities;
 	DimeEntity* endblock;
 	DimeMemHandler* memHandler;
 }; // class dimeBlock
 
-inline const dimeVec3f&
+inline const dimeVec3&
 DimeBlock::getBasePoint() const
 {
 	return this->basePoint;
 }
 
 inline void
-DimeBlock::setBasePoint(const dimeVec3f& v)
+DimeBlock::setBasePoint(const dimeVec3& v)
 {
 	this->basePoint = v;
 }

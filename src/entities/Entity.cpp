@@ -503,10 +503,10 @@ DimeEntity::fixReferences(DimeModel* const)
 */
 
 void
-DimeEntity::arbitraryAxis(const dimeVec3f& givenaxis, dimeVec3f& newaxis)
+DimeEntity::arbitraryAxis(const dimeVec3& givenaxis, dimeVec3& newaxis)
 {
-	dimeVec3f yaxis(0.0, 1.0, 0.0);
-	dimeVec3f zaxis(0.0, 0.0, 1.0);
+	dimeVec3 yaxis(0.0, 1.0, 0.0);
+	dimeVec3 zaxis(0.0, 0.0, 1.0);
 
 	if (fabs(givenaxis[0]) < ARBBOUND &&
 		fabs(givenaxis[1]) < ARBBOUND)
@@ -525,12 +525,12 @@ DimeEntity::arbitraryAxis(const dimeVec3f& givenaxis, dimeVec3f& newaxis)
 */
 
 void
-DimeEntity::generateUCS(const dimeVec3f& givenaxis, dimeMatrix& m)
+DimeEntity::generateUCS(const dimeVec3& givenaxis, dimeMatrix& m)
 {
-	dimeVec3f newaxis;
+	dimeVec3 newaxis;
 	DimeEntity::arbitraryAxis(givenaxis, newaxis);
 	newaxis.normalize();
-	dimeVec3f yaxis = givenaxis.cross(newaxis);
+	dimeVec3 yaxis = givenaxis.cross(newaxis);
 	yaxis.normalize();
 	m.setRotate(newaxis, yaxis, givenaxis);
 }
@@ -594,12 +594,12 @@ DimeEntity::traverse(const DimeState* const state,
 */
 
 DimeEntity::GeometryType
-DimeEntity::extractGeometry(dimeArray<dimeVec3f>& verts,
+DimeEntity::extractGeometry(dimeArray<dimeVec3>& verts,
                             dimeArray<int>& indices,
-                            dimeVec3f& extrusionDir,
+                            dimeVec3& extrusionDir,
                             dxfdouble& thickness)
 {
-	extrusionDir = dimeVec3f(0, 0, 1);
+	extrusionDir = dimeVec3(0, 0, 1);
 	verts.setCount(0);
 	indices.setCount(0);
 	thickness = 0.0f;

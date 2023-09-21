@@ -42,10 +42,10 @@ public:
 	DimeText();
 	//  dimeText(const char* s);
 
-	void setOrigin(const dimeVec3f& o);
-	dimeVec3f getOrigin() const;
-	void setSecond(const dimeVec3f& s);
-	bool getSecond(dimeVec3f& s) const;
+	void setOrigin(const dimeVec3& o);
+	dimeVec3 getOrigin() const;
+	void setSecond(const dimeVec3& s);
+	bool getSecond(dimeVec3& s) const;
 	void setHeight(dxfdouble h);
 	dxfdouble getHeight() const;
 	void setWidth(dxfdouble w);
@@ -70,9 +70,9 @@ public:
 	TypeID typeId() const override;
 	int countRecords() const override;
 
-	GeometryType extractGeometry(dimeArray<dimeVec3f>& verts,
+	GeometryType extractGeometry(dimeArray<dimeVec3>& verts,
 	                             dimeArray<int>& indices,
-	                             dimeVec3f& extrusionDir,
+	                             dimeVec3& extrusionDir,
 	                             dxfdouble& thickness) override;
 
 protected:
@@ -81,8 +81,8 @@ protected:
 	                  DimeMemHandler* memhandler) override;
 
 private:
-	dimeVec3f origin;
-	dimeVec3f second;
+	dimeVec3 origin;
+	dimeVec3 second;
 	bool haveSecond;
 	dxfdouble height;
 	dxfdouble width;
@@ -99,25 +99,25 @@ private:
 
 
 inline void
-DimeText::setOrigin(const dimeVec3f& o)
+DimeText::setOrigin(const dimeVec3& o)
 {
 	this->origin = o;
 }
 
-inline dimeVec3f
+inline dimeVec3
 DimeText::getOrigin() const
 {
 	return this->origin;
 }
 
 inline void
-DimeText::setSecond(const dimeVec3f& s)
+DimeText::setSecond(const dimeVec3& s)
 {
 	this->second = s;
 }
 
 inline bool
-DimeText::getSecond(dimeVec3f& s) const
+DimeText::getSecond(dimeVec3& s) const
 {
 	if (haveSecond)
 	{

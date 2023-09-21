@@ -382,9 +382,9 @@ DimeLWPolyline::getRecord(const int groupcode,
 }
 
 DimeEntity::GeometryType
-DimeLWPolyline::extractGeometry(dimeArray<dimeVec3f>& verts,
+DimeLWPolyline::extractGeometry(dimeArray<dimeVec3>& verts,
                                 dimeArray<int>&/*indices*/,
-                                dimeVec3f& extrusionDir,
+                                dimeVec3& extrusionDir,
                                 dxfdouble& thickness)
 {
 	thickness = this->thickness;
@@ -393,14 +393,14 @@ DimeLWPolyline::extractGeometry(dimeArray<dimeVec3f>& verts,
 	const int num = this->numVertices;
 	for (int i = 0; i < num; i++)
 	{
-		verts.append(dimeVec3f(this->xcoord[i],
+		verts.append(dimeVec3(this->xcoord[i],
 		                       this->ycoord[i],
 		                       this->elevation));
 	}
 	// is POLYLINE closed?
 	if (this->flags & 1)
 	{
-		verts.append(dimeVec3f(this->xcoord[0],
+		verts.append(dimeVec3(this->xcoord[0],
 		                       this->ycoord[0],
 		                       this->elevation));
 	}

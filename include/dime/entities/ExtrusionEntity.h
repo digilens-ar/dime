@@ -44,8 +44,8 @@ public:
 	               dimeParam& param,
 	               int index = 0) const override;
 
-	void setExtrusionDir(const dimeVec3f& v);
-	const dimeVec3f& getExtrusionDir() const;
+	void setExtrusionDir(const dimeVec3& v);
+	const dimeVec3& getExtrusionDir() const;
 
 	void setThickness(dxfdouble val);
 	dxfdouble getThickness() const;
@@ -63,17 +63,17 @@ protected:
 	bool writeExtrusionData(DimeOutput* out);
 
 protected: // should be private :-(
-	dimeVec3f extrusionDir;
+	dimeVec3 extrusionDir;
 	dxfdouble thickness;
 }; // class dimeExtrusionEntity
 
 inline void
-DimeExtrusionEntity::setExtrusionDir(const dimeVec3f& v)
+DimeExtrusionEntity::setExtrusionDir(const dimeVec3& v)
 {
 	this->extrusionDir = v;
 }
 
-inline const dimeVec3f&
+inline const dimeVec3&
 DimeExtrusionEntity::getExtrusionDir() const
 {
 	return this->extrusionDir;

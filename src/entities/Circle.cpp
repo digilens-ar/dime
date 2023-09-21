@@ -171,9 +171,9 @@ DimeCircle::getRecord(const int groupcode,
 
 
 DimeEntity::GeometryType
-DimeCircle::extractGeometry(dimeArray<dimeVec3f>& verts,
+DimeCircle::extractGeometry(dimeArray<dimeVec3>& verts,
                             dimeArray<int>&/*indices*/,
-                            dimeVec3f& extrusionDir,
+                            dimeVec3& extrusionDir,
                             dxfdouble& thickness)
 {
 	thickness = this->thickness;
@@ -185,13 +185,13 @@ DimeCircle::extractGeometry(dimeArray<dimeVec3f>& verts,
 	int i;
 	for (i = 0; i < CIRCLE_NUMPTS; i++)
 	{
-		verts.append(dimeVec3f(this->center.x + this->radius * cos(rad),
+		verts.append(dimeVec3(this->center.x + this->radius * cos(rad),
 		                       this->center.y + this->radius * sin(rad),
 		                       this->center.z));
 		rad += inc;
 	}
 
-	dimeVec3f tmp = verts[0];
+	dimeVec3 tmp = verts[0];
 	verts.append(tmp); // closed line/polygon
 
 	if (this->thickness == 0.0) return DimeEntity::LINES;

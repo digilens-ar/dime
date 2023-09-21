@@ -73,9 +73,9 @@ public:
 	                   DimeMemHandler* memhandler = nullptr);
 
 	int getNumControlPoints() const;
-	const dimeVec3f& getControlPoint(int idx) const;
-	void setControlPoint(int idx, const dimeVec3f& v);
-	void setControlPoints(const dimeVec3f* pts, int numpts,
+	const dimeVec3& getControlPoint(int idx) const;
+	void setControlPoint(int idx, const dimeVec3& v);
+	void setControlPoints(const dimeVec3* pts, int numpts,
 	                      DimeMemHandler* memhandler = nullptr);
 
 	int getNumWeights() const;
@@ -84,9 +84,9 @@ public:
 	               DimeMemHandler* memhandler = nullptr);
 
 	int getNumFitPoints() const;
-	const dimeVec3f& getFitPoint(int idx) const;
-	void setFitPoint(int idx, const dimeVec3f& pt);
-	void setFitPoints(const dimeVec3f* pts, int numpts,
+	const dimeVec3& getFitPoint(int idx) const;
+	void setFitPoint(int idx, const dimeVec3& pt);
+	void setFitPoints(const dimeVec3* pts, int numpts,
 	                  DimeMemHandler* memhandler = nullptr);
 
 	DimeEntity* copy(DimeModel* model) const override;
@@ -122,8 +122,8 @@ private:
 	dxfdouble cpTolerance;
 	dxfdouble* knots;
 	dxfdouble* weights;
-	dimeVec3f* controlPoints;
-	dimeVec3f* fitPoints;
+	dimeVec3* controlPoints;
+	dimeVec3* fitPoints;
 
 	// read/handle counters
 	int16 knotCnt;
@@ -218,7 +218,7 @@ DimeSpline::getNumControlPoints() const
 	return this->numControlPoints;
 }
 
-inline const dimeVec3f&
+inline const dimeVec3&
 DimeSpline::getControlPoint(const int idx) const
 {
 	assert(idx >= 0 && idx < this->numControlPoints);
@@ -226,7 +226,7 @@ DimeSpline::getControlPoint(const int idx) const
 }
 
 inline void
-DimeSpline::setControlPoint(const int idx, const dimeVec3f& v)
+DimeSpline::setControlPoint(const int idx, const dimeVec3& v)
 {
 	assert(idx >= 0 && idx < this->numControlPoints);
 	this->controlPoints[idx] = v;
@@ -255,7 +255,7 @@ DimeSpline::getNumFitPoints() const
 	return this->numFitPoints;
 }
 
-inline const dimeVec3f&
+inline const dimeVec3&
 DimeSpline::getFitPoint(const int idx) const
 {
 	assert(idx >= 0 && idx < this->numFitPoints);
@@ -263,7 +263,7 @@ DimeSpline::getFitPoint(const int idx) const
 }
 
 inline void
-DimeSpline::setFitPoint(const int idx, const dimeVec3f& pt)
+DimeSpline::setFitPoint(const int idx, const dimeVec3& pt)
 {
 	assert(idx >= 0 && idx < this->numFitPoints);
 	this->fitPoints[idx] = pt;

@@ -51,9 +51,9 @@ public:
 	TypeID typeId() const override;
 	int countRecords() const override;
 
-	GeometryType extractGeometry(dimeArray<dimeVec3f>& verts,
+	GeometryType extractGeometry(dimeArray<dimeVec3>& verts,
 	                             dimeArray<int>& indices,
-	                             dimeVec3f& extrusionDir,
+	                             dimeVec3& extrusionDir,
 	                             dxfdouble& thickness) override;
 	int getNumVertices() const;
 	const dxfdouble* getXCoords() const;

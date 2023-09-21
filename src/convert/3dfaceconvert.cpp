@@ -44,7 +44,7 @@ convert_3dface(const DimeEntity* entity, const DimeState* state,
 	state->getMatrix(matrix);
 	auto face = (dime3DFace*)entity;
 
-	dimeVec3f v0, v1, v2, v3;
+	dimeVec3 v0, v1, v2, v3;
 	face->getVertices(v0, v1, v2, v3);
 
 	if (v2 == v3)

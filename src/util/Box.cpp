@@ -76,7 +76,7 @@ dimeBox::operator &(const dimeBox& box) const
 }
 
 void
-dimeBox::grow(const dimeVec3f& pt)
+dimeBox::grow(const dimeVec3& pt)
 {
 	if (min[0] > pt[0]) min[0] = pt[0];
 	if (max[0] < pt[0]) max[0] = pt[0];

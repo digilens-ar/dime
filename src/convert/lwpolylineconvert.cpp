@@ -46,16 +46,16 @@ convert_lwpolyline(const DimeEntity* entity, const DimeState* state,
 	dimeMatrix matrix;
 	state->getMatrix(matrix);
 
-	dimeVec3f e = pline->getExtrusionDir();
+	dimeVec3 e = pline->getExtrusionDir();
 	dxfdouble thickness = pline->getThickness();
 
-	if (e != dimeVec3f(0, 0, 1))
+	if (e != dimeVec3(0, 0, 1))
 	{
 		dimeMatrix m;
 		DimeEntity::generateUCS(e, m);
 		matrix.multRight(m);
 	}
-	e = dimeVec3f(0, 0, 1) * thickness;
+	e = dimeVec3(0, 0, 1) * thickness;
 
 	dxfdouble elev = pline->getElevation();
 	if (!dime_finite(elev)) elev = 0.0f;
@@ -68,14 +68,15 @@ convert_lwpolyline(const DimeEntity* entity, const DimeState* state,
 	const dxfdouble* y = pline->getYCoords();
 	const dxfdouble* sw = pline->getStartingWidths();
 	const dxfdouble* ew = pline->getEndWidths();
-	dimeVec3f v0, v1;
 
-#define SET_SEGMENT(s, i0, i1) \
-  s.set(dimeVec3f(x[i0], y[i0], elev), \
-        dimeVec3f(x[i1], y[i1], elev), \
-        sw ? sw[i0] : constantWidth, \
-        ew ? ew[i0] : constantWidth, \
-        thickness)
+	auto setSegment = [x, y, elev, sw, ew, constantWidth, thickness](dxfLineSegment& s, int i0, int i1)
+	{
+		s.set(dimeVec3(x[i0], y[i0], elev), \
+	        dimeVec3(x[i1], y[i1], elev), \
+	        sw ? sw[i0] : constantWidth, \
+	        ew ? ew[i0] : constantWidth, \
+	        thickness);
+	};
 
 	dxfLineSegment segment, nextseg, prevseg;
 
@@ -89,15 +90,15 @@ convert_lwpolyline(const DimeEntity* entity, const DimeState* state,
 
 		if (i == 0)
 		{
-			SET_SEGMENT(segment, i, next);
+			setSegment(segment, i, next);
 			if (closed)
 			{
-				SET_SEGMENT(prevseg, n-1, 0);
+				setSegment(prevseg, n-1, 0);
 			}
 		}
 
 		next2 = (i + 2) % n;
-		SET_SEGMENT(nextseg, next, next2);
+		setSegment(nextseg, next, next2);
 
 		segment.convert(i > 0 || closed ? &prevseg : nullptr,
 		                i < (stop - 1) ? &nextseg : nullptr,

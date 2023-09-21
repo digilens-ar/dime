@@ -67,19 +67,19 @@ convert_arc(const DimeEntity* entity, const DimeState* state,
 	dimeMatrix matrix;
 	state->getMatrix(matrix);
 
-	dimeVec3f e = arc->getExtrusionDir();
+	dimeVec3 e = arc->getExtrusionDir();
 	dxfdouble thickness = arc->getThickness();
 
-	if (e != dimeVec3f(0, 0, 1))
+	if (e != dimeVec3(0, 0, 1))
 	{
 		dimeMatrix m;
 		DimeEntity::generateUCS(e, m);
 		matrix.multRight(m);
 	}
-	e = dimeVec3f(0, 0, 1);
+	e = dimeVec3(0, 0, 1);
 
 	
-	dimeVec3f center = arc->getCenter();
+	dimeVec3 center = arc->getCenter();
 
 	dimeParam param;
 	if (arc->getRecord(38, param))
@@ -126,15 +126,15 @@ convert_arc(const DimeEntity* entity, const DimeState* state,
 	double rad = DXFDEG2RAD(arc->getStartAngle());
 	int i;
 
-	dimeVec3f v;
-	dimeVec3f prev(center[0] + radius * cos(rad),
+	dimeVec3 v;
+	dimeVec3 prev(center[0] + radius * cos(rad),
 	               center[1] + radius * sin(rad),
 	               center[2]);
 	rad += inc;
 
 	for (i = 1; i < numpts; i++)
 	{
-		v = dimeVec3f(center[0] + radius * cos(rad),
+		v = dimeVec3(center[0] + radius * cos(rad),
 		              center[1] + radius * sin(rad),
 		              center[2]);
 		if (thickness == 0.0)
@@ -150,7 +150,7 @@ convert_arc(const DimeEntity* entity, const DimeState* state,
 		rad += inc;
 	}
 	rad = DXFDEG2RAD(end);
-	v = dimeVec3f(center[0] + radius * cos(rad),
+	v = dimeVec3(center[0] + radius * cos(rad),
 	              center[1] + radius * sin(rad),
 	              center[2]);
 	if (thickness == 0.0)

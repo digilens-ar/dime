@@ -548,9 +548,9 @@ DimePolyline::getType() const
 //!
 
 DimeEntity::GeometryType
-DimePolyline::extractGeometry(dimeArray<dimeVec3f>& verts,
+DimePolyline::extractGeometry(dimeArray<dimeVec3>& verts,
                               dimeArray<int>& indices,
-                              dimeVec3f& extrusionDir,
+                              dimeVec3& extrusionDir,
                               dxfdouble& thickness)
 {
 	int i;
@@ -572,7 +572,7 @@ DimePolyline::extractGeometry(dimeArray<dimeVec3f>& verts,
 		if (this->flags & 0x1)
 		{
 			// closed polyline 
-			dimeVec3f tmp = verts[0];
+			dimeVec3 tmp = verts[0];
 			verts.append(tmp);
 		}
 		return DimeEntity::LINES;

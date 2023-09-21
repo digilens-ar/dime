@@ -44,13 +44,13 @@ public:
 	DimeTableEntry* copy(DimeModel* model) const override;
 	const char* getTableName() const override;
 
-	const dimeVec3f& getOrigin() const;
-	const dimeVec3f& getXaxis() const;
-	const dimeVec3f& getYaxis() const;
+	const dimeVec3& getOrigin() const;
+	const dimeVec3& getXaxis() const;
+	const dimeVec3& getYaxis() const;
 
-	void setOrigin(const dimeVec3f& v);
-	void setXaxis(const dimeVec3f& v);
-	void setYaxis(const dimeVec3f& v);
+	void setOrigin(const dimeVec3& v);
+	void setXaxis(const dimeVec3& v);
+	void setYaxis(const dimeVec3& v);
 
 	bool write(DimeOutput* out) override;
 	TypeID typeId() const override;
@@ -62,43 +62,43 @@ protected:
 	                  DimeMemHandler* memhandler) override;
 
 private:
-	dimeVec3f origin;
-	dimeVec3f xaxis;
-	dimeVec3f yaxis;
+	dimeVec3 origin;
+	dimeVec3 xaxis;
+	dimeVec3 yaxis;
 }; // class dimeUCSTable
 
-inline const dimeVec3f&
+inline const dimeVec3&
 DimeUCSTable::getOrigin() const
 {
 	return this->origin;
 }
 
-inline const dimeVec3f&
+inline const dimeVec3&
 DimeUCSTable::getXaxis() const
 {
 	return this->xaxis;
 }
 
-inline const dimeVec3f&
+inline const dimeVec3&
 DimeUCSTable::getYaxis() const
 {
 	return this->yaxis;
 }
 
 inline void
-DimeUCSTable::setOrigin(const dimeVec3f& v)
+DimeUCSTable::setOrigin(const dimeVec3& v)
 {
 	this->origin = v;
 }
 
 inline void
-DimeUCSTable::setXaxis(const dimeVec3f& v)
+DimeUCSTable::setXaxis(const dimeVec3& v)
 {
 	this->origin = v;
 }
 
 inline void
-DimeUCSTable::setYaxis(const dimeVec3f& v)
+DimeUCSTable::setYaxis(const dimeVec3& v)
 {
 	this->origin = v;
 }

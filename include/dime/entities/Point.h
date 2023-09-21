@@ -42,8 +42,8 @@ class DIME_DLL_API DimePoint : public DimeExtrusionEntity
 public:
 	DimePoint();
 
-	const dimeVec3f& getCoords() const;
-	void setCoords(const dimeVec3f& v);
+	const dimeVec3& getCoords() const;
+	void setCoords(const dimeVec3& v);
 
 	DimeEntity* copy(DimeModel* model) const override;
 	bool getRecord(int groupcode,
@@ -55,9 +55,9 @@ public:
 	TypeID typeId() const override;
 	int countRecords() const override;
 
-	GeometryType extractGeometry(dimeArray<dimeVec3f>& verts,
+	GeometryType extractGeometry(dimeArray<dimeVec3>& verts,
 	                             dimeArray<int>& indices,
-	                             dimeVec3f& extrusionDir,
+	                             dimeVec3& extrusionDir,
 	                             dxfdouble& thickness) override;
 
 protected:
@@ -66,17 +66,17 @@ protected:
 	                  DimeMemHandler* memhandler) override;
 
 private:
-	dimeVec3f coords;
+	dimeVec3 coords;
 }; // class dimePoint
 
-inline const dimeVec3f&
+inline const dimeVec3&
 DimePoint::getCoords() const
 {
 	return coords;
 }
 
 inline void
-DimePoint::setCoords(const dimeVec3f& v)
+DimePoint::setCoords(const dimeVec3& v)
 {
 	this->coords = v;
 }

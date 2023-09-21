@@ -47,22 +47,22 @@ public:
 	~dimeBSPTree();
 
 	int numPoints() const;
-	void getPoint(int idx, dimeVec3f& pt);
+	void getPoint(int idx, dimeVec3& pt);
 	void* getUserData(int idx) const;
 
 	void setUserData(int idx, void* data);
 
-	int addPoint(const dimeVec3f& pt, void* userdata = nullptr);
-	int removePoint(const dimeVec3f& pt);
+	int addPoint(const dimeVec3& pt, void* userdata = nullptr);
+	int removePoint(const dimeVec3& pt);
 	void removePoint(int idx);
-	int findPoint(const dimeVec3f& pos) const;
+	int findPoint(const dimeVec3& pos) const;
 	void clear(int initsize = 4);
 
 	const dimeBox* getBBox() const;
 
 private:
 	friend class dime_bspnode;
-	dimeArray<dimeVec3f> pointsArray;
+	dimeArray<dimeVec3> pointsArray;
 	dimeArray<void*> userdataArray;
 	dime_bspnode* topnode;
 	int maxnodepoints;

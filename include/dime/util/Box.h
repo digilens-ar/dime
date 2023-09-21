@@ -39,7 +39,7 @@
 class DIME_DLL_API dimeBox
 {
 public:
-	dimeVec3f min, max;
+	dimeVec3 min, max;
 
 public:
 	dimeBox();
@@ -54,28 +54,28 @@ public:
 
 	bool operator &(const dimeBox& box) const;
 
-	bool pointInside(const dimeVec3f& pt) const;
+	bool pointInside(const dimeVec3& pt) const;
 
-	dimeVec3f center() const;
+	dimeVec3 center() const;
 
 	void makeEmpty();
-	void grow(const dimeVec3f& pt);
+	void grow(const dimeVec3& pt);
 	dxfdouble size() const;
 	bool hasExtent() const;
 }; // class dimeBox
 
 inline bool
-dimeBox::pointInside(const dimeVec3f& pt) const
+dimeBox::pointInside(const dimeVec3& pt) const
 {
 	return !(pt[0] < this->min[0] || pt[0] >= this->max[0] ||
 		pt[1] < this->min[1] || pt[1] >= this->max[1] ||
 		pt[2] < this->min[2] || pt[2] >= this->max[2]);
 }
 
-inline dimeVec3f
+inline dimeVec3
 dimeBox::center() const
 {
-	return dimeVec3f((min[0] + max[0]) * 0.5f,
+	return dimeVec3((min[0] + max[0]) * 0.5f,
 	                 (min[1] + max[1]) * 0.5f,
 	                 (min[2] + max[2]) * 0.5f);
 }

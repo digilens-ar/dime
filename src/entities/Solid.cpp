@@ -92,7 +92,7 @@ DimeSolid::write(DimeOutput* const file)
 			file->writeGroupCode(39);
 			file->writeDouble(this->thickness);
 		}
-		if (this->extrusionDir != dimeVec3f(0, 0, 1))
+		if (this->extrusionDir != dimeVec3(0, 0, 1))
 		{
 			file->writeGroupCode(210);
 			file->writeDouble(this->extrusionDir[0]);
@@ -175,7 +175,7 @@ DimeSolid::getThickness() const
 //!
 
 void
-DimeSolid::getExtrusionDir(dimeVec3f& ed) const
+DimeSolid::getExtrusionDir(dimeVec3& ed) const
 {
 	ed = this->extrusionDir;
 }
@@ -199,7 +199,7 @@ DimeSolid::setThickness(const dxfdouble& thickness)
 //!
 
 void
-DimeSolid::setExtrusionDir(const dimeVec3f& ed)
+DimeSolid::setExtrusionDir(const dimeVec3& ed)
 {
 	this->extrusionDir = ed;
 }
@@ -214,7 +214,7 @@ DimeSolid::countRecords() const
 	{
 		cnt++; // header
 		if (this->thickness != 0.0) cnt++;
-		if (this->extrusionDir != dimeVec3f(0, 0, 1)) cnt += 3;
+		if (this->extrusionDir != dimeVec3(0, 0, 1)) cnt += 3;
 		cnt += dimeFaceEntity::countRecords();
 	}
 	return cnt;

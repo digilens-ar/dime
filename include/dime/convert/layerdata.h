@@ -46,20 +46,20 @@ public:
 
 	void setFillmode(bool fillmode);
 
-	void addLine(const dimeVec3f& v0, const dimeVec3f& v1,
+	void addLine(const dimeVec3& v0, const dimeVec3& v1,
 	             const dimeMatrix* matrix = nullptr);
 
-	void addPoint(const dimeVec3f& v,
+	void addPoint(const dimeVec3& v,
 	              const dimeMatrix* matrix = nullptr);
 
-	void addTriangle(const dimeVec3f& v0,
-	                 const dimeVec3f& v1,
-	                 const dimeVec3f& v2,
+	void addTriangle(const dimeVec3& v0,
+	                 const dimeVec3& v1,
+	                 const dimeVec3& v2,
 	                 const dimeMatrix* matrix = nullptr);
-	void addQuad(const dimeVec3f& v0,
-	             const dimeVec3f& v1,
-	             const dimeVec3f& v2,
-	             const dimeVec3f& v3,
+	void addQuad(const dimeVec3& v0,
+	             const dimeVec3& v1,
+	             const dimeVec3& v2,
+	             const dimeVec3& v3,
 	             const dimeMatrix* matrix = nullptr);
 
 	void writeWrl(FILE* fp, int indent, bool vrml1,
@@ -77,7 +77,7 @@ public: // 20011001 thammer - please don't kill me for this ;-)
 	dimeArray<int> faceindices;
 	dimeBSPTree linebsp;
 	dimeArray<int> lineindices;
-	dimeArray<dimeVec3f> points;
+	dimeArray<dimeVec3> points;
 };
 
 #endif // _DXF2VRML_LAYERDATA_H_

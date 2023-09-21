@@ -159,9 +159,9 @@ DimeLine::getRecord(const int groupcode,
 }
 
 DimeEntity::GeometryType
-DimeLine::extractGeometry(dimeArray<dimeVec3f>& verts,
+DimeLine::extractGeometry(dimeArray<dimeVec3>& verts,
                           dimeArray<int>&/*indices*/,
-                          dimeVec3f& extrusionDir,
+                          dimeVec3& extrusionDir,
                           dxfdouble& thickness)
 {
 	thickness = this->thickness;

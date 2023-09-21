@@ -80,7 +80,7 @@ DimeExtrusionEntity::writeExtrusionData(DimeOutput* const file)
 		file->writeGroupCode(39);
 		file->writeDouble(this->thickness);
 	}
-	if (this->extrusionDir != dimeVec3f(0, 0, 1))
+	if (this->extrusionDir != dimeVec3(0, 0, 1))
 	{
 		file->writeGroupCode(210);
 		file->writeDouble(this->extrusionDir[0]);
@@ -116,7 +116,7 @@ DimeExtrusionEntity::countRecords() const
 {
 	int cnt = 0;
 	if (this->thickness != 0.0) cnt++;
-	if (this->extrusionDir != dimeVec3f(0, 0, 1)) cnt += 3;
+	if (this->extrusionDir != dimeVec3(0, 0, 1)) cnt += 3;
 	return cnt + DimeEntity::countRecords();
 }
 

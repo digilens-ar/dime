@@ -83,10 +83,10 @@ set_segment_data(dxfLineSegment* segment,
 	else if (pline->getRecord(41, param)) w1 = param.double_data;
 	else w1 = 0.0;
 
-	dimeVec3f v0, v1;
+	dimeVec3 v0, v1;
 	v0 = v->getCoords();
 	if (next) v1 = next->getCoords();
-	else v1 = v0 + dimeVec3f(1, 0, 0); // just set a dummy value
+	else v1 = v0 + dimeVec3(1, 0, 0); // just set a dummy value
 
 	v0[2] = pline->getElevation()[2];
 	v1[2] = pline->getElevation()[2];
@@ -109,16 +109,16 @@ convert_line(DimePolyline* pline, const DimeState* state,
 	dimeMatrix matrix;
 	state->getMatrix(matrix);
 
-	dimeVec3f e = pline->getExtrusionDir();
+	dimeVec3 e = pline->getExtrusionDir();
 	dxfdouble thickness = pline->getThickness();
 
-	if (e != dimeVec3f(0, 0, 1))
+	if (e != dimeVec3(0, 0, 1))
 	{
 		dimeMatrix m;
 		DimeEntity::generateUCS(e, m);
 		matrix.multRight(m);
 	}
-	e = dimeVec3f(0, 0, 1) * thickness;
+	e = dimeVec3(0, 0, 1) * thickness;
 
 	dxfdouble elev = pline->getElevation()[2];
 
@@ -126,7 +126,7 @@ convert_line(DimePolyline* pline, const DimeState* state,
 
 	DimeVertex* v = nullptr;
 	DimeVertex* next = nullptr;
-	dimeVec3f v0, v1;
+	dimeVec3 v0, v1;
 
 	bool closed = pline->getFlags() & 1;
 	if (n <= 2) closed = false;
@@ -164,17 +164,17 @@ convert_line(DimePolyline* pline, const DimeState* state,
 		{
 			dxfdouble A = param.double_data;
 			dxfdouble alpha = 4.0 * atan(A);
-			dimeVec3f dir = next->getCoords() - v->getCoords();
+			dimeVec3 dir = next->getCoords() - v->getCoords();
 			dxfdouble L = dir.length();
 			dir.normalize();
 			dxfdouble H = A * L / 2.0;
 			dxfdouble R = L / (2.0 * sin(alpha / 2.0));
 
-			dimeVec3f rdir = A > 0.0 ? dir.cross(dimeVec3f(0, 0, 1)) : dir.cross(dimeVec3f(0, 0, -1));
+			dimeVec3 rdir = A > 0.0 ? dir.cross(dimeVec3(0, 0, 1)) : dir.cross(dimeVec3(0, 0, -1));
 			rdir.normalize();
 
 			// taendl 2012-07-17 using the absolute values of R and H here
-			dimeVec3f center = v->getCoords() + dir * (L / 2.0) - rdir * (fabs(R) - fabs(H));
+			dimeVec3 center = v->getCoords() + dir * (L / 2.0) - rdir * (fabs(R) - fabs(H));
 
 #if 0
       fprintf(stderr,"A: %g, L: %g, H: %g, R:%g\n",
@@ -185,7 +185,7 @@ convert_line(DimePolyline* pline, const DimeState* state,
 	      dir[0], dir[1], dir[2], rdir[0], rdir[1], rdir[2]);
 #endif
 
-			dimeVec3f t = v->getCoords() - center;
+			dimeVec3 t = v->getCoords() - center;
 			t.normalize();
 			// taendl 2012-07-17 using atan2 here! 
 			//dxfdouble a0 = dimeVec3f(1,0,0).angle(t);
@@ -269,7 +269,7 @@ convert_line_3d(DimePolyline* pline, const DimeState* state,
 
 	DimeVertex* v = nullptr;
 	DimeVertex* next = nullptr;
-	dimeVec3f v0, v1;
+	dimeVec3 v0, v1;
 
 	int stop = pline->getFlags() & 1 ? n : n - 1;
 
@@ -391,7 +391,7 @@ convert_face(DimePolyline* pline, const DimeState* state,
 	{
 		DimeVertex* v = pline->getIndexVertex(i);
 		layerData = converter->getLayerData(v);
-		dimeVec3f c[4];
+		dimeVec3 c[4];
 		int num = v->numIndices();
 		int idx;
 		for (int j = 0; j < num; j++)

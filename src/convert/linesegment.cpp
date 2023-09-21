@@ -46,11 +46,11 @@
 // just unlimited lines
 //
 bool
-intersect_line(const dimeVec3f& v0, // first line
-               const dimeVec3f& v1, //    ""	 
-               const dimeVec3f& v2, // second line
-               const dimeVec3f& v3, //    ""
-               dimeVec3f& isect)
+intersect_line(const dimeVec3& v0, // first line
+               const dimeVec3& v1, //    ""	 
+               const dimeVec3& v2, // second line
+               const dimeVec3& v3, //    ""
+               dimeVec3& isect)
 {
 	dxfdouble x1 = v0[0];
 	dxfdouble y1 = v0[1];
@@ -117,7 +117,7 @@ intersect_line(const dimeVec3f& v0, // first line
 */
 
 void
-dxfLineSegment::set(const dimeVec3f& p0, const dimeVec3f& p1,
+dxfLineSegment::set(const dimeVec3& p0, const dimeVec3& p1,
                     const dxfdouble startwidth, const dxfdouble endwidth,
                     const dxfdouble thickness)
 {
@@ -127,10 +127,10 @@ dxfLineSegment::set(const dimeVec3f& p0, const dimeVec3f& p1,
 	this->w[0] = startwidth;
 	this->w[1] = endwidth;
 	this->thickness = thickness;
-	this->e = dimeVec3f(0, 0, 1) * thickness;
+	this->e = dimeVec3(0, 0, 1) * thickness;
 	this->dir = p[1] - p[0];
 	this->dir.normalize();
-	this->wdir = dimeVec3f(0, 0, 1).cross(dir);
+	this->wdir = dimeVec3(0, 0, 1).cross(dir);
 	this->wdir.normalize();
 }
 
@@ -147,7 +147,7 @@ dxfLineSegment::convert(dxfLineSegment* prev, dxfLineSegment* next,
 	if (this->w[0] > 0.0 || this->w[1] > 0.0)
 	{
 		/* fixme: check cases where connect[0] != connect[3] ++ */
-		dimeVec3f v0, v1, v2, v3;
+		dimeVec3 v0, v1, v2, v3;
 		if (prev)
 		{
 			prev->calculate_connect(this);
@@ -206,7 +206,7 @@ dxfLineSegment::calculate_v()
 	{
 		this->v[0] = p[0];
 		this->v[1] = p[1];
-		dimeVec3f vec = dimeVec3f(0, 0, 1).cross(this->dir);
+		dimeVec3 vec = dimeVec3(0, 0, 1).cross(this->dir);
 		vec.normalize();
 		this->v[2] = this->v[0] - vec * this->w[0];
 		this->v[3] = this->v[1] - vec * this->w[1];
@@ -237,7 +237,7 @@ dxfLineSegment::calculate_connect(dxfLineSegment* next)
 		if ((this->w[1] == next->w[0]) || (DXFRAD2DEG(angle) > 28))
 		{
 			// connect where lines intersect. common intersection points      
-			dimeVec3f isect;
+			dimeVec3 isect;
 			intersect_line(this->v[0], this->v[1],
 			               next->v[0], next->v[1],
 			               isect);
@@ -250,9 +250,9 @@ dxfLineSegment::calculate_connect(dxfLineSegment* next)
 		}
 		else
 		{
-			dimeVec3f vec = this->wdir + next->wdir + this->p[1];
+			dimeVec3 vec = this->wdir + next->wdir + this->p[1];
 
-			dimeVec3f isect;
+			dimeVec3 isect;
 			intersect_line(this->v[0], this->v[1],
 			               this->p[1], vec,
 			               isect);

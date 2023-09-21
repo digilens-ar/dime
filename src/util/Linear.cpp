@@ -31,13 +31,13 @@
 \**************************************************************************/
 
 /*!
-  \class dimeVec2f dime/util/Linear.h
+  \class dimeVec2 dime/util/Linear.h
   \brief The dimeVec2f class is for containing and operating on a 2D vector /
   coordinate.
 */
 
 /*!
-  \class dimeVec3f dime/util/Linear.h
+  \class dimeVec3 dime/util/Linear.h
   \brief The dimeVec3f class is for containing and operating on a 3D vector /
   coordinate.
 */
@@ -76,7 +76,7 @@
 #endif // OBSOLETED
 
 void
-dimeVec3f::normalize(void)
+dimeVec3::normalize(void)
 {
 	dxfdouble dot = x * x + y * y + z * z;
 	if (dot > 0.0)
@@ -89,7 +89,7 @@ dimeVec3f::normalize(void)
 }
 
 dxfdouble
-dimeVec3f::angle(const dimeVec3f& v2)
+dimeVec3::angle(const dimeVec3& v2)
 {
 	dxfdouble cos, len;
 	if ((len = length() * v2.length()) == 0.0f) return 0.0;
@@ -184,9 +184,9 @@ dimeMatrix::isIdentity() const
 // FIXME: only 2D rotation is supported
 
 void
-dimeMatrix::setTransform(const dimeVec3f& translation,
-                         const dimeVec3f& scalefactor,
-                         const dimeVec3f& rotAngles)
+dimeMatrix::setTransform(const dimeVec3& translation,
+                         const dimeVec3& scalefactor,
+                         const dimeVec3& rotAngles)
 {
 	/*
 	fprintf(stderr,"set transform: %.3f %.3f %.3f - %.3f %.3f %.3f - %.3f\n",
@@ -258,7 +258,7 @@ dimeMatrix::multLeft(const dimeMatrix& m) // this = m * this
 // FIXME: only XY rotation supported
 
 void
-dimeMatrix::setRotate(const dimeVec3f& rot)
+dimeMatrix::setRotate(const dimeVec3& rot)
 {
 	dxfdouble s = sin(DXFDEG2RAD(rot.z));
 	dxfdouble c = cos(DXFDEG2RAD(rot.z));
@@ -269,7 +269,7 @@ dimeMatrix::setRotate(const dimeVec3f& rot)
 }
 
 void
-dimeMatrix::setRotate(const dimeVec3f& x, const dimeVec3f& y, const dimeVec3f& z)
+dimeMatrix::setRotate(const dimeVec3& x, const dimeVec3& y, const dimeVec3& z)
 {
 	this->matrix[0][0] = x.x;
 	this->matrix[1][0] = x.y;
@@ -291,7 +291,7 @@ dimeMatrix::setRotate(const dimeVec3f& x, const dimeVec3f& y, const dimeVec3f& z
 }
 
 void
-dimeMatrix::setRotation(const dimeVec3f& u, const dxfdouble angle)
+dimeMatrix::setRotation(const dimeVec3& u, const dxfdouble angle)
 {
 	dxfdouble cost, sint;
 
@@ -320,7 +320,7 @@ dimeMatrix::setScale(const dxfdouble s)
 }
 
 void
-dimeMatrix::setScale(const dimeVec3f& s)
+dimeMatrix::setScale(const dimeVec3& s)
 {
 	this->matrix[0][0] = s.x;
 	this->matrix[1][1] = s.y;
@@ -328,7 +328,7 @@ dimeMatrix::setScale(const dimeVec3f& s)
 }
 
 void
-dimeMatrix::setTranslate(const dimeVec3f& t)
+dimeMatrix::setTranslate(const dimeVec3& t)
 {
 	this->matrix[0][3] = t.x;
 	this->matrix[1][3] = t.y;
@@ -336,16 +336,16 @@ dimeMatrix::setTranslate(const dimeVec3f& t)
 }
 
 void
-dimeMatrix::multMatrixVec(dimeVec3f& vec) const
+dimeMatrix::multMatrixVec(dimeVec3& vec) const
 {
-	dimeVec3f copy = vec;
+	dimeVec3 copy = vec;
 	multMatrixVec(copy, vec);
 }
 
 // Multiplies matrix by given column vector, giving vector result
 
 void
-dimeMatrix::multMatrixVec(const dimeVec3f& src, dimeVec3f& dst) const
+dimeMatrix::multMatrixVec(const dimeVec3& src, dimeVec3& dst) const
 {
 	dxfdouble W =
 		src.x * matrix[3][0] +

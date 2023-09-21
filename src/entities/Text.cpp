@@ -300,9 +300,9 @@ DimeText::getRecord(const int groupcode,
 }
 
 DimeEntity::GeometryType
-DimeText::extractGeometry(dimeArray<dimeVec3f>& verts,
+DimeText::extractGeometry(dimeArray<dimeVec3>& verts,
                           dimeArray<int>& indices,
-                          dimeVec3f& extrusionDir,
+                          dimeVec3& extrusionDir,
                           dxfdouble& thickness)
 {
 	thickness = this->thickness;
@@ -310,9 +310,9 @@ DimeText::extractGeometry(dimeArray<dimeVec3f>& verts,
 
 	// find points at corners of box around text.
 	verts.append(origin);
-	verts.append(dimeVec3f(this->origin.x + this->width, this->origin.y, 0.0));
-	verts.append(dimeVec3f(this->origin.x + this->width, this->origin.y + this->height, 0.0));
-	verts.append(dimeVec3f(this->origin.x, this->origin.y + this->height, 0.0));
+	verts.append(dimeVec3(this->origin.x + this->width, this->origin.y, 0.0));
+	verts.append(dimeVec3(this->origin.x + this->width, this->origin.y + this->height, 0.0));
+	verts.append(dimeVec3(this->origin.x, this->origin.y + this->height, 0.0));
 
 	// close loop with first point.
 	verts.append(origin);

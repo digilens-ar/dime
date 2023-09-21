@@ -46,11 +46,11 @@ class DIME_DLL_API DimeEllipse : public DimeExtrusionEntity
 public:
 	DimeEllipse();
 
-	void setCenter(const dimeVec3f& c);
-	const dimeVec3f& getCenter() const;
+	void setCenter(const dimeVec3& c);
+	const dimeVec3& getCenter() const;
 
-	void setMajorAxisEndpoint(const dimeVec3f& v);
-	const dimeVec3f& getMajorAxisEndpoint() const;
+	void setMajorAxisEndpoint(const dimeVec3& v);
+	const dimeVec3& getMajorAxisEndpoint() const;
 
 	void setMinorMajorRatio(dxfdouble ratio);
 	dxfdouble getMinorMajorRatio() const;
@@ -76,32 +76,32 @@ protected:
 	                  DimeMemHandler* memhandler) override;
 
 private:
-	dimeVec3f center;
-	dimeVec3f majorAxisEndpoint;
+	dimeVec3 center;
+	dimeVec3 majorAxisEndpoint;
 	dxfdouble ratio;
 	dxfdouble startParam;
 	dxfdouble endParam;
 }; // class dimeEllipse
 
-inline const dimeVec3f&
+inline const dimeVec3&
 DimeEllipse::getCenter() const
 {
 	return this->center;
 }
 
 inline void
-DimeEllipse::setCenter(const dimeVec3f& c)
+DimeEllipse::setCenter(const dimeVec3& c)
 {
 	this->center = c;
 }
 
 inline void
-DimeEllipse::setMajorAxisEndpoint(const dimeVec3f& v)
+DimeEllipse::setMajorAxisEndpoint(const dimeVec3& v)
 {
 	this->majorAxisEndpoint = v;
 }
 
-inline const dimeVec3f&
+inline const dimeVec3&
 DimeEllipse::getMajorAxisEndpoint() const
 {
 	return this->majorAxisEndpoint;

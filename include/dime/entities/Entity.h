@@ -105,9 +105,9 @@ public:
 		POINTS
 	};
 
-	virtual GeometryType extractGeometry(dimeArray<dimeVec3f>& verts,
+	virtual GeometryType extractGeometry(dimeArray<dimeVec3>& verts,
 	                                     dimeArray<int>& indices,
-	                                     dimeVec3f& extrusionDir,
+	                                     dimeVec3& extrusionDir,
 	                                     dxfdouble& thickness);
 
 protected:
@@ -137,8 +137,8 @@ public:
 	                                    int& nument,
 	                                    DimeModel* model);
 
-	static void arbitraryAxis(const dimeVec3f& givenaxis, dimeVec3f& newaxis);
-	static void generateUCS(const dimeVec3f& givenaxis, dimeMatrix& m);
+	static void arbitraryAxis(const dimeVec3& givenaxis, dimeVec3& newaxis);
+	static void generateUCS(const dimeVec3& givenaxis, dimeMatrix& m);
 
 protected:
 	bool copyRecords(DimeEntity* entity, DimeModel* model) const;

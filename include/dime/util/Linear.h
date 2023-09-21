@@ -38,82 +38,71 @@
 #include <stdlib.h>
 #include <math.h>
 
-class DIME_DLL_API dimeVec2f
+
+class DIME_DLL_API dimeVec2
 {
 public:
-	dimeVec2f()
-	{
-	}
+	dimeVec2() = default;
 
-	dimeVec2f(const dimeVec2f& vec)
+	dimeVec2(const dimeVec2& vec)
 	{
 		x = vec.x;
 		y = vec.y;
 	}
 
-	dimeVec2f(dxfdouble _x, dxfdouble _y)
+	dimeVec2(dxfdouble _x, dxfdouble _y)
 	{
 		x = _x;
 		y = _y;
 	}
 
-	void setValue(const dxfdouble _x, const dxfdouble _y)
-	{
-		x = _x;
-		y = _y;
-	}
 
 	dxfdouble x, y;
 };
 
-using dimeVec2d = dimeVec2f;
-
-class DIME_DLL_API dimeVec3f
+class DIME_DLL_API dimeVec3
 {
 public:
-	dxfdouble x, y, z;
 
-	dimeVec3f(void)
-	{
-	};
+	dimeVec3() = default;
 
-	dimeVec3f(const dxfdouble X, const dxfdouble Y, const dxfdouble Z)
+	dimeVec3(const dxfdouble X, const dxfdouble Y, const dxfdouble Z)
 	{
 		x = X;
 		y = Y;
 		z = Z;
 	};
 
-	dimeVec3f(const dxfdouble* xyz)
+	dimeVec3(const dxfdouble* xyz)
 	{
 		x = xyz[0];
 		y = xyz[1];
 		z = xyz[2];
 	}
 
-	dimeVec3f(const dimeVec3f& v)
+	dimeVec3(const dimeVec3& v)
 	{
 		x = v.x;
 		y = v.y;
 		z = v.z;
 	};
 
-	dimeVec3f cross(const dimeVec3f& v) const
+	dimeVec3 cross(const dimeVec3& v) const
 	{
-		return dimeVec3f(y * v.z - z * v.y, z * v.x - x * v.z, x * v.y - y * v.x);
+		return dimeVec3(y * v.z - z * v.y, z * v.x - x * v.z, x * v.y - y * v.x);
 	}
 
-	dxfdouble dot(const dimeVec3f& v) const
+	dxfdouble dot(const dimeVec3& v) const
 	{
 		return x * v.x + y * v.y + z * v.z;
 	}
 
-	bool equals(const dimeVec3f& v)
+	bool equals(const dimeVec3& v)
 	{
 		return (x == v.x && y == v.y && z == v.z);
 	}
 
-	bool equals(const dimeVec3f& v, dxfdouble tol)
+	bool equals(const dimeVec3& v, dxfdouble tol)
 	{
 		return (fabs(x - v.x) <= tol && fabs(y - v.y) <= tol && fabs(z - v.z) <= tol);
 	}
@@ -169,7 +158,7 @@ public:
 		return ((i == 0) ? x : ((i == 1) ? y : z));
 	};
 
-	dimeVec3f& operator *=(const dxfdouble s)
+	dimeVec3& operator *=(const dxfdouble s)
 	{
 		x *= s;
 		y *= s;
@@ -177,7 +166,7 @@ public:
 		return *this;
 	}
 
-	dimeVec3f& operator /=(const dxfdouble s)
+	dimeVec3& operator /=(const dxfdouble s)
 	{
 		x /= s;
 		y /= s;
@@ -185,7 +174,7 @@ public:
 		return *this;
 	}
 
-	dimeVec3f& operator +=(const dimeVec3f& v)
+	dimeVec3& operator +=(const dimeVec3& v)
 	{
 		x += v.x;
 		y += v.y;
@@ -193,7 +182,7 @@ public:
 		return *this;
 	}
 
-	dimeVec3f& operator -=(const dimeVec3f& v)
+	dimeVec3& operator -=(const dimeVec3& v)
 	{
 		x -= v.x;
 		y -= v.y;
@@ -201,47 +190,47 @@ public:
 		return *this;
 	}
 
-	dimeVec3f operator -() const
+	dimeVec3 operator -() const
 	{
-		return dimeVec3f(-x, -y, -z);
+		return dimeVec3(-x, -y, -z);
 	}
 
-	friend dimeVec3f operator *(const dimeVec3f& v, dxfdouble s)
+	friend dimeVec3 operator *(const dimeVec3& v, dxfdouble s)
 	{
-		return dimeVec3f(v.x * s, v.y * s, v.z * s);
+		return dimeVec3(v.x * s, v.y * s, v.z * s);
 	}
 
-	friend dimeVec3f operator *(dxfdouble s, const dimeVec3f& v)
+	friend dimeVec3 operator *(dxfdouble s, const dimeVec3& v)
 	{
-		return dimeVec3f(v.x * s, v.y * s, v.z * s);
+		return dimeVec3(v.x * s, v.y * s, v.z * s);
 	}
 
-	friend dimeVec3f operator /(const dimeVec3f& v, dxfdouble s)
+	friend dimeVec3 operator /(const dimeVec3& v, dxfdouble s)
 	{
-		return dimeVec3f(v.x / s, v.y / s, v.z / s);
+		return dimeVec3(v.x / s, v.y / s, v.z / s);
 	}
 
-	friend dimeVec3f operator +(const dimeVec3f& v1, const dimeVec3f& v2)
+	friend dimeVec3 operator +(const dimeVec3& v1, const dimeVec3& v2)
 	{
-		return dimeVec3f(v1.x + v2.x, v1.y + v2.y, v1.z + v2.z);
+		return dimeVec3(v1.x + v2.x, v1.y + v2.y, v1.z + v2.z);
 	}
 
-	friend dimeVec3f operator -(const dimeVec3f& v1, const dimeVec3f& v2)
+	friend dimeVec3 operator -(const dimeVec3& v1, const dimeVec3& v2)
 	{
-		return dimeVec3f(v1.x - v2.x, v1.y - v2.y, v1.z - v2.z);
+		return dimeVec3(v1.x - v2.x, v1.y - v2.y, v1.z - v2.z);
 	}
 
-	friend bool operator ==(const dimeVec3f& v1, const dimeVec3f& v2)
+	friend bool operator ==(const dimeVec3& v1, const dimeVec3& v2)
 	{
 		return (v1.x == v2.x && v1.y == v2.y && v1.z == v2.z);
 	}
 
-	friend bool operator !=(const dimeVec3f& v1, const dimeVec3f& v2)
+	friend bool operator !=(const dimeVec3& v1, const dimeVec3& v2)
 	{
 		return (v1.x != v2.x || v1.y != v2.y || v1.z != v2.z);
 	}
 
-	dimeVec3f& operator =(const dimeVec3f& v) // extra
+	dimeVec3& operator =(const dimeVec3& v) // extra
 	{
 		x = v.x;
 		y = v.y;
@@ -259,23 +248,22 @@ public:
 		x = tx, y = ty, z = tz;
 	}
 
-	dimeVec3f multComponents(const dimeVec3f& v) const
+	dimeVec3 multComponents(const dimeVec3& v) const
 	{
-		return dimeVec3f(x * v.x, y * v.y, z * v.z);
+		return dimeVec3(x * v.x, y * v.y, z * v.z);
 	}
 
-	dxfdouble angle(const dimeVec3f& v2);
+	dxfdouble angle(const dimeVec3& v2);
 	void normalize();
+
+	dxfdouble x, y, z;
 }; // class dimeVec3f
 
-using dimeVec3d = dimeVec3f;
 
 class DIME_DLL_API dimeMatrix
 {
 public:
-	dimeMatrix()
-	{
-	}
+	dimeMatrix() = default;
 
 	dimeMatrix(const dimeMatrix& matrix);
 	// Constructor given all 16 elements in row-major order
@@ -286,34 +274,34 @@ public:
 	void transpose();
 	void makeIdentity();
 	bool isIdentity() const;
-	void setTransform(const dimeVec3f& translation,
-	                  const dimeVec3f& scalefactor,
-	                  const dimeVec3f& rotAngles);
+	void setTransform(const dimeVec3& translation,
+	                  const dimeVec3& scalefactor,
+	                  const dimeVec3& rotAngles);
 	dimeMatrix& multRight(const dimeMatrix& m); // this = this * m
 	dimeMatrix& multLeft(const dimeMatrix& m); // this = m * this
 
 	// Sets matrix to rotate by given rotation
-	void setRotate(const dimeVec3f& rot);
+	void setRotate(const dimeVec3& rot);
 
-	void setRotate(const dimeVec3f& x, const dimeVec3f& y, const dimeVec3f& z);
+	void setRotate(const dimeVec3& x, const dimeVec3& y, const dimeVec3& z);
 
 	// sets matrix to rotate around given vector
-	void setRotation(const dimeVec3f& u, dxfdouble angle);
+	void setRotation(const dimeVec3& u, dxfdouble angle);
 
 	// Sets matrix to scale by given uniform factor
 	void setScale(dxfdouble s);
 
 	// Sets matrix to scale by given vector
-	void setScale(const dimeVec3f& s);
+	void setScale(const dimeVec3& s);
 
 	// Sets matrix to translate by given vector
-	void setTranslate(const dimeVec3f& t);
+	void setTranslate(const dimeVec3& t);
 
 	// Multiplies matrix by given column vector, giving vector result
-	void multMatrixVec(const dimeVec3f& src, dimeVec3f& dst) const;
+	void multMatrixVec(const dimeVec3& src, dimeVec3& dst) const;
 
 	// transforms vector
-	void multMatrixVec(dimeVec3f& vec) const;
+	void multMatrixVec(dimeVec3& vec) const;
 
 	// Multiplies given row vector by matrix, giving vector result
 	//void multVecMatrix(const dimeVec3f &src, dimeVec3f &dst) const;

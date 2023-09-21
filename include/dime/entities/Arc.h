@@ -42,8 +42,8 @@ class DIME_DLL_API DimeArc : public DimeExtrusionEntity
 public:
 	DimeArc();
 
-	void setCenter(const dimeVec3f& c);
-	dimeVec3f getCenter() const;
+	void setCenter(const dimeVec3& c);
+	dimeVec3 getCenter() const;
 	void setRadius(dxfdouble r);
 	dxfdouble getRadius() const;
 	void setStartAngle(dxfdouble a);
@@ -62,9 +62,9 @@ public:
 	TypeID typeId() const override;
 	int countRecords() const override;
 
-	virtual GeometryType extractGeometry(dimeArray<dimeVec3f>& verts,
+	virtual GeometryType extractGeometry(dimeArray<dimeVec3>& verts,
 	                                     dimeArray<int>& indices,
-	                                     dimeVec3f& extrusionDir,
+	                                     dimeVec3& extrusionDir,
 	                                     dxfdouble& thickness);
 
 protected:
@@ -73,7 +73,7 @@ protected:
 	                  DimeMemHandler* memhandler) override;
 
 private:
-	dimeVec3f center;
+	dimeVec3 center;
 	dxfdouble radius;
 	dxfdouble startAngle;
 	dxfdouble endAngle;
@@ -84,12 +84,12 @@ private:
 //
 
 inline void
-DimeArc::setCenter(const dimeVec3f& c)
+DimeArc::setCenter(const dimeVec3& c)
 {
 	this->center = c;
 }
 
-inline dimeVec3f
+inline dimeVec3
 DimeArc::getCenter() const
 {
 	return this->center;

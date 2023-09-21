@@ -452,7 +452,7 @@ void print_triangle(triangle * t, DimeModel & model, const dimeLayer * layer,
   if (layer) {
     face->setLayer(layer);
   }
-  dimeVec3f v[3];
+  dimeVec3 v[3];
 
   for (i = 0; i < 3; i++) {
     v[i].x = t->pt[i].x;

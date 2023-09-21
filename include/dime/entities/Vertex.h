@@ -67,8 +67,8 @@ public:
 	int16 getFlags() const;
 	void setFlags(int16 flags);
 
-	void setCoords(const dimeVec3f& v);
-	const dimeVec3f& getCoords() const;
+	void setCoords(const dimeVec3& v);
+	const dimeVec3& getCoords() const;
 
 	int numIndices() const;
 	int getIndex(int idx) const;
@@ -90,17 +90,17 @@ private:
 #else
 	int16 indices[4];
 #endif
-	dimeVec3f coords;
+	dimeVec3 coords;
 	DimePolyline* polyline; // link back to polyline...
 }; // class dimeVertex
 
 inline void
-DimeVertex::setCoords(const dimeVec3f& v)
+DimeVertex::setCoords(const dimeVec3& v)
 {
 	this->coords = v;
 }
 
-inline const dimeVec3f&
+inline const dimeVec3&
 DimeVertex::getCoords() const
 {
 	return this->coords;

@@ -65,18 +65,18 @@ convert_circle(const DimeEntity* entity, const DimeState* state,
 	dimeMatrix matrix;
 	state->getMatrix(matrix);
 
-	dimeVec3f e = circle->getExtrusionDir();
+	dimeVec3 e = circle->getExtrusionDir();
 	dxfdouble thickness = circle->getThickness();
 
-	if (e != dimeVec3f(0, 0, 1))
+	if (e != dimeVec3(0, 0, 1))
 	{
 		dimeMatrix m;
 		DimeEntity::generateUCS(e, m);
 		matrix.multRight(m);
 	}
-	e = dimeVec3f(0, 0, 1) * thickness;
+	e = dimeVec3(0, 0, 1) * thickness;
 
-	dimeVec3f center = circle->getCenter();
+	dimeVec3 center = circle->getCenter();
 	dxfdouble radius = circle->getRadius();
 
 	dimeParam param;
@@ -95,14 +95,14 @@ convert_circle(const DimeEntity* entity, const DimeState* state,
 	dxfdouble rad = inc;
 	int i;
 
-	dimeVec3f v;
-	dimeVec3f prev(center[0] + radius,
+	dimeVec3 v;
+	dimeVec3 prev(center[0] + radius,
 	               center[1],
 	               center[2]);
 
 	for (i = 1; i < numpts; i++)
 	{
-		v = dimeVec3f(center[0] + radius * cos(rad),
+		v = dimeVec3(center[0] + radius * cos(rad),
 		              center[1] + radius * sin(rad),
 		              center[2]);
 
@@ -119,7 +119,7 @@ convert_circle(const DimeEntity* entity, const DimeState* state,
 		rad += inc;
 	}
 
-	v = dimeVec3f(center[0] + radius,
+	v = dimeVec3(center[0] + radius,
 	              center[1],
 	              center[2]);
 

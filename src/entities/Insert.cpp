@@ -222,7 +222,7 @@ DimeInsert::write(DimeOutput* const file)
 	file->writeGroupCode(30);
 	file->writeDouble(insertionPoint[2]);
 
-	if (this->scale != dimeVec3f(1, 1, 1))
+	if (this->scale != dimeVec3(1, 1, 1))
 	{
 		file->writeGroupCode(41);
 		file->writeDouble(this->scale[0]);
@@ -264,7 +264,7 @@ DimeInsert::write(DimeOutput* const file)
 
 	bool ret = DimeEntity::write(file); // write unknown records
 
-	if (this->extrusionDir != dimeVec3f(0, 0, 1))
+	if (this->extrusionDir != dimeVec3(0, 0, 1))
 	{
 		file->writeGroupCode(210);
 		file->writeDouble(this->extrusionDir[0]);
@@ -442,7 +442,7 @@ DimeInsert::traverse(const DimeState* const state,
 			{
 				dimeMatrix m = state->getMatrix();
 				dimeMatrix m2 = dimeMatrix::identity();
-				m2.setTranslate(dimeVec3f(j * this->columnSpacing,
+				m2.setTranslate(dimeVec3(j * this->columnSpacing,
 				                          i * this->rowSpacing,
 				                          0));
 				m.multRight(m2);
@@ -498,7 +498,7 @@ DimeInsert::makeMatrix(dimeMatrix& m) const
 	}
 	dimeMatrix m2;
 
-	if (this->extrusionDir != dimeVec3f(0, 0, 1))
+	if (this->extrusionDir != dimeVec3(0, 0, 1))
 	{
 		// this block has its own coordinate system
 		// generated from one vector (the z-vector)
@@ -507,7 +507,7 @@ DimeInsert::makeMatrix(dimeMatrix& m) const
 	}
 
 	m2.makeIdentity();
-	dimeVec3f tmp = this->insertionPoint;
+	dimeVec3 tmp = this->insertionPoint;
 
 	// disabled for the moment
 	// dimeModel::fixDxfCoords(tmp);
@@ -515,9 +515,9 @@ DimeInsert::makeMatrix(dimeMatrix& m) const
 	m2.setTranslate(tmp);
 	m.multRight(m2);
 
-	m2.setTransform(dimeVec3f(0, 0, 0),
+	m2.setTransform(dimeVec3(0, 0, 0),
 	                this->scale,
-	                dimeVec3f(0, 0, this->rotAngle));
+	                dimeVec3(0, 0, this->rotAngle));
 	m.multRight(m2);
 
 	m2.makeIdentity();
@@ -534,13 +534,13 @@ DimeInsert::countRecords() const
 
 	if (this->attributesFollow) cnt++;
 
-	if (this->scale != dimeVec3f(1.0, 1.0, 1.0)) cnt += 3;
+	if (this->scale != dimeVec3(1.0, 1.0, 1.0)) cnt += 3;
 	if (this->rotAngle != 0.0) cnt++;
 	if (this->columnCount != 1) cnt++;
 	if (this->rowCount != 1) cnt++;
 	if (this->columnSpacing != 0.0) cnt++;
 	if (this->rowSpacing != 0.0) cnt++;
-	if (this->extrusionDir != dimeVec3f(0, 0, 1)) cnt += 3;
+	if (this->extrusionDir != dimeVec3(0, 0, 1)) cnt += 3;
 
 	if (this->attributesFollow && this->numEntities)
 	{

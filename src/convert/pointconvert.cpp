@@ -41,7 +41,7 @@ convert_point(const DimeEntity* entity, const DimeState* state,
               dxfLayerData* layerData, dxfConverter*)
 {
 	auto point = (DimePoint*)entity;
-	dimeVec3f v0 = point->getCoords();
+	dimeVec3 v0 = point->getCoords();
 
 	dimeParam param;
 	if (point->getRecord(38, param))
@@ -56,7 +56,7 @@ convert_point(const DimeEntity* entity, const DimeState* state,
 	if (thickness != 0.0)
 	{
 		// line
-		dimeVec3f e = point->getExtrusionDir();
+		dimeVec3 e = point->getExtrusionDir();
 		layerData->addLine(v0, v0 + thickness * e);
 	}
 	else

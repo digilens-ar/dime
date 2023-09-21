@@ -49,8 +49,8 @@ dimeFaceEntity::dimeFaceEntity()
 */
 
 void
-dimeFaceEntity::setTriangle(const dimeVec3f& v0, const dimeVec3f& v1,
-                            const dimeVec3f& v2)
+dimeFaceEntity::setTriangle(const dimeVec3& v0, const dimeVec3& v1,
+                            const dimeVec3& v2)
 {
 	this->coords[0] = v0;
 	this->coords[1] = v1;
@@ -62,8 +62,8 @@ dimeFaceEntity::setTriangle(const dimeVec3f& v0, const dimeVec3f& v1,
 */
 
 void
-dimeFaceEntity::setQuad(const dimeVec3f& v0, const dimeVec3f& v1,
-                        const dimeVec3f& v2, const dimeVec3f& v3)
+dimeFaceEntity::setQuad(const dimeVec3& v0, const dimeVec3& v1,
+                        const dimeVec3& v2, const dimeVec3& v3)
 {
 	this->coords[0] = v0;
 	this->coords[1] = v1;
@@ -81,8 +81,8 @@ dimeFaceEntity::setQuad(const dimeVec3f& v0, const dimeVec3f& v1,
 */
 
 void
-dimeFaceEntity::getVertices(dimeVec3f& v0, dimeVec3f& v1,
-                            dimeVec3f& v2, dimeVec3f& v3) const
+dimeFaceEntity::getVertices(dimeVec3& v0, dimeVec3& v1,
+                            dimeVec3& v2, dimeVec3& v3) const
 {
 	v0 = this->coords[0];
 	v1 = this->coords[1];
@@ -203,9 +203,9 @@ dimeFaceEntity::getRecord(const int groupcode,
 //!
 
 DimeEntity::GeometryType
-dimeFaceEntity::extractGeometry(dimeArray<dimeVec3f>& verts,
+dimeFaceEntity::extractGeometry(dimeArray<dimeVec3>& verts,
                                 dimeArray<int>& indices,
-                                dimeVec3f& extrusionDir,
+                                dimeVec3& extrusionDir,
                                 dxfdouble& thickness)
 {
 	verts.setCount(0);
@@ -254,7 +254,7 @@ dimeFaceEntity::getThickness() const
 */
 
 void
-dimeFaceEntity::getExtrusionDir(dimeVec3f& ed) const
+dimeFaceEntity::getExtrusionDir(dimeVec3& ed) const
 {
 	ed.setValue(0, 0, 1);
 }

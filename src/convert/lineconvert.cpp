@@ -43,7 +43,7 @@ convert_line(const DimeEntity* entity, const DimeState* state,
 	auto line = (DimeLine*)entity;
 
 	dxfdouble thickness;
-	dimeVec3f v0, v1;
+	dimeVec3 v0, v1;
 
 	dimeMatrix matrix;
 	state->getMatrix(matrix);
@@ -62,8 +62,8 @@ convert_line(const DimeEntity* entity, const DimeState* state,
 
 	if (thickness != 0.0)
 	{
-		dimeVec3f v2, v3;
-		dimeVec3f e = line->getExtrusionDir();
+		dimeVec3 v2, v3;
+		dimeVec3 e = line->getExtrusionDir();
 		v2 = v0 + e * thickness;
 		v3 = v1 + e * thickness;
 

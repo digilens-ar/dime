@@ -80,8 +80,8 @@ public:
 
 	int getType() const;
 
-	const dimeVec3f& getElevation() const;
-	void setElevation(const dimeVec3f& e);
+	const dimeVec3& getElevation() const;
+	void setElevation(const dimeVec3& e);
 
 	int16 getPolymeshCountN() const;
 	int16 getPolymeshCountM() const;
@@ -122,9 +122,9 @@ public:
 	TypeID typeId() const override;
 	int countRecords() const override;
 
-	GeometryType extractGeometry(dimeArray<dimeVec3f>& verts,
+	GeometryType extractGeometry(dimeArray<dimeVec3>& verts,
 	                             dimeArray<int>& indices,
-	                             dimeVec3f& extrusionDir,
+	                             dimeVec3& extrusionDir,
 	                             dxfdouble& thickness) override;
 
 	void clearSurfaceData();
@@ -164,7 +164,7 @@ private:
 	DimeVertex** indexVertices;
 	DimeVertex** frameVertices;
 	DimeEntity* seqend;
-	dimeVec3f elevation;
+	dimeVec3 elevation;
 }; // class dimePolyline
 
 inline int16
@@ -179,14 +179,14 @@ DimePolyline::setFlags(const int16 flags)
 	this->flags = flags;
 }
 
-inline const dimeVec3f&
+inline const dimeVec3&
 DimePolyline::getElevation() const
 {
 	return elevation;
 }
 
 inline void
-DimePolyline::setElevation(const dimeVec3f& e)
+DimePolyline::setElevation(const dimeVec3& e)
 {
 	this->elevation = e;
 }

@@ -39,7 +39,7 @@ class dxfLayerData;
 class dxfLineSegment
 {
 public:
-	void set(const dimeVec3f& p0, const dimeVec3f& p1,
+	void set(const dimeVec3& p0, const dimeVec3& p1,
 	         dxfdouble startWidth, dxfdouble endwidth,
 	         dxfdouble thickness);
 	void convert(dxfLineSegment* prev, dxfLineSegment* next,
@@ -49,18 +49,18 @@ private:
 	void calculate_v();
 	void calculate_connect(dxfLineSegment* next);
 
-	dimeVec3f p[2];
+	dimeVec3 p[2];
 	dxfdouble w[2];
 	dxfdouble thickness;
 	dxfLineSegment* prev;
-	dimeVec3f e;
-	dimeVec3f dir;
-	dimeVec3f wdir;
+	dimeVec3 e;
+	dimeVec3 dir;
+	dimeVec3 wdir;
 
 	// calculated pts
 	int flags;
-	dimeVec3f v[4];
-	dimeVec3f connect[4];
+	dimeVec3 v[4];
+	dimeVec3 connect[4];
 };
 
 

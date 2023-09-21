@@ -42,8 +42,8 @@ class DIME_DLL_API DimeLine : public DimeExtrusionEntity
 public:
 	DimeLine();
 
-	const dimeVec3f& getCoords(int idx) const;
-	void setCoords(int idx, const dimeVec3f& v);
+	const dimeVec3& getCoords(int idx) const;
+	void setCoords(int idx, const dimeVec3& v);
 
 	DimeEntity* copy(DimeModel* model) const override;
 	bool getRecord(int groupcode,
@@ -54,9 +54,9 @@ public:
 	TypeID typeId() const override;
 	int countRecords() const override;
 
-	GeometryType extractGeometry(dimeArray<dimeVec3f>& verts,
+	GeometryType extractGeometry(dimeArray<dimeVec3>& verts,
 	                             dimeArray<int>& indices,
-	                             dimeVec3f& extrusionDir,
+	                             dimeVec3& extrusionDir,
 	                             dxfdouble& thickness) override;
 
 protected:
@@ -65,10 +65,10 @@ protected:
 	                  DimeMemHandler* memhandler) override;
 
 private:
-	dimeVec3f coords[2];
+	dimeVec3 coords[2];
 }; // class dimeLine
 
-inline const dimeVec3f&
+inline const dimeVec3&
 DimeLine::getCoords(const int idx) const
 {
 	assert(idx ==0 || idx == 1);
@@ -76,7 +76,7 @@ DimeLine::getCoords(const int idx) const
 }
 
 inline void
-DimeLine::setCoords(const int idx, const dimeVec3f& v)
+DimeLine::setCoords(const int idx, const dimeVec3& v)
 {
 	assert(idx ==0 || idx == 1);
 	this->coords[idx] = v;

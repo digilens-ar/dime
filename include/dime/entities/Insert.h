@@ -62,11 +62,11 @@ public:
 	TypeID typeId() const override;
 	int countRecords() const override;
 
-	void setInsertionPoint(const dimeVec3f& v);
-	const dimeVec3f& getInsertionPoint() const;
+	void setInsertionPoint(const dimeVec3& v);
+	const dimeVec3& getInsertionPoint() const;
 
-	void setScale(const dimeVec3f& v);
-	const dimeVec3f& getScale() const;
+	void setScale(const dimeVec3& v);
+	const dimeVec3& getScale() const;
 
 	void setRotAngle(dxfdouble angle);
 	dxfdouble getRotAngle() const;
@@ -86,9 +86,9 @@ private:
 
 	int16 attributesFollow;
 	const char* blockName;
-	dimeVec3f insertionPoint;
-	dimeVec3f extrusionDir;
-	dimeVec3f scale;
+	dimeVec3 insertionPoint;
+	dimeVec3 extrusionDir;
+	dimeVec3 scale;
 	dxfdouble rotAngle;
 	DimeEntity** entities;
 	int numEntities;
@@ -106,12 +106,12 @@ private:
 
 
 inline void
-DimeInsert::setInsertionPoint(const dimeVec3f& v)
+DimeInsert::setInsertionPoint(const dimeVec3& v)
 {
 	this->insertionPoint = v;
 }
 
-inline const dimeVec3f&
+inline const dimeVec3&
 DimeInsert::getInsertionPoint() const
 {
 	return this->insertionPoint;
@@ -124,12 +124,12 @@ DimeInsert::getBlock() const
 }
 
 inline void
-DimeInsert::setScale(const dimeVec3f& v)
+DimeInsert::setScale(const dimeVec3& v)
 {
 	this->scale = v;
 }
 
-inline const dimeVec3f&
+inline const dimeVec3&
 DimeInsert::getScale() const
 {
 	return this->scale;

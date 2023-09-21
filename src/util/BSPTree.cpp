@@ -48,17 +48,17 @@
 class dime_bspnode
 {
 public:
-	dime_bspnode(dimeArray<dimeVec3f>* array);
+	dime_bspnode(dimeArray<dimeVec3>* array);
 	~dime_bspnode();
 
-	int addPoint(const dimeVec3f& pt, int maxpts);
-	int findPoint(const dimeVec3f& pt) const;
-	int removePoint(const dimeVec3f& pt);
+	int addPoint(const dimeVec3& pt, int maxpts);
+	int findPoint(const dimeVec3& pt) const;
+	int removePoint(const dimeVec3& pt);
 
 private:
 	void sort();
 	void split();
-	bool leftOf(const dimeVec3f& pt) const;
+	bool leftOf(const dimeVec3& pt) const;
 
 	enum
 	{
@@ -76,10 +76,10 @@ private:
 	// precision problems)
 	double position;
 	dimeArray<int> indices;
-	dimeArray<dimeVec3f>* pointsArray;
+	dimeArray<dimeVec3>* pointsArray;
 };
 
-dime_bspnode::dime_bspnode(dimeArray<dimeVec3f>* ptsarray)
+dime_bspnode::dime_bspnode(dimeArray<dimeVec3>* ptsarray)
 	: indices(4)
 {
 	this->left = this->right = nullptr;
@@ -94,13 +94,13 @@ dime_bspnode::~dime_bspnode()
 }
 
 inline bool
-dime_bspnode::leftOf(const dimeVec3f& pt) const
+dime_bspnode::leftOf(const dimeVec3& pt) const
 {
 	return pt[this->dimension] < this->position;
 }
 
 int
-dime_bspnode::addPoint(const dimeVec3f& pt, const int maxpts)
+dime_bspnode::addPoint(const dimeVec3& pt, const int maxpts)
 {
 	if (this->left)
 	{
@@ -115,7 +115,7 @@ dime_bspnode::addPoint(const dimeVec3f& pt, const int maxpts)
 	}
 	int n = this->indices.count();
 	int i;
-	dimeVec3f tmp;
+	dimeVec3 tmp;
 	for (i = 0; i < n; i++)
 	{
 		pointsArray->getElem(this->indices[i], tmp);
@@ -132,7 +132,7 @@ dime_bspnode::addPoint(const dimeVec3f& pt, const int maxpts)
 }
 
 int
-dime_bspnode::findPoint(const dimeVec3f& pt) const
+dime_bspnode::findPoint(const dimeVec3& pt) const
 {
 	if (this->left)
 	{
@@ -142,7 +142,7 @@ dime_bspnode::findPoint(const dimeVec3f& pt) const
 	int i, n = this->indices.count();
 	for (i = 0; i < n; i++)
 	{
-		dimeVec3f arrpt;
+		dimeVec3 arrpt;
 		this->pointsArray->getElem(this->indices[i], arrpt);
 		if (pt == arrpt) return this->indices[i];
 	}
@@ -150,7 +150,7 @@ dime_bspnode::findPoint(const dimeVec3f& pt) const
 }
 
 int
-dime_bspnode::removePoint(const dimeVec3f& pt)
+dime_bspnode::removePoint(const dimeVec3& pt)
 {
 	if (this->left)
 	{
@@ -160,7 +160,7 @@ dime_bspnode::removePoint(const dimeVec3f& pt)
 	int i, n = this->indices.count();
 	for (i = 0; i < n; i++)
 	{
-		dimeVec3f arrpt;
+		dimeVec3 arrpt;
 		this->pointsArray->getElem(this->indices[i], arrpt);
 		if (pt == arrpt)
 		{
@@ -185,7 +185,7 @@ dime_bspnode::split()
 	{
 		box.grow(this->pointsArray->getElem(this->indices[i]));
 	}
-	dimeVec3f diag = box.max - box.min;
+	dimeVec3 diag = box.max - box.min;
 	int dim;
 	double pos;
 
@@ -244,7 +244,7 @@ dime_bspnode::sort()
 	int* idxarray = this->indices.arrayPointer();
 	int num = this->indices.count();
 	int dim = this->dimension;
-	dimeVec3f* points = this->pointsArray->arrayPointer();
+	dimeVec3* points = this->pointsArray->arrayPointer();
 	int i, j, distance;
 	int idx;
 	for (distance = 1; distance <= num / 9; distance = 3 * distance + 1);
@@ -303,7 +303,7 @@ dimeBSPTree::numPoints() const
   \sa dimeBSPTree::numPoints()
 */
 void
-dimeBSPTree::getPoint(const int idx, dimeVec3f& pt)
+dimeBSPTree::getPoint(const int idx, dimeVec3& pt)
 {
 	assert(idx < this->pointsArray.count());
 	this->pointsArray.getElem(idx, pt);
@@ -337,7 +337,7 @@ dimeBSPTree::setUserData(const int idx, void* const data)
   is set, and the new index is returned.
 */
 int
-dimeBSPTree::addPoint(const dimeVec3f& pt, void* const data)
+dimeBSPTree::addPoint(const dimeVec3& pt, void* const data)
 {
 	this->boundingBox->grow(pt);
 	int ret = this->topnode->addPoint(pt, this->maxnodepoints);
@@ -352,7 +352,7 @@ dimeBSPTree::addPoint(const dimeVec3f& pt, void* const data)
   \overload
 */
 int
-dimeBSPTree::removePoint(const dimeVec3f& pt)
+dimeBSPTree::removePoint(const dimeVec3& pt)
 {
 	return this->topnode->removePoint(pt);
 }
@@ -375,7 +375,7 @@ dimeBSPTree::removePoint(const int idx)
 */
 
 int
-dimeBSPTree::findPoint(const dimeVec3f& pos) const
+dimeBSPTree::findPoint(const dimeVec3& pos) const
 {
 	return topnode->findPoint(pos);
 }

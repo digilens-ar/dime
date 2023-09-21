@@ -74,14 +74,14 @@ dxfLayerData::setFillmode(const bool fillmode)
   points will be transformed by this matrix before they are added.
 */
 void
-dxfLayerData::addLine(const dimeVec3f& v0, const dimeVec3f& v1,
+dxfLayerData::addLine(const dimeVec3& v0, const dimeVec3& v1,
                       const dimeMatrix* const matrix)
 {
 	int i0, i1;
 
 	if (matrix)
 	{
-		dimeVec3f t0, t1;
+		dimeVec3 t0, t1;
 		matrix->multMatrixVec(v0, t0);
 		matrix->multMatrixVec(v1, t1);
 		i0 = linebsp.addPoint(t0);
@@ -113,12 +113,12 @@ dxfLayerData::addLine(const dimeVec3f& v0, const dimeVec3f& v1,
   point will be transformed by this matrix before it is added.
 */
 void
-dxfLayerData::addPoint(const dimeVec3f& v,
+dxfLayerData::addPoint(const dimeVec3& v,
                        const dimeMatrix* const matrix)
 {
 	if (matrix)
 	{
-		dimeVec3f t;
+		dimeVec3 t;
 		matrix->multMatrixVec(v, t);
 		points.append(t);
 	}
@@ -133,16 +133,16 @@ dxfLayerData::addPoint(const dimeVec3f& v,
   points will be transformed by this matrix before they are added.
 */
 void
-dxfLayerData::addTriangle(const dimeVec3f& v0,
-                          const dimeVec3f& v1,
-                          const dimeVec3f& v2,
+dxfLayerData::addTriangle(const dimeVec3& v0,
+                          const dimeVec3& v1,
+                          const dimeVec3& v2,
                           const dimeMatrix* const matrix)
 {
 	if (this->fillmode)
 	{
 		if (matrix)
 		{
-			dimeVec3f t0, t1, t2;
+			dimeVec3 t0, t1, t2;
 			matrix->multMatrixVec(v0, t0);
 			matrix->multMatrixVec(v1, t1);
 			matrix->multMatrixVec(v2, t2);
@@ -172,17 +172,17 @@ dxfLayerData::addTriangle(const dimeVec3f& v0,
   points will be transformed by this matrix before they are added.
 */
 void
-dxfLayerData::addQuad(const dimeVec3f& v0,
-                      const dimeVec3f& v1,
-                      const dimeVec3f& v2,
-                      const dimeVec3f& v3,
+dxfLayerData::addQuad(const dimeVec3& v0,
+                      const dimeVec3& v1,
+                      const dimeVec3& v2,
+                      const dimeVec3& v3,
                       const dimeMatrix* const matrix)
 {
 	if (this->fillmode)
 	{
 		if (matrix)
 		{
-			dimeVec3f t0, t1, t2, t3;
+			dimeVec3 t0, t1, t2, t3;
 			matrix->multMatrixVec(v0, t0);
 			matrix->multMatrixVec(v1, t1);
 			matrix->multMatrixVec(v2, t2);
@@ -272,7 +272,7 @@ dxfLayerData::writeWrl(FILE* fp, int indent, const bool vrml1,
 			        "        coord Coordinate {\n"
 			        "          point [\n", r, g, b);
 		}
-		dimeVec3f v;
+		dimeVec3 v;
 		n = facebsp.numPoints();
 		for (i = 0; i < n; i++)
 		{
@@ -344,7 +344,7 @@ dxfLayerData::writeWrl(FILE* fp, int indent, const bool vrml1,
 			        "        coord Coordinate {\n"
 			        "          point [\n", r, g, b);
 		}
-		dimeVec3f v;
+		dimeVec3 v;
 		n = linebsp.numPoints();
 		for (i = 0; i < n; i++)
 		{
@@ -414,7 +414,7 @@ dxfLayerData::writeWrl(FILE* fp, int indent, const bool vrml1,
 			        "        coord Coordinate {\n"
 			        "          point [\n", r, g, b);
 		}
-		dimeVec3f v;
+		dimeVec3 v;
 		n = points.count();
 		for (i = 0; i < n; i++)
 		{

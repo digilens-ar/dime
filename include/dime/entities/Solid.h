@@ -42,9 +42,9 @@ public:
 	DimeSolid();
 
 	dxfdouble getThickness() const override;
-	void getExtrusionDir(dimeVec3f& ed) const override;
+	void getExtrusionDir(dimeVec3& ed) const override;
 	void setThickness(const dxfdouble& thickness);
-	void setExtrusionDir(const dimeVec3f& ed);
+	void setExtrusionDir(const dimeVec3& ed);
 
 	bool write(DimeOutput* out) override;
 	TypeID typeId() const override;
@@ -63,7 +63,7 @@ protected:
 	                  DimeMemHandler* memhandler) override;
 
 private:
-	dimeVec3f extrusionDir;
+	dimeVec3 extrusionDir;
 	dxfdouble thickness;
 }; // class dimeSolid
 

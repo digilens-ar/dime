@@ -142,7 +142,7 @@ DimeSpline::copy(DimeModel* const model) const
 		}
 		if (this->controlPoints)
 		{
-			s->controlPoints = ARRAY_NEW(mh, dimeVec3f, this->numControlPoints);
+			s->controlPoints = ARRAY_NEW(mh, dimeVec3, this->numControlPoints);
 			n = this->numControlPoints;
 			for (i = 0; i < n; i++)
 			{
@@ -151,7 +151,7 @@ DimeSpline::copy(DimeModel* const model) const
 		}
 		if (this->fitPoints)
 		{
-			s->fitPoints = ARRAY_NEW(mh, dimeVec3f, this->numFitPoints);
+			s->fitPoints = ARRAY_NEW(mh, dimeVec3, this->numFitPoints);
 			n = this->numFitPoints;
 			for (i = 0; i < n; i++)
 			{
@@ -267,7 +267,7 @@ DimeSpline::handleRecord(const int groupcode,
 		if (this->controlPoints == nullptr && this->numControlPoints)
 		{
 			this->cpCnt = 0;
-			this->controlPoints = ARRAY_NEW(mh, dimeVec3f, this->numControlPoints);
+			this->controlPoints = ARRAY_NEW(mh, dimeVec3, this->numControlPoints);
 		}
 		if (this->controlPoints && this->cpCnt < this->numControlPoints)
 		{
@@ -281,7 +281,7 @@ DimeSpline::handleRecord(const int groupcode,
 		if (this->fitPoints == nullptr && this->numFitPoints)
 		{
 			this->fitCnt = 0;
-			this->fitPoints = ARRAY_NEW(mh, dimeVec3f, this->numFitPoints);
+			this->fitPoints = ARRAY_NEW(mh, dimeVec3, this->numFitPoints);
 		}
 		if (this->fitPoints && this->fitCnt < this->numFitPoints)
 		{
@@ -485,7 +485,7 @@ DimeSpline::setKnotValues(const dxfdouble* const values, const int numvalues,
 */
 
 void
-DimeSpline::setControlPoints(const dimeVec3f* const pts, const int numpts,
+DimeSpline::setControlPoints(const dimeVec3* const pts, const int numpts,
                              DimeMemHandler* const memhandler)
 {
 	// update weights array (if present)
@@ -523,9 +523,9 @@ DimeSpline::setControlPoints(const dimeVec3f* const pts, const int numpts,
 	}
 	if (this->controlPoints == nullptr || numpts > this->numControlPoints)
 	{
-		this->controlPoints = ARRAY_NEW(memhandler, dimeVec3f, numpts);
+		this->controlPoints = ARRAY_NEW(memhandler, dimeVec3, numpts);
 	}
-	memcpy(this->controlPoints, pts, sizeof(dimeVec3f) * numpts);
+	memcpy(this->controlPoints, pts, sizeof(dimeVec3) * numpts);
 	this->numControlPoints = numpts;
 }
 
@@ -554,7 +554,7 @@ DimeSpline::setWeight(const int idx, const dxfdouble w,
 }
 
 void
-DimeSpline::setFitPoints(const dimeVec3f* const pts, const int numpts,
+DimeSpline::setFitPoints(const dimeVec3* const pts, const int numpts,
                          DimeMemHandler* const memhandler)
 {
 	if (memhandler == nullptr && this->numFitPoints != numpts)
@@ -564,8 +564,8 @@ DimeSpline::setFitPoints(const dimeVec3f* const pts, const int numpts,
 	}
 	if (this->fitPoints == nullptr || numpts > this->numFitPoints)
 	{
-		this->fitPoints = ARRAY_NEW(memhandler, dimeVec3f, numpts);
+		this->fitPoints = ARRAY_NEW(memhandler, dimeVec3, numpts);
 	}
-	memcpy(this->fitPoints, pts, numpts * sizeof(dimeVec3f));
+	memcpy(this->fitPoints, pts, numpts * sizeof(dimeVec3));
 	this->numFitPoints = numpts;
 }

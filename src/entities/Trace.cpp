@@ -90,7 +90,7 @@ DimeTrace::write(DimeOutput* const file)
 			file->writeGroupCode(39);
 			file->writeDouble(this->thickness);
 		}
-		if (this->extrusionDir != dimeVec3f(0, 0, 1))
+		if (this->extrusionDir != dimeVec3(0, 0, 1))
 		{
 			file->writeGroupCode(210);
 			file->writeDouble(this->extrusionDir[0]);
@@ -168,7 +168,7 @@ DimeTrace::getThickness() const
 }
 
 void
-DimeTrace::getExtrusionDir(dimeVec3f& ed) const
+DimeTrace::getExtrusionDir(dimeVec3& ed) const
 {
 	ed = this->extrusionDir;
 }
@@ -186,7 +186,7 @@ DimeTrace::setThickness(const dxfdouble& thickness)
 }
 
 void
-DimeTrace::setExtrusionDir(const dimeVec3f& ed)
+DimeTrace::setExtrusionDir(const dimeVec3& ed)
 {
 	this->extrusionDir = ed;
 }
@@ -201,7 +201,7 @@ DimeTrace::countRecords() const
 	{
 		cnt++; // header
 		if (this->thickness != 0.0) cnt++;
-		if (this->extrusionDir != dimeVec3f(0, 0, 1)) cnt += 3;
+		if (this->extrusionDir != dimeVec3(0, 0, 1)) cnt += 3;
 		cnt += dimeFaceEntity::countRecords();
 	}
 	return cnt;
