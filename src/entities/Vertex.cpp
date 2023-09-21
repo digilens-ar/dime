@@ -144,7 +144,7 @@ DimeVertex::getIndex(const int num) const
 
 //!
 
-int
+DimeBase::TypeID
 DimeVertex::typeId() const
 {
 	return DimeBase::dimeVertexType;

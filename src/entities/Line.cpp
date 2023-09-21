@@ -100,7 +100,7 @@ DimeLine::write(DimeOutput* const file)
 
 //!
 
-int
+DimeBase::TypeID
 DimeLine::typeId() const
 {
 	return DimeBase::dimeLineType;

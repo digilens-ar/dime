@@ -41,7 +41,7 @@ class DimeMemHandler;
 class DIME_DLL_API DimeBase
 {
 public:
-	enum
+	enum TypeID
 	{
 		dimeBaseType = 1,
 		dimeRecordType,
@@ -97,7 +97,7 @@ public:
 	DimeBase(void);
 	virtual ~DimeBase();
 
-	virtual int typeId() const = 0;
+	virtual TypeID typeId() const = 0;
 	virtual bool isOfType(int thetypeid) const;
 
 public:

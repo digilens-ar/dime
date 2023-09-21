@@ -78,8 +78,8 @@ convert_arc(const DimeEntity* entity, const DimeState* state,
 	}
 	e = dimeVec3f(0, 0, 1);
 
-	dimeVec3f center;
-	arc->getCenter(center);
+	
+	dimeVec3f center = arc->getCenter();
 
 	dimeParam param;
 	if (arc->getRecord(38, param))

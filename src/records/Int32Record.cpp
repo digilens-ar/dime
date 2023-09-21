@@ -79,7 +79,7 @@ dimeInt32Record::getValue() const
 
 //!
 
-int
+DimeBase::TypeID
 dimeInt32Record::typeId() const
 {
 	return DimeBase::dimeInt32RecordType;

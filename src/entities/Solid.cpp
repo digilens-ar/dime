@@ -158,7 +158,7 @@ DimeSolid::getRecord(const int groupcode,
 
 //!
 
-int
+DimeBase::TypeID
 DimeSolid::typeId() const
 {
 	return DimeBase::dimeSolidType;

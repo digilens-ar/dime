@@ -111,7 +111,7 @@ DimeCircle::write(DimeOutput* const file)
 
 //!
 
-int
+DimeBase::TypeID
 DimeCircle::typeId() const
 {
 	return DimeBase::dimeCircleType;

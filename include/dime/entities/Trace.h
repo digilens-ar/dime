@@ -47,7 +47,7 @@ public:
 	void setExtrusionDir(const dimeVec3f& ed);
 
 	bool write(DimeOutput* out) override;
-	int typeId() const override;
+	TypeID typeId() const override;
 	DimeEntity* copy(DimeModel* model) const override;
 	bool getRecord(int groupcode,
 	               dimeParam& param,

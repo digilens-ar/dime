@@ -195,7 +195,7 @@ DimeLWPolyline::write(DimeOutput* const file)
 
 //!
 
-int
+DimeBase::TypeID
 DimeLWPolyline::typeId() const
 {
 	return DimeBase::dimeLWPolylineType;

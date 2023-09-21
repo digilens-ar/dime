@@ -65,8 +65,7 @@ public:
 
 	int countRecords() const;
 
-	bool traverseEntities(dimeCallback callback,
-	                      void* userdata = nullptr,
+	bool traverseEntities(dimeCallback const& callback,
 	                      bool traverseBlocksSection = false,
 	                      bool explodeInserts = true,
 	                      bool traversePolylineVertices = false);

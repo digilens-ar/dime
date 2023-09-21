@@ -50,7 +50,7 @@ public:
 	void setThickness(dxfdouble val);
 	dxfdouble getThickness() const;
 
-	int typeId() const override;
+	TypeID typeId() const override;
 	bool isOfType(int thtypeid) const override;
 	int countRecords() const override;
 

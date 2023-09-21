@@ -43,7 +43,7 @@ public:
 	DimeArc();
 
 	void setCenter(const dimeVec3f& c);
-	void getCenter(dimeVec3f& c) const;
+	dimeVec3f getCenter() const;
 	void setRadius(dxfdouble r);
 	dxfdouble getRadius() const;
 	void setStartAngle(dxfdouble a);
@@ -60,7 +60,7 @@ public:
 
 	virtual void print() const;
 	virtual bool write(DimeOutput* out);
-	int typeId() const override;
+	TypeID typeId() const override;
 	int countRecords() const override;
 
 	virtual GeometryType extractGeometry(dimeArray<dimeVec3f>& verts,
@@ -90,10 +90,10 @@ DimeArc::setCenter(const dimeVec3f& c)
 	this->center = c;
 }
 
-inline void
-DimeArc::getCenter(dimeVec3f& c) const
+inline dimeVec3f
+DimeArc::getCenter() const
 {
-	c = this->center;
+	return this->center;
 }
 
 inline void

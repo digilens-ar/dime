@@ -53,7 +53,7 @@ public:
 public:
 	bool isEndOfSectionRecord() const override;
 	bool isEndOfFileRecord() const override;
-	int typeId() const override;
+	TypeID typeId() const override;
 	bool read(DimeInput* in) override;
 	bool write(DimeOutput* out) override;
 

@@ -81,7 +81,7 @@ dimeDoubleRecord::getValue() const
 
 //!
 
-int
+DimeBase::TypeID
 dimeDoubleRecord::typeId() const
 {
 	return DimeBase::dimeDoubleRecordType;

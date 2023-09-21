@@ -173,7 +173,7 @@ DimeClassesSection::write(DimeOutput* const file)
 
 //!
 
-int
+DimeBase::TypeID
 DimeClassesSection::typeId() const
 {
 	return DimeBase::dimeClassesSectionType;

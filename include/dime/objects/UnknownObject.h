@@ -47,7 +47,7 @@ public:
 
 	const char* getObjectName() const override;
 	bool write(DimeOutput* out) override;
-	int typeId() const override;
+	TypeID typeId() const override;
 	int countRecords() const override;
 
 private:

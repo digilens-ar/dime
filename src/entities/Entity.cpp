@@ -558,11 +558,10 @@ DimeEntity::countRecords() const
 
 bool
 DimeEntity::traverse(const DimeState* const state,
-                     dimeCallback callback,
-                     void* userdata)
+                     dimeCallback const& callback)
 {
 	if (this->isDeleted()) return true;
-	return callback(state, this, userdata);
+	return callback(state, this);
 }
 
 /*!

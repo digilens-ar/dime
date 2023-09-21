@@ -118,7 +118,7 @@ DimeArc::write(DimeOutput* const file)
 
 //!
 
-int
+DimeBase::TypeID
 DimeArc::typeId() const
 {
 	return DimeBase::dimeArcType;

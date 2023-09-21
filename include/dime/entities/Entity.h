@@ -119,8 +119,7 @@ protected:
 	bool preWrite(DimeOutput* file);
 
 	virtual bool traverse(const DimeState* state,
-	                      dimeCallback callback,
-	                      void* userdata);
+	                      dimeCallback const& callback);
 
 	virtual void fixReferences(DimeModel* model);
 	bool handleRecord(int groupcode,

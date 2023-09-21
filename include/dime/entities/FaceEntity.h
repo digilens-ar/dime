@@ -63,7 +63,7 @@ public:
 	                             dimeVec3f& extrusionDir,
 	                             dxfdouble& thickness) override;
 
-	int typeId() const override;
+	TypeID typeId() const override;
 	bool isOfType(int thetypeid) const override;
 	int countRecords() const override;
 

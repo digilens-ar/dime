@@ -152,7 +152,7 @@ DimeBlocksSection::write(DimeOutput* const file)
 
 //!
 
-int
+DimeBase::TypeID
 DimeBlocksSection::typeId() const
 {
 	return DimeBase::dimeBlocksSectionType;

@@ -529,8 +529,7 @@ DimeModel::countRecords() const
 */
 
 bool
-DimeModel::traverseEntities(dimeCallback callback,
-                            void* userdata,
+DimeModel::traverseEntities(dimeCallback const& callback,
                             bool traverseBlocksSection,
                             bool explodeInserts,
                             bool traversePolylineVertices)
@@ -546,7 +545,7 @@ DimeModel::traverseEntities(dimeCallback callback,
 			n = bs->getNumBlocks();
 			for (i = 0; i < n; i++)
 			{
-				if (!bs->getBlock(i)->traverse(&state, callback, userdata))
+				if (!bs->getBlock(i)->traverse(&state, callback))
 					return false;
 			}
 		}
@@ -557,7 +556,7 @@ DimeModel::traverseEntities(dimeCallback callback,
 		n = es->getNumEntities();
 		for (i = 0; i < n; i++)
 		{
-			if (!es->getEntity(i)->traverse(&state, callback, userdata))
+			if (!es->getEntity(i)->traverse(&state, callback))
 				return false;
 		}
 	}

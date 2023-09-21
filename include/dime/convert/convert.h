@@ -116,11 +116,6 @@ private:
 	int numsub;
 	bool fillmode;
 	bool layercol;
-
-	bool private_callback(const DimeState* state,
-	                      DimeEntity* entity);
-	static bool dime_callback(const DimeState* state,
-	                          DimeEntity* entity, void*);
 };
 
 #endif // _DXF2VRML_CONVERT_H_

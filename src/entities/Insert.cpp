@@ -293,7 +293,7 @@ DimeInsert::write(DimeOutput* const file)
 
 //!
 
-int
+DimeBase::TypeID
 DimeInsert::typeId() const
 {
 	return DimeBase::dimeInsertType;
@@ -429,8 +429,7 @@ DimeInsert::getRecord(const int groupcode,
 
 bool
 DimeInsert::traverse(const DimeState* const state,
-                     dimeCallback callback,
-                     void* userdata)
+                     dimeCallback const& callback)
 {
 	DimeState newstate = *state;
 	newstate.currentInsert = this;
@@ -449,13 +448,13 @@ DimeInsert::traverse(const DimeState* const state,
 				m.multRight(m2);
 				this->makeMatrix(m);
 				newstate.setMatrix(m);
-				if (!block->traverse(&newstate, callback, userdata)) return false;
+				if (!block->traverse(&newstate, callback)) return false;
 			}
 		}
 	}
 	else if (!this->isDeleted())
 	{
-		if (!callback(state, this, userdata)) return false;
+		if (!callback(state, this)) return false;
 	}
 
 	dimeMatrix m = state->getMatrix();
@@ -465,7 +464,7 @@ DimeInsert::traverse(const DimeState* const state,
 	// extract internal INSERT entities
 	for (int i = 0; i < this->numEntities; i++)
 	{
-		if (!this->entities[i]->traverse(&newstate, callback, userdata)) return false;
+		if (!this->entities[i]->traverse(&newstate, callback)) return false;
 	}
 	return true;
 }

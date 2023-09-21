@@ -105,7 +105,7 @@ dimeFaceEntity::copyCoords(const dimeFaceEntity* const entity)
 
 //!
 
-int
+DimeBase::TypeID
 dimeFaceEntity::typeId() const
 {
 	return dimeFaceEntityType;

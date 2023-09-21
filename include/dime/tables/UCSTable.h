@@ -53,7 +53,7 @@ public:
 	void setYaxis(const dimeVec3f& v);
 
 	bool write(DimeOutput* out) override;
-	int typeId() const override;
+	TypeID typeId() const override;
 	int countRecords() const override;
 
 protected:

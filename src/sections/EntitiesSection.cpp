@@ -170,7 +170,7 @@ DimeEntitiesSection::write(DimeOutput* const file)
 
 //!
 
-int
+DimeBase::TypeID
 DimeEntitiesSection::typeId() const
 {
 	return DimeBase::dimeEntitiesSectionType;

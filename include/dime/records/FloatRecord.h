@@ -48,7 +48,7 @@ public:
 	void setValue(float val);
 
 public:
-	int typeId() const override;
+	TypeID typeId() const override;
 	bool read(DimeInput* in) override;
 	bool write(DimeOutput* out) override;
 

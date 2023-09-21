@@ -93,7 +93,7 @@ DimeUnknownTable::write(DimeOutput* const file)
 
 //!
 
-int
+DimeBase::TypeID
 DimeUnknownTable::typeId() const
 {
 	return DimeBase::dimeUnknownTableType;

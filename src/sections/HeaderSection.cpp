@@ -224,7 +224,7 @@ dimeHeaderSection::write(DimeOutput* const file)
 
 //!
 
-int
+DimeBase::TypeID
 dimeHeaderSection::typeId() const
 {
 	return DimeBase::dimeHeaderSectionType;

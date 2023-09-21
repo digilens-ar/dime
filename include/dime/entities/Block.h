@@ -72,7 +72,7 @@ public:
 
 	bool read(DimeInput* in) override;
 	bool write(DimeOutput* out) override;
-	virtual int typeId() const;
+	virtual TypeID typeId() const;
 	int countRecords() const override;
 
 protected:
@@ -82,8 +82,7 @@ protected:
 
 	void fixReferences(DimeModel* model) override;
 	bool traverse(const DimeState* state,
-	              dimeCallback callback,
-	              void* userdata) override;
+	              dimeCallback const& callback) override;
 
 private:
 	int16 flags;

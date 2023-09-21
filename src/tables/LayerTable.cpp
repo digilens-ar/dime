@@ -126,7 +126,7 @@ DimeLayerTable::write(DimeOutput* const file)
 
 //!
 
-int
+DimeBase::TypeID
 DimeLayerTable::typeId() const
 {
 	return DimeBase::dimeLayerTableType;

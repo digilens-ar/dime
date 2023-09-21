@@ -49,7 +49,7 @@ public:
 
 	bool read(DimeInput* file) override;
 	bool write(DimeOutput* file) override;
-	int typeId() const override;
+	TypeID typeId() const override;
 	int countRecords() const override;
 
 	void fixReferences(DimeModel* model);

@@ -181,7 +181,7 @@ DimeText::write(DimeOutput* const file)
 
 //!
 
-int
+DimeBase::TypeID
 DimeText::typeId() const
 {
 	return DimeBase::dimeTextType;

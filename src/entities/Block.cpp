@@ -246,7 +246,7 @@ DimeBlock::write(DimeOutput* const file)
 
 //!
 
-int
+DimeBase::TypeID
 DimeBlock::typeId() const
 {
 	return DimeBase::dimeBlockType;
@@ -379,20 +379,19 @@ DimeBlock::removeEntity(const int idx, const bool deleteIt)
 
 bool
 DimeBlock::traverse(const DimeState* const state,
-                    dimeCallback callback,
-                    void* userdata)
+                    dimeCallback const& callback)
 {
-	if (callback(state, this, userdata))
+	if (callback(state, this))
 	{
 		//FIXME: what to do with basePoint?
 		const int n = this->entities.count();
 		for (int i = 0; i < n; i++)
 		{
-			if (!entities[i]->traverse(state, callback, userdata)) return false;
+			if (!entities[i]->traverse(state, callback)) return false;
 		}
 	}
 	if (this->endblock)
-		return callback(state, this->endblock, userdata);
+		return callback(state, this->endblock);
 	return true;
 }
 

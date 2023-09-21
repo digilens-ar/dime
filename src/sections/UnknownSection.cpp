@@ -168,7 +168,7 @@ dimeUnknownSection::write(DimeOutput* const file)
 
 //!
 
-int
+DimeBase::TypeID
 dimeUnknownSection::typeId() const
 {
 	return DimeBase::dimeUnknownSectionType;

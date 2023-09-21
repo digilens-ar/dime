@@ -239,7 +239,7 @@ DimeTable::write(DimeOutput* const file)
 
 //!
 
-int
+DimeBase::TypeID
 DimeTable::typeId() const
 {
 	return DimeBase::dimeTableType;

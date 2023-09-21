@@ -56,7 +56,7 @@ public:
 public:
 	virtual bool isEndOfSectionRecord() const;
 	virtual bool isEndOfFileRecord() const;
-	int typeId() const override = 0;
+	TypeID typeId() const override = 0;
 	virtual bool read(DimeInput* in) = 0;
 	virtual bool write(DimeOutput* out);
 	virtual void print() const { fprintf(stderr, "rec: %d\n", groupCode); }

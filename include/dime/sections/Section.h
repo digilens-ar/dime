@@ -51,7 +51,7 @@ public:
 
 	virtual bool read(DimeInput* file) = 0;
 	virtual bool write(DimeOutput* file) = 0;
-	int typeId() const override = 0;
+	TypeID typeId() const override = 0;
 	bool isOfType(int thetypeid) const override;
 	virtual int countRecords() const = 0;
 

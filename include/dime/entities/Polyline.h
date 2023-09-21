@@ -119,7 +119,7 @@ public:
 
 	bool read(DimeInput* in) override;
 	bool write(DimeOutput* out) override;
-	int typeId() const override;
+	TypeID typeId() const override;
 	int countRecords() const override;
 
 	GeometryType extractGeometry(dimeArray<dimeVec3f>& verts,
@@ -134,8 +134,7 @@ protected:
 	                  const dimeParam& param,
 	                  DimeMemHandler* memhandler) override;
 	bool traverse(const DimeState* state,
-	              dimeCallback callback,
-	              void* userdata) override;
+	              dimeCallback const& callback) override;
 
 private:
 	int numCoordVertices() const;

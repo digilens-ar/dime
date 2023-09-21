@@ -96,7 +96,7 @@ DimePoint::write(DimeOutput* const file)
 
 //!
 
-int
+DimeBase::TypeID
 DimePoint::typeId() const
 {
 	return DimeBase::dimePointType;

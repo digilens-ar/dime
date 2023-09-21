@@ -94,7 +94,7 @@ DimeExtrusionEntity::writeExtrusionData(DimeOutput* const file)
 
 //!
 
-int
+DimeBase::TypeID
 DimeExtrusionEntity::typeId() const
 {
 	return DimeBase::dimeExtrusionEntityType;

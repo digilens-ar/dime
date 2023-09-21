@@ -168,7 +168,7 @@ DimeTablesSection::write(DimeOutput* const file)
 
 //!
 
-int
+DimeBase::TypeID
 DimeTablesSection::typeId() const
 {
 	return DimeBase::dimeTablesSectionType;

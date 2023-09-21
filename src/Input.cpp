@@ -803,9 +803,9 @@ DimeInput::skipWhiteSpace()
 {
 	if (this->binary) return true;
 	char c;
-	register bool gotChar;
-	register char endline = 0xa;
-	register char endline2 = 0xd;
+	bool gotChar;
+	char endline = 0xa;
+	char endline2 = 0xd;
 	while ((gotChar = get(c)) && isspace(c) && c != endline && c != endline2);
 	if (!gotChar) return false;
 
@@ -820,9 +820,9 @@ DimeInput::nextLine()
 	if (this->binary) return true;
 
 	char c;
-	register bool gotChar;
-	register char endline = 0xa;
-	register char endline2 = 0xd;
+	bool gotChar;
+	char endline = 0xa;
+	char endline2 = 0xd;
 	while ((gotChar = get(c)) && c != endline && c != endline2);
 	if (!gotChar) return false;
 	while (c == endline2)

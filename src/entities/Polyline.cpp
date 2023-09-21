@@ -408,7 +408,7 @@ DimePolyline::write(DimeOutput* const file)
 
 //!
 
-int
+DimeBase::TypeID
 DimePolyline::typeId() const
 {
 	return DimeBase::dimePolylineType;
@@ -940,30 +940,29 @@ DimePolyline::setSeqend(const DimeEntity* ent)
 
 bool
 DimePolyline::traverse(const DimeState* const state,
-                       dimeCallback callback,
-                       void* userdata)
+                       dimeCallback const& callback)
 {
 	if (this->isDeleted()) return true;
-	callback(state, this, userdata);
+	callback(state, this);
 	int i, n;
 	if (state->getFlags() & DimeState::TRAVERSE_POLYLINE_VERTICES)
 	{
 		n = this->frameCnt;
 		for (i = 0; i < n; i++)
 		{
-			if (!this->frameVertices[i]->traverse(state, callback, userdata))
+			if (!this->frameVertices[i]->traverse(state, callback))
 				return false;
 		}
 		n = this->coordCnt;
 		for (i = 0; i < n; i++)
 		{
-			if (!this->coordVertices[i]->traverse(state, callback, userdata))
+			if (!this->coordVertices[i]->traverse(state, callback))
 				return false;
 		}
 		n = this->indexCnt;
 		for (i = 0; i < n; i++)
 		{
-			if (!this->indexVertices[i]->traverse(state, callback, userdata))
+			if (!this->indexVertices[i]->traverse(state, callback))
 				return false;
 		}
 	}

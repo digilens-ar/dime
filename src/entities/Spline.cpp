@@ -246,7 +246,7 @@ DimeSpline::write(DimeOutput* const file)
 
 //!
 
-int
+DimeBase::TypeID
 DimeSpline::typeId() const
 {
 	return DimeBase::dimeSplineType;

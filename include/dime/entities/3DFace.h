@@ -69,7 +69,7 @@ public:
 
 	virtual void print() const;
 	virtual bool write(DimeOutput* out);
-	int typeId() const override;
+	TypeID typeId() const override;
 	int countRecords() const override;
 
 protected:

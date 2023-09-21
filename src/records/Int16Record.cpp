@@ -80,7 +80,7 @@ dimeInt16Record::getValue() const
 
 //!
 
-int
+DimeBase::TypeID
 dimeInt16Record::typeId() const
 {
 	return DimeBase::dimeInt16RecordType;

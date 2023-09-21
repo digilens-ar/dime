@@ -78,7 +78,7 @@ dimeFloatRecord::getValue() const
 
 //!
 
-int
+DimeBase::TypeID
 dimeFloatRecord::typeId() const
 {
 	return DimeBase::dimeFloatRecordType;

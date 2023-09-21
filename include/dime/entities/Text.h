@@ -43,7 +43,7 @@ public:
 	//  dimeText(const char* s);
 
 	void setOrigin(const dimeVec3f& o);
-	void getOrigin(dimeVec3f& o) const;
+	dimeVec3f getOrigin() const;
 	void setSecond(const dimeVec3f& s);
 	bool getSecond(dimeVec3f& s) const;
 	void setHeight(dxfdouble h);
@@ -68,7 +68,7 @@ public:
 
 	void print() const override;
 	bool write(DimeOutput* out) override;
-	int typeId() const override;
+	TypeID typeId() const override;
 	int countRecords() const override;
 
 	GeometryType extractGeometry(dimeArray<dimeVec3f>& verts,
@@ -105,10 +105,10 @@ DimeText::setOrigin(const dimeVec3f& o)
 	this->origin = o;
 }
 
-inline void
-DimeText::getOrigin(dimeVec3f& o) const
+inline dimeVec3f
+DimeText::getOrigin() const
 {
-	o = this->origin;
+	return this->origin;
 }
 
 inline void

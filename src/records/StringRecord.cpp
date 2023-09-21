@@ -127,7 +127,7 @@ dimeStringRecord::isEndOfFileRecord() const
 
 //!
 
-int
+DimeBase::TypeID
 dimeStringRecord::typeId() const
 {
 	return DimeBase::dimeStringRecordType;

@@ -51,7 +51,7 @@ public:
 	bool read(DimeInput* in);
 	bool write(DimeOutput* out);
 	DimeTable* copy(DimeModel* model) const;
-	int typeId() const override;
+	TypeID typeId() const override;
 	int countRecords() const;
 	int tableType() const;
 

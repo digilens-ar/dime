@@ -89,7 +89,7 @@ DimeUnknownEntity::write(DimeOutput* const file)
 
 //!
 
-int
+DimeBase::TypeID
 DimeUnknownEntity::typeId() const
 {
 	return DimeBase::dimeUnknownEntityType;

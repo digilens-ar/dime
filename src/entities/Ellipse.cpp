@@ -184,7 +184,7 @@ DimeEllipse::write(DimeOutput* const file)
 
 //!
 
-int
+DimeBase::TypeID
 DimeEllipse::typeId() const
 {
 	return DimeBase::dimeEllipseType;

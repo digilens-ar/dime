@@ -51,7 +51,7 @@ public:
 	bool read(DimeInput* in) override;
 	bool write(DimeOutput* out) override;
 	virtual DimeTableEntry* copy(DimeModel* model) const = 0;
-	int typeId() const override = 0;
+	TypeID typeId() const override = 0;
 	bool isOfType(int thetypeid) const override;
 	int countRecords() const override;
 

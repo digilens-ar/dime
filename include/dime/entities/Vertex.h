@@ -75,7 +75,7 @@ public:
 	void setIndex(int idx, int val);
 
 	bool write(DimeOutput* out) override;
-	int typeId() const override;
+	TypeID typeId() const override;
 	int countRecords() const override;
 
 protected:

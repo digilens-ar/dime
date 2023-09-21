@@ -106,7 +106,7 @@ dime3DFace::write(DimeOutput* const file)
 
 //!
 
-int
+DimeBase::TypeID
 dime3DFace::typeId() const
 {
 	return DimeBase::dime3DFaceType;

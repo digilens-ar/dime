@@ -155,7 +155,7 @@ DimeTrace::getRecord(const int groupcode,
 
 //!
 
-int
+DimeBase::TypeID
 DimeTrace::typeId() const
 {
 	return DimeBase::dimeTraceType;

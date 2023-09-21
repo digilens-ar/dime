@@ -55,7 +55,7 @@ public:
 	bool read(DimeInput* in) override;
 	bool write(DimeOutput* out) override;
 	bool isOfType(int thetypeid) const override;
-	int typeId() const override = 0;
+	TypeID typeId() const override = 0;
 	int countRecords() const override;
 
 	virtual void print() const

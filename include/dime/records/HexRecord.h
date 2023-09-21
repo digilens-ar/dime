@@ -41,7 +41,7 @@ public:
 	dimeHexRecord(int group_code = 0);
 
 public:
-	int typeId() const;
+	TypeID typeId() const;
 }; // class dimeHexRecord
 
 #endif // ! DIME_HEXRECORD_H

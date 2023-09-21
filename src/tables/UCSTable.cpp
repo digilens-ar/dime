@@ -116,7 +116,7 @@ DimeUCSTable::write(DimeOutput* const file)
 
 //!
 
-int
+DimeBase::TypeID
 DimeUCSTable::typeId() const
 {
 	return DimeBase::dimeUCSTableType;
