@@ -66,7 +66,6 @@ public:
 
 	DimeEntity* copy(DimeModel* model) const override;
 
-	void print() const override;
 	bool write(DimeOutput* out) override;
 	TypeID typeId() const override;
 	int countRecords() const override;

@@ -142,22 +142,6 @@ dime3DFace::getRecord(const int groupcode,
 	return dimeFaceEntity::getRecord(groupcode, param, index);
 }
 
-//!
-
-void
-dime3DFace::print() const
-{
-	fprintf(stderr, "3DFACE:\n");
-	int stop = this->isQuad() ? 4 : 3;
-	for (int i = 0; i < stop; i++)
-	{
-		fprintf(stderr, "coord: %f %f %f\n", coords[i][0],
-		        coords[i][1], coords[i][2]);
-	}
-}
-
-//!
-
 int
 dime3DFace::countRecords() const
 {

@@ -56,7 +56,6 @@ public:
 	               dimeParam& param,
 	               int index = 0) const override;
 	virtual const char* getEntityName() const;
-	virtual void print() const;
 	virtual bool write(DimeOutput* out);
 	TypeID typeId() const override;
 	int countRecords() const override;

@@ -49,11 +49,6 @@
 #include <dime/records/Int32Record.h>
 
 /*!
-  \fn dimeRecord::print() const
-  Prints information about this record to \e stderr.
-*/
-
-/*!
   \fn dimeRecord *dimeRecord::copy(dimeMemHandler * const memhandler) const = 0
   Returns a copy of this record.
 */

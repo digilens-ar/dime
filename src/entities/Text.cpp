@@ -299,31 +299,6 @@ DimeText::getRecord(const int groupcode,
 	return DimeExtrusionEntity::getRecord(groupcode, param, index);
 }
 
-//!
-
-void
-DimeText::print() const
-{
-	fprintf(stderr, "Text:\n");
-	fprintf(stderr, " origin: %.3f %.3f %.3f\n",
-	        origin[0], origin[1], origin[2]);
-	if (haveSecond)
-	{
-		fprintf(stderr, " second: %.3f %.3f %.3f\n",
-		        second[0], second[1], second[2]);
-	}
-	fprintf(stderr, " height: %f\n", height);
-	fprintf(stderr, " rotation: %f\n", rotation);
-	fprintf(stderr, " horizJust: %d\n", hJust);
-	fprintf(stderr, " vertJust: %d\n", vJust);
-	fprintf(stderr, " text: %s\n", text);
-	fprintf(stderr, " extrusionDir: %f %f %f\n",
-	        extrusionDir[0], extrusionDir[1], extrusionDir[2]);
-	fprintf(stderr, " thickness: %f\n", thickness);
-}
-
-//!
-
 DimeEntity::GeometryType
 DimeText::extractGeometry(dimeArray<dimeVec3f>& verts,
                           dimeArray<int>& indices,

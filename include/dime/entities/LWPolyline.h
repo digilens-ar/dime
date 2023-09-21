@@ -47,7 +47,6 @@ public:
 	               int index) const override;
 	const char* getEntityName() const override;
 
-	void print() const override;
 	bool write(DimeOutput* out) override;
 	TypeID typeId() const override;
 	int countRecords() const override;

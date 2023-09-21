@@ -171,10 +171,6 @@
 */
 
 /*!
-  \fn void dimeEntity::print() const
-*/
-
-/*!
   Constructor.
 */
 

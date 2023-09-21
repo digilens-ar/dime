@@ -87,11 +87,6 @@ public:
 	bool isOfType(int thetypeid) const override;
 	int countRecords() const override;
 
-	virtual void print() const
-	{
-	}
-
-
 	bool isDeleted() const;
 	void setDeleted(bool onOff = true);
 

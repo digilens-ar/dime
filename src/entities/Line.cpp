@@ -158,21 +158,6 @@ DimeLine::getRecord(const int groupcode,
 	return DimeExtrusionEntity::getRecord(groupcode, param, index);
 }
 
-//!
-
-void
-DimeLine::print() const
-{
-	fprintf(stderr, "LINE:\n");
-	for (int i = 0; i < 2; i++)
-	{
-		fprintf(stderr, "coord: %f %f %f\n", coords[i][0],
-		        coords[i][1], coords[i][2]);
-	}
-}
-
-//!
-
 DimeEntity::GeometryType
 DimeLine::extractGeometry(dimeArray<dimeVec3f>& verts,
                           dimeArray<int>&/*indices*/,

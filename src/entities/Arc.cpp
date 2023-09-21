@@ -196,22 +196,6 @@ DimeArc::getRecord(const int groupcode,
 	return DimeExtrusionEntity::getRecord(groupcode, param, index);
 }
 
-//!
-
-void
-DimeArc::print() const
-{
-	fprintf(stderr, "ARC:\n");
-	fprintf(stderr, " center: %.3f %.3f %.3f\n",
-	        center[0], center[1], center[2]);
-	fprintf(stderr, " radius: %f\n", radius);
-	fprintf(stderr, " start: %f, end: %f\n", startAngle, endAngle);
-	fprintf(stderr, " extrusionDir: %f %f %f\n",
-	        extrusionDir[0], extrusionDir[1], extrusionDir[2]);
-	fprintf(stderr, " thickness: %f\n", thickness);
-}
-
-//!
 
 DimeEntity::GeometryType
 DimeArc::extractGeometry(dimeArray<dimeVec3f>& verts,

@@ -67,7 +67,6 @@ public:
 	void setFlags(int16 flags);
 	int16 getFlags() const;
 
-	virtual void print() const;
 	virtual bool write(DimeOutput* out);
 	TypeID typeId() const override;
 	int countRecords() const override;

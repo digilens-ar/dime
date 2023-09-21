@@ -58,10 +58,6 @@ public:
 	TypeID typeId() const override = 0;
 	int countRecords() const override;
 
-	virtual void print() const
-	{
-	}
-
 protected:
 	bool handleRecord(int groupcode,
 	                  const dimeParam& param,

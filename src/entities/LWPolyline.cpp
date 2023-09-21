@@ -381,20 +381,6 @@ DimeLWPolyline::getRecord(const int groupcode,
 	return DimeExtrusionEntity::getRecord(groupcode, param, index);
 }
 
-//!
-
-void
-DimeLWPolyline::print() const
-{
-	fprintf(stderr, "LWPOLYLINE:\n");
-	for (int i = 0; i < this->numVertices; i++)
-	{
-		fprintf(stderr, "coord: %f %f\n", xcoord[i], ycoord[i]);
-	}
-}
-
-//!
-
 DimeEntity::GeometryType
 DimeLWPolyline::extractGeometry(dimeArray<dimeVec3f>& verts,
                                 dimeArray<int>&/*indices*/,

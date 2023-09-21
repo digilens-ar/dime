@@ -263,16 +263,6 @@ DimeEllipse::getRecord(const int groupcode,
 	return DimeExtrusionEntity::getRecord(groupcode, param, index);
 }
 
-//!
-
-void
-DimeEllipse::print() const
-{
-	fprintf(stderr, "ELLIPSE:\n");
-}
-
-//!
-
 int
 DimeEllipse::countRecords() const
 {

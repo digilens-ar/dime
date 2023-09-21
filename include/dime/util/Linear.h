@@ -63,14 +63,8 @@ public:
 		y = _y;
 	}
 
-	//dxfdouble operator [] (const int i) const         
-	//{ return (i==0?x:y); }
-	//  dxfdouble & operator [] (const int i)             
-	//{ return(i==0?x:y);}
-	void print() const { printf("Coord2: (%.3f, %.3f)\n", x, y); }
-	void print(const char* s) { printf("%s: (%.3f, %.3f)\n", s, x, y); }
 	dxfdouble x, y;
-}; // class dimeVec2f
+};
 
 using dimeVec2d = dimeVec2f;
 
@@ -264,17 +258,6 @@ public:
 		tz = matrix[8] * x + matrix[9] * y + matrix[10] * z;
 		x = tx, y = ty, z = tz;
 	}
-
-	void print() const // extra
-	{
-		printf("dimeVec3f: (%.3f, %.3f, %.3f)\n", x, y, z);
-	}
-
-	void print(const char* s) const
-	{
-		printf("%s: (%.3f, %.3f, %.3f)\n", s, x, y, z);
-	}
-
 
 	dimeVec3f multComponents(const dimeVec3f& v) const
 	{

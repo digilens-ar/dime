@@ -146,7 +146,3 @@ DimeObject::handleRecord(const int /*groupcode*/,
 	// no groupcodes supported yet...
 	return false;
 }
-
-/*!
-  \fn void dimeObject::print() const
-*/

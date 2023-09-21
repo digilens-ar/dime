@@ -447,16 +447,6 @@ DimeSpline::getRecord(const int groupcode,
 	return DimeEntity::getRecord(groupcode, param, index);
 }
 
-//!
-
-void
-DimeSpline::print() const
-{
-	fprintf(stderr, "SPLINE:\n");
-	// FIXME
-}
-
-//!
 
 int
 DimeSpline::countRecords() const
