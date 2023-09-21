@@ -100,31 +100,9 @@ DimeSection::createSection(const char* const sectionname,
 	return new dimeUnknownSection(sectionname, memhandler);
 }
 
-//!
-
 bool
 DimeSection::isOfType(const int thetypeid) const
 {
 	return thetypeid == dimeSectionType ||
 		DimeBase::isOfType(thetypeid);
 }
-
-/*!
-  \fn const char * dimeSection::getSectionName() const = 0
-*/
-
-/*!
-  \fn dimeSection * dimeSection::copy(dimeModel * const model) const = 0
-*/
-
-/*!
-  \fn bool dimeSection::read(dimeInput * const file) = 0
-*/
-
-/*!
-  \fn bool dimeSection::write(dimeOutput * const file) = 0
-*/
-
-/*!
-  \fn int dimeSection::typeId() const = 0
-*/

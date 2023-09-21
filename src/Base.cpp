@@ -87,20 +87,6 @@
   for that class.
 */
 
-/*!
-  Constructor.
-*/
-DimeBase::DimeBase(void)
-{
-}
-
-/*!
-  virtual destructor.
-*/
-DimeBase::~DimeBase()
-{
-}
-
 
 /*!
   Returns \e true if the object is of type \a typeid or is inherited 

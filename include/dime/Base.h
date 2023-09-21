@@ -94,13 +94,12 @@ public:
 		dimeLastTypeTag
 	};
 
-	DimeBase(void);
-	virtual ~DimeBase();
+	DimeBase() = default;
+	virtual ~DimeBase() = default;
 
 	virtual TypeID typeId() const = 0;
 	virtual bool isOfType(int thetypeid) const;
 
-public:
 	void* operator new(size_t size, DimeMemHandler* memhandler = nullptr, int alignment = 4);
 	void operator delete(void* ptr, DimeMemHandler* memhandler, int alignment);
 	void operator delete(void* ptr);
