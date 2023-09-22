@@ -131,10 +131,9 @@ DimeLWPolyline::write(DimeOutput* const file)
 {
 	this->preWrite(file);
 
-	bool ret = true;
 
 	file->writeGroupCode(90);
-	ret = file->writeInt16(static_cast<int16_t>(this->numVertices));
+	bool ret = file->writeInt16(static_cast<int16_t>(this->numVertices));
 
 	if (ret && this->flags != 0)
 	{
@@ -426,4 +425,58 @@ DimeLWPolyline::countRecords() const
 	}
 
 	return cnt + DimeExtrusionEntity::countRecords();
+}
+
+int
+DimeLWPolyline::getNumVertices() const
+{
+	return this->numVertices;
+}
+
+const dxfdouble*
+DimeLWPolyline::getXCoords() const
+{
+	return this->xcoord;
+}
+
+const dxfdouble*
+DimeLWPolyline::getYCoords() const
+{
+	return this->ycoord;
+}
+
+const dxfdouble*
+DimeLWPolyline::getStartingWidths() const
+{
+	return this->startingWidth;
+}
+
+const dxfdouble*
+DimeLWPolyline::getEndWidths() const
+{
+	return this->endWidth;
+}
+
+const dxfdouble*
+DimeLWPolyline::getBulges() const
+{
+	return this->bulge;
+}
+
+dxfdouble
+DimeLWPolyline::getElevation() const
+{
+	return this->elevation;
+}
+
+dxfdouble
+DimeLWPolyline::getConstantWidth() const
+{
+	return this->constantWidth;
+}
+
+int16_t
+DimeLWPolyline::getFlags() const
+{
+	return this->flags;
 }

@@ -82,62 +82,6 @@ private:
 	dxfdouble* startingWidth;
 	dxfdouble* endWidth;
 	dxfdouble* bulge;
-}; // class dimeLWPolyLine
-
-
-inline int
-DimeLWPolyline::getNumVertices() const
-{
-	return this->numVertices;
-}
-
-inline const dxfdouble*
-DimeLWPolyline::getXCoords() const
-{
-	return this->xcoord;
-}
-
-inline const dxfdouble*
-DimeLWPolyline::getYCoords() const
-{
-	return this->ycoord;
-}
-
-inline const dxfdouble*
-DimeLWPolyline::getStartingWidths() const
-{
-	return this->startingWidth;
-}
-
-inline const dxfdouble*
-DimeLWPolyline::getEndWidths() const
-{
-	return this->endWidth;
-}
-
-inline const dxfdouble*
-DimeLWPolyline::getBulges() const
-{
-	return this->bulge;
-}
-
-inline dxfdouble
-DimeLWPolyline::getElevation() const
-{
-	return this->elevation;
-}
-
-inline dxfdouble
-DimeLWPolyline::getConstantWidth() const
-{
-	return this->constantWidth;
-}
-
-inline int16_t
-DimeLWPolyline::getFlags() const
-{
-	return this->flags;
-}
-
+};
 
 #endif // ! DIME_LWPOLYLINE_H

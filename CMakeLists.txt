@@ -20,7 +20,6 @@ set(PROJECT_DESCRIPTION   "A library for reading, constructing, manipulating, an
 # ############################################################################
 # Prevent in-source builds, as they often cause severe build problems
 # ############################################################################
-
 if(CMAKE_SOURCE_DIR STREQUAL CMAKE_BINARY_DIR)
   message(FATAL_ERROR "${CMAKE_PROJECT_NAME} requires an out of source build. Please create a separate build directory and run 'cmake <path_to_${CMAKE_PROJECT_NAME}> [options]' from there.")
 endif()
@@ -28,7 +27,6 @@ endif()
 # ############################################################################
 # Include necessary submodules
 # ############################################################################
-
 include(CheckIncludeFile)
 include(CheckSymbolExists)
 include(CMakeDependentOption)
@@ -50,23 +48,6 @@ cmake_dependent_option(DIME_BUILD_DOCUMENTATION_CHM "Build compressed HTML help 
 # ##########################################################################
 # Setup build environment
 # ##########################################################################
-
-if(NOT CMAKE_BUILD_TYPE)
-  # Has no effect for multi configuration generators (VisualStudio, Xcode).
-  set(CMAKE_BUILD_TYPE Release CACHE STRING "Choose type of build, options are Debug, Release, RelWithDebInfo, MinSizeRel." FORCE)
-endif()
-# Set common output directories for all targets built.
-# First for the generic no-config case (e.g. with mingw)
-set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/lib")
-set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/lib")
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin")
-# Second, for multi-config builds (e.g. msvc)
-foreach (_config ${CMAKE_CONFIGURATION_TYPES})
-  string(TOUPPER ${_config} _config)
-  set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY_${_config} "${CMAKE_BINARY_DIR}/lib")
-  set(CMAKE_LIBRARY_OUTPUT_DIRECTORY_${_config} "${CMAKE_BINARY_DIR}/lib")
-  set(CMAKE_RUNTIME_OUTPUT_DIRECTORY_${_config} "${CMAKE_BINARY_DIR}/bin")
-endforeach()
 
 check_symbol_exists(isinf math.h HAVE_ISINF)
 check_symbol_exists(isnan math.h HAVE_ISNAN)
@@ -131,7 +112,7 @@ else()
   set_target_properties(${PROJECT_NAME} PROPERTIES VERSION "${DIME_SO_VERSION}.${PROJECT_VERSION_MINOR}.${PROJECT_VERSION_PATCH}" SOVERSION ${DIME_SO_VERSION})
 endif()
 
-target_compile_definitions(${PROJECT_NAME} PRIVATE HAVE_CONFIG_H DIME_INTERNAL DIME_DEBUG=$<CONFIG:Debug>)
+target_compile_definitions(${PROJECT_NAME} PRIVATE HAVE_CONFIG_H DIME_DEBUG=$<CONFIG:Debug>)
 
 if(WIN32)
   if(MSVC)
