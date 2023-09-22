@@ -40,7 +40,7 @@
 class dimeBox;
 class dime_bspnode;
 
-class DIME_DLL_API dimeBSPTree
+class  dimeBSPTree
 {
 public:
 	dimeBSPTree(int maxnodepts = 64, int initsize = 4);

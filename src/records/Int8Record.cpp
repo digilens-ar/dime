@@ -44,7 +44,7 @@
   Constructor
 */
 
-dimeInt8Record::dimeInt8Record(const int group_code, const int8 val)
+dimeInt8Record::dimeInt8Record(const int group_code, const int8_t val)
 	: DimeRecord(group_code)
 {
 	this->setValue(val);
@@ -63,16 +63,16 @@ dimeInt8Record::copy() const
 */
 
 void
-dimeInt8Record::setValue(const int8 val)
+dimeInt8Record::setValue(const int8_t val)
 {
 	this->value = val;
 }
 
 /*!
-  Returns the int8 value.
+  Returns the int8_t value.
 */
 
-int8
+int8_t
 dimeInt8Record::getValue() const
 {
 	return this->value;

@@ -76,7 +76,7 @@ DimeBlocksSection::copy(DimeModel* const model) const
 bool
 DimeBlocksSection::read(DimeInput* const file)
 {
-	int32 groupcode;
+	int32_t groupcode;
 	const char* string;
 	bool ok = true;
 	DimeBlock* block = nullptr;

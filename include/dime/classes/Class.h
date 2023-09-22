@@ -43,7 +43,7 @@ class DimeInput;
 class DimeOutput;
 class DimeModel;
 
-class DIME_DLL_API DimeClass : public DimeRecordHolder
+class  DimeClass : public DimeRecordHolder
 {
 	friend class DimeClassesSection;
 	friend class DimeModel;
@@ -61,15 +61,15 @@ public:
 
 	const char* getClassName() const;
 	const char* getApplicationName() const;
-	int32 getVersionNumber() const;
-	int8 getFlag280() const;
-	int8 getFlag281() const;
+	int32_t getVersionNumber() const;
+	int8_t getFlag280() const;
+	int8_t getFlag281() const;
 
 	void setClassName(const char* classname);
 	void setApplicationName(const char* appname);
-	void setVersionNumber(int32 v);
-	void setFlag280(int8 flag);
-	void setFlag281(int8 flag);
+	void setVersionNumber(int32_t v);
+	void setFlag280(int8_t flag);
+	void setFlag281(int8_t flag);
 	static DimeClass* createClass(const char* name);
 
 protected:
@@ -81,9 +81,9 @@ protected:
 private:
 	char* className;
 	char* appName;
-	int32 versionNumber;
-	int8 flag1;
-	int8 flag2;
+	int32_t versionNumber;
+	int8_t flag1;
+	int8_t flag2;
 }; // class dimeClass
 
 inline const char*
@@ -98,38 +98,38 @@ DimeClass::getApplicationName() const
 	return this->appName;
 }
 
-inline int32
+inline int32_t
 DimeClass::getVersionNumber() const
 {
 	return this->versionNumber;
 }
 
-inline int8
+inline int8_t
 DimeClass::getFlag280() const
 {
 	return this->flag1;
 }
 
-inline int8
+inline int8_t
 DimeClass::getFlag281() const
 {
 	return this->flag2;
 }
 
 inline void
-DimeClass::setVersionNumber(const int32 v)
+DimeClass::setVersionNumber(const int32_t v)
 {
 	this->versionNumber = v;
 }
 
 inline void
-DimeClass::setFlag280(const int8 flag)
+DimeClass::setFlag280(const int8_t flag)
 {
 	this->flag1 = flag;
 }
 
 inline void
-DimeClass::setFlag281(const int8 flag)
+DimeClass::setFlag281(const int8_t flag)
 {
 	this->flag2 = flag;
 }

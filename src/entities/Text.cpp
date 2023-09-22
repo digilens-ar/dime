@@ -152,7 +152,7 @@ DimeText::write(DimeOutput* const file)
 	if (this->hJust != 0)
 	{
 		file->writeGroupCode(72);
-		file->writeInt16(static_cast<int16>(this->hJust));
+		file->writeInt16(static_cast<int16_t>(this->hJust));
 	}
 
 	if (haveSecond)
@@ -173,7 +173,7 @@ DimeText::write(DimeOutput* const file)
 	if (this->vJust != 0)
 	{
 		file->writeGroupCode(73);
-		file->writeInt16(static_cast<int16>(this->vJust));
+		file->writeInt16(static_cast<int16_t>(this->vJust));
 	}
 
 	return this->writeExtrusionData(file) && DimeEntity::write(file);

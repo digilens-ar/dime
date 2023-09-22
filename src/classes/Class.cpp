@@ -65,32 +65,32 @@
 */
 
 /*!
-  \fn int32 dimeClass::getVersionNumber() const
+  \fn int32_t dimeClass::getVersionNumber() const
   Returns the version number of this class.
 */
 
 /*!
-  \fn int8 dimeClass::getFlag280() const
+  \fn int8_t dimeClass::getFlag280() const
   Returns the flag with group code 280.
 */
 
 /*!
-  \fn int8 dimeClass::getFlag281() const
+  \fn int8_t dimeClass::getFlag281() const
   Returns the flag with group code 281.
 */
 
 /*! 
-  \fn void dimeClass::setVersionNumber(const int32 v)
+  \fn void dimeClass::setVersionNumber(const int32_t v)
   Sets the version number for this class.
 */
 
 /*! 
-  \fn void dimeClass::setFlag280(const int8 flag)
+  \fn void dimeClass::setFlag280(const int8_t flag)
   Sets the flag for the flag with group code 280.
 */
 
 /*!
-  \fn void dimeClass::setFlag281(const int8 flag)
+  \fn void dimeClass::setFlag281(const int8_t flag)
   Sets the group code for the flag with group code 281.
 */
 

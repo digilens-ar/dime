@@ -36,7 +36,7 @@
 #include <dime/entities/FaceEntity.h>
 #include <dime/util/Linear.h>
 
-class DIME_DLL_API DimeTrace : public dimeFaceEntity
+class  DimeTrace : public dimeFaceEntity
 {
 public:
 	DimeTrace();

@@ -40,7 +40,7 @@
 class DimeInput;
 class DimeOutput;
 
-class DIME_DLL_API DimeRecord : public DimeBase
+class  DimeRecord : public DimeBase
 {
 public:
 	DimeRecord(int group_code);

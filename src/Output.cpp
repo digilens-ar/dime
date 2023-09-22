@@ -157,7 +157,7 @@ DimeOutput::writeGroupCode(const int groupcode)
 */
 
 bool
-DimeOutput::writeInt8(const int8 val)
+DimeOutput::writeInt8(const int8_t val)
 {
 	return fprintf(this->fp, "%6d\n", static_cast<int>(val)) > 0;
 }
@@ -167,7 +167,7 @@ DimeOutput::writeInt8(const int8 val)
 */
 
 bool
-DimeOutput::writeInt16(const int16 val)
+DimeOutput::writeInt16(const int16_t val)
 {
 	return fprintf(this->fp, "%6d\n", static_cast<int>(val)) > 0;
 }
@@ -177,7 +177,7 @@ DimeOutput::writeInt16(const int16 val)
 */
 
 bool
-DimeOutput::writeInt32(const int32 val)
+DimeOutput::writeInt32(const int32_t val)
 {
 	return fprintf(this->fp, "%6d\n", val) > 0;
 }

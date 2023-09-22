@@ -36,7 +36,7 @@
 #include <dime/Basic.h>
 #include <dime/entities/ExtrusionEntity.h>
 
-class DIME_DLL_API DimeText : public DimeExtrusionEntity
+class  DimeText : public DimeExtrusionEntity
 {
 public:
 	DimeText();
@@ -52,10 +52,10 @@ public:
 	dxfdouble getWidth() const;
 	void setRotation(dxfdouble a);
 	dxfdouble getRotation() const;
-	void setHJust(int32 h);
-	int32 getHJust() const;
-	void setVJust(int32 v);
-	int32 getVJust() const;
+	void setHJust(int32_t h);
+	int32_t getHJust() const;
+	void setVJust(int32_t v);
+	int32_t getVJust() const;
 	void setTextString(const char* s);
 	char* getTextString() const;
 
@@ -87,8 +87,8 @@ private:
 	dxfdouble width;
 	dxfdouble rotation;
 	dxfdouble wScale;
-	int32 hJust;
-	int32 vJust;
+	int32_t hJust;
+	int32_t vJust;
 	char* text;
 }; // class dimeText
 
@@ -163,24 +163,24 @@ DimeText::getRotation() const
 }
 
 inline void
-DimeText::setHJust(const int32 h)
+DimeText::setHJust(const int32_t h)
 {
 	this->hJust = h;
 }
 
-inline int32
+inline int32_t
 DimeText::getHJust() const
 {
 	return this->hJust;
 }
 
 inline void
-DimeText::setVJust(const int32 v)
+DimeText::setVJust(const int32_t v)
 {
 	this->vJust = v;
 }
 
-inline int32
+inline int32_t
 DimeText::getVJust() const
 {
 	return this->vJust;

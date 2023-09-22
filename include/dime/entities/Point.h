@@ -37,7 +37,7 @@
 #include <dime/entities/ExtrusionEntity.h>
 #include <dime/util/Linear.h>
 
-class DIME_DLL_API DimePoint : public DimeExtrusionEntity
+class  DimePoint : public DimeExtrusionEntity
 {
 public:
 	DimePoint();

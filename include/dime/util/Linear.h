@@ -39,7 +39,7 @@
 #include <math.h>
 
 
-class DIME_DLL_API dimeVec2
+class  dimeVec2
 {
 public:
 	dimeVec2() = default;
@@ -60,7 +60,7 @@ public:
 	dxfdouble x, y;
 };
 
-class DIME_DLL_API dimeVec3
+class  dimeVec3
 {
 public:
 
@@ -260,7 +260,7 @@ public:
 }; // class dimeVec3f
 
 
-class DIME_DLL_API dimeMatrix
+class  dimeMatrix
 {
 public:
 	dimeMatrix() = default;

@@ -41,7 +41,7 @@
 
 class DimeVertex;
 
-class DIME_DLL_API DimePolyline : public DimeExtrusionEntity
+class  DimePolyline : public DimeExtrusionEntity
 {
 public:
 	DimePolyline();
@@ -75,25 +75,25 @@ public:
 		BEZIER = 8
 	};
 
-	int16 getFlags() const;
-	void setFlags(int16 flags);
+	int16_t getFlags() const;
+	void setFlags(int16_t flags);
 
 	int getType() const;
 
 	const dimeVec3& getElevation() const;
 	void setElevation(const dimeVec3& e);
 
-	int16 getPolymeshCountN() const;
-	int16 getPolymeshCountM() const;
-	int16 getSmoothSurfaceMdensity() const;
-	int16 getSmoothSurfaceNdensity() const;
+	int16_t getPolymeshCountN() const;
+	int16_t getPolymeshCountM() const;
+	int16_t getSmoothSurfaceMdensity() const;
+	int16_t getSmoothSurfaceNdensity() const;
 
 	int getNumCoordVertices() const;
 	int getNumIndexVertices() const;
 	int getNumSplineFrameControlPoints() const;
 
-	int16 getSurfaceType() const;
-	void setSurfaceType(int16 type);
+	int16_t getSurfaceType() const;
+	void setSurfaceType(int16_t type);
 
 	DimeVertex* getCoordVertex(int index);
 	DimeVertex* getIndexVertex(int index);
@@ -136,25 +136,25 @@ private:
 	int numCoordVertices() const;
 	int numIndexVertices() const;
 
-	int16 flags;
+	int16_t flags;
 
 #ifdef DIME_FIXBIG
-  int32 countM;
-  int32 countN;
-  int32 smoothCountM;
-  int32 smoothCountN;
+  int32_t countM;
+  int32_t countN;
+  int32_t smoothCountM;
+  int32_t smoothCountN;
 #else
-	int16 countM;
-	int16 countN;
-	int16 smoothCountM;
-	int16 smoothCountN;
+	int16_t countM;
+	int16_t countN;
+	int16_t smoothCountM;
+	int16_t smoothCountN;
 #endif
 
-	int16 surfaceType;
+	int16_t surfaceType;
 
-	int32 coordCnt; // real # of coordinate vertices
-	int32 indexCnt; // real # of index vertices
-	int32 frameCnt;
+	int32_t coordCnt; // real # of coordinate vertices
+	int32_t indexCnt; // real # of index vertices
+	int32_t frameCnt;
 
 	DimeVertex** coordVertices;
 	DimeVertex** indexVertices;
@@ -163,14 +163,14 @@ private:
 	dimeVec3 elevation;
 }; // class dimePolyline
 
-inline int16
+inline int16_t
 DimePolyline::getFlags() const
 {
 	return this->flags;
 }
 
 inline void
-DimePolyline::setFlags(const int16 flags)
+DimePolyline::setFlags(const int16_t flags)
 {
 	this->flags = flags;
 }
@@ -187,25 +187,25 @@ DimePolyline::setElevation(const dimeVec3& e)
 	this->elevation = e;
 }
 
-inline int16
+inline int16_t
 DimePolyline::getPolymeshCountN() const
 {
 	return this->countN;
 }
 
-inline int16
+inline int16_t
 DimePolyline::getPolymeshCountM() const
 {
 	return this->countM;
 }
 
-inline int16
+inline int16_t
 DimePolyline::getSmoothSurfaceMdensity() const
 {
 	return this->smoothCountM;
 }
 
-inline int16
+inline int16_t
 DimePolyline::getSmoothSurfaceNdensity() const
 {
 	return this->smoothCountN;
@@ -247,14 +247,14 @@ DimePolyline::getSplineFrameControlPoint(const int index)
 	return this->frameVertices[index];
 }
 
-inline int16
+inline int16_t
 DimePolyline::getSurfaceType() const
 {
 	return this->surfaceType;
 }
 
 inline void
-DimePolyline::setSurfaceType(const int16 type)
+DimePolyline::setSurfaceType(const int16_t type)
 {
 	this->surfaceType = type;
 }

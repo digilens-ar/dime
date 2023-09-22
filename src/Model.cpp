@@ -184,7 +184,7 @@ DimeModel::read(DimeInput* const in)
 
 	this->init();
 
-	int32 groupcode;
+	int32_t groupcode;
 	const char* string;
 	bool ok = true;
 	DimeSection* section;
@@ -351,8 +351,8 @@ DimeModel::removeReference(const char* const name)
   pointer to the existing layer will be returned.
 */
 
-dimeLayer* DimeModel::addLayer(const char* const name, const int16 colnum,
-                               const int16 flags)
+dimeLayer* DimeModel::addLayer(const char* const name, const int16_t colnum,
+                               const int16_t flags)
 {
 	void* temp = nullptr;
 	if (!this->layerDict->find(name, temp))

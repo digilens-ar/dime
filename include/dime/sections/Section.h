@@ -40,7 +40,7 @@ class DimeInput;
 class DimeModel;
 class DimeOutput;
 
-class DIME_DLL_API DimeSection : public DimeBase
+class  DimeSection : public DimeBase
 {
 public:
 	DimeSection();

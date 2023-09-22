@@ -258,7 +258,7 @@ DimeInput::eof() const
 */
 
 bool
-DimeInput::readGroupCode(int32& code)
+DimeInput::readGroupCode(int32_t& code)
 {
 	bool ret;
 	if (this->hasPutBack)
@@ -288,23 +288,23 @@ DimeInput::readGroupCode(int32& code)
 		{
 			if (this->binary16bit)
 			{
-				uint16 uval;
-				auto ptr = (int16*)&uval;
+				uint16_t uval;
+				auto ptr = (int16_t*)&uval;
 				ret = this->readInt16(*ptr);
-				code = static_cast<int32>(uval);
+				code = static_cast<int32_t>(uval);
 			}
 			else
 			{
 				unsigned char uval; // group code is unsigned int8
 				auto ptr = (char*)&uval;
 				ret = this->get(*ptr);
-				code = static_cast<int32>(uval);
+				code = static_cast<int32_t>(uval);
 			}
 			if (code == 255)
 			{
-				int16 val16;
+				int16_t val16;
 				ret = this->readInt16(val16);
-				code = static_cast<int32>(val16);
+				code = static_cast<int32_t>(val16);
 			}
 		}
 		else
@@ -333,7 +333,7 @@ DimeInput::readGroupCode(int32& code)
 */
 
 void
-DimeInput::putBackGroupCode(const int32 code)
+DimeInput::putBackGroupCode(const int32_t code)
 {
 	this->putBackCode = code;
 	this->hasPutBack = true;
@@ -345,7 +345,7 @@ DimeInput::putBackGroupCode(const int32 code)
 */
 
 bool
-DimeInput::readInt8(int8& val)
+DimeInput::readInt8(int8_t& val)
 {
 	if (this->binary)
 	{
@@ -357,7 +357,7 @@ DimeInput::readInt8(int8& val)
 	bool ok = skipWhiteSpace();
 	if (ok && readInteger(tmp) && tmp >= -128 && tmp <= 127)
 	{
-		val = static_cast<int8>(tmp);
+		val = static_cast<int8_t>(tmp);
 		return nextLine();
 	}
 	return false;
@@ -368,7 +368,7 @@ DimeInput::readInt8(int8& val)
 */
 
 bool
-DimeInput::readInt16(int16& val)
+DimeInput::readInt16(int16_t& val)
 {
 	if (this->binary)
 	{
@@ -391,7 +391,7 @@ DimeInput::readInt16(int16& val)
 	bool ok = skipWhiteSpace();
 	if (ok && readInteger(tmp) && tmp >= -32768 && tmp <= 32767)
 	{
-		val = static_cast<int16>(tmp);
+		val = static_cast<int16_t>(tmp);
 		return nextLine();
 	}
 	return false;
@@ -402,7 +402,7 @@ DimeInput::readInt16(int16& val)
 */
 
 bool
-DimeInput::readInt32(int32& val)
+DimeInput::readInt32(int32_t& val)
 {
 	if (this->binary)
 	{
@@ -1038,7 +1038,7 @@ DimeInput::checkBinary()
 {
 	{
 		// perform endian-test
-		uint16 val;
+		uint16_t val;
 		auto ptr = (char*)&val;
 		ptr[0] = 1;
 		ptr[1] = 0;

@@ -36,7 +36,7 @@
 #include <dime/entities/FaceEntity.h>
 #include <dime/util/Linear.h>
 
-class DIME_DLL_API DimeSolid : public dimeFaceEntity
+class  DimeSolid : public dimeFaceEntity
 {
 public:
 	DimeSolid();

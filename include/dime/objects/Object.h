@@ -41,7 +41,7 @@
 
 class DimeModel;
 
-class DIME_DLL_API DimeObject : public DimeRecordHolder
+class  DimeObject : public DimeRecordHolder
 {
 	friend class dimeObjectesSection;
 	friend class DimeModel;

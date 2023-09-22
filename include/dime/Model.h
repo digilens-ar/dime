@@ -50,7 +50,7 @@ class DimeBlock;
 class DimeEntity;
 class DimeRecord;
 
-class DIME_DLL_API DimeModel
+class  DimeModel
 {
 public:
 	DimeModel();
@@ -78,8 +78,8 @@ public:
 	const  dimeLayer* getLayer(int idx) const;
 	const  dimeLayer* getLayer(const char* layername) const;
 	dimeLayer* addLayer(const char* layername,
-	                    int16 colnum = 7,
-	                    int16 flags = 0);
+	                    int16_t colnum = 7,
+	                    int16_t flags = 0);
 
 	const char* getDxfVersion() const;
 

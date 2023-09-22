@@ -37,7 +37,7 @@
 
 class DimeInsert;
 
-class DIME_DLL_API DimeState
+class  DimeState
 {
 public:
 	DimeState(bool traversePolylineVertices,

@@ -186,7 +186,7 @@ DimePolyline::read(DimeInput* const file)
 	{
 		// read all vertices.
 		dimeArray<DimeVertex*> array(1024);
-		int32 groupcode;
+		int32_t groupcode;
 		const char* string;
 		DimeVertex* vertex;
 

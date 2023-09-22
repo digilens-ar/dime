@@ -36,7 +36,7 @@
 #include <dime/sections/Section.h>
 #include <dime/util/Array.h>
 
-class DIME_DLL_API DimeObjectsSection : public DimeSection
+class  DimeObjectsSection : public DimeSection
 {
 	friend class DimeModel;
 

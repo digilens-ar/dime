@@ -155,14 +155,14 @@
 */
 
 /*!
-  \fn void dimeEntity::setColorNumber(const int16 c)
+  \fn void dimeEntity::setColorNumber(const int16_t c)
   Sets the color number for this entity.
   Zero indicates the BYBLOCK (floating) color. 256 indicates BYLAYER. 
   A negative value indicates that the layer is turned off.
 */
 
 /*!
-  \fn int16 dimeEntity::getColorNumber() const
+  \fn int16_t dimeEntity::getColorNumber() const
   Returns the color number for this entity.
   
   \sa dimeEntity::setColorNumber()
@@ -337,7 +337,7 @@ DimeEntity::readEntities(DimeInput* const file,
                          dimeArray<DimeEntity*>& array,
                          const char* const stopat)
 {
-	int32 groupcode;
+	int32_t groupcode;
 	const char* string;
 	bool ok = true;
 	DimeEntity* entity = nullptr;

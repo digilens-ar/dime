@@ -40,7 +40,7 @@
 class DimeModel;
 
 
-class DIME_DLL_API DimeCircle : public DimeExtrusionEntity
+class  DimeCircle : public DimeExtrusionEntity
 {
 public:
 	DimeCircle();

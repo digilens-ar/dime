@@ -35,7 +35,7 @@
 
 #include <dime/tables/TableEntry.h>
 
-class DIME_DLL_API DimeLayerTable : public DimeTableEntry
+class  DimeLayerTable : public DimeTableEntry
 {
 public:
 	DimeLayerTable();
@@ -44,8 +44,8 @@ public:
 	void setLayerName(const char* name);
 	const char* getLayerName(void) const;
 
-	void setColorNumber(int16 colnum);
-	int16 getColorNumber(void) const;
+	void setColorNumber(int16_t colnum);
+	int16_t getColorNumber(void) const;
 
 	void registerLayer(DimeModel* model);
 
@@ -62,7 +62,7 @@ protected:
 	                  const dimeParam& param) override;
 
 private:
-	int16 colorNumber;
+	int16_t colorNumber;
 	char* layerName;
 	class dimeLayer* layerInfo;
 }; // class dimeLayerTable

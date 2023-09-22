@@ -155,12 +155,12 @@ dime3DFace::countRecords() const
 }
 
 void
-dime3DFace::setFlags(const int16 flags)
+dime3DFace::setFlags(const int16_t flags)
 {
 	this->flags = flags;
 }
 
-int16
+int16_t
 dime3DFace::getFlags() const
 {
 	return this->flags;

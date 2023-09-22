@@ -134,7 +134,7 @@ DimeLWPolyline::write(DimeOutput* const file)
 	bool ret = true;
 
 	file->writeGroupCode(90);
-	ret = file->writeInt16(static_cast<int16>(this->numVertices));
+	ret = file->writeInt16(static_cast<int16_t>(this->numVertices));
 
 	if (ret && this->flags != 0)
 	{

@@ -319,7 +319,7 @@ dimeLayer::dimeLayer()
 }
 
 dimeLayer::dimeLayer(const char* const name, const int num,
-                     const int16 colnum, const int16 flagmask)
+                     const int16_t colnum, const int16_t flagmask)
 	: layerName(name), layerNum(num), colorNum(colnum), flags(flagmask)
 {
 }
@@ -361,7 +361,7 @@ dimeLayer::colorToRGB(const int colornum,
 */
 
 /*!
-  \fn int16 dimeLayer::getColorNumber() const
+  \fn int16_t dimeLayer::getColorNumber() const
   Returns the color number for this layer.
   A negative value means that this layer is off.
 
@@ -369,19 +369,19 @@ dimeLayer::colorToRGB(const int colornum,
 */
 
 /*!
-  \fn void dimeLayer::setColorNumber(const int16 num)
+  \fn void dimeLayer::setColorNumber(const int16_t num)
   Sets the color number for this layer.
 
   \sa dimeLayer::getColorNumber()
 */
 
 /*!
-  \fn int16 dimeLayer::getFlags() const
+  \fn int16_t dimeLayer::getFlags() const
   Returns the flags for this layer.
 */
 
 /*!
-  \fn void dimeLayer::setFlags(const int16 &flags)
+  \fn void dimeLayer::setFlags(const int16_t &flags)
   Sets the flags for this layer.
 */
 

@@ -35,7 +35,7 @@
 
 #include <dime/records/StringRecord.h>
 
-class DIME_DLL_API dimeHexRecord : public dimeStringRecord
+class  dimeHexRecord : public dimeStringRecord
 {
 public:
 	dimeHexRecord(int group_code = 0);

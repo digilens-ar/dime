@@ -35,17 +35,17 @@
 
 #include <dime/records/Record.h>
 
-class DIME_DLL_API dimeInt16Record : public DimeRecord
+class  dimeInt16Record : public DimeRecord
 {
 public:
-	dimeInt16Record(int group_code = 60, int16 val = 0);
+	dimeInt16Record(int group_code = 60, int16_t val = 0);
 
 	DimeRecord* copy() const override;
 	void setValue(const dimeParam& param) override;
 	void getValue(dimeParam& param) const override;
 
-	int16 getValue() const;
-	void setValue(int16 val);
+	int16_t getValue() const;
+	void setValue(int16_t val);
 
 public:
 	TypeID typeId() const override;
@@ -53,7 +53,7 @@ public:
 	bool write(DimeOutput* out) override;
 
 private:
-	int16 value;
+	int16_t value;
 }; // class dimeInt16Record
 
 #endif // ! DIME_INT16RECORD_H

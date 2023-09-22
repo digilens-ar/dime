@@ -36,7 +36,7 @@
 #include <dime/entities/ExtrusionEntity.h>
 #include <assert.h>
 
-class DIME_DLL_API DimeSpline : public DimeEntity
+class  DimeSpline : public DimeEntity
 {
 public:
 	DimeSpline();
@@ -53,11 +53,11 @@ public:
 
 	bool hasWeights() const;
 
-	int16 getFlags() const;
-	void setFlags(int16 flags);
+	int16_t getFlags() const;
+	void setFlags(int16_t flags);
 
-	int16 getDegree() const;
-	void setDegree(int16 degree);
+	int16_t getDegree() const;
+	void setDegree(int16_t degree);
 
 	dxfdouble getControlPointTolerance() const;
 	void setControlPointTolerance(dxfdouble tol);
@@ -100,17 +100,17 @@ protected:
 	                  const dimeParam& param) override;
 
 private:
-	int16 flags;
+	int16_t flags;
 #ifdef DIME_FIXBIG
-  int32 degree;
-  int32 numKnots;
-  int32 numControlPoints;
-  int32 numFitPoints;
+  int32_t degree;
+  int32_t numKnots;
+  int32_t numControlPoints;
+  int32_t numFitPoints;
 #else
-	int16 degree;
-	int16 numKnots;
-	int16 numControlPoints;
-	int16 numFitPoints;
+	int16_t degree;
+	int16_t numKnots;
+	int16_t numControlPoints;
+	int16_t numFitPoints;
 #endif
 	dxfdouble knotTolerance;
 	dxfdouble fitTolerance;
@@ -121,32 +121,32 @@ private:
 	dimeVec3* fitPoints;
 
 	// read/handle counters
-	int16 knotCnt;
-	int16 fitCnt;
-	int16 cpCnt;
-	int16 weightCnt;
+	int16_t knotCnt;
+	int16_t fitCnt;
+	int16_t cpCnt;
+	int16_t weightCnt;
 }; // class dimeSpline
 
-inline int16
+inline int16_t
 DimeSpline::getFlags() const
 {
 	return this->flags;
 }
 
 inline void
-DimeSpline::setFlags(const int16 flags)
+DimeSpline::setFlags(const int16_t flags)
 {
 	this->flags = flags;
 }
 
-inline int16
+inline int16_t
 DimeSpline::getDegree() const
 {
 	return this->degree;
 }
 
 inline void
-DimeSpline::setDegree(const int16 degree)
+DimeSpline::setDegree(const int16_t degree)
 {
 	this->degree = degree;
 }

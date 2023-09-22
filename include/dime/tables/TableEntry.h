@@ -38,7 +38,7 @@
 
 class DimeModel;
 
-class DIME_DLL_API DimeTableEntry : public DimeRecordHolder
+class  DimeTableEntry : public DimeRecordHolder
 {
 	friend class DimeUnknownTable;
 	friend class DimeLayerTable;

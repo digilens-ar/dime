@@ -36,7 +36,7 @@
 #include <dime/Basic.h>
 #include <string.h>
 
-class DIME_DLL_API dimeDictEntry
+class  dimeDictEntry
 {
 	friend class dimeDict;
 
@@ -53,7 +53,7 @@ private:
 	void* value;
 }; // class dimeDictEntry
 
-class DIME_DLL_API dimeDict
+class  dimeDict
 {
 public:
 	dimeDict(int entries = 17989);

@@ -36,7 +36,7 @@
 #include <dime/sections/Section.h>
 #include <dime/util/Array.h>
 
-class DIME_DLL_API DimeHeaderSection : public DimeSection
+class  DimeHeaderSection : public DimeSection
 {
 public:
 	DimeHeaderSection() = default;

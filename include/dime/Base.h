@@ -38,7 +38,7 @@
 
 
 
-class DIME_DLL_API DimeBase
+class  DimeBase
 {
 public:
 	enum TypeID

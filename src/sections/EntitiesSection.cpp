@@ -95,7 +95,7 @@ DimeEntitiesSection::copy(DimeModel* const model) const
 bool
 DimeEntitiesSection::read(DimeInput* const file)
 {
-	int32 groupcode;
+	int32_t groupcode;
 	const char* string;
 	bool ok = true;
 	DimeEntity* entity = nullptr;

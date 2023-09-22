@@ -37,7 +37,7 @@
 
 
 
-class DIME_DLL_API dimeUnknownClass : public DimeClass
+class  dimeUnknownClass : public DimeClass
 {
 public:
 	dimeUnknownClass(const char* name);

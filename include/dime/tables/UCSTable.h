@@ -36,7 +36,7 @@
 #include <dime/tables/TableEntry.h>
 #include <dime/util/Linear.h>
 
-class DIME_DLL_API DimeUCSTable : public DimeTableEntry
+class  DimeUCSTable : public DimeTableEntry
 {
 public:
 	DimeUCSTable();

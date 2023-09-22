@@ -144,7 +144,7 @@ DimeRecord::write(DimeOutput* const out)
 DimeRecord*
 DimeRecord::readRecord(DimeInput* const in)
 {
-	int32 groupcode;
+	int32_t groupcode;
 	DimeRecord* rec = nullptr;
 	if (in->readGroupCode(groupcode))
 	{

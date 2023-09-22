@@ -35,7 +35,7 @@
 
 #include <dime/entities/Entity.h>
 
-class DIME_DLL_API DimeUnknownEntity : public DimeEntity
+class  DimeUnknownEntity : public DimeEntity
 {
 public:
 	DimeUnknownEntity(const char* name);

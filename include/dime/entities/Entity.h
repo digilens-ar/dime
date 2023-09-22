@@ -57,7 +57,7 @@
 class dimeLayer;
 class DimeModel;
 
-class DIME_DLL_API DimeEntity : public DimeRecordHolder
+class  DimeEntity : public DimeRecordHolder
 {
 	friend class DimeEntitiesSection;
 	friend class DimeModel;
@@ -69,11 +69,11 @@ public:
 	DimeEntity();
 	~DimeEntity() override;
 
-	int16 getEntityFlags() const;
-	void setEntityFlags(int16 flags);
+	int16_t getEntityFlags() const;
+	void setEntityFlags(int16_t flags);
 
-	int16 getColorNumber() const;
-	void setColorNumber(int16 c);
+	int16_t getColorNumber() const;
+	void setColorNumber(int16_t c);
 
 	virtual void setLayer(const dimeLayer* layer);
 	virtual const char* getEntityName() const = 0;
@@ -143,8 +143,8 @@ protected:
 
 private:
 	const dimeLayer* layer;
-	int16 entityFlags;
-	int16 colorNumber;
+	int16_t entityFlags;
+	int16_t colorNumber;
 }; // class dimeEntity
 
 inline const dimeLayer*
@@ -153,26 +153,26 @@ DimeEntity::getLayer() const
 	return this->layer;
 }
 
-inline int16
+inline int16_t
 DimeEntity::getColorNumber() const
 {
 	return this->colorNumber;
 }
 
 inline void
-DimeEntity::setColorNumber(const int16 c)
+DimeEntity::setColorNumber(const int16_t c)
 {
 	this->colorNumber = c;
 }
 
-inline int16
+inline int16_t
 DimeEntity::getEntityFlags() const
 {
 	return this->entityFlags;
 }
 
 inline void
-DimeEntity::setEntityFlags(const int16 flags)
+DimeEntity::setEntityFlags(const int16_t flags)
 {
 	this->entityFlags = flags;
 }

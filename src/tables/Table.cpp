@@ -116,7 +116,7 @@ DimeTable::copy(DimeModel* const model) const
 bool
 DimeTable::read(DimeInput* const file)
 {
-	int32 groupcode;
+	int32_t groupcode;
 	DimeRecord* record = nullptr;
 	bool ok = true;
 	do

@@ -39,7 +39,7 @@
 
 class DimeBlock;
 
-class DIME_DLL_API DimeInsert : public DimeEntity
+class  DimeInsert : public DimeEntity
 {
 	friend class DimeEntitiesSection;
 	friend class DimeBlocksSection;
@@ -83,7 +83,7 @@ protected:
 private:
 	void makeMatrix(dimeMatrix& m) const;
 
-	int16 attributesFollow;
+	int16_t attributesFollow;
 	const char* blockName;
 	dimeVec3 insertionPoint;
 	dimeVec3 extrusionDir;
@@ -92,11 +92,11 @@ private:
 	DimeEntity** entities;
 	int numEntities;
 #ifdef DIME_FIXBIG
-  int32 rowCount;
+  int32_t rowCount;
 #else
-	int16 rowCount;
+	int16_t rowCount;
 #endif
-	int16 columnCount;
+	int16_t columnCount;
 	dxfdouble rowSpacing;
 	dxfdouble columnSpacing;
 	DimeEntity* seqend;

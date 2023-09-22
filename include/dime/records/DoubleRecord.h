@@ -35,7 +35,7 @@
 
 #include <dime/records/Record.h>
 
-class DIME_DLL_API dimeDoubleRecord : public DimeRecord
+class  dimeDoubleRecord : public DimeRecord
 {
 public:
 	dimeDoubleRecord(int group_code = 10, dxfdouble val = 0.0f);

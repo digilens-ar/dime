@@ -35,7 +35,7 @@
 
 #include <dime/entities/ExtrusionEntity.h>
 
-class DIME_DLL_API DimeLWPolyline : public DimeExtrusionEntity
+class  DimeLWPolyline : public DimeExtrusionEntity
 {
 public:
 	DimeLWPolyline();
@@ -64,7 +64,7 @@ public:
 
 	dxfdouble getElevation() const;
 	dxfdouble getConstantWidth() const;
-	int16 getFlags() const;
+	int16_t getFlags() const;
 
 protected:
 	bool handleRecord(int groupcode,
@@ -73,10 +73,10 @@ protected:
 private:
 	dxfdouble constantWidth;
 	dxfdouble elevation;
-	int16 flags;
-	int32 numVertices;
-	int16 tmpCounter; // used during loading only
-	int16 tmpFlags; //     ""
+	int16_t flags;
+	int32_t numVertices;
+	int16_t tmpCounter; // used during loading only
+	int16_t tmpFlags; //     ""
 	dxfdouble* xcoord;
 	dxfdouble* ycoord;
 	dxfdouble* startingWidth;
@@ -133,7 +133,7 @@ DimeLWPolyline::getConstantWidth() const
 	return this->constantWidth;
 }
 
-inline int16
+inline int16_t
 DimeLWPolyline::getFlags() const
 {
 	return this->flags;

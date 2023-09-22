@@ -35,7 +35,7 @@
 
 #include <dime/tables/TableEntry.h>
 
-class DIME_DLL_API DimeUnknownTable : public DimeTableEntry
+class  DimeUnknownTable : public DimeTableEntry
 {
 public:
 	DimeUnknownTable(const char* name);

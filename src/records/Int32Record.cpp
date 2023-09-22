@@ -43,7 +43,7 @@
   Constructor
 */
 
-dimeInt32Record::dimeInt32Record(const int group_code, const int32 val)
+dimeInt32Record::dimeInt32Record(const int group_code, const int32_t val)
 	: DimeRecord(group_code)
 {
 	this->setValue(val);
@@ -58,20 +58,20 @@ dimeInt32Record::copy() const
 }
 
 /*!
-  Sets the int32 value to \a val.
+  Sets the int32_t value to \a val.
 */
 
 void
-dimeInt32Record::setValue(const int32 val)
+dimeInt32Record::setValue(const int32_t val)
 {
 	this->value = val;
 }
 
 /*!
-  Returns the int32 value.
+  Returns the int32_t value.
 */
 
-int32
+int32_t
 dimeInt32Record::getValue() const
 {
 	return this->value;

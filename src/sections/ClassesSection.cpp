@@ -95,7 +95,7 @@ DimeClassesSection::copy(DimeModel* const model) const
 bool
 DimeClassesSection::read(DimeInput* const file)
 {
-	int32 groupcode;
+	int32_t groupcode;
 	const char* string;
 	bool ok = true;
 	DimeClass* myclass = nullptr;

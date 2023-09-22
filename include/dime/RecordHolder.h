@@ -40,7 +40,7 @@ class DimeInput;
 class DimeOutput;
 class DimeRecord;
 
-class DIME_DLL_API DimeRecordHolder : public DimeBase
+class  DimeRecordHolder : public DimeBase
 {
 public:
 	DimeRecordHolder(int separator);

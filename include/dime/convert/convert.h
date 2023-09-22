@@ -41,7 +41,7 @@ class dxfLayerData;
 class DimeState;
 class DimeEntity;
 
-class DIME_DLL_API dxfConverter
+class  dxfConverter
 {
 public:
 	dxfConverter();

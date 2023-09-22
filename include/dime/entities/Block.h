@@ -41,7 +41,7 @@ class DimeInput;
 class DimeModel;
 class DimeOutput;
 
-class DIME_DLL_API DimeBlock : public DimeEntity
+class  DimeBlock : public DimeEntity
 {
 	friend class DimeBlocksSection;
 	friend class DimeEntitiesSection;
@@ -83,7 +83,7 @@ protected:
 	              dimeCallback const& callback) override;
 
 private:
-	int16 flags;
+	int16_t flags;
 	const char* name;
 	dimeVec3 basePoint;
 	dimeArray<DimeEntity*> entities;

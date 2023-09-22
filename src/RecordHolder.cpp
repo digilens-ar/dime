@@ -123,7 +123,7 @@ DimeRecordHolder::read(DimeInput* const file)
 {
 	DimeRecord* record;
 	bool ok = true;
-	int32 groupcode;
+	int32_t groupcode;
 	dimeArray<DimeRecord*> array(256); // temporary array
 
 	while (true)

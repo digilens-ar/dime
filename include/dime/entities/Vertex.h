@@ -39,7 +39,7 @@
 
 class DimePolyline;
 
-class DIME_DLL_API DimeVertex : public DimeEntity
+class  DimeVertex : public DimeEntity
 {
 	friend class DimePolyline;
 	friend class DimeEntity;
@@ -64,8 +64,8 @@ public:
 	               int index = 0) const override;
 	const char* getEntityName() const override;
 
-	int16 getFlags() const;
-	void setFlags(int16 flags);
+	int16_t getFlags() const;
+	void setFlags(int16_t flags);
 
 	void setCoords(const dimeVec3& v);
 	const dimeVec3& getCoords() const;
@@ -83,11 +83,11 @@ protected:
 	                  const dimeParam& param) override;
 
 private:
-	int16 flags;
+	int16_t flags;
 #ifdef DIME_FIXBIG
-  int32 indices[4];
+  int32_t indices[4];
 #else
-	int16 indices[4];
+	int16_t indices[4];
 #endif
 	dimeVec3 coords;
 	DimePolyline* polyline; // link back to polyline...
@@ -112,14 +112,14 @@ DimeVertex::setIndex(const int idx, const int val)
 	this->indices[idx] = val;
 }
 
-inline int16
+inline int16_t
 DimeVertex::getFlags() const
 {
 	return this->flags;
 }
 
 inline void
-DimeVertex::setFlags(const int16 flags)
+DimeVertex::setFlags(const int16_t flags)
 {
 	this->flags = flags;
 }

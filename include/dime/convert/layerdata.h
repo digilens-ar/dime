@@ -38,7 +38,7 @@
 #include <dime/util/BSPTree.h>
 #include <stdio.h>
 
-class DIME_DLL_API dxfLayerData
+class  dxfLayerData
 {
 public:
 	dxfLayerData(int colidx);

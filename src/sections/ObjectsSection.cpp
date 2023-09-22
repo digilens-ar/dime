@@ -93,7 +93,7 @@ DimeObjectsSection::copy(DimeModel* const model) const
 bool
 DimeObjectsSection::read(DimeInput* const file)
 {
-	int32 groupcode;
+	int32_t groupcode;
 	const char* string;
 	bool ok = true;
 	DimeObject* object = nullptr;

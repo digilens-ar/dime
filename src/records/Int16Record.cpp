@@ -44,7 +44,7 @@
   Constructor
 */
 
-dimeInt16Record::dimeInt16Record(const int group_code, const int16 val)
+dimeInt16Record::dimeInt16Record(const int group_code, const int16_t val)
 	: DimeRecord(group_code)
 {
 	this->setValue(val);
@@ -59,20 +59,20 @@ dimeInt16Record::copy() const
 }
 
 /*!
-  Sets the int16 value.
+  Sets the int16_t value.
 */
 
 void
-dimeInt16Record::setValue(const int16 val)
+dimeInt16Record::setValue(const int16_t val)
 {
 	this->value = val;
 }
 
 /*!
-  Returns the int16 value.
+  Returns the int16_t value.
 */
 
-int16
+int16_t
 dimeInt16Record::getValue() const
 {
 	return this->value;

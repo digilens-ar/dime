@@ -38,7 +38,7 @@
 
 #define DXF_MAXLINELEN 4096
 
-class DIME_DLL_API DimeInput
+class  DimeInput
 {
 public:
 	DimeInput();
@@ -51,11 +51,11 @@ public:
 	void setCallback(int (*cb)(float, void*), void* cbdata);
 	float relativePosition();
 
-	void putBackGroupCode(int32 code);
-	bool readGroupCode(int32& code);
-	bool readInt8(int8& val);
-	bool readInt16(int16& val);
-	bool readInt32(int32& val);
+	void putBackGroupCode(int32_t code);
+	bool readGroupCode(int32_t& code);
+	bool readInt8(int8_t& val);
+	bool readInt16(int16_t& val);
+	bool readInt32(int32_t& val);
 	bool readFloat(float& val);
 	bool readDouble(dxfdouble& val);
 	const char* readString();
@@ -94,7 +94,7 @@ private:
 	int backBufIndex;
 
 	char lineBuf[DXF_MAXLINELEN];
-	int32 putBackCode;
+	int32_t putBackCode;
 	bool hasPutBack;
 	int (*callback)(float, void*);
 	void* callbackdata;

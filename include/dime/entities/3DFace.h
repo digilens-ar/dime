@@ -37,7 +37,7 @@
 #include <dime/entities/FaceEntity.h>
 #include <dime/util/Linear.h>
 
-class DIME_DLL_API dime3DFace : public dimeFaceEntity
+class  dime3DFace : public dimeFaceEntity
 {
 	friend class DimeEntitiesSection;
 	friend class DimeBlock;
@@ -64,8 +64,8 @@ public:
 		EDGE4_INVISIBLE = 0x0008
 	};
 
-	void setFlags(int16 flags);
-	int16 getFlags() const;
+	void setFlags(int16_t flags);
+	int16_t getFlags() const;
 
 	virtual bool write(DimeOutput* out);
 	TypeID typeId() const override;
@@ -75,7 +75,7 @@ protected:
 	bool handleRecord(int groupcode,
 	                  const dimeParam& param) override;
 
-	int16 flags;
+	int16_t flags;
 
 public:
 #ifndef NO_RR_DATA

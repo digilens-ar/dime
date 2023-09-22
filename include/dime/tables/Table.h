@@ -42,7 +42,7 @@ class DimeOutput;
 class DimeTableEntry;
 class DimeRecord;
 
-class DIME_DLL_API DimeTable : public DimeBase
+class  DimeTable : public DimeBase
 {
 public:
 	DimeTable();
@@ -69,7 +69,7 @@ public:
 	void removeTableRecord(int idx);
 
 private:
-	int16 maxEntries; // dummy variable read from file
+	int16_t maxEntries; // dummy variable read from file
 	char* tablename;
 	dimeArray<DimeTableEntry*> tableEntries;
 	dimeArray<DimeRecord*> records;

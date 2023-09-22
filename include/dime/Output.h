@@ -38,7 +38,7 @@
 
 class DimeModel;
 
-class DIME_DLL_API DimeOutput
+class  DimeOutput
 {
 public:
 	DimeOutput();
@@ -53,9 +53,9 @@ public:
 
 	bool writeHeader() { return true; }
 	bool writeGroupCode(int groupcode);
-	bool writeInt8(int8 val);
-	bool writeInt16(int16 val);
-	bool writeInt32(int32 val);
+	bool writeInt8(int8_t val);
+	bool writeInt16(int16_t val);
+	bool writeInt32(int32_t val);
 	bool writeFloat(float val);
 	bool writeDouble(dxfdouble val);
 	bool writeString(const char* str);

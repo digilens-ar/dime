@@ -186,7 +186,7 @@ DimeLayerTable::getLayerName(void) const
   Sets the color number.
  */
 void
-DimeLayerTable::setColorNumber(const int16 colnum)
+DimeLayerTable::setColorNumber(const int16_t colnum)
 {
 	this->colorNumber = colnum;
 	if (this->layerInfo) this->layerInfo->setColorNumber(DXFABS(this->colorNumber));
@@ -195,7 +195,7 @@ DimeLayerTable::setColorNumber(const int16 colnum)
 /*!
   Returns the color number.
  */
-int16
+int16_t
 DimeLayerTable::getColorNumber(void) const
 {
 	return this->colorNumber;
