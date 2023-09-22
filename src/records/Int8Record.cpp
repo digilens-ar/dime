@@ -38,7 +38,7 @@
 #include <dime/records/Int8Record.h>
 #include <dime/Input.h>
 #include <dime/Output.h>
-#include <dime/util/MemHandler.h>
+
 
 /*!
   Constructor
@@ -53,9 +53,9 @@ dimeInt8Record::dimeInt8Record(const int group_code, const int8 val)
 //!
 
 DimeRecord*
-dimeInt8Record::copy(DimeMemHandler* const mh) const
+dimeInt8Record::copy() const
 {
-	return new(mh) dimeInt8Record(this->groupCode, this->value);
+	return new dimeInt8Record(this->groupCode, this->value);
 }
 
 /*!
@@ -109,7 +109,7 @@ dimeInt8Record::write(DimeOutput* const out)
 //!
 
 void
-dimeInt8Record::setValue(const dimeParam& param, DimeMemHandler* const)
+dimeInt8Record::setValue(const dimeParam& param)
 {
 	this->value = param.int8_data;
 }

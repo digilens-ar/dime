@@ -38,7 +38,7 @@
 #include <dime/entities/Line.h>
 #include <dime/records/Record.h>
 #include <dime/Output.h>
-#include <dime/util/MemHandler.h>
+
 #include <dime/Model.h>
 
 static char entityName[] = "LINE";
@@ -58,7 +58,7 @@ DimeLine::DimeLine()
 DimeEntity*
 DimeLine::copy(DimeModel* const model) const
 {
-	auto l = new(model->getMemHandler()) DimeLine;
+	auto l = new DimeLine;
 	if (!l) return nullptr;
 
 	for (int i = 0; i < 2; i++)
@@ -67,7 +67,7 @@ DimeLine::copy(DimeModel* const model) const
 	if (!this->copyRecords(l, model))
 	{
 		// check if allocated on heap.
-		if (!model->getMemHandler()) delete l;
+		delete l;
 		l = nullptr;
 	}
 	else
@@ -112,8 +112,7 @@ DimeLine::typeId() const
 
 bool
 DimeLine::handleRecord(const int groupcode,
-                       const dimeParam& param,
-                       DimeMemHandler* const memhandler)
+                       const dimeParam& param)
 {
 	switch (groupcode)
 	{
@@ -126,7 +125,7 @@ DimeLine::handleRecord(const int groupcode,
 		this->coords[groupcode % 10][groupcode / 10 - 1] = param.double_data;
 		return true;
 	}
-	return DimeExtrusionEntity::handleRecord(groupcode, param, memhandler);
+	return DimeExtrusionEntity::handleRecord(groupcode, param);
 }
 
 //!

@@ -40,7 +40,7 @@
 #include <dime/records/Record.h>
 #include <dime/Input.h>
 #include <dime/Output.h>
-#include <dime/util/MemHandler.h>
+
 #include <dime/Model.h>
 #include <dime/State.h>
 
@@ -85,8 +85,7 @@ DimeInsert::~DimeInsert()
 DimeEntity*
 DimeInsert::copy(DimeModel* const model) const
 {
-	DimeMemHandler* memh = model->getMemHandler();
-	auto inst = new(memh) DimeInsert;
+	auto inst = new DimeInsert;
 
 	bool ok = true;
 	if (this->numEntities)
@@ -135,7 +134,7 @@ DimeInsert::copy(DimeModel* const model) const
 
 	if (!ok || !this->copyRecords(inst, model))
 	{
-		if (!memh) delete inst; // delete if allocated on heap
+		delete inst; // delete if allocated on heap
 		inst = nullptr; // just return NULL
 	}
 	return inst;
@@ -170,20 +169,19 @@ DimeInsert::read(DimeInput* const file)
 
 	if (ret && this->attributesFollow)
 	{
-		DimeMemHandler* memhandler = file->getMemHandler();
 		// read following entities.
 		dimeArray<DimeEntity*> array;
 		ret = DimeEntity::readEntities(file, array, "SEQEND");
 		if (ret)
 		{
-			this->seqend = DimeEntity::createEntity("SEQEND", memhandler);
+			this->seqend = DimeEntity::createEntity("SEQEND");
 			// read the SEQEND entity
 			if (!this->seqend || !this->seqend->read(file)) ret = false;
 		}
 		int n = array.count();
 		if (ret && n)
 		{
-			this->entities = ARRAY_NEW(memhandler, DimeEntity*, n);
+			this->entities = ARRAY_NEW(DimeEntity*, n);
 			if (this->entities)
 			{
 				this->numEntities = n;
@@ -303,8 +301,7 @@ DimeInsert::typeId() const
 
 bool
 DimeInsert::handleRecord(const int groupcode,
-                         const dimeParam& param,
-                         DimeMemHandler* const memhandler)
+                         const dimeParam& param)
 {
 	switch (groupcode)
 	{
@@ -361,7 +358,7 @@ DimeInsert::handleRecord(const int groupcode,
 #endif
 		return true;
 	}
-	return DimeEntity::handleRecord(groupcode, param, memhandler);
+	return DimeEntity::handleRecord(groupcode, param);
 }
 
 //!

@@ -59,8 +59,7 @@ protected:
 	bool swapQuadCoords() const override;
 
 	bool handleRecord(int groupcode,
-	                  const dimeParam& param,
-	                  DimeMemHandler* memhandler) override;
+	                  const dimeParam& param) override;
 
 private:
 	dimeVec3 extrusionDir;

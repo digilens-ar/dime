@@ -36,7 +36,7 @@
 */
 
 #include <dime/records/Record.h>
-#include <dime/util/MemHandler.h>
+
 #include <dime/records/StringRecord.h>
 #include <dime/Input.h>
 #include <dime/Output.h>
@@ -47,11 +47,6 @@
 #include <dime/records/Int8Record.h>
 #include <dime/records/Int16Record.h>
 #include <dime/records/Int32Record.h>
-
-/*!
-  \fn dimeRecord *dimeRecord::copy(dimeMemHandler * const memhandler) const = 0
-  Returns a copy of this record.
-*/
 
 /*!
   \fn void dimeRecord::setValue(const dimeParam &param, dimeMemHandler * const memhandler = NULL) = 0
@@ -153,7 +148,7 @@ DimeRecord::readRecord(DimeInput* const in)
 	DimeRecord* rec = nullptr;
 	if (in->readGroupCode(groupcode))
 	{
-		rec = createRecord(groupcode, in->getMemHandler());
+		rec = createRecord(groupcode);
 		if (rec) rec->read(in);
 	}
 	return rec;
@@ -161,38 +156,35 @@ DimeRecord::readRecord(DimeInput* const in)
 
 /*!
   Static function that creates a record based on the group code.
-  if \a memhandler != NULL, it will be used to allocate the other,
-  otherwise the default memory handler will be used.
 */
 
 DimeRecord*
-DimeRecord::createRecord(const int group_code,
-                         DimeMemHandler* const memhandler)
+DimeRecord::createRecord(const int group_code)
 {
 	int type = getRecordType(group_code);
 	DimeRecord* record = nullptr;
 	switch (type)
 	{
 	case dimeStringRecordType:
-		record = new(memhandler) dimeStringRecord(group_code);
+		record = new dimeStringRecord(group_code);
 		break;
 	case dimeFloatRecordType:
-		record = new(memhandler) dimeFloatRecord(group_code);
+		record = new dimeFloatRecord(group_code);
 		break;
 	case dimeDoubleRecordType:
-		record = new(memhandler, sizeof(dxfdouble)) dimeDoubleRecord(group_code);
+		record = new dimeDoubleRecord(group_code);
 		break;
 	case dimeInt8RecordType:
-		record = new(memhandler) dimeInt8Record(group_code);
+		record = new dimeInt8Record(group_code);
 		break;
 	case dimeInt16RecordType:
-		record = new(memhandler) dimeInt16Record(group_code);
+		record = new dimeInt16Record(group_code);
 		break;
 	case dimeInt32RecordType:
-		record = new(memhandler) dimeInt32Record(group_code);
+		record = new dimeInt32Record(group_code);
 		break;
 	case dimeHexRecordType:
-		record = new(memhandler) dimeHexRecord(group_code);
+		record = new dimeHexRecord(group_code);
 		break;
 	default:
 		assert(0);
@@ -205,11 +197,10 @@ DimeRecord::createRecord(const int group_code,
 
 DimeRecord*
 DimeRecord::createRecord(const int group_code,
-                         const dimeParam& param,
-                         DimeMemHandler* const memhandler)
+                         const dimeParam& param)
 {
-	DimeRecord* record = createRecord(group_code, memhandler);
-	if (record) record->setValue(param, memhandler);
+	DimeRecord* record = createRecord(group_code);
+	if (record) record->setValue(param);
 	return record;
 }
 

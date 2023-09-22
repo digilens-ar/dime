@@ -45,7 +45,7 @@
 #include <dime/records/StringRecord.h>
 #include <dime/Input.h>
 #include <dime/Output.h>
-#include <dime/util/MemHandler.h>
+
 #include <dime/Model.h>
 
 #include <string.h>
@@ -54,8 +54,8 @@
   Constructor.
 */
 
-DimeTable::DimeTable(DimeMemHandler* const memhandler)
-	: maxEntries(0), tablename(nullptr), memHandler(memhandler)
+DimeTable::DimeTable()
+	: maxEntries(0), tablename(nullptr)
 {
 }
 
@@ -66,18 +66,16 @@ DimeTable::DimeTable(DimeMemHandler* const memhandler)
 DimeTable::~DimeTable()
 {
 	int i;
-	if (!this->memHandler)
+	for (i = 0; i < this->tableEntries.count(); i++)
 	{
-		for (i = 0; i < this->tableEntries.count(); i++)
-		{
-			delete this->tableEntries[i];
-		}
-		for (i = 0; i < this->records.count(); i++)
-		{
-			delete this->records[i];
-		}
-		delete[] this->tablename;
+		delete this->tableEntries[i];
 	}
+	for (i = 0; i < this->records.count(); i++)
+	{
+		delete this->records[i];
+	}
+	delete[] this->tablename;
+	
 }
 
 //!
@@ -85,16 +83,15 @@ DimeTable::~DimeTable()
 DimeTable*
 DimeTable::copy(DimeModel* const model) const
 {
-	DimeMemHandler* memh = model->getMemHandler();
 	int i;
-	auto t = new DimeTable(memh);
+	auto t = new DimeTable;
 	int n = this->records.count();
 	if (n)
 	{
 		t->records.makeEmpty(n);
 		for (i = 0; i < n; i++)
 		{
-			t->records.append(this->records[i]->copy(memh));
+			t->records.append(this->records[i]->copy());
 		}
 	}
 	n = this->tableEntries.count();
@@ -122,8 +119,6 @@ DimeTable::read(DimeInput* const file)
 	int32 groupcode;
 	DimeRecord* record = nullptr;
 	bool ok = true;
-	DimeMemHandler* memh = file->getMemHandler();
-
 	do
 	{
 		if (!file->readGroupCode(groupcode))
@@ -151,7 +146,7 @@ DimeTable::read(DimeInput* const file)
 		}
 		else if (groupcode != 0)
 		{
-			record = DimeRecord::createRecord(groupcode, memh);
+			record = DimeRecord::createRecord(groupcode);
 			if (!record || !record->read(file))
 			{
 				ok = false;
@@ -181,7 +176,7 @@ DimeTable::read(DimeInput* const file)
 				break;
 			}
 			if (!strcmp(string, "ENDTAB")) break; // end of table
-			entry = DimeTableEntry::createTableEntry(string, memh);
+			entry = DimeTableEntry::createTableEntry(string);
 			if (!entry->read(file))
 			{
 				ok = false;
@@ -267,11 +262,8 @@ DimeTable::tableName() const
 void
 DimeTable::setTableName(const char* name)
 {
-	if (!this->memHandler)
-	{
-		delete[] this->tablename;
-	}
-	DXF_STRCPY(this->memHandler, this->tablename, name);
+	delete[] this->tablename;
+	DXF_STRCPY(this->tablename, name);
 }
 
 /*!
@@ -322,7 +314,7 @@ void
 DimeTable::removeTableEntry(const int idx)
 {
 	assert(idx >= 0 && idx < this->tableEntries.count());
-	if (!this->memHandler) delete this->tableEntries[idx];
+	delete this->tableEntries[idx];
 	this->tableEntries.removeElem(idx);
 }
 
@@ -375,7 +367,7 @@ void
 DimeTable::removeTableRecord(const int idx)
 {
 	assert(idx >= 0 && idx < this->records.count());
-	if (!this->memHandler) delete this->records[idx];
+	delete this->records[idx];
 	this->records.removeElem(idx);
 }
 

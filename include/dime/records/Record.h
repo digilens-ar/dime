@@ -46,9 +46,9 @@ public:
 	DimeRecord(int group_code);
 	~DimeRecord() override;
 
-	virtual void setValue(const dimeParam& param, DimeMemHandler* memhandler = nullptr) = 0;
+	virtual void setValue(const dimeParam& param) = 0;
 	virtual void getValue(dimeParam& param) const = 0;
-	virtual DimeRecord* copy(DimeMemHandler* memhandler) const = 0;
+	virtual DimeRecord* copy() const = 0;
 
 	void setGroupCode(int group_code);
 	int getGroupCode() const;
@@ -61,14 +61,10 @@ public:
 	virtual bool write(DimeOutput* out);
 
 public:
-	static bool readRecordData(DimeInput* in, int group_code,
-	                           dimeParam& param);
+	static bool readRecordData(DimeInput* in, int group_code, dimeParam& param);
 	static DimeRecord* readRecord(DimeInput* in);
-	static DimeRecord* createRecord(int group_code,
-	                                DimeMemHandler* memhandler);
-	static DimeRecord* createRecord(int group_code,
-	                                const dimeParam& param,
-	                                DimeMemHandler* memhandler);
+	static DimeRecord* createRecord(int group_code);
+	static DimeRecord* createRecord(int group_code, const dimeParam& param);
 	static int getRecordType(int group_code);
 
 protected:

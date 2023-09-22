@@ -39,7 +39,7 @@
 #include <dime/records/Record.h>
 #include <dime/Input.h>
 #include <dime/Output.h>
-#include <dime/util/MemHandler.h>
+
 #include <dime/Model.h>
 #include <float.h>
 
@@ -59,7 +59,7 @@ DimeTrace::DimeTrace()
 DimeEntity*
 DimeTrace::copy(DimeModel* const model) const
 {
-	auto f = new(model->getMemHandler())DimeTrace;
+	auto f = new DimeTrace;
 	if (!f) return nullptr;
 
 	f->copyCoords(this);
@@ -69,7 +69,7 @@ DimeTrace::copy(DimeModel* const model) const
 	if (!this->copyRecords(f, model))
 	{
 		// check if allocated on heap.
-		if (!model->getMemHandler()) delete f;
+		delete f;
 		f = nullptr;
 	}
 	return f;
@@ -107,8 +107,7 @@ DimeTrace::write(DimeOutput* const file)
 //!
 
 bool
-DimeTrace::handleRecord(const int groupcode, const dimeParam& param,
-                        DimeMemHandler* const memhandler)
+DimeTrace::handleRecord(const int groupcode, const dimeParam& param)
 {
 	switch (groupcode)
 	{
@@ -121,7 +120,7 @@ DimeTrace::handleRecord(const int groupcode, const dimeParam& param,
 		this->thickness = param.double_data;
 		return true;
 	}
-	return dimeFaceEntity::handleRecord(groupcode, param, memhandler);
+	return dimeFaceEntity::handleRecord(groupcode, param);
 }
 
 //!

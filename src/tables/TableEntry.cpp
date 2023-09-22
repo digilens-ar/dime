@@ -42,7 +42,7 @@
 #include <dime/records/Record.h>
 #include <dime/Input.h>
 #include <dime/Output.h>
-#include <dime/util/MemHandler.h>
+
 #include <dime/Model.h>
 
 #include <string.h>
@@ -73,7 +73,7 @@ bool
 DimeTableEntry::copyRecords(DimeTableEntry* const table,
                             DimeModel* const model) const
 {
-	return DimeRecordHolder::copyRecords(table, model->getMemHandler());
+	return DimeRecordHolder::copyRecords(table);
 }
 
 //!
@@ -99,17 +99,16 @@ DimeTableEntry::read(DimeInput* const file)
 */
 
 DimeTableEntry*
-DimeTableEntry::createTableEntry(const char* const name,
-                                 DimeMemHandler* const memhandler)
+DimeTableEntry::createTableEntry(const char* const name)
 {
 	if (!strcmp(name, "LAYER"))
 	{
-		return new(memhandler) DimeLayerTable;
+		return new DimeLayerTable;
 	}
 	//if (!strcmp(name, "UCS")) // UCS is not used for the moment
-	//  return new(memhandler) dimeUCSTable;
+	//  return new dimeUCSTable;
 
-	return new(memhandler) DimeUnknownTable(name, memhandler);
+	return new DimeUnknownTable(name);
 }
 
 /*!
@@ -129,8 +128,7 @@ DimeTableEntry::countRecords() const
 
 bool
 DimeTableEntry::handleRecord(const int,
-                             const dimeParam&,
-                             DimeMemHandler* const)
+                             const dimeParam&)
 {
 	return false;
 }

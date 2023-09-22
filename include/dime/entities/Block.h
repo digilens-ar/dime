@@ -38,7 +38,6 @@
 #include <dime/util/Linear.h>
 
 class DimeInput;
-class DimeMemHandler;
 class DimeModel;
 class DimeOutput;
 
@@ -50,7 +49,7 @@ class DIME_DLL_API DimeBlock : public DimeEntity
 	friend class DimeModel;
 
 public:
-	DimeBlock(DimeMemHandler* memhandler);
+	DimeBlock();
 	~DimeBlock() override;
 
 	const dimeVec3& getBasePoint() const;
@@ -77,8 +76,7 @@ public:
 
 protected:
 	bool handleRecord(int groupcode,
-	                  const dimeParam& param,
-	                  DimeMemHandler* memhandler) override;
+	                  const dimeParam& param) override;
 
 	void fixReferences(DimeModel* model) override;
 	bool traverse(const DimeState* state,
@@ -90,7 +88,6 @@ private:
 	dimeVec3 basePoint;
 	dimeArray<DimeEntity*> entities;
 	DimeEntity* endblock;
-	DimeMemHandler* memHandler;
 }; // class dimeBlock
 
 inline const dimeVec3&

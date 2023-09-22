@@ -38,7 +38,7 @@
 #include <dime/sections/EntitiesSection.h>
 #include <dime/Input.h>
 #include <dime/Output.h>
-#include <dime/util/MemHandler.h>
+
 #include <dime/Model.h>
 #include <dime/util/Array.h>
 #include <dime/entities/Entity.h>
@@ -52,25 +52,13 @@
 static constexpr char sectionName[] = "ENTITIES";
 
 /*!
-  Constructor.
-*/
-
-DimeEntitiesSection::DimeEntitiesSection(DimeMemHandler* const memhandler)
-	: DimeSection(memhandler)
-{
-}
-
-/*!
   Destructor.
 */
 
 DimeEntitiesSection::~DimeEntitiesSection()
 {
-	if (!this->memHandler)
-	{
-		for (int i = 0; i < this->entities.count(); i++)
-			delete this->entities[i];
-	}
+	for (int i = 0; i < this->entities.count(); i++)
+		delete this->entities[i];
 }
 
 //!
@@ -78,8 +66,7 @@ DimeEntitiesSection::~DimeEntitiesSection()
 DimeSection*
 DimeEntitiesSection::copy(DimeModel* const model) const
 {
-	DimeMemHandler* memh = model->getMemHandler();
-	auto es = new DimeEntitiesSection(memh);
+	auto es = new DimeEntitiesSection();
 	bool ok = es != nullptr;
 
 	int num = this->entities.count();
@@ -97,7 +84,7 @@ DimeEntitiesSection::copy(DimeModel* const model) const
 
 	if (!ok)
 	{
-		if (!memh) delete es;
+		delete es;
 		es = nullptr;
 	}
 	return es;
@@ -112,7 +99,6 @@ DimeEntitiesSection::read(DimeInput* const file)
 	const char* string;
 	bool ok = true;
 	DimeEntity* entity = nullptr;
-	DimeMemHandler* memhandler = file->getMemHandler();
 	this->entities.makeEmpty(1024);
 
 	while (true)
@@ -126,7 +112,7 @@ DimeEntitiesSection::read(DimeInput* const file)
 		string = file->readString();
 		if (!strcmp(string, "ENDSEC")) break;
 
-		entity = DimeEntity::createEntity(string, memhandler);
+		entity = DimeEntity::createEntity(string);
 		if (entity == nullptr)
 		{
 			fprintf(stderr, "Error creating entity: %s.\n", string);
@@ -239,7 +225,7 @@ void
 DimeEntitiesSection::removeEntity(const int idx)
 {
 	assert(idx >= 0 && idx < this->entities.count());
-	if (!this->memHandler) delete this->entities[idx];
+	delete this->entities[idx];
 	this->entities.removeElem(idx);
 }
 

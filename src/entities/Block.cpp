@@ -44,7 +44,7 @@
 #include <dime/records/Record.h>
 #include <dime/Input.h>
 #include <dime/Output.h>
-#include <dime/util/MemHandler.h>
+
 #include <dime/Model.h>
 
 static char entityName[] = "BLOCK";
@@ -88,9 +88,8 @@ static char entityName[] = "BLOCK";
   Constructor.
 */
 
-DimeBlock::DimeBlock(DimeMemHandler* const memhandler)
-	: flags(0), name(nullptr), basePoint(0, 0, 0), endblock(nullptr),
-	  memHandler(memhandler)
+DimeBlock::DimeBlock()
+	: flags(0), name(nullptr), basePoint(0, 0, 0), endblock(nullptr)
 {
 }
 
@@ -100,14 +99,11 @@ DimeBlock::DimeBlock(DimeMemHandler* const memhandler)
 
 DimeBlock::~DimeBlock()
 {
-	if (!this->memHandler)
+	for (int i = 0; i < this->entities.count(); i++)
 	{
-		for (int i = 0; i < this->entities.count(); i++)
-		{
-			delete this->entities[i];
-		}
-		delete this->endblock;
+		delete this->entities[i];
 	}
+	delete this->endblock;
 }
 
 //!
@@ -115,8 +111,7 @@ DimeBlock::~DimeBlock()
 DimeEntity*
 DimeBlock::copy(DimeModel* const model) const
 {
-	DimeMemHandler* memh = model->getMemHandler();
-	auto bl = new DimeBlock(memh);
+	auto bl = new DimeBlock();
 	bool ok = true;
 
 	int n = this->entities.count();
@@ -144,7 +139,7 @@ DimeBlock::copy(DimeModel* const model) const
 
 	if (!ok || !this->copyRecords(bl, model))
 	{
-		if (!memh) delete bl; // delete if allocated on heap
+		delete bl; // delete if allocated on heap
 		bl = nullptr; // just return NULL
 	}
 	return bl;
@@ -170,12 +165,11 @@ DimeBlock::read(DimeInput* const file)
 	// got to do some reading to get all entities in the block
 	if (ret)
 	{
-		DimeMemHandler* memhandler = file->getMemHandler();
 		this->entities.makeEmpty(1024); // begin with a fairly large array
 		ret = DimeEntity::readEntities(file, this->entities, "ENDBLK");
 		if (ret)
 		{
-			this->endblock = DimeEntity::createEntity("ENDBLK", memhandler);
+			this->endblock = DimeEntity::createEntity("ENDBLK");
 			// read the ENDBLOCK entity
 			if (!this->endblock || !this->endblock->read(file)) ret = false;
 		}
@@ -256,8 +250,7 @@ DimeBlock::typeId() const
 
 bool
 DimeBlock::handleRecord(const int groupcode,
-                        const dimeParam& param,
-                        DimeMemHandler* const memhandler)
+                        const dimeParam& param)
 {
 	switch (groupcode)
 	{
@@ -285,7 +278,7 @@ DimeBlock::handleRecord(const int groupcode,
 		this->basePoint[groupcode / 10 - 1] = param.double_data;
 		return true;
 	}
-	return DimeEntity::handleRecord(groupcode, param, memhandler);
+	return DimeEntity::handleRecord(groupcode, param);
 }
 
 //!
@@ -371,7 +364,7 @@ void
 DimeBlock::removeEntity(const int idx, const bool deleteIt)
 {
 	assert(idx >= 0 && idx < this->entities.count());
-	if (!this->memHandler && deleteIt) delete this->entities[idx];
+	if (deleteIt) delete this->entities[idx];
 	this->entities.removeElem(idx);
 }
 

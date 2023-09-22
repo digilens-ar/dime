@@ -38,7 +38,7 @@
 #include <dime/records/FloatRecord.h>
 #include <dime/Input.h>
 #include <dime/Output.h>
-#include <dime/util/MemHandler.h>
+
 
 /*!
   Constructor
@@ -53,9 +53,9 @@ dimeFloatRecord::dimeFloatRecord(const int group_code, const float val)
 //!
 
 DimeRecord*
-dimeFloatRecord::copy(DimeMemHandler* const mh) const
+dimeFloatRecord::copy() const
 {
-	return new(mh) dimeFloatRecord(this->groupCode, this->value);
+	return new dimeFloatRecord(this->groupCode, this->value);
 }
 
 /*!
@@ -107,7 +107,7 @@ dimeFloatRecord::write(DimeOutput* const out)
 //!
 
 void
-dimeFloatRecord::setValue(const dimeParam& param, DimeMemHandler* const)
+dimeFloatRecord::setValue(const dimeParam& param)
 {
 	this->value = param.float_data;
 }

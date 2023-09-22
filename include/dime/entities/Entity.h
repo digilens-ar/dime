@@ -118,13 +118,11 @@ protected:
 
 	virtual void fixReferences(DimeModel* model);
 	bool handleRecord(int groupcode,
-	                  const dimeParam& param,
-	                  DimeMemHandler* memhandler) override;
+	                  const dimeParam& param) override;
 	bool shouldWriteRecord(int groupcode) const override;
 
 public:
-	static DimeEntity* createEntity(const char* name,
-	                                DimeMemHandler* memhandler = nullptr);
+	static DimeEntity* createEntity(const char* name);
 	static bool readEntities(DimeInput* file,
 	                         dimeArray<DimeEntity*>& array,
 	                         const char* stopat);

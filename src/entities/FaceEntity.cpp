@@ -151,8 +151,7 @@ dimeFaceEntity::writeCoords(DimeOutput* const file)
 
 bool
 dimeFaceEntity::handleRecord(const int groupcode,
-                             const dimeParam& param,
-                             DimeMemHandler* const memhandler)
+                             const dimeParam& param)
 {
 	if (groupcode == 10 ||
 		groupcode == 11 ||
@@ -170,7 +169,7 @@ dimeFaceEntity::handleRecord(const int groupcode,
 		this->coords[groupcode % 10][groupcode / 10 - 1] = param.double_data;
 		return true;
 	}
-	return DimeEntity::handleRecord(groupcode, param, memhandler);
+	return DimeEntity::handleRecord(groupcode, param);
 }
 
 //!

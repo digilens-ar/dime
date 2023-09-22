@@ -96,9 +96,7 @@
   When reading, the handleRecord() method will be called for every
   record found in the entity. If some group code is not supported by
   you, you should call the parent's handleRecord() and it will be
-  stored there.  If you need to allocate memory to store the data you
-  should check if the dimeMemHandler parameter != NULL and then use it
-  to allocate memory.  There is a convenience macro defined in
+  stored there. There is a convenience macro defined in
   include/dime/Basic.h that copies a string, using the memory handler
   if set.
 
@@ -129,7 +127,7 @@
 #include <dime/records/Int16Record.h>
 #include <dime/Input.h>
 #include <dime/Output.h>
-#include <dime/util/MemHandler.h>
+
 #include <dime/Model.h>
 
 #include <string.h>
@@ -195,8 +193,7 @@ DimeEntity::~DimeEntity()
 bool
 DimeEntity::copyRecords(DimeEntity* const entity, DimeModel* const model) const
 {
-	DimeMemHandler* memh = model->getMemHandler();
-	bool ok = DimeRecordHolder::copyRecords(entity, memh);
+	bool ok = DimeRecordHolder::copyRecords(entity);
 
 	if (ok && this->layer)
 	{
@@ -278,8 +275,7 @@ DimeEntity::write(DimeOutput* const file)
 */
 
 DimeEntity*
-DimeEntity::createEntity(const char* const name,
-                         DimeMemHandler* const memhandler)
+DimeEntity::createEntity(const char* const name)
 {
 #ifndef NDEBUG
 	//fprintf(stderr,"Entity: %s\n", name);
@@ -297,36 +293,36 @@ DimeEntity::createEntity(const char* const name,
 	//
 
 	if (!strcmp(name, "3DFACE"))
-		return new(memhandler) dime3DFace;
+		return new dime3DFace;
 	if (!strcmp(name, "VERTEX"))
-		return new(memhandler) DimeVertex;
+		return new DimeVertex;
 	if (!strcmp(name, "POLYLINE"))
-		return new(memhandler) DimePolyline;
+		return new DimePolyline;
 	if (!strcmp(name, "LINE"))
-		return new(memhandler) DimeLine;
+		return new DimeLine;
 	if (!strcmp(name, "TEXT"))
-		return new(memhandler) DimeText;
+		return new DimeText;
 	if (!strcmp(name, "INSERT"))
-		return new(memhandler) DimeInsert;
+		return new DimeInsert;
 	if (!strcmp(name, "BLOCK"))
-		return new(memhandler) DimeBlock(memhandler);
+		return new DimeBlock;
 	if (!strcmp(name, "SOLID"))
-		return new(memhandler) DimeSolid;
+		return new DimeSolid;
 	if (!strcmp(name, "TRACE"))
-		return new(memhandler) DimeTrace;
+		return new DimeTrace;
 	if (!strcmp(name, "POINT"))
-		return new(memhandler) DimePoint;
+		return new DimePoint;
 	if (!strcmp(name, "CIRCLE"))
-		return new(memhandler) DimeCircle;
+		return new DimeCircle;
 	if (!strcmp(name, "LWPOLYLINE"))
-		return new(memhandler) DimeLWPolyline;
+		return new DimeLWPolyline;
 	if (!strcmp(name, "SPLINE"))
-		return new(memhandler) DimeSpline;
+		return new DimeSpline;
 	if (!strcmp(name, "ELLIPSE"))
-		return new(memhandler) DimeEllipse;
+		return new DimeEllipse;
 	if (!strcmp(name, "ARC"))
-		return new(memhandler) DimeArc;
-	return new(memhandler) DimeUnknownEntity(name, memhandler);
+		return new DimeArc;
+	return new DimeUnknownEntity(name);
 }
 
 /*!
@@ -345,7 +341,6 @@ DimeEntity::readEntities(DimeInput* const file,
 	const char* string;
 	bool ok = true;
 	DimeEntity* entity = nullptr;
-	DimeMemHandler* memhandler = file->getMemHandler();
 
 	while (true)
 	{
@@ -357,7 +352,7 @@ DimeEntity::readEntities(DimeInput* const file,
 		}
 		string = file->readString();
 		if (!strcmp(string, stopat)) break;
-		entity = DimeEntity::createEntity(string, memhandler);
+		entity = DimeEntity::createEntity(string);
 		if (entity == nullptr)
 		{
 			fprintf(stderr, "error creating entity: %s\n", string);
@@ -390,7 +385,6 @@ DimeEntity::copyEntityArray(const DimeEntity* const* const array,
 {
 	int i;
 	int num = nument;
-	DimeMemHandler* memh = model->getMemHandler();
 
 	nument = 0;
 	for (i = 0; i < num; i++)
@@ -399,7 +393,7 @@ DimeEntity::copyEntityArray(const DimeEntity* const* const array,
 	}
 	if (nument == 0) return nullptr;
 
-	DimeEntity** newarr = ARRAY_NEW(memh, DimeEntity*, nument);
+	DimeEntity** newarr = ARRAY_NEW(DimeEntity*, nument);
 
 	bool ok = newarr != nullptr;
 	if (ok)
@@ -417,7 +411,7 @@ DimeEntity::copyEntityArray(const DimeEntity* const* const array,
 				ok = newarr[cnt++] != nullptr;
 			}
 		}
-		if (!ok && !memh)
+		if (!ok)
 		{
 			// free memory
 			for (i = 0; i < cnt; i++)
@@ -439,7 +433,6 @@ bool DimeEntity::copyEntityArray(const DimeEntity* const* const array,
                             dimeArray<DimeEntity*>& destarray)
 {
 	int i;
-	//  dimeMemHandler *memh = model->getMemHandler();
 
 	int num = 0;
 	for (i = 0; i < nument; i++)
@@ -673,8 +666,7 @@ DimeEntity::setLayer(const dimeLayer* const layer)
 
 bool
 DimeEntity::handleRecord(const int groupcode,
-                         const dimeParam& param,
-                         DimeMemHandler* const memhandler)
+                         const dimeParam& param)
 {
 	if (groupcode == 8)
 	{

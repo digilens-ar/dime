@@ -38,7 +38,7 @@
 #include <dime/tables/UCSTable.h>
 #include <dime/Input.h>
 #include <dime/Output.h>
-#include <dime/util/MemHandler.h>
+
 #include <dime/Model.h>
 #include <dime/records/Record.h>
 #include <string.h>
@@ -59,15 +59,14 @@ DimeUCSTable::DimeUCSTable()
 DimeTableEntry*
 DimeUCSTable::copy(DimeModel* const model) const
 {
-	DimeMemHandler* memh = model->getMemHandler();
-	auto u = new(memh) DimeUCSTable;
+	auto u = new DimeUCSTable;
 	u->xaxis = this->xaxis;
 	u->yaxis = this->yaxis;
 	u->origin = this->origin;
 	if (!this->copyRecords(u, model))
 	{
 		// check if allocated on heap.
-		if (!memh) delete u;
+		delete u;
 		u = nullptr;
 	}
 	return u;
@@ -126,8 +125,7 @@ DimeUCSTable::typeId() const
 
 bool
 DimeUCSTable::handleRecord(const int groupcode,
-                           const dimeParam& param,
-                           DimeMemHandler* const memhandler)
+                           const dimeParam& param)
 {
 	switch (groupcode)
 	{
@@ -147,7 +145,7 @@ DimeUCSTable::handleRecord(const int groupcode,
 		this->yaxis[(groupcode / 10) - 1] = param.double_data;
 		return true;
 	}
-	return DimeTableEntry::handleRecord(groupcode, param, memhandler);
+	return DimeTableEntry::handleRecord(groupcode, param);
 }
 
 //!

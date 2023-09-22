@@ -38,7 +38,7 @@
 #include <dime/records/Int16Record.h>
 #include <dime/Input.h>
 #include <dime/Output.h>
-#include <dime/util/MemHandler.h>
+
 
 /*!
   Constructor
@@ -53,9 +53,9 @@ dimeInt16Record::dimeInt16Record(const int group_code, const int16 val)
 //!
 
 DimeRecord*
-dimeInt16Record::copy(DimeMemHandler* const mh) const
+dimeInt16Record::copy() const
 {
-	return new(mh) dimeInt16Record(this->groupCode, this->value);
+	return new dimeInt16Record(this->groupCode, this->value);
 }
 
 /*!
@@ -109,7 +109,7 @@ dimeInt16Record::write(DimeOutput* const out)
 //!
 
 void
-dimeInt16Record::setValue(const dimeParam& param, DimeMemHandler* const)
+dimeInt16Record::setValue(const dimeParam& param)
 {
 	this->value = param.int16_data;
 }

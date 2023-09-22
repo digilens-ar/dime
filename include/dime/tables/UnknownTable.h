@@ -38,7 +38,7 @@
 class DIME_DLL_API DimeUnknownTable : public DimeTableEntry
 {
 public:
-	DimeUnknownTable(const char* name, DimeMemHandler* memhandler);
+	DimeUnknownTable(const char* name);
 	~DimeUnknownTable() override;
 
 	const char* getTableName() const override;
@@ -49,6 +49,6 @@ public:
 
 private:
 	char* tableName;
-}; // class dimeUnknownTable
+}; 
 
 #endif // ! DIME_UNKNOWNTABLE_H

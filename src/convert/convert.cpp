@@ -362,7 +362,7 @@ dxfConverter::getColorIndex(const DimeEntity* entity)
 void
 dxfConverter::findHeaderVariables(DimeModel& model)
 {
-	auto hs = (dimeHeaderSection*)
+	auto hs = (DimeHeaderSection*)
 		model.findSection("HEADER");
 
 	if (hs)

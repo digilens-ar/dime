@@ -39,7 +39,7 @@
 #include <dime/records/Record.h>
 #include <dime/Input.h>
 #include <dime/Output.h>
-#include <dime/util/MemHandler.h>
+
 #include <dime/Model.h>
 
 static char entityName[] = "3DFACE";
@@ -61,7 +61,7 @@ dime3DFace::dime3DFace()
 DimeEntity*
 dime3DFace::copy(DimeModel* const model) const
 {
-	auto f = new(model->getMemHandler()) dime3DFace;
+	auto f = new dime3DFace;
 	if (!f) return nullptr;
 
 	f->copyCoords(this);
@@ -70,7 +70,7 @@ dime3DFace::copy(DimeModel* const model) const
 	if (!this->copyRecords(f, model))
 	{
 		// check if allocated on heap.
-		if (!model->getMemHandler()) delete f;
+		delete f;
 		f = nullptr;
 	}
 	return f;
@@ -116,15 +116,14 @@ dime3DFace::typeId() const
 
 bool
 dime3DFace::handleRecord(const int groupcode,
-                         const dimeParam& param,
-                         DimeMemHandler* const memhandler)
+                         const dimeParam& param)
 {
 	if (groupcode == 70)
 	{
 		this->flags = param.int16_data;
 		return true;
 	}
-	return dimeFaceEntity::handleRecord(groupcode, param, memhandler);
+	return dimeFaceEntity::handleRecord(groupcode, param);
 }
 
 //!

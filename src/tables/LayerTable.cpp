@@ -38,7 +38,7 @@
 #include <dime/tables/LayerTable.h>
 #include <dime/Input.h>
 #include <dime/Output.h>
-#include <dime/util/MemHandler.h>
+
 #include <dime/Model.h>
 #include <dime/records/Record.h>
 #include <string.h>
@@ -64,12 +64,11 @@ DimeLayerTable::~DimeLayerTable()
 DimeTableEntry*
 DimeLayerTable::copy(DimeModel* const model) const
 {
-	DimeMemHandler* memh = model->getMemHandler();
-	auto l = new(memh) DimeLayerTable;
+	auto l = new DimeLayerTable;
 	l->colorNumber = this->colorNumber;
 	if (this->layerName)
 	{
-		DXF_STRCPY(memh, l->layerName, this->layerName);
+		DXF_STRCPY(l->layerName, this->layerName);
 	}
 	if (this->layerInfo)
 	{
@@ -78,7 +77,7 @@ DimeLayerTable::copy(DimeModel* const model) const
 	if (!copyRecords(l, model))
 	{
 		// check if allocated on heap.
-		if (!memh) delete l;
+		delete l;
 		l = nullptr;
 	}
 	return l;
@@ -136,19 +135,18 @@ DimeLayerTable::typeId() const
 
 bool
 DimeLayerTable::handleRecord(const int groupcode,
-                             const dimeParam& param,
-                             DimeMemHandler* const memhandler)
+                             const dimeParam& param)
 {
 	switch (groupcode)
 	{
 	case 2:
-		this->setLayerName(param.string_data, memhandler);
+		this->setLayerName(param.string_data);
 		return true;
 	case 62:
 		this->setColorNumber(param.int16_data);
 		return true;
 	}
-	return DimeTableEntry::handleRecord(groupcode, param, memhandler);
+	return DimeTableEntry::handleRecord(groupcode, param);
 }
 
 //!
@@ -166,13 +164,13 @@ DimeLayerTable::countRecords() const
   Sets the layer name.
 */
 void
-DimeLayerTable::setLayerName(const char* name, DimeMemHandler* const memhandler)
+DimeLayerTable::setLayerName(const char* name)
 {
-	if (this->layerName && memhandler == nullptr)
+	if (this->layerName)
 	{
 		delete [] this->layerName;
 	}
-	DXF_STRCPY(memhandler, this->layerName, name);
+	DXF_STRCPY(this->layerName, name);
 }
 
 /*!

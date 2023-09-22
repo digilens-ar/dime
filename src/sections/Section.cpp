@@ -45,7 +45,7 @@
 
 #include <dime/sections/Section.h>
 #include <string.h>
-#include <dime/util/MemHandler.h>
+
 #include <dime/sections/UnknownSection.h>
 #include <dime/sections/EntitiesSection.h>
 #include <dime/sections/HeaderSection.h>
@@ -63,8 +63,7 @@
   Constructor
 */
 
-DimeSection::DimeSection(DimeMemHandler* const memhandler)
-	: memHandler(memhandler)
+DimeSection::DimeSection()
 {
 }
 
@@ -82,22 +81,21 @@ DimeSection::~DimeSection()
 */
 
 DimeSection*
-DimeSection::createSection(const char* const sectionname,
-                           DimeMemHandler* memhandler)
+DimeSection::createSection(const char* const sectionname)
 {
 	if (!strcmp(sectionname, "HEADER"))
-		return new dimeHeaderSection(memhandler);
+		return new DimeHeaderSection;
 	if (!strcmp(sectionname, "CLASSES"))
-		return new DimeClassesSection(memhandler);
+		return new DimeClassesSection;
 	if (!strcmp(sectionname, "OBJECTS"))
-		return new DimeObjectsSection(memhandler);
+		return new DimeObjectsSection;
 	if (!strcmp(sectionname, "TABLES"))
-		return new DimeTablesSection(memhandler);
+		return new DimeTablesSection;
 	if (!strcmp(sectionname, "BLOCKS"))
-		return new DimeBlocksSection(memhandler);
+		return new DimeBlocksSection;
 	if (!strcmp(sectionname, "ENTITIES"))
-		return new DimeEntitiesSection(memhandler);
-	return new dimeUnknownSection(sectionname, memhandler);
+		return new DimeEntitiesSection;
+	return new dimeUnknownSection(sectionname);
 }
 
 bool

@@ -38,7 +38,7 @@
 #include <dime/records/DoubleRecord.h>
 #include <dime/Input.h>
 #include <dime/Output.h>
-#include <dime/util/MemHandler.h>
+
 #include <stdio.h>
 
 /*!
@@ -54,9 +54,9 @@ dimeDoubleRecord::dimeDoubleRecord(const int group_code, const dxfdouble val)
 //!
 
 DimeRecord*
-dimeDoubleRecord::copy(DimeMemHandler* const mh) const
+dimeDoubleRecord::copy() const
 {
-	return new(mh) dimeDoubleRecord(this->groupCode, this->value);
+	return new dimeDoubleRecord(this->groupCode, this->value);
 }
 
 /*!
@@ -110,7 +110,7 @@ dimeDoubleRecord::write(DimeOutput* const out)
 //!
 
 void
-dimeDoubleRecord::setValue(const dimeParam& param, DimeMemHandler* const)
+dimeDoubleRecord::setValue(const dimeParam& param)
 {
 	this->value = param.double_data;
 }

@@ -38,7 +38,7 @@
 #include <dime/util/Linear.h>
 
 class DimeModel;
-class DimeMemHandler;
+
 
 class DIME_DLL_API DimeCircle : public DimeExtrusionEntity
 {
@@ -67,8 +67,7 @@ public:
 
 protected:
 	bool handleRecord(int groupcode,
-	                  const dimeParam& param,
-	                  DimeMemHandler* memhandler) override;
+	                  const dimeParam& param) override;
 
 private:
 	dimeVec3 center;

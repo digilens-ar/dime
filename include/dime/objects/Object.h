@@ -60,12 +60,10 @@ public:
 
 protected:
 	bool handleRecord(int groupcode,
-	                  const dimeParam& param,
-	                  DimeMemHandler* memhandler) override;
+	                  const dimeParam& param) override;
 
 public:
-	static DimeObject* createObject(const char* name,
-	                                DimeMemHandler* memhandler = nullptr);
+	static DimeObject* createObject(const char* name);
 
 protected:
 	bool copyRecords(DimeObject* newobject, DimeModel* model) const;

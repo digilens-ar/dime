@@ -38,7 +38,7 @@
 #include <dime/tables/UnknownTable.h>
 #include <dime/Input.h>
 #include <dime/Output.h>
-#include <dime/util/MemHandler.h>
+
 #include <dime/Model.h>
 #include <dime/records/Record.h>
 #include <string.h>
@@ -47,10 +47,9 @@
   Constructor.
 */
 
-DimeUnknownTable::DimeUnknownTable(const char* const name,
-                                   DimeMemHandler* const memhandler)
+DimeUnknownTable::DimeUnknownTable(const char* const name)
 {
-	DXF_STRCPY(memhandler, this->tableName, name);
+	DXF_STRCPY(this->tableName, name);
 }
 
 /*!
@@ -67,12 +66,11 @@ DimeUnknownTable::~DimeUnknownTable()
 DimeTableEntry*
 DimeUnknownTable::copy(DimeModel* const model) const
 {
-	DimeMemHandler* memh = model->getMemHandler();
-	auto u = new(memh) DimeUnknownTable(this->tableName, memh);
+	auto u = new DimeUnknownTable(this->tableName);
 	if (!this->copyRecords(u, model))
 	{
 		// check if allocated on heap.
-		if (!memh) delete u;
+		delete u;
 		u = nullptr;
 	}
 	return u;

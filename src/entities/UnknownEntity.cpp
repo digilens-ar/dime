@@ -38,7 +38,7 @@
 #include <dime/entities/UnknownEntity.h>
 #include <dime/Input.h>
 #include <dime/Output.h>
-#include <dime/util/MemHandler.h>
+
 #include <dime/Model.h>
 #include <dime/records/Record.h>
 #include <string.h>
@@ -47,10 +47,9 @@
   Constructor.
 */
 
-DimeUnknownEntity::DimeUnknownEntity(const char* const name,
-                                     DimeMemHandler* const memhandler)
+DimeUnknownEntity::DimeUnknownEntity(const char* const name)
 {
-	DXF_STRCPY(memhandler, this->entityName, name);
+	DXF_STRCPY(this->entityName, name);
 }
 
 /*!
@@ -67,12 +66,11 @@ DimeUnknownEntity::~DimeUnknownEntity()
 DimeEntity*
 DimeUnknownEntity::copy(DimeModel* const model) const
 {
-	DimeMemHandler* memh = model->getMemHandler();
-	auto u = new(memh) DimeUnknownEntity(this->entityName, memh);
+	auto u = new DimeUnknownEntity(this->entityName);
 	if (!this->copyRecords(u, model))
 	{
 		// check if allocated on heap.
-		if (!memh) delete u;
+		delete u;
 		u = nullptr;
 	}
 	return u;

@@ -190,7 +190,7 @@ static void
 add_layer(const char * name, int colnum, DimeModel * model, DimeTable * layers)
 {
   DimeLayerTable * layer = new DimeLayerTable;
-  layer->setLayerName(name, NULL);
+  layer->setLayerName(name);
   layer->setColorNumber(colnum); // the color numbers are defined in dime/Layer.cpp.
 
   // need to set some extra records so that AutoCAD will stop
@@ -263,7 +263,7 @@ main(int ac, char ** av)
     model.insertSection(tables);
 
     // DIME: set up a layer table to store our layers
-    DimeTable * layers = new DimeTable(NULL);
+    DimeTable * layers = new DimeTable;
 
     // DIME: set up our layers
     add_layer(LAYERNAME1, 16, &model, layers);
@@ -278,7 +278,7 @@ main(int ac, char ** av)
   if (useblock) {
     DimeBlocksSection * blocks = new DimeBlocksSection;
     model.insertSection(blocks);
-    block = new DimeBlock(NULL);
+    block = new DimeBlock;
     block->setName("MyBlock");
     blocks->insertBlock(block);
   }

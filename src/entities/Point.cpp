@@ -39,7 +39,7 @@
 #include <dime/records/Record.h>
 #include <dime/Input.h>
 #include <dime/Output.h>
-#include <dime/util/MemHandler.h>
+
 #include <dime/Model.h>
 
 static char entityName[] = "POINT";
@@ -58,7 +58,7 @@ DimePoint::DimePoint()
 DimeEntity*
 DimePoint::copy(DimeModel* const model) const
 {
-	auto p = new(model->getMemHandler()) DimePoint;
+	auto p = new DimePoint;
 
 	p->coords = this->coords;
 	p->copyExtrusionData(this);
@@ -66,7 +66,7 @@ DimePoint::copy(DimeModel* const model) const
 	if (!this->copyRecords(p, model))
 	{
 		// check if allocated on heap.
-		if (!model->getMemHandler()) delete p;
+		delete p;
 		p = nullptr;
 	}
 	return p;
@@ -106,8 +106,7 @@ DimePoint::typeId() const
 
 bool
 DimePoint::handleRecord(const int groupcode,
-                        const dimeParam& param,
-                        DimeMemHandler* const memhandler)
+                        const dimeParam& param)
 {
 	switch (groupcode)
 	{
@@ -117,7 +116,7 @@ DimePoint::handleRecord(const int groupcode,
 		this->coords[groupcode / 10 - 1] = param.double_data;
 		return true;
 	}
-	return DimeExtrusionEntity::handleRecord(groupcode, param, memhandler);
+	return DimeExtrusionEntity::handleRecord(groupcode, param);
 }
 
 //!

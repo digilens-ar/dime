@@ -36,7 +36,7 @@
 #include <dime/Basic.h>
 #include <stddef.h>  // for size_t
 
-class DimeMemHandler;
+
 
 class DIME_DLL_API DimeBase
 {
@@ -99,10 +99,6 @@ public:
 
 	virtual TypeID typeId() const = 0;
 	virtual bool isOfType(int thetypeid) const;
-
-	void* operator new(size_t size, DimeMemHandler* memhandler = nullptr, int alignment = 4);
-	void operator delete(void* ptr, DimeMemHandler* memhandler, int alignment);
-	void operator delete(void* ptr);
 }; // class dimeBase
 
 #endif // ! DIME_BASE_H

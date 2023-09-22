@@ -38,7 +38,7 @@
 #include <dime/records/StringRecord.h>
 #include <dime/Input.h>
 #include <dime/Output.h>
-#include <dime/util/MemHandler.h>
+
 #include <string.h>
 
 /*! 
@@ -63,27 +63,24 @@ dimeStringRecord::~dimeStringRecord()
 //!
 
 DimeRecord*
-dimeStringRecord::copy(DimeMemHandler* const mh) const
+dimeStringRecord::copy() const
 {
-	auto s = new(mh) dimeStringRecord(this->groupCode);
+	auto s = new dimeStringRecord(this->groupCode);
 	if (s)
 	{
-		s->setString(this->string, mh);
+		s->setString(this->string);
 	}
 	return s;
 }
 
 /*!
-  Will store a copy of string \a s. If \a memhandler != NULL, it
-  will be used to allocate the needed memory. If \a memhandler == NULL,
-  the memory will be allocated from the heap.
+  Will store a copy of string \a s.
 */
 
 bool
-dimeStringRecord::setString(const char* const s,
-                            DimeMemHandler* const memhandler)
+dimeStringRecord::setString(const char* const s)
 {
-	DXF_STRCPY(memhandler, this->string, s);
+	DXF_STRCPY(this->string, s);
 	return this->string != nullptr;
 }
 
@@ -140,7 +137,7 @@ dimeStringRecord::read(DimeInput* const in)
 {
 	this->string = nullptr;
 	const char* ptr = in->readString();
-	if (ptr) return this->setString(ptr, in->getMemHandler());
+	if (ptr) return this->setString(ptr);
 	return false;
 }
 
@@ -160,17 +157,10 @@ dimeStringRecord::write(DimeOutput* const out)
 //!
 
 void
-dimeStringRecord::setValue(const dimeParam& param, DimeMemHandler* const memhandler)
+dimeStringRecord::setValue(const dimeParam& param)
 {
-	if (memhandler)
-	{
-		this->string = memhandler->stringAlloc(param.string_data);
-	}
-	else
-	{
-		this->string = new char[strlen(param.string_data) + 1];
-		if (this->string) strcpy(this->string, param.string_data);
-	}
+	this->string = new char[strlen(param.string_data) + 1];
+	if (this->string) strcpy(this->string, param.string_data);
 }
 
 //!

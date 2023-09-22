@@ -39,7 +39,7 @@
 #include <dime/records/Record.h>
 #include <dime/Input.h>
 #include <dime/Output.h>
-#include <dime/util/MemHandler.h>
+
 #include <dime/Model.h>
 #include <math.h>
 
@@ -67,13 +67,13 @@ DimeCircle::DimeCircle()
 DimeEntity*
 DimeCircle::copy(DimeModel* const model) const
 {
-	auto c = new(model->getMemHandler()) DimeCircle;
+	auto c = new DimeCircle;
 	if (!c) return nullptr;
 
 	if (!this->copyRecords(c, model))
 	{
 		// check if allocated on heap.
-		if (!model->getMemHandler()) delete c;
+		delete c;
 		c = nullptr;
 	}
 	else
@@ -123,8 +123,7 @@ DimeCircle::typeId() const
 
 bool
 DimeCircle::handleRecord(const int groupcode,
-                         const dimeParam& param,
-                         DimeMemHandler* const memhandler)
+                         const dimeParam& param)
 {
 	switch (groupcode)
 	{
@@ -137,7 +136,7 @@ DimeCircle::handleRecord(const int groupcode,
 		this->radius = param.double_data;
 		return true;
 	}
-	return DimeExtrusionEntity::handleRecord(groupcode, param, memhandler);
+	return DimeExtrusionEntity::handleRecord(groupcode, param);
 }
 
 //!

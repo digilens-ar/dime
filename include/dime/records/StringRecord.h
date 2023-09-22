@@ -41,13 +41,12 @@ public:
 	dimeStringRecord(int group_code = 0);
 	~dimeStringRecord() override;
 
-	DimeRecord* copy(DimeMemHandler* mh) const override;
-	void setValue(const dimeParam& param, DimeMemHandler* memhandler = nullptr) override;
+	DimeRecord* copy() const override;
+	void setValue(const dimeParam& param) override;
 	void getValue(dimeParam& param) const override;
 
 	void setStringPointer(char* s);
-	bool setString(const char* s,
-	               DimeMemHandler* memhandler = nullptr);
+	bool setString(const char* s);
 	char* getString();
 
 public:

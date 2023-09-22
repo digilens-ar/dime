@@ -76,8 +76,7 @@ public:
 protected:
 	void fixReferences(DimeModel* model) override;
 	bool handleRecord(int groupcode,
-	                  const dimeParam& param,
-	                  DimeMemHandler* memhandler) override;
+	                  const dimeParam& param) override;
 	bool traverse(const DimeState* state,
 	              dimeCallback const& callback) override;
 

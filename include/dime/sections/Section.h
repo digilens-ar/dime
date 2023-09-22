@@ -43,7 +43,7 @@ class DimeOutput;
 class DIME_DLL_API DimeSection : public DimeBase
 {
 public:
-	DimeSection(DimeMemHandler* memhandler);
+	DimeSection();
 	~DimeSection() override;
 
 	virtual const char* getSectionName() const = 0;
@@ -55,12 +55,7 @@ public:
 	bool isOfType(int thetypeid) const override;
 	virtual int countRecords() const = 0;
 
-public:
-	static DimeSection* createSection(const char* sectionname,
-	                                  DimeMemHandler* memhandler);
-
-protected:
-	DimeMemHandler* memHandler;
+	static DimeSection* createSection(const char* sectionname);
 }; // class dimeSection
 
 #endif // ! DIME_SECTION_H

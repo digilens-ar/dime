@@ -38,7 +38,7 @@
 #include <dime/records/HexRecord.h>
 #include <dime/Input.h>
 #include <dime/Output.h>
-#include <dime/util/MemHandler.h>
+
 
 #include <string.h>
 

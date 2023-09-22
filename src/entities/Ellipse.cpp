@@ -39,7 +39,7 @@
 #include <dime/records/Record.h>
 #include <dime/Input.h>
 #include <dime/Output.h>
-#include <dime/util/MemHandler.h>
+
 #include <dime/Model.h>
 #include <math.h>
 
@@ -126,13 +126,13 @@ DimeEllipse::DimeEllipse()
 DimeEntity*
 DimeEllipse::copy(DimeModel* const model) const
 {
-	auto e = new(model->getMemHandler()) DimeEllipse;
+	auto e = new DimeEllipse;
 	if (!e) return nullptr;
 
 	if (!this->copyRecords(e, model))
 	{
 		// check if allocated on heap.
-		if (!model->getMemHandler()) delete e;
+		delete e;
 		e = nullptr;
 	}
 	else
@@ -194,8 +194,7 @@ DimeEllipse::typeId() const
 
 bool
 DimeEllipse::handleRecord(const int groupcode,
-                          const dimeParam& param,
-                          DimeMemHandler* const memhandler)
+                          const dimeParam& param)
 {
 	switch (groupcode)
 	{
@@ -219,7 +218,7 @@ DimeEllipse::handleRecord(const int groupcode,
 		this->endParam = param.double_data;
 		return true;
 	}
-	return DimeExtrusionEntity::handleRecord(groupcode, param, memhandler);
+	return DimeExtrusionEntity::handleRecord(groupcode, param);
 }
 
 //!

@@ -43,7 +43,6 @@
 class DimeInput;
 class DimeOutput;
 class dimeDict;
-class DimeMemHandler;
 class DimeSection;
 class DimeEntitiesSection;
 class DimeBlocksSection;
@@ -54,7 +53,7 @@ class DimeRecord;
 class DIME_DLL_API DimeModel
 {
 public:
-	DimeModel(bool usememhandler = false);
+	DimeModel();
 	~DimeModel();
 
 	DimeModel* copy() const;
@@ -74,7 +73,6 @@ public:
 	void* findReference(const char* name) const;
 	const char* findRefStringPtr(const char* name) const;
 	void removeReference(const char* name);
-	DimeMemHandler* getMemHandler();
 
 	int getNumLayers() const;
 	const  dimeLayer* getLayer(int idx) const;
@@ -107,13 +105,11 @@ public:
 private:
 	dimeDict* refDict;
 	dimeDict* layerDict;
-	DimeMemHandler* memoryHandler;
 	dimeArray<DimeSection*> sections;
 	dimeArray<dimeLayer*> layers;
 	dimeArray<DimeRecord*> headerComments;
 
 	int largestHandle;
-	bool usememhandler;
-}; // class dimeModel
+}; 
 
 #endif // ! DIME_MODEL_H

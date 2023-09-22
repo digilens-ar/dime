@@ -135,8 +135,7 @@ DimeExtrusionEntity::copyExtrusionData(const DimeExtrusionEntity* const entity)
 
 bool
 DimeExtrusionEntity::handleRecord(const int groupcode,
-                                  const dimeParam& param,
-                                  DimeMemHandler* const memhandler)
+                                  const dimeParam& param)
 {
 	switch (groupcode)
 	{
@@ -149,7 +148,7 @@ DimeExtrusionEntity::handleRecord(const int groupcode,
 		this->extrusionDir[(groupcode - 210) / 10] = param.double_data;
 		return true;
 	}
-	return DimeEntity::handleRecord(groupcode, param, memhandler);
+	return DimeEntity::handleRecord(groupcode, param);
 }
 
 //!

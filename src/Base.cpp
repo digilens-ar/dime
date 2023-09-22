@@ -72,13 +72,12 @@
   \class DimeBase dime/Base.h
   \brief The dimeBase class is the superclass for most classes in Dime.
 
-  dimeBase implements the \e new operator to enable use of the special-purpose
-  memory manager class, dimeMemHandler.  It also implements a simple runtime
+  It implements a simple runtime
   type checking system.
 */
 
 #include <dime/Base.h>
-#include <dime/util/MemHandler.h>
+
 #include <stdio.h>
 
 /*!
@@ -103,26 +102,4 @@ DimeBase::isOfType(const int thetypeid) const
 {
 	return this->typeId() == thetypeid ||
 		thetypeid == dimeBaseType;
-}
-
-void*
-DimeBase::operator new(size_t size, DimeMemHandler* memhandler,
-                       const int alignment)
-{
-	if (memhandler)
-		return memhandler->allocMem(size, alignment);
-	return ::operator new(size);
-}
-
-void DimeBase::operator delete(void* ptr, DimeMemHandler* memhandler, int alignment)
-{
-	assert(!memhandler);
-	::operator delete(ptr);
-}
-
-void
-DimeBase::operator delete(void* ptr)
-{
-	// will only get here if we don't use a memory handler
-	::operator delete(ptr);
 }

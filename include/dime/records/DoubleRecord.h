@@ -40,8 +40,8 @@ class DIME_DLL_API dimeDoubleRecord : public DimeRecord
 public:
 	dimeDoubleRecord(int group_code = 10, dxfdouble val = 0.0f);
 
-	DimeRecord* copy(DimeMemHandler* mh) const override;
-	void setValue(const dimeParam& param, DimeMemHandler* memhandler = nullptr) override;
+	DimeRecord* copy() const override;
+	void setValue(const dimeParam& param) override;
 	void getValue(dimeParam& param) const override;
 
 	dxfdouble getValue() const;

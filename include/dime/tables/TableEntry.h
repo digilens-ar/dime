@@ -55,15 +55,13 @@ public:
 	bool isOfType(int thetypeid) const override;
 	int countRecords() const override;
 
-	static DimeTableEntry* createTableEntry(const char* name,
-	                                        DimeMemHandler* memhandler = nullptr);
+	static DimeTableEntry* createTableEntry(const char* name);
 
 protected:
 	bool preWrite(DimeOutput* output);
 
 	bool handleRecord(int groupcode,
-	                  const dimeParam& param,
-	                  DimeMemHandler* memhandler) override;
+	                  const dimeParam& param) override;
 
 	bool copyRecords(DimeTableEntry* table, DimeModel* model) const;
 }; // class dimeTableEntry

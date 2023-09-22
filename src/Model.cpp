@@ -77,7 +77,7 @@ DimeModel::getVersion(int& major, int& minor)
 #include <dime/Input.h>
 #include <dime/Output.h>
 #include <dime/util/Dict.h>
-#include <dime/util/MemHandler.h>
+
 #include <dime/State.h>
 #include <dime/sections/Section.h>
 #include <dime/sections/EntitiesSection.h>
@@ -93,15 +93,12 @@ DimeModel::getVersion(int& major, int& minor)
 #define EOFID     "EOF"
 
 /*!
-  Constructor. If \a usememhandler is \e TRUE, the dimeMemHandler will
-  be used to allocate entities and records.
+  Constructor.
 */
-DimeModel::DimeModel(const bool usememhandler)
+DimeModel::DimeModel()
 	: refDict(nullptr),
 	  layerDict(nullptr),
-	  memoryHandler(nullptr),
-	  largestHandle(0),
-	  usememhandler(usememhandler)
+	  largestHandle(0)
 {
 	this->init();
 }
@@ -120,8 +117,6 @@ DimeModel::~DimeModel()
 		delete this->layers[i];
 	for (i = 0; i < this->sections.count(); i++)
 		delete this->sections[i];
-
-	delete this->memoryHandler; // free memory :)
 }
 
 /*!
@@ -131,7 +126,7 @@ DimeModel::~DimeModel()
 DimeModel*
 DimeModel::copy() const
 {
-	auto newmodel = new DimeModel(this->usememhandler);
+	auto newmodel = new DimeModel();
 
 	if (!newmodel || !newmodel->init()) return nullptr;
 
@@ -167,16 +162,13 @@ DimeModel::init()
 	this->layers.setCount(0);
 	delete this->refDict;
 	delete this->layerDict;
-	delete this->memoryHandler;
 
 	// set all to NULL first to support exceptions.
 	this->refDict = nullptr;
 	this->layerDict = nullptr;
-	this->memoryHandler = nullptr;
 
 	this->refDict = new dimeDict;
 	this->layerDict = new dimeDict(101); // relatively small
-	if (this->usememhandler) this->memoryHandler = new DimeMemHandler;
 
 	return true;
 }
@@ -211,8 +203,7 @@ DimeModel::read(DimeInput* const in)
 			dimeParam param;
 			param.string_data = string;
 			this->headerComments.append(DimeRecord::createRecord(groupcode,
-			                                                     param,
-			                                                     memoryHandler));
+			                                                     param));
 			continue;
 		}
 		if (!strcmp(string, SECTIONID))
@@ -221,7 +212,7 @@ DimeModel::read(DimeInput* const in)
 			string = in->readString();
 			ok = ok && string != nullptr && groupcode == 2;
 			if (!ok) break;
-			section = DimeSection::createSection(string, in->getMemHandler());
+			section = DimeSection::createSection(string);
 			ok = section != nullptr && section->read(in);
 			if (!ok) break;
 			this->sections.append(section);
@@ -271,7 +262,7 @@ DimeModel::write(DimeOutput* const out)
 {
 	if (largestHandle > 0)
 	{
-		auto hs = static_cast<dimeHeaderSection*>(this->findSection("HEADER"));
+		auto hs = static_cast<DimeHeaderSection*>(this->findSection("HEADER"));
 
 		if (hs)
 		{
@@ -283,8 +274,7 @@ DimeModel::write(DimeOutput* const out)
 				this->getUniqueHandle(buf, 512);
 				this->largestHandle--; // ok to use this handle next time
 				param.string_data = buf;
-				hs->setVariable("$HANDSEED", &groupcode, &param, 1,
-				                this->getMemHandler());
+				hs->setVariable("$HANDSEED", &groupcode, &param, 1);
 			}
 		}
 	}
@@ -354,16 +344,6 @@ void
 DimeModel::removeReference(const char* const name)
 {
 	refDict->remove(name);
-}
-
-/*!
-  Returns a pointer to the memory handler used for this model.
-*/
-
-DimeMemHandler*
-DimeModel::getMemHandler()
-{
-	return this->memoryHandler;
 }
 
 /*!
@@ -466,7 +446,7 @@ const char*
 DimeModel::getDxfVersion() const
 {
 	auto header =
-		static_cast<const dimeHeaderSection*>(this->findSection("HEADER"));
+		static_cast<const DimeHeaderSection*>(this->findSection("HEADER"));
 
 	if (!header)
 	{

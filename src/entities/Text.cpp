@@ -39,7 +39,7 @@
 #include <dime/records/Record.h>
 #include <dime/Input.h>
 #include <dime/Output.h>
-#include <dime/util/MemHandler.h>
+
 #include <dime/Model.h>
 #include <math.h>
 #include <string.h>
@@ -82,13 +82,13 @@ void DimeText::setTextString(const char* s)
 DimeEntity*
 DimeText::copy(DimeModel* const model) const
 {
-	auto t = new(model->getMemHandler()) DimeText;
+	auto t = new DimeText;
 	if (!t) return nullptr;
 
 	if (!this->copyRecords(t, model))
 	{
 		// check if allocated on heap.
-		if (!model->getMemHandler()) delete t;
+		delete t;
 		t = nullptr;
 	}
 	else
@@ -191,8 +191,7 @@ DimeText::typeId() const
 
 bool
 DimeText::handleRecord(const int groupcode,
-                       const dimeParam& param,
-                       DimeMemHandler* const memhandler)
+                       const dimeParam& param)
 {
 	switch (groupcode)
 	{
@@ -243,10 +242,10 @@ DimeText::handleRecord(const int groupcode,
 			{
 				return true;
 			}
-			return DimeExtrusionEntity::handleRecord(groupcode, param, memhandler);
+			return DimeExtrusionEntity::handleRecord(groupcode, param);
 		}
 	}
-	return DimeExtrusionEntity::handleRecord(groupcode, param, memhandler);
+	return DimeExtrusionEntity::handleRecord(groupcode, param);
 }
 
 //!

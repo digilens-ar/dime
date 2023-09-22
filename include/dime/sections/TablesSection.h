@@ -39,13 +39,12 @@
 class DIME_DLL_API DimeTablesSection : public DimeSection
 {
 public:
-	DimeTablesSection(DimeMemHandler* memhandler = nullptr);
+	DimeTablesSection() = default;
 	~DimeTablesSection() override;
 
 	const char* getSectionName() const override;
 	DimeSection* copy(DimeModel* model) const override;
 
-public:
 	bool read(DimeInput* file) override;
 	bool write(DimeOutput* file) override;
 	TypeID typeId() const override;

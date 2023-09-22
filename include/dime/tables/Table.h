@@ -45,7 +45,7 @@ class DimeRecord;
 class DIME_DLL_API DimeTable : public DimeBase
 {
 public:
-	DimeTable(DimeMemHandler* memhandler);
+	DimeTable();
 	~DimeTable() override;
 
 	bool read(DimeInput* in);
@@ -73,7 +73,6 @@ private:
 	char* tablename;
 	dimeArray<DimeTableEntry*> tableEntries;
 	dimeArray<DimeRecord*> records;
-	DimeMemHandler* memHandler;
 }; // class dimeTable
 
 #endif // ! DIME_TABLE_H

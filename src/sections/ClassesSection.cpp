@@ -38,7 +38,7 @@
 #include <dime/sections/ClassesSection.h>
 #include <dime/Input.h>
 #include <dime/Output.h>
-#include <dime/util/MemHandler.h>
+
 #include <dime/Model.h>
 #include <dime/classes/Class.h>
 #include <dime/Model.h>
@@ -47,14 +47,6 @@
 
 static constexpr char sectionName[] = "CLASSES";
 
-/*!
-  Constructor.
-*/
-
-DimeClassesSection::DimeClassesSection(DimeMemHandler* const memhandler)
-	: DimeSection(memhandler)
-{
-}
 
 /*!
   Destructor.
@@ -62,11 +54,8 @@ DimeClassesSection::DimeClassesSection(DimeMemHandler* const memhandler)
 
 DimeClassesSection::~DimeClassesSection()
 {
-	if (!this->memHandler)
-	{
-		for (int i = 0; i < this->classes.count(); i++)
-			delete this->classes[i];
-	}
+	for (int i = 0; i < this->classes.count(); i++)
+		delete this->classes[i];
 }
 
 //!
@@ -74,8 +63,7 @@ DimeClassesSection::~DimeClassesSection()
 DimeSection*
 DimeClassesSection::copy(DimeModel* const model) const
 {
-	DimeMemHandler* memh = model->getMemHandler();
-	auto cs = new DimeClassesSection(memh);
+	auto cs = new DimeClassesSection();
 	bool ok = cs != nullptr;
 
 	int num = this->classes.count();
@@ -95,7 +83,7 @@ DimeClassesSection::copy(DimeModel* const model) const
 
 	if (!ok)
 	{
-		if (!memh) delete cs;
+		delete cs;
 		cs = nullptr;
 	}
 	//  sim_trace("classes section copy: %p\n", cs);
@@ -111,7 +99,6 @@ DimeClassesSection::read(DimeInput* const file)
 	const char* string;
 	bool ok = true;
 	DimeClass* myclass = nullptr;
-	DimeMemHandler* memhandler = file->getMemHandler();
 	this->classes.makeEmpty(64);
 
 	//  sim_trace("Reading section: CLASSES\n");
@@ -127,7 +114,7 @@ DimeClassesSection::read(DimeInput* const file)
 		}
 		string = file->readString();
 		if (!strcmp(string, "ENDSEC")) break;
-		myclass = DimeClass::createClass(string, memhandler);
+		myclass = DimeClass::createClass(string);
 		if (myclass == nullptr)
 		{
 			fprintf(stderr, "error creating class: %s.\n", string);
@@ -228,7 +215,7 @@ void
 DimeClassesSection::removeClass(const int idx)
 {
 	assert(idx >= 0 && idx < this->classes.count());
-	if (!this->memHandler) delete this->classes[idx];
+	delete this->classes[idx];
 	this->classes.removeElem(idx);
 }
 

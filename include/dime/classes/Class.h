@@ -40,7 +40,6 @@
 #include <dime/RecordHolder.h>
 
 class DimeInput;
-class DimeMemHandler;
 class DimeOutput;
 class DimeModel;
 
@@ -66,24 +65,17 @@ public:
 	int8 getFlag280() const;
 	int8 getFlag281() const;
 
-	void setClassName(const char* classname,
-	                  DimeMemHandler* memhandler = nullptr);
-	void setApplicationName(const char* appname,
-	                        DimeMemHandler* memhandler = nullptr);
+	void setClassName(const char* classname);
+	void setApplicationName(const char* appname);
 	void setVersionNumber(int32 v);
 	void setFlag280(int8 flag);
 	void setFlag281(int8 flag);
+	static DimeClass* createClass(const char* name);
 
 protected:
 	bool handleRecord(int groupcode,
-	                  const dimeParam& param,
-	                  DimeMemHandler* memhandler) override;
+	                  const dimeParam& param) override;
 
-public:
-	static DimeClass* createClass(const char* name,
-	                              DimeMemHandler* memhandler = nullptr);
-
-protected:
 	bool copyRecords(DimeClass* newclass, DimeModel* model) const;
 
 private:

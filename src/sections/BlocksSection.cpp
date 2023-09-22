@@ -39,7 +39,7 @@
 #include <dime/entities/Block.h>
 #include <dime/Input.h>
 #include <dime/Output.h>
-#include <dime/util/MemHandler.h>
+
 #include <dime/Model.h>
 #include <dime/util/Array.h>
 #include <dime/Model.h>
@@ -47,25 +47,13 @@
 static constexpr char sectionName[] = "BLOCKS";
 
 /*!
-  Constructor.
-*/
-
-DimeBlocksSection::DimeBlocksSection(DimeMemHandler* const memhandler)
-	: DimeSection(memhandler)
-{
-}
-
-/*!
   Destructor. Should only be called when no memory handler is used.
 */
 
 DimeBlocksSection::~DimeBlocksSection()
 {
-	if (!this->memHandler)
-	{
-		for (int i = 0; i < this->blocks.count(); i++)
-			delete this->blocks[i];
-	}
+	for (int i = 0; i < this->blocks.count(); i++)
+		delete this->blocks[i];
 }
 
 //!
@@ -73,7 +61,7 @@ DimeBlocksSection::~DimeBlocksSection()
 DimeSection*
 DimeBlocksSection::copy(DimeModel* const model) const
 {
-	auto bs = new DimeBlocksSection(model->getMemHandler());
+	auto bs = new DimeBlocksSection;
 	for (int i = 0; i < this->blocks.count(); i++)
 	{
 		bs->blocks.append(static_cast<DimeBlock*>(this->blocks[i]->copy(model)));
@@ -92,7 +80,6 @@ DimeBlocksSection::read(DimeInput* const file)
 	const char* string;
 	bool ok = true;
 	DimeBlock* block = nullptr;
-	DimeMemHandler* memhandler = file->getMemHandler();
 
 	while (true)
 	{
@@ -110,7 +97,7 @@ DimeBlocksSection::read(DimeInput* const file)
 			ok = false;
 			break;
 		}
-		block = static_cast<DimeBlock*>(DimeEntity::createEntity(string, memhandler));
+		block = static_cast<DimeBlock*>(DimeEntity::createEntity(string));
 		if (block == nullptr)
 		{
 			fprintf(stderr, "error creating block: %s\n", string);
@@ -222,7 +209,7 @@ void
 DimeBlocksSection::removeBlock(const int idx)
 {
 	assert(idx >= 0 && idx < this->blocks.count());
-	if (!this->memHandler) delete this->blocks[idx];
+	delete this->blocks[idx];
 	this->blocks.removeElem(idx);
 }
 

@@ -71,8 +71,7 @@ protected:
 	virtual bool swapQuadCoords() const;
 
 	bool handleRecord(int groupcode,
-	                  const dimeParam& param,
-	                  DimeMemHandler* memhandler) override;
+	                  const dimeParam& param) override;
 	void copyCoords(const dimeFaceEntity* entity);
 	bool writeCoords(DimeOutput* file);
 

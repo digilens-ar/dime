@@ -36,11 +36,11 @@
 #include <dime/sections/Section.h>
 #include <dime/util/Array.h>
 
-class DIME_DLL_API dimeHeaderSection : public DimeSection
+class DIME_DLL_API DimeHeaderSection : public DimeSection
 {
 public:
-	dimeHeaderSection(DimeMemHandler* memhandler);
-	~dimeHeaderSection() override;
+	DimeHeaderSection() = default;
+	~DimeHeaderSection() override;
 
 	int getVariable(const char* variableName,
 	                int* groupcodes,
@@ -50,8 +50,7 @@ public:
 	int setVariable(const char* variableName,
 	                const int* groupcodes,
 	                const dimeParam* params,
-	                int numparams,
-	                DimeMemHandler* memhandler = nullptr);
+	                int numparams);
 
 	const char* getSectionName() const override;
 	DimeSection* copy(DimeModel* model) const override;

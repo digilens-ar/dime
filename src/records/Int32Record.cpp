@@ -52,9 +52,9 @@ dimeInt32Record::dimeInt32Record(const int group_code, const int32 val)
 //!
 
 DimeRecord*
-dimeInt32Record::copy(DimeMemHandler* const mh) const
+dimeInt32Record::copy() const
 {
-	return new(mh) dimeInt32Record(this->groupCode, this->value);
+	return new dimeInt32Record(this->groupCode, this->value);
 }
 
 /*!
@@ -108,7 +108,7 @@ dimeInt32Record::write(DimeOutput* const out)
 //!
 
 void
-dimeInt32Record::setValue(const dimeParam& param, DimeMemHandler* const)
+dimeInt32Record::setValue(const dimeParam& param)
 {
 	this->value = param.int32_data;
 }

@@ -91,11 +91,11 @@ using uint32 = unsigned int;
  char* strdup( const char* );
 #endif
 
-#define ARRAY_NEW(memh, type, num) \
-memh ? (type*) memh->allocMem((num)*sizeof(type)) : new type[num]
+#define ARRAY_NEW(type, num) \
+ new type[num]
 
-#define DXF_STRCPY(mh, d, s) \
-mh ? d = mh->stringAlloc(s) : d = new char[strlen(s)+1]; if (d) strcpy(d,s)
+#define DXF_STRCPY(d, s) \
+d = new char[strlen(s)+1]; if (d) strcpy(d,s)
 
 using dimeCallback = std::function<bool(class DimeState const*, class DimeEntity *)>; // return false to terminate traversal.
 

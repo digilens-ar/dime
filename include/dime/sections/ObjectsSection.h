@@ -41,7 +41,7 @@ class DIME_DLL_API DimeObjectsSection : public DimeSection
 	friend class DimeModel;
 
 public:
-	DimeObjectsSection(DimeMemHandler* memhandler = nullptr);
+	DimeObjectsSection() = default;
 	~DimeObjectsSection() override;
 
 	const char* getSectionName() const override;

@@ -39,7 +39,7 @@
 #include <dime/records/Record.h>
 #include <dime/Input.h>
 #include <dime/Output.h>
-#include <dime/util/MemHandler.h>
+
 #include <dime/Model.h>
 #include <math.h>
 
@@ -67,13 +67,13 @@ DimeArc::DimeArc()
 DimeEntity*
 DimeArc::copy(DimeModel* const model) const
 {
-	auto a = new(model->getMemHandler()) DimeArc;
+	auto a = new DimeArc;
 	if (!a) return nullptr;
 
 	if (!this->copyRecords(a, model))
 	{
 		// check if allocated on heap.
-		if (!model->getMemHandler()) delete a;
+		delete a;
 		a = nullptr;
 	}
 	else
@@ -128,8 +128,7 @@ DimeArc::typeId() const
 
 bool
 DimeArc::handleRecord(const int groupcode,
-                      const dimeParam& param,
-                      DimeMemHandler* const memhandler)
+                      const dimeParam& param)
 {
 	switch (groupcode)
 	{
@@ -155,10 +154,10 @@ DimeArc::handleRecord(const int groupcode,
 			{
 				return true;
 			}
-			return DimeExtrusionEntity::handleRecord(groupcode, param, memhandler);
+			return DimeExtrusionEntity::handleRecord(groupcode, param);
 		}
 	}
-	return DimeExtrusionEntity::handleRecord(groupcode, param, memhandler);
+	return DimeExtrusionEntity::handleRecord(groupcode, param);
 }
 
 //!

@@ -38,7 +38,7 @@
 #include <dime/classes/UnknownClass.h>
 #include <dime/Input.h>
 #include <dime/Output.h>
-#include <dime/util/MemHandler.h>
+
 #include <dime/Model.h>
 #include <string.h>
 
@@ -46,10 +46,9 @@
   Constructor.
 */
 
-dimeUnknownClass::dimeUnknownClass(const char* const name,
-                                   DimeMemHandler* const memhandler)
+dimeUnknownClass::dimeUnknownClass(const char* const name)
 {
-	DXF_STRCPY(memhandler, this->dxfClassName, name);
+	DXF_STRCPY(this->dxfClassName, name);
 }
 
 /*!
@@ -66,12 +65,11 @@ dimeUnknownClass::~dimeUnknownClass()
 DimeClass*
 dimeUnknownClass::copy(DimeModel* const model) const
 {
-	DimeMemHandler* memh = model->getMemHandler();
-	auto u = new(memh) dimeUnknownClass(this->dxfClassName, memh);
+	auto u = new dimeUnknownClass(this->dxfClassName);
 	if (!this->copyRecords(u, model))
 	{
 		// check if allocated on heap.
-		if (!memh) delete u;
+		delete u;
 		u = nullptr;
 	}
 	return u;

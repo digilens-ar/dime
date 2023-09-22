@@ -38,7 +38,7 @@
 #include <dime/entities/LWPolyline.h>
 #include <dime/records/Record.h>
 #include <dime/Output.h>
-#include <dime/util/MemHandler.h>
+
 #include <dime/Model.h>
 
 static char entityName[] = "LWPOLYLINE";
@@ -80,15 +80,14 @@ DimeLWPolyline::~DimeLWPolyline()
 DimeEntity*
 DimeLWPolyline::copy(DimeModel* const model) const
 {
-	auto l = new(model->getMemHandler()) DimeLWPolyline;
+	auto l = new DimeLWPolyline;
 	if (!l) return nullptr;
 
-	DimeMemHandler* mh = model->getMemHandler();
 
 	if (!this->copyRecords(l, model))
 	{
 		// check if allocated on heap.
-		if (!mh) delete l;
+		delete l;
 		l = nullptr;
 	}
 	else
@@ -96,13 +95,13 @@ DimeLWPolyline::copy(DimeModel* const model) const
 		const int num = this->numVertices;
 		if (num > 0)
 		{
-			l->xcoord = ARRAY_NEW(mh, dxfdouble, num);
-			l->ycoord = ARRAY_NEW(mh, dxfdouble, num);
-			l->bulge = ARRAY_NEW(mh, dxfdouble, num);
+			l->xcoord = ARRAY_NEW(dxfdouble, num);
+			l->ycoord = ARRAY_NEW(dxfdouble, num);
+			l->bulge = ARRAY_NEW(dxfdouble, num);
 			if (this->startingWidth)
 			{
-				l->startingWidth = ARRAY_NEW(mh, dxfdouble, num);
-				l->endWidth = ARRAY_NEW(mh, dxfdouble, num);
+				l->startingWidth = ARRAY_NEW(dxfdouble, num);
+				l->endWidth = ARRAY_NEW(dxfdouble, num);
 			}
 			for (int i = 0; i < num; i++)
 			{
@@ -207,8 +206,7 @@ DimeLWPolyline::typeId() const
 
 bool
 DimeLWPolyline::handleRecord(const int groupcode,
-                             const dimeParam& param,
-                             DimeMemHandler* const mh)
+                             const dimeParam& param)
 {
 	switch (groupcode)
 	{
@@ -227,13 +225,13 @@ DimeLWPolyline::handleRecord(const int groupcode,
 					fprintf(stderr, "LWPOLYLINE shouldn't have any vertices, but still found one!\n");
 					return true; // data is "handled" so... 
 				}
-				this->xcoord = ARRAY_NEW(mh, dxfdouble, num);
-				this->ycoord = ARRAY_NEW(mh, dxfdouble, num);
-				this->bulge = ARRAY_NEW(mh, dxfdouble, num);
+				this->xcoord = ARRAY_NEW(dxfdouble, num);
+				this->ycoord = ARRAY_NEW(dxfdouble, num);
+				this->bulge = ARRAY_NEW(dxfdouble, num);
 				if (this->constantWidth == 0.0)
 				{
-					this->startingWidth = ARRAY_NEW(mh, dxfdouble, num);
-					this->endWidth = ARRAY_NEW(mh, dxfdouble, num);
+					this->startingWidth = ARRAY_NEW(dxfdouble, num);
+					this->endWidth = ARRAY_NEW(dxfdouble, num);
 				}
 				// must initialize arrays to default values
 				for (int i = 0; i < num; i++)
@@ -310,7 +308,7 @@ DimeLWPolyline::handleRecord(const int groupcode,
 		this->numVertices = param.int32_data;
 		return true;
 	}
-	return DimeExtrusionEntity::handleRecord(groupcode, param, mh);
+	return DimeExtrusionEntity::handleRecord(groupcode, param);
 }
 
 //!

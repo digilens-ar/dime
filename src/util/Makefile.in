@@ -67,13 +67,12 @@ ARFLAGS = cru
 util_lst_AR = $(AR) $(ARFLAGS)
 util_lst_LIBADD =
 am__objects_1 = Array.$(OBJEXT) BSPTree.$(OBJEXT) Box.$(OBJEXT) \
-	Dict.$(OBJEXT) Linear.$(OBJEXT) MemHandler.$(OBJEXT)
+	Dict.$(OBJEXT) Linear.$(OBJEXT)
 am_util_lst_OBJECTS = $(am__objects_1)
 util_lst_OBJECTS = $(am_util_lst_OBJECTS)
 LTLIBRARIES = $(noinst_LTLIBRARIES)
 libutil_la_LIBADD =
-am__objects_2 = Array.lo BSPTree.lo Box.lo Dict.lo Linear.lo \
-	MemHandler.lo
+am__objects_2 = Array.lo BSPTree.lo Box.lo Dict.lo Linear.lo
 am_libutil_la_OBJECTS = $(am__objects_2)
 libutil_la_OBJECTS = $(am_libutil_la_OBJECTS)
 DEFAULT_INCLUDES = -I. -I$(srcdir) -I$(top_builddir)/include
@@ -83,9 +82,8 @@ am__depfiles_maybe = depfiles
 @AMDEP_TRUE@	./$(DEPDIR)/BSPTree.Plo ./$(DEPDIR)/BSPTree.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/Box.Plo ./$(DEPDIR)/Box.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/Dict.Plo ./$(DEPDIR)/Dict.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/Linear.Plo ./$(DEPDIR)/Linear.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/MemHandler.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/MemHandler.Po
+@AMDEP_TRUE@	./$(DEPDIR)/Linear.Plo ./$(DEPDIR)/Linear.Po 
+
 CXXCOMPILE = $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) \
 	$(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS)
 LTCXXCOMPILE = $(LIBTOOL) --mode=compile $(CXX) $(DEFS) \
@@ -267,8 +265,7 @@ UtilSources = \
 	BSPTree.cpp BSPTree.h \
 	Box.cpp Box.h \
 	Dict.cpp Dict.h \
-	Linear.cpp Linear.h \
-	MemHandler.cpp MemHandler.h
+	Linear.cpp Linear.h 
 
 libutil_la_SOURCES = \
 	$(UtilSources)
@@ -282,8 +279,7 @@ libutilinc_HEADERS = \
 	../../include/dime/util/BSPTree.h \
 	../../include/dime/util/Box.h \
 	../../include/dime/util/Dict.h \
-	../../include/dime/util/Linear.h \
-	../../include/dime/util/MemHandler.h
+	../../include/dime/util/Linear.h 
 
 all: all-am
 
@@ -349,8 +345,6 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Dict.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Linear.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Linear.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/MemHandler.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/MemHandler.Po@am__quote@
 
 .cpp.o:
 @am__fastdepCXX_TRUE@	if $(CXXCOMPILE) -MT $@ -MD -MP -MF "$(DEPDIR)/$*.Tpo" -c -o $@ $<; \

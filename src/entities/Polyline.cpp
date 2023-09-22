@@ -40,7 +40,7 @@
 #include <dime/records/Record.h>
 #include <dime/Input.h>
 #include <dime/Output.h>
-#include <dime/util/MemHandler.h>
+
 #include <dime/Model.h>
 #include <dime/State.h>
 #include <string.h>
@@ -84,8 +84,7 @@ DimeEntity*
 DimePolyline::copy(DimeModel* const model) const
 {
 	int i;
-	DimeMemHandler* memh = model->getMemHandler();
-	auto pl = new(memh) DimePolyline;
+	auto pl = new DimePolyline;
 
 	bool ok = pl != nullptr;
 	if (ok && this->indexCnt)
@@ -168,7 +167,7 @@ DimePolyline::copy(DimeModel* const model) const
 	}
 	if (!ok || !this->copyRecords(pl, model))
 	{
-		if (!memh) delete pl; // delete if allocated on heap
+		delete pl; // delete if allocated on heap
 		pl = nullptr; // just return NULL
 	}
 	return pl;
@@ -190,7 +189,6 @@ DimePolyline::read(DimeInput* const file)
 		int32 groupcode;
 		const char* string;
 		DimeVertex* vertex;
-		DimeMemHandler* memhandler = file->getMemHandler();
 
 		int idxcnt = 0;
 		int vcnt = 0;
@@ -208,7 +206,7 @@ DimePolyline::read(DimeInput* const file)
 			string = file->readString();
 			if (!strcmp(string, "SEQEND"))
 			{
-				this->seqend = DimeEntity::createEntity(string, memhandler);
+				this->seqend = DimeEntity::createEntity(string);
 				ret = this->seqend && this->seqend->read(file);
 				break; // ok, no more vertices.
 			}
@@ -217,7 +215,7 @@ DimePolyline::read(DimeInput* const file)
 				ret = false;
 				break;
 			}
-			vertex = static_cast<DimeVertex*>(DimeEntity::createEntity(string, memhandler));
+			vertex = static_cast<DimeVertex*>(DimeEntity::createEntity(string));
 
 			if (vertex == nullptr)
 			{
@@ -245,17 +243,17 @@ DimePolyline::read(DimeInput* const file)
 		{
 			if (idxcnt)
 			{
-				this->indexVertices = ARRAY_NEW(memhandler, DimeVertex*, idxcnt);
+				this->indexVertices = ARRAY_NEW(DimeVertex*, idxcnt);
 				if (!this->indexVertices) ret = false;
 			}
 			if (vcnt && ret)
 			{
-				this->coordVertices = ARRAY_NEW(memhandler, DimeVertex*, vcnt);
+				this->coordVertices = ARRAY_NEW(DimeVertex*, vcnt);
 				ret = this->coordVertices != nullptr;
 			}
 			if (framecnt && ret)
 			{
-				this->frameVertices = ARRAY_NEW(memhandler, DimeVertex*, framecnt);
+				this->frameVertices = ARRAY_NEW(DimeVertex*, framecnt);
 				ret = this->frameVertices != nullptr;
 			}
 
@@ -418,8 +416,7 @@ DimePolyline::typeId() const
 
 bool
 DimePolyline::handleRecord(const int groupcode,
-                           const dimeParam& param,
-                           DimeMemHandler* const memhandler)
+                           const dimeParam& param)
 {
 	switch (groupcode)
 	{
@@ -466,7 +463,7 @@ DimePolyline::handleRecord(const int groupcode,
 		this->elevation[groupcode / 10 - 1] = param.double_data;
 		return true;
 	}
-	return DimeExtrusionEntity::handleRecord(groupcode, param, memhandler);
+	return DimeExtrusionEntity::handleRecord(groupcode, param);
 }
 
 //!
@@ -801,23 +798,20 @@ DimePolyline::countRecords() const
 */
 
 void
-DimePolyline::setCoordVertices(DimeVertex** vertices, const int num,
-                               DimeMemHandler* const memhandler)
+DimePolyline::setCoordVertices(DimeVertex** vertices, const int num)
 {
 	int i;
-	if (!memhandler)
+	
+	for (i = 0; i < this->coordCnt; i++)
 	{
-		for (i = 0; i < this->coordCnt; i++)
-		{
-			delete this->coordVertices[i];
-		}
-		delete [] this->coordVertices;
+		delete this->coordVertices[i];
 	}
+	delete [] this->coordVertices;
 	if (vertices && num)
 	{
-		if (!memhandler || num > this->coordCnt)
+		if (num > this->coordCnt)
 		{
-			this->coordVertices = ARRAY_NEW(memhandler, DimeVertex*, num);
+			this->coordVertices = ARRAY_NEW(DimeVertex*, num);
 		}
 		if (this->coordVertices)
 		{
@@ -842,23 +836,21 @@ DimePolyline::setCoordVertices(DimeVertex** vertices, const int num,
 */
 
 void
-DimePolyline::setSplineFrameControlPoints(DimeVertex** vertices, const int num,
-                                          DimeMemHandler* const memhandler)
+DimePolyline::setSplineFrameControlPoints(DimeVertex** vertices, const int num)
 {
 	int i;
-	if (!memhandler)
+	
+	for (i = 0; i < this->frameCnt; i++)
 	{
-		for (i = 0; i < this->frameCnt; i++)
-		{
-			delete this->frameVertices[i];
-		}
-		delete [] this->frameVertices;
+		delete this->frameVertices[i];
 	}
+	delete [] this->frameVertices;
+	
 	if (vertices && num)
 	{
-		if (!memhandler || num > this->frameCnt)
+		if (num > this->frameCnt)
 		{
-			this->frameVertices = ARRAY_NEW(memhandler, DimeVertex*, num);
+			this->frameVertices = ARRAY_NEW(DimeVertex*, num);
 		}
 		if (this->frameVertices)
 		{
@@ -883,23 +875,21 @@ DimePolyline::setSplineFrameControlPoints(DimeVertex** vertices, const int num,
 */
 
 void
-DimePolyline::setIndexVertices(DimeVertex** vertices, const int num,
-                               DimeMemHandler* const memhandler)
+DimePolyline::setIndexVertices(DimeVertex** vertices, const int num)
 {
 	int i;
-	if (!memhandler)
+
+	for (i = 0; i < this->indexCnt; i++)
 	{
-		for (i = 0; i < this->indexCnt; i++)
-		{
-			delete this->indexVertices[i];
-		}
-		delete [] this->indexVertices;
+		delete this->indexVertices[i];
 	}
+	delete [] this->indexVertices;
+	
 	if (vertices && num)
 	{
-		if (!memhandler || num > this->indexCnt)
+		if (num > this->indexCnt)
 		{
-			this->indexVertices = ARRAY_NEW(memhandler, DimeVertex*, num);
+			this->indexVertices = ARRAY_NEW(DimeVertex*, num);
 		}
 		if (this->indexVertices)
 		{

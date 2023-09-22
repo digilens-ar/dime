@@ -39,20 +39,12 @@
 #include <dime/tables/Table.h>
 #include <dime/Input.h>
 #include <dime/Output.h>
-#include <dime/util/MemHandler.h>
+
 #include <dime/Model.h>
 #include <dime/util/Array.h>
 
 static constexpr char sectionName[] = "TABLES";
 
-/*!
-  Constructor.
-*/
-
-DimeTablesSection::DimeTablesSection(DimeMemHandler* const memhandler)
-	: DimeSection(memhandler)
-{
-}
 
 /*!
   Destructor.
@@ -69,8 +61,7 @@ DimeTablesSection::~DimeTablesSection()
 DimeSection*
 DimeTablesSection::copy(DimeModel* const model) const
 {
-	DimeMemHandler* memh = model->getMemHandler();
-	auto ts = new DimeTablesSection(memh);
+	auto ts = new DimeTablesSection;
 	int n = this->tables.count();
 	if (n)
 	{
@@ -103,7 +94,6 @@ DimeTablesSection::read(DimeInput* const file)
 	const char* string;
 	bool ok = true;
 	DimeTable* table = nullptr;
-	DimeMemHandler* memhandler = file->getMemHandler();
 
 	//  sim_trace("Reading section: TABLES\n");
 
@@ -126,7 +116,7 @@ DimeTablesSection::read(DimeInput* const file)
 			break;
 		}
 
-		table = new DimeTable(memhandler);
+		table = new DimeTable;
 		if (table == nullptr)
 		{
 			fprintf(stderr, "error creating table: %s\n", string);
@@ -223,7 +213,7 @@ void
 DimeTablesSection::removeTable(const int idx)
 {
 	assert(idx >= 0 && idx < this->tables.count());
-	if (!this->memHandler) delete this->tables[idx];
+	delete this->tables[idx];
 	this->tables.removeElem(idx);
 }
 

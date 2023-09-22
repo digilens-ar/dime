@@ -39,7 +39,7 @@
 #include <dime/records/Record.h>
 #include <dime/Input.h>
 #include <dime/Output.h>
-#include <dime/util/MemHandler.h>
+
 #include <dime/util/Array.h>
 #include <dime/Model.h>
 
@@ -50,9 +50,8 @@
   Constructor which stores the section name.
 */
 
-dimeUnknownSection::dimeUnknownSection(const char* const sectionname,
-                                       DimeMemHandler* memhandler)
-	: DimeSection(memhandler), records(nullptr), numRecords(0)
+dimeUnknownSection::dimeUnknownSection(const char* const sectionname)
+	: DimeSection(), records(nullptr), numRecords(0)
 {
 	this->sectionName = new char[strlen(sectionname) + 1];
 	if (this->sectionName) strcpy(this->sectionName, sectionname);
@@ -65,12 +64,9 @@ dimeUnknownSection::dimeUnknownSection(const char* const sectionname,
 dimeUnknownSection::~dimeUnknownSection()
 {
 	delete [] this->sectionName;
-	if (!this->memHandler)
-	{
-		for (int i = 0; i < this->numRecords; i++)
-			delete this->records[i];
-		delete [] this->records;
-	}
+	for (int i = 0; i < this->numRecords; i++)
+		delete this->records[i];
+	delete [] this->records;
 }
 
 //!
@@ -79,19 +75,17 @@ DimeSection*
 dimeUnknownSection::copy(DimeModel* const model) const
 {
 	int i;
-	DimeMemHandler* memh = model->getMemHandler();
-	auto us = new dimeUnknownSection(this->sectionName,
-	                                 memh);
+	auto us = new dimeUnknownSection(this->sectionName);
 	bool ok = us != nullptr;
 	if (ok && this->numRecords)
 	{
-		us->records = ARRAY_NEW(memh, DimeRecord*, this->numRecords);
+		us->records = ARRAY_NEW(DimeRecord*, this->numRecords);
 		bool ok = us->records != nullptr;
 		if (ok)
 		{
 			for (i = 0; i < this->numRecords && ok; i++)
 			{
-				us->records[i] = this->records[i]->copy(memh);
+				us->records[i] = this->records[i]->copy();
 				ok = us->records[i] != nullptr;
 			}
 			us->numRecords = i;
@@ -99,7 +93,7 @@ dimeUnknownSection::copy(DimeModel* const model) const
 	}
 	if (!ok)
 	{
-		if (!memh) delete us;
+		delete us;
 		us = nullptr;
 	}
 	//  sim_trace("unknown section copy: %p\n", us);
@@ -114,7 +108,6 @@ dimeUnknownSection::read(DimeInput* const file)
 	DimeRecord* record;
 	bool ok = true;
 	dimeArray<DimeRecord*> array(512);
-	DimeMemHandler* memhandler = file->getMemHandler();
 
 	while (true)
 	{
@@ -131,14 +124,7 @@ dimeUnknownSection::read(DimeInput* const file)
 	}
 	if (ok && array.count())
 	{
-		if (memhandler)
-		{
-			this->records = static_cast<DimeRecord**>(memhandler->allocMem(array.count() * sizeof(DimeRecord*)));
-		}
-		else
-		{
-			this->records = new DimeRecord*[array.count()];
-		}
+		this->records = new DimeRecord*[array.count()];
 		if (this->records)
 		{
 			int n = this->numRecords = array.count();

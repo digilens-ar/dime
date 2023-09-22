@@ -14,8 +14,7 @@ UtilSources = \
 	BSPTree.cpp BSPTree.h \
 	Box.cpp Box.h \
 	Dict.cpp Dict.h \
-	Linear.cpp Linear.h \
-	MemHandler.cpp MemHandler.h
+	Linear.cpp Linear.h 
 
 libutil_la_SOURCES = \
 	$(UtilSources)
@@ -36,8 +35,7 @@ libutilinc_HEADERS = \
 	../../include/dime/util/BSPTree.h \
 	../../include/dime/util/Box.h \
 	../../include/dime/util/Dict.h \
-	../../include/dime/util/Linear.h \
-	../../include/dime/util/MemHandler.h
+	../../include/dime/util/Linear.h 
 
 install-libutilincHEADERS: $(libutilinc_HEADERS)
 	@$(NORMAL_INSTALL)

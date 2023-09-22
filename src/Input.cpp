@@ -625,16 +625,6 @@ DimeInput::readStringNoSkip()
 	return this->lineBuf;
 }
 
-/*!
-  Returns the memory handler used in this model.
-*/
-
-DimeMemHandler*
-DimeInput::getMemHandler()
-{
-	if (model) return model->getMemHandler();
-	return nullptr;
-}
 
 /*!
   Returns the model for this file.

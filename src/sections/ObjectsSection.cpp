@@ -38,7 +38,7 @@
 #include <dime/sections/ObjectsSection.h>
 #include <dime/Input.h>
 #include <dime/Output.h>
-#include <dime/util/MemHandler.h>
+
 #include <dime/Model.h>
 #include <dime/objects/Object.h>
 #include <dime/Model.h>
@@ -47,25 +47,13 @@
 static constexpr char sectionName[] = "OBJECTS";
 
 /*!
-  Constructor.
-*/
-
-DimeObjectsSection::DimeObjectsSection(DimeMemHandler* const memhandler)
-	: DimeSection(memhandler)
-{
-}
-
-/*!
   Destructor.
 */
 
 DimeObjectsSection::~DimeObjectsSection()
 {
-	if (!this->memHandler)
-	{
-		for (int i = 0; i < this->objects.count(); i++)
-			delete this->objects[i];
-	}
+	for (int i = 0; i < this->objects.count(); i++)
+		delete this->objects[i];
 }
 
 //!
@@ -73,8 +61,7 @@ DimeObjectsSection::~DimeObjectsSection()
 DimeSection*
 DimeObjectsSection::copy(DimeModel* const model) const
 {
-	DimeMemHandler* memh = model->getMemHandler();
-	auto os = new DimeObjectsSection(memh);
+	auto os = new DimeObjectsSection;
 	bool ok = os != nullptr;
 
 	int num = this->objects.count();
@@ -94,7 +81,7 @@ DimeObjectsSection::copy(DimeModel* const model) const
 
 	if (!ok)
 	{
-		if (!memh) delete os;
+		delete os;
 		os = nullptr;
 	}
 	//  sim_trace("objects section copy: %p\n", os);
@@ -110,7 +97,6 @@ DimeObjectsSection::read(DimeInput* const file)
 	const char* string;
 	bool ok = true;
 	DimeObject* object = nullptr;
-	DimeMemHandler* memhandler = file->getMemHandler();
 	this->objects.makeEmpty(64);
 
 	//  sim_trace("Reading section: OBJECTS\n");
@@ -126,7 +112,7 @@ DimeObjectsSection::read(DimeInput* const file)
 		}
 		string = file->readString();
 		if (!strcmp(string, "ENDSEC")) break;
-		object = DimeObject::createObject(string, memhandler);
+		object = DimeObject::createObject(string);
 		if (object == nullptr)
 		{
 			fprintf(stderr, "error creating object: %s.\n", string);
@@ -227,7 +213,7 @@ void
 DimeObjectsSection::removeObject(const int idx)
 {
 	assert(idx >= 0 && idx < this->objects.count());
-	if (!this->memHandler) delete this->objects[idx];
+	delete this->objects[idx];
 	this->objects.removeElem(idx);
 }
 

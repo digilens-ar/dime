@@ -39,7 +39,7 @@
 #include <dime/records/Record.h>
 #include <dime/Input.h>
 #include <dime/Output.h>
-#include <dime/util/MemHandler.h>
+
 #include <dime/Model.h>
 
 static char entityName[] = "VERTEX";
@@ -64,7 +64,7 @@ DimeVertex::DimeVertex()
 DimeEntity*
 DimeVertex::copy(DimeModel* const model) const
 {
-	auto v = new(model->getMemHandler()) DimeVertex;
+	auto v = new DimeVertex;
 
 	v->flags = this->flags;
 	v->indices[0] = this->indices[0];
@@ -77,7 +77,7 @@ DimeVertex::copy(DimeModel* const model) const
 	if (!this->copyRecords(v, model))
 	{
 		// check if allocated on heap.
-		if (!model->getMemHandler()) delete v;
+		delete v;
 		v = nullptr;
 	}
 	return v;
@@ -154,8 +154,7 @@ DimeVertex::typeId() const
 
 bool
 DimeVertex::handleRecord(const int groupcode,
-                         const dimeParam& param,
-                         DimeMemHandler* const memhandler)
+                         const dimeParam& param)
 {
 	switch (groupcode)
 	{
@@ -178,7 +177,7 @@ DimeVertex::handleRecord(const int groupcode,
 #endif
 		return true;
 	}
-	return DimeEntity::handleRecord(groupcode, param, memhandler);
+	return DimeEntity::handleRecord(groupcode, param);
 }
 
 //!

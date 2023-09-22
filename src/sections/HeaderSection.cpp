@@ -31,14 +31,14 @@
 \**************************************************************************/
 
 /*!
-  \class dimeHeaderSection dime/sections/HeaderSection.h
+  \class DimeHeaderSection dime/sections/HeaderSection.h
   \brief The dimeHeaderSection class handles the HEADER \e section.
 */
 
 #include <dime/sections/HeaderSection.h>
 #include <dime/records/Record.h>
 #include <dime/records/StringRecord.h>
-#include <dime/util/MemHandler.h>
+
 #include <dime/Model.h>
 #include <dime/Input.h>
 #include <dime/Output.h>
@@ -48,25 +48,13 @@
 static constexpr char sectionName[] = "HEADER";
 
 /*!
-  Constructor
-*/
-
-dimeHeaderSection::dimeHeaderSection(DimeMemHandler* const memhandler)
-	: DimeSection(memhandler)
-{
-}
-
-/*!
   Destructor
 */
 
-dimeHeaderSection::~dimeHeaderSection()
+DimeHeaderSection::~DimeHeaderSection()
 {
-	if (!this->memHandler)
-	{
-		int i, n = this->records.count();
-		for (i = 0; i < n; i++) delete this->records[i];
-	}
+	int i, n = this->records.count();
+	for (i = 0; i < n; i++) delete this->records[i];
 }
 
 /*!
@@ -78,7 +66,7 @@ dimeHeaderSection::~dimeHeaderSection()
 */
 
 int
-dimeHeaderSection::getVariable(const char* const variableName,
+DimeHeaderSection::getVariable(const char* const variableName,
                                int* const groupcodes,
                                dimeParam* const params,
                                const int maxparams) const
@@ -111,24 +99,23 @@ dimeHeaderSection::getVariable(const char* const variableName,
 */
 
 int
-dimeHeaderSection::setVariable(const char* const variableName,
+DimeHeaderSection::setVariable(const char* const variableName,
                                const int* const groupcodes,
                                const dimeParam* const params,
-                               const int numparams,
-                               DimeMemHandler* const memhandler)
+                               const int numparams)
 {
 	int i = findVariable(variableName);
 	if (i < 0)
 	{
 		i = this->records.count();
-		auto sr = static_cast<dimeStringRecord*>(DimeRecord::createRecord(9, memhandler));
+		auto sr = static_cast<dimeStringRecord*>(DimeRecord::createRecord(9));
 		if (!sr) return false;
-		sr->setString(variableName, memhandler);
+		sr->setString(variableName);
 
 		this->records.append(sr);
 		for (int j = 0; j < numparams; j++)
 		{
-			this->records.append(DimeRecord::createRecord(groupcodes[j], memhandler));
+			this->records.append(DimeRecord::createRecord(groupcodes[j]));
 		}
 	}
 	i++;
@@ -154,7 +141,7 @@ dimeHeaderSection::setVariable(const char* const variableName,
 //!
 
 const char*
-dimeHeaderSection::getSectionName() const
+DimeHeaderSection::getSectionName() const
 {
 	return sectionName;
 }
@@ -162,15 +149,14 @@ dimeHeaderSection::getSectionName() const
 //!
 
 DimeSection*
-dimeHeaderSection::copy(DimeModel* const model) const
+DimeHeaderSection::copy(DimeModel* const model) const
 {
-	DimeMemHandler* mh = model->getMemHandler();
-	auto hs = new dimeHeaderSection(mh);
+	auto hs = new DimeHeaderSection;
 	if (hs)
 	{
 		int i, n = this->records.count();
 		hs->records.makeEmpty(n);
-		for (i = 0; i < n; i++) hs->records.append(this->records[i]->copy(mh));
+		for (i = 0; i < n; i++) hs->records.append(this->records[i]->copy());
 	}
 	return hs;
 }
@@ -178,7 +164,7 @@ dimeHeaderSection::copy(DimeModel* const model) const
 //!
 
 bool
-dimeHeaderSection::read(DimeInput* const file)
+DimeHeaderSection::read(DimeInput* const file)
 {
 	DimeRecord* record;
 	bool ok = true;
@@ -194,7 +180,7 @@ dimeHeaderSection::read(DimeInput* const file)
 		}
 		if (record->isEndOfSectionRecord())
 		{
-			if (!file->getMemHandler()) delete record; // just delete EOS record
+			delete record; // just delete EOS record
 			break;
 		}
 		this->records.append(record);
@@ -206,7 +192,7 @@ dimeHeaderSection::read(DimeInput* const file)
 //!
 
 bool
-dimeHeaderSection::write(DimeOutput* const file)
+DimeHeaderSection::write(DimeOutput* const file)
 {
 	if (file->writeGroupCode(2) && file->writeString(sectionName))
 	{
@@ -225,7 +211,7 @@ dimeHeaderSection::write(DimeOutput* const file)
 //!
 
 DimeBase::TypeID
-dimeHeaderSection::typeId() const
+DimeHeaderSection::typeId() const
 {
 	return DimeBase::dimeHeaderSectionType;
 }
@@ -233,7 +219,7 @@ dimeHeaderSection::typeId() const
 //!
 
 int
-dimeHeaderSection::countRecords() const
+DimeHeaderSection::countRecords() const
 {
 	return this->records.count() + 2; // numrecords + SECTIONNAME + EOS
 }
@@ -243,7 +229,7 @@ dimeHeaderSection::countRecords() const
 //
 
 int
-dimeHeaderSection::findVariable(const char* const variableName) const
+DimeHeaderSection::findVariable(const char* const variableName) const
 {
 	const int n = this->records.count();
 	int i;

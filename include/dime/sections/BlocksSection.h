@@ -39,7 +39,7 @@
 class DIME_DLL_API DimeBlocksSection : public DimeSection
 {
 public:
-	DimeBlocksSection(DimeMemHandler* memhandler = nullptr);
+	DimeBlocksSection() = default;
 	~DimeBlocksSection() override;
 
 	const char* getSectionName() const override;

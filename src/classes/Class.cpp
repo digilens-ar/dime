@@ -39,7 +39,7 @@
 #include <dime/classes/UnknownClass.h>
 #include <dime/Input.h>
 #include <dime/Output.h>
-#include <dime/util/MemHandler.h>
+
 #include <dime/Model.h>
 
 #include <string.h>
@@ -122,17 +122,16 @@ DimeClass::~DimeClass()
 bool
 DimeClass::copyRecords(DimeClass* const myclass, DimeModel* const model) const
 {
-	DimeMemHandler* memh = model->getMemHandler();
-	bool ok = DimeRecordHolder::copyRecords(myclass, memh);
+	bool ok = DimeRecordHolder::copyRecords(myclass);
 
 	if (ok && this->className)
 	{
-		DXF_STRCPY(memh, myclass->className, this->className);
+		DXF_STRCPY(myclass->className, this->className);
 		ok = myclass->className != nullptr;
 	}
 	if (ok && this->appName)
 	{
-		DXF_STRCPY(memh, myclass->appName, this->appName);
+		DXF_STRCPY(myclass->appName, this->appName);
 		ok = myclass->className != nullptr;
 	}
 	if (ok)
@@ -169,10 +168,9 @@ DimeClass::write(DimeOutput* const file)
 */
 
 DimeClass*
-DimeClass::createClass(const char* const name,
-                       DimeMemHandler* const memhandler)
+DimeClass::createClass(const char* const name)
 {
-	return new(memhandler) dimeUnknownClass(name, memhandler);
+	return new dimeUnknownClass(name);
 }
 
 //!
@@ -208,16 +206,15 @@ DimeClass::read(DimeInput* const file)
 
 bool
 DimeClass::handleRecord(const int groupcode,
-                        const dimeParam& param,
-                        DimeMemHandler* const memhandler)
+                        const dimeParam& param)
 {
 	switch (groupcode)
 	{
 	case 1:
-		DXF_STRCPY(memhandler, this->className, param.string_data);
+		DXF_STRCPY(this->className, param.string_data);
 		return true;
 	case 2:
-		DXF_STRCPY(memhandler, this->appName, param.string_data);
+		DXF_STRCPY(this->appName, param.string_data);
 		return true;
 	case 90:
 		this->versionNumber = param.int32_data;
@@ -237,11 +234,10 @@ DimeClass::handleRecord(const int groupcode,
 */
 
 void
-DimeClass::setClassName(const char* const classname,
-                        DimeMemHandler* const memhandler)
+DimeClass::setClassName(const char* const classname)
 {
-	if (!memhandler) delete [] this->className;
-	DXF_STRCPY(memhandler, this->className, classname);
+	delete [] this->className;
+	DXF_STRCPY(this->className, classname);
 }
 
 /*!
@@ -249,9 +245,8 @@ DimeClass::setClassName(const char* const classname,
 */
 
 void
-DimeClass::setApplicationName(const char* const appname,
-                              DimeMemHandler* const memhandler)
+DimeClass::setApplicationName(const char* const appname)
 {
-	if (!memhandler) delete [] this->appName;
-	DXF_STRCPY(memhandler, this->appName, appname);
+	delete [] this->appName;
+	DXF_STRCPY(this->appName, appname);
 }
