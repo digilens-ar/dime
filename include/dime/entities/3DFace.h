@@ -49,12 +49,12 @@ class  dime3DFace : public dimeFaceEntity
 public:
 	dime3DFace();
 
-	virtual DimeEntity* copy(DimeModel* model) const;
+	DimeEntity* copy(DimeModel* model) const override;
 
 	bool getRecord(int groupcode,
 	               dimeParam& param,
 	               int index = 0) const override;
-	virtual const char* getEntityName() const;
+	const char* getEntityName() const override;
 
 	enum Flags
 	{
@@ -67,7 +67,7 @@ public:
 	void setFlags(int16_t flags);
 	int16_t getFlags() const;
 
-	virtual bool write(DimeOutput* out);
+	bool write(DimeOutput* out) override;
 	TypeID typeId() const override;
 	int countRecords() const override;
 

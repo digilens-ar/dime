@@ -71,7 +71,7 @@ public:
 
 	bool read(DimeInput* in) override;
 	bool write(DimeOutput* out) override;
-	virtual TypeID typeId() const;
+	TypeID typeId() const override;
 	int countRecords() const override;
 
 protected:

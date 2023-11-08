@@ -54,18 +54,18 @@ public:
 	bool getRecord(int groupcode,
 	               dimeParam& param,
 	               int index = 0) const override;
-	virtual const char* getEntityName() const;
+	const char* getEntityName() const override;
 
-	virtual DimeEntity* copy(DimeModel* model) const;
+	DimeEntity* copy(DimeModel* model) const override;
 
-	virtual bool write(DimeOutput* out);
+	bool write(DimeOutput* out) override;
 	TypeID typeId() const override;
 	int countRecords() const override;
 
-	virtual GeometryType extractGeometry(dimeArray<dimeVec3>& verts,
+	GeometryType extractGeometry(dimeArray<dimeVec3>& verts,
 	                                     dimeArray<int>& indices,
 	                                     dimeVec3& extrusionDir,
-	                                     dxfdouble& thickness);
+	                                     dxfdouble& thickness) override;
 
 protected:
 	bool handleRecord(int groupcode,

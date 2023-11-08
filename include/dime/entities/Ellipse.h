@@ -61,12 +61,12 @@ public:
 	void setEndParam(dxfdouble p);
 	dxfdouble getEndParam() const;
 
-	virtual DimeEntity* copy(DimeModel* model) const;
+	DimeEntity* copy(DimeModel* model) const override;
 	bool getRecord(int groupcode,
 	               dimeParam& param,
 	               int index = 0) const override;
-	virtual const char* getEntityName() const;
-	virtual bool write(DimeOutput* out);
+	const char* getEntityName() const override;
+	bool write(DimeOutput* out) override;
 	TypeID typeId() const override;
 	int countRecords() const override;
 

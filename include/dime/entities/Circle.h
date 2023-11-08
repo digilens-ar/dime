@@ -51,19 +51,19 @@ public:
 	void setRadius(dxfdouble val);
 	dxfdouble getRadius() const;
 
-	virtual DimeEntity* copy(DimeModel* model) const;
+	DimeEntity* copy(DimeModel* model) const override;
 	bool getRecord(int groupcode,
 	               dimeParam& param,
 	               int index = 0) const override;
-	virtual const char* getEntityName() const;
-	virtual bool write(DimeOutput* out);
+	const char* getEntityName() const override;
+	bool write(DimeOutput* out) override;
 	TypeID typeId() const override;
 	int countRecords() const override;
 
-	virtual GeometryType extractGeometry(dimeArray<dimeVec3>& verts,
-	                                     dimeArray<int>& indices,
-	                                     dimeVec3& extrusionDir,
-	                                     dxfdouble& thickness);
+	GeometryType extractGeometry(dimeArray<dimeVec3>& verts,
+	                             dimeArray<int>& indices,
+	                             dimeVec3& extrusionDir,
+	                             dxfdouble& thickness) override;
 
 protected:
 	bool handleRecord(int groupcode,
