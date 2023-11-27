@@ -136,11 +136,14 @@ target_include_directories(${PROJECT_NAME}
     $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
 )
 
-add_executable(dxf2vrml dxf2vrml/dxf2vrml.cpp)
-target_link_libraries(dxf2vrml PRIVATE dime)
+option(DIME_BUILD_EXAMPLES "Whether to build executable examples" OFF)
+if (DIME_BUILD_EXAMPLES)
+    add_executable(dxf2vrml dxf2vrml/dxf2vrml.cpp)
+    target_link_libraries(dxf2vrml PRIVATE dime)
 
-add_executable(dxfsphere dxfsphere/dxfsphere.cpp)
-target_link_libraries(dxfsphere PRIVATE dime)
+    add_executable(dxfsphere dxfsphere/dxfsphere.cpp)
+    target_link_libraries(dxfsphere PRIVATE dime)
+endif()
 
 # ############################################################################
 # Add a target to generate API documentation with Doxygen
@@ -247,30 +250,24 @@ configure_file(include/config.h.cmake.in config.h)
 # ############################################################################
 
 install(DIRECTORY include/${PROJECT_NAME} DESTINATION ${CMAKE_INSTALL_INCLUDEDIR} COMPONENT development FILES_MATCHING PATTERN "*.h")
-
-if(NOT CMAKE_VERSION VERSION_LESS 3.12)
-  install(TARGETS ${PROJECT_NAME} dxf2vrml dxfsphere EXPORT ${PROJECT_NAME}
-    RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR} COMPONENT runtime
-    LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR} COMPONENT runtime NAMELINK_COMPONENT development
-    ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR} COMPONENT development
-  )
-  if(DIME_BUILD_SHARED_LIBS)
-    if(MSVC)
-      install(FILES $<TARGET_PDB_FILE:${PROJECT_NAME}> DESTINATION ${CMAKE_INSTALL_BINDIR} CONFIGURATIONS Debug RelWithDebInfo COMPONENT debug)
-    endif()
-  endif()
-else()
-  install(TARGETS ${PROJECT_NAME} dxf2vrml dxfsphere EXPORT ${PROJECT_NAME}
+install(TARGETS ${PROJECT_NAME}  EXPORT ${PROJECT_NAME}
     RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR} COMPONENT runtime
     LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR} COMPONENT runtime NAMELINK_SKIP
     ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR} COMPONENT development
-  )
-  if(DIME_BUILD_SHARED_LIBS)
+)
+
+if(DIME_BUILD_EXAMPLES)
+    install(TARGETS dxf2vrml dxfsphere EXPORT ${PROJECT_NAME}
+    RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR} COMPONENT runtime
+    LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR} COMPONENT runtime NAMELINK_SKIP
+    ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR} COMPONENT development
+    )
+endif()
+if(DIME_BUILD_SHARED_LIBS)
     install(TARGETS ${PROJECT_NAME} EXPORT ${PROJECT_NAME} LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR} COMPONENT development NAMELINK_ONLY)
     if(MSVC)
-      install(FILES $<TARGET_PDB_FILE:${PROJECT_NAME}> DESTINATION ${CMAKE_INSTALL_BINDIR} CONFIGURATIONS Debug RelWithDebInfo COMPONENT debug)
+        install(FILES $<TARGET_PDB_FILE:${PROJECT_NAME}> DESTINATION ${CMAKE_INSTALL_BINDIR} CONFIGURATIONS Debug RelWithDebInfo COMPONENT debug)
     endif()
-  endif()
 endif()
 
 # ############################################################################
