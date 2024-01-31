@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.0)
+cmake_minimum_required(VERSION 3.20)
 
 set(DIME_MAJOR_VERSION 0)
 set(DIME_MINOR_VERSION 9)
@@ -40,6 +40,7 @@ include(GNUInstallDirs)
 option(DIME_BUILD_SHARED_LIBS "Build shared library when ON, static when OFF (default)." OFF)
 #option(DIME_BUILD_TESTS "Build unit tests when ON (default), skips them when OFF." ON)
 option(DIME_BUILD_DOCUMENTATION "Build and install API documentation (requires Doxygen)." OFF)
+option(DIME_ENABLE_INSTALL "Should targets be installed" OFF)
 cmake_dependent_option(DIME_BUILD_INTERNAL_DOCUMENTATION "Document internal code not part of the API." OFF "DIME_BUILD_DOCUMENTATION" OFF)
 cmake_dependent_option(DIME_BUILD_DOCUMENTATION_MAN "Build Dime man pages." OFF "DIME_BUILD_DOCUMENTATION" OFF)
 cmake_dependent_option(DIME_BUILD_DOCUMENTATION_QTHELP "Build QtHelp documentation." OFF "DIME_BUILD_DOCUMENTATION" OFF)
@@ -248,61 +249,63 @@ configure_file(include/config.h.cmake.in config.h)
 # ############################################################################
 # Install headers and binaries
 # ############################################################################
+if (DIME_ENABLE_INSTALL)
+    install(DIRECTORY include/${PROJECT_NAME} DESTINATION ${CMAKE_INSTALL_INCLUDEDIR} COMPONENT development FILES_MATCHING PATTERN "*.h")
+    install(TARGETS ${PROJECT_NAME}  EXPORT ${PROJECT_NAME}
+        RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR} COMPONENT runtime
+        LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR} COMPONENT runtime NAMELINK_SKIP
+        ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR} COMPONENT development
+    )
 
-install(DIRECTORY include/${PROJECT_NAME} DESTINATION ${CMAKE_INSTALL_INCLUDEDIR} COMPONENT development FILES_MATCHING PATTERN "*.h")
-install(TARGETS ${PROJECT_NAME}  EXPORT ${PROJECT_NAME}
-    RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR} COMPONENT runtime
-    LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR} COMPONENT runtime NAMELINK_SKIP
-    ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR} COMPONENT development
-)
+    if(DIME_BUILD_EXAMPLES)
+        install(TARGETS dxf2vrml dxfsphere EXPORT ${PROJECT_NAME}
+        RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR} COMPONENT runtime
+        LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR} COMPONENT runtime NAMELINK_SKIP
+        ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR} COMPONENT development
+        )
+    endif()
+    if(DIME_BUILD_SHARED_LIBS)
+        install(TARGETS ${PROJECT_NAME} EXPORT ${PROJECT_NAME} LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR} COMPONENT development NAMELINK_ONLY)
+        if(MSVC)
+            install(FILES $<TARGET_PDB_FILE:${PROJECT_NAME}> DESTINATION ${CMAKE_INSTALL_BINDIR} CONFIGURATIONS Debug RelWithDebInfo COMPONENT debug)
+        endif()
+    endif()
 
-if(DIME_BUILD_EXAMPLES)
-    install(TARGETS dxf2vrml dxfsphere EXPORT ${PROJECT_NAME}
-    RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR} COMPONENT runtime
-    LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR} COMPONENT runtime NAMELINK_SKIP
-    ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR} COMPONENT development
+    # ############################################################################
+    # Install pkgconfig file and CMake config package
+    # ############################################################################
+
+    if(UNIX OR MINGW)
+      configure_file(${CMAKE_SOURCE_DIR}/${PROJECT_NAME_LOWER}.pc.cmake.in ${CMAKE_BINARY_DIR}/${PROJECT_NAME_LOWER}.pc @ONLY)
+      install(FILES ${CMAKE_BINARY_DIR}/${PROJECT_NAME_LOWER}.pc DESTINATION ${CMAKE_INSTALL_LIBDIR}/pkgconfig)
+    endif()
+
+    configure_package_config_file(${PROJECT_NAME_LOWER}-config.cmake.in "${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME_LOWER}-config.cmake"
+      INSTALL_DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/${PROJECT_NAME}-${PROJECT_VERSION}
+      PATH_VARS CMAKE_INSTALL_LIBDIR
+    )
+
+    write_basic_package_version_file("${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME_LOWER}-config-version.cmake"
+      VERSION ${PROJECT_VERSION}
+      COMPATIBILITY SameMajorVersion
+    )
+
+    # To make the component usable not only from the install directory but also from the build directory
+    export(
+      TARGETS ${PROJECT_NAME}
+      FILE ${PROJECT_NAME_LOWER}-export.cmake
+    )
+
+    install(FILES "${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME_LOWER}-config.cmake" "${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME_LOWER}-config-version.cmake"
+      DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/${PROJECT_NAME}-${PROJECT_VERSION}
+      COMPONENT development
+    )
+
+    install(EXPORT ${PROJECT_NAME}
+      DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/${PROJECT_NAME}-${PROJECT_VERSION}
+      NAMESPACE ${PROJECT_NAME}::
+      FILE ${PROJECT_NAME_LOWER}-export.cmake
+      COMPONENT development
     )
 endif()
-if(DIME_BUILD_SHARED_LIBS)
-    install(TARGETS ${PROJECT_NAME} EXPORT ${PROJECT_NAME} LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR} COMPONENT development NAMELINK_ONLY)
-    if(MSVC)
-        install(FILES $<TARGET_PDB_FILE:${PROJECT_NAME}> DESTINATION ${CMAKE_INSTALL_BINDIR} CONFIGURATIONS Debug RelWithDebInfo COMPONENT debug)
-    endif()
-endif()
 
-# ############################################################################
-# Install pkgconfig file and CMake config package
-# ############################################################################
-
-if(UNIX OR MINGW)
-  configure_file(${CMAKE_SOURCE_DIR}/${PROJECT_NAME_LOWER}.pc.cmake.in ${CMAKE_BINARY_DIR}/${PROJECT_NAME_LOWER}.pc @ONLY)
-  install(FILES ${CMAKE_BINARY_DIR}/${PROJECT_NAME_LOWER}.pc DESTINATION ${CMAKE_INSTALL_LIBDIR}/pkgconfig)
-endif()
-
-configure_package_config_file(${PROJECT_NAME_LOWER}-config.cmake.in "${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME_LOWER}-config.cmake"
-  INSTALL_DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/${PROJECT_NAME}-${PROJECT_VERSION}
-  PATH_VARS CMAKE_INSTALL_LIBDIR
-)
-
-write_basic_package_version_file("${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME_LOWER}-config-version.cmake"
-  VERSION ${PROJECT_VERSION}
-  COMPATIBILITY SameMajorVersion
-)
-
-# To make the component usable not only from the install directory but also from the build directory
-export(
-  TARGETS ${PROJECT_NAME}
-  FILE ${PROJECT_NAME_LOWER}-export.cmake
-)
-
-install(FILES "${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME_LOWER}-config.cmake" "${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME_LOWER}-config-version.cmake"
-  DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/${PROJECT_NAME}-${PROJECT_VERSION}
-  COMPONENT development
-)
-
-install(EXPORT ${PROJECT_NAME}
-  DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/${PROJECT_NAME}-${PROJECT_VERSION}
-  NAMESPACE ${PROJECT_NAME}::
-  FILE ${PROJECT_NAME_LOWER}-export.cmake
-  COMPONENT development
-)
