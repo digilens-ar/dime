@@ -29,7 +29,7 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 \**************************************************************************/
-
+#define _CRT_SECURE_NO_WARNINGS
 #include <dime/Input.h>
 #include <dime/Output.h>
 #include <dime/Model.h>
@@ -72,7 +72,7 @@ main(int argc, char **argv)
 
   char *infile, *outfile;
   infile = outfile = NULL;
-  float maxerr = 0.1f;
+  double maxerr = 0.1f;
   int sub = -1;  
   int i = 1;
   
@@ -131,7 +131,7 @@ main(int argc, char **argv)
     }
   }
 
-  dimeInput in;
+  DimeInput in;
 
   //
   // open file for reading (or use stdin) 
@@ -153,7 +153,7 @@ main(int argc, char **argv)
   //
   // try reading the file
   //
-  dimeModel model;
+  DimeModel model;
 
   if (!model.read(&in)) {
     fprintf(stderr,"DXF read error in line: %d\n", in.getFilePosition());

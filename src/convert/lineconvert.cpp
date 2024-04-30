@@ -36,38 +36,41 @@
 #include <dime/util/Linear.h>
 #include <dime/State.h>
 
-void 
-convert_line(const dimeEntity *entity, const dimeState *state, 
-	     dxfLayerData *layerData, dxfConverter *)
+void
+convert_line(const DimeEntity* entity, const DimeState* state,
+             dxfLayerData* layerData, dxfConverter*)
 {
-  dimeLine *line = (dimeLine*)entity;
-  
-  dxfdouble thickness;
-  dimeVec3f v0, v1;
+	auto line = (DimeLine*)entity;
 
-  dimeMatrix matrix;
-  state->getMatrix(matrix);
- 
-  v0 = line->getCoords(0);
-  v1 = line->getCoords(1);
+	dxfdouble thickness;
+	dimeVec3 v0, v1;
 
-  dimeParam param;
-  if (line->getRecord(38, param)) {
-    v0[2] = param.double_data;
-    v1[2] = param.double_data;
-  }
+	dimeMatrix matrix;
+	state->getMatrix(matrix);
 
-  thickness = line->getThickness();
+	v0 = line->getCoords(0);
+	v1 = line->getCoords(1);
 
-  if (thickness != 0.0) {
-    dimeVec3f v2, v3;
-    dimeVec3f e = line->getExtrusionDir();
-    v2 = v0 + e * thickness;
-    v3 = v1 + e * thickness;
+	dimeParam param;
+	if (line->getRecord(38, param))
+	{
+		v0[2] = param.double_data;
+		v1[2] = param.double_data;
+	}
 
-    layerData->addQuad(v0, v1, v3, v2, &matrix);
-  }
-  else {
-    layerData->addLine(v0, v1, &matrix);
-  }
+	thickness = line->getThickness();
+
+	if (thickness != 0.0)
+	{
+		dimeVec3 v2, v3;
+		dimeVec3 e = line->getExtrusionDir();
+		v2 = v0 + e * thickness;
+		v3 = v1 + e * thickness;
+
+		layerData->addQuad(v0, v1, v3, v2, &matrix);
+	}
+	else
+	{
+		layerData->addLine(v0, v1, &matrix);
+	}
 }

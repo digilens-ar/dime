@@ -39,108 +39,99 @@
 #include <dime/util/Linear.h>
 #include <dime/RecordHolder.h>
 
-class dimeInput;
-class dimeMemHandler;
-class dimeOutput;
-class dimeModel;
+class DimeInput;
+class DimeOutput;
+class DimeModel;
 
-class DIME_DLL_API dimeClass : public dimeRecordHolder
+class  DimeClass : public DimeRecordHolder
 {
-  friend class dimeClassesSection;
-  friend class dimeModel;
-  
+	friend class DimeClassesSection;
+	friend class DimeModel;
+
 public:
-  dimeClass();
-  virtual ~dimeClass();
-  
-  virtual const char *getDxfClassName() const = 0;  
-  virtual dimeClass *copy(dimeModel * const model) const = 0; 
-  virtual bool read(dimeInput * const in);
-  virtual bool write(dimeOutput * const out);
-  virtual bool isOfType(const int thetypeid) const;
-  virtual int countRecords() const;
+	DimeClass();
+	~DimeClass() override;
 
-  const char *getClassName() const;
-  const char *getApplicationName() const;
-  int32 getVersionNumber() const;
-  int8 getFlag280() const;
-  int8 getFlag281() const;
+	virtual const char* getDxfClassName() const = 0;
+	virtual DimeClass* copy(DimeModel* model) const = 0;
+	bool read(DimeInput* in) override;
+	bool write(DimeOutput* out) override;
+	bool isOfType(int thetypeid) const override;
+	int countRecords() const override;
 
-  void setClassName(const char * const classname, 
-		    dimeMemHandler * const memhandler = NULL);
-  void setApplicationName(const char * const appname, 
-			  dimeMemHandler * const memhandler = NULL);
-  void setVersionNumber(const int32 v);
-  void setFlag280(const int8 flag);
-  void setFlag281(const int8 flag);
+	const char* getClassName() const;
+	const char* getApplicationName() const;
+	int32_t getVersionNumber() const;
+	int8_t getFlag280() const;
+	int8_t getFlag281() const;
+
+	void setClassName(const char* classname);
+	void setApplicationName(const char* appname);
+	void setVersionNumber(int32_t v);
+	void setFlag280(int8_t flag);
+	void setFlag281(int8_t flag);
+	static DimeClass* createClass(const char* name);
 
 protected:
-  virtual bool handleRecord(const int groupcode,
-			    const dimeParam &param,
-			    dimeMemHandler * const memhandler);
-  
-public:
-  static dimeClass *createClass(const char * const name,
-			       dimeMemHandler * const memhandler = NULL);    
-protected:
-  bool copyRecords(dimeClass * const newclass, dimeModel * const model) const;
+	bool handleRecord(int groupcode,
+	                  const dimeParam& param) override;
+
+	bool copyRecords(DimeClass* newclass, DimeModel* model) const;
 
 private:
-  char *className;
-  char *appName;
-  int32 versionNumber;
-  int8 flag1;
-  int8 flag2;
-
+	char* className;
+	char* appName;
+	int32_t versionNumber;
+	int8_t flag1;
+	int8_t flag2;
 }; // class dimeClass
 
-inline const char *
-dimeClass::getClassName() const
+inline const char*
+DimeClass::getClassName() const
 {
-  return this->className;
+	return this->className;
 }
 
-inline const char *
-dimeClass::getApplicationName() const
+inline const char*
+DimeClass::getApplicationName() const
 {
-  return this->appName;
+	return this->appName;
 }
 
-inline int32 
-dimeClass::getVersionNumber() const
+inline int32_t
+DimeClass::getVersionNumber() const
 {
-  return this->versionNumber;
+	return this->versionNumber;
 }
 
-inline int8 
-dimeClass::getFlag280() const
+inline int8_t
+DimeClass::getFlag280() const
 {
-  return this->flag1;
+	return this->flag1;
 }
 
-inline int8 
-dimeClass::getFlag281() const
+inline int8_t
+DimeClass::getFlag281() const
 {
-  return this->flag2;
+	return this->flag2;
 }
 
-inline void 
-dimeClass::setVersionNumber(const int32 v)
+inline void
+DimeClass::setVersionNumber(const int32_t v)
 {
-  this->versionNumber = v;
+	this->versionNumber = v;
 }
 
-inline void 
-dimeClass::setFlag280(const int8 flag)
+inline void
+DimeClass::setFlag280(const int8_t flag)
 {
-  this->flag1 = flag;
+	this->flag1 = flag;
 }
 
-inline void 
-dimeClass::setFlag281(const int8 flag)
+inline void
+DimeClass::setFlag281(const int8_t flag)
 {
-  this->flag2 = flag;
+	this->flag2 = flag;
 }
 
 #endif // ! DIME_CLASS_H
-

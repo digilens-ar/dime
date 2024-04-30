@@ -37,54 +37,50 @@
 #include <dime/entities/FaceEntity.h>
 #include <dime/util/Linear.h>
 
-class DIME_DLL_API dime3DFace : public dimeFaceEntity
+class  dime3DFace : public dimeFaceEntity
 {
-  friend class dimeEntitiesSection;
-  friend class dimeBlock;
-  friend class dimeModel;
-  friend class dimeEntity;
-  friend class dimeSolid;
-  friend class dimeTrace;
-  
+	friend class DimeEntitiesSection;
+	friend class DimeBlock;
+	friend class DimeModel;
+	friend class DimeEntity;
+	friend class DimeSolid;
+	friend class DimeTrace;
+
 public:
-  dime3DFace();
-  
-  virtual dimeEntity *copy(dimeModel * const model) const;
+	dime3DFace();
 
-  virtual bool getRecord(const int groupcode,
-			 dimeParam &param,
-			 const int index = 0) const;
-  virtual const char *getEntityName() const;
+	DimeEntity* copy(DimeModel* model) const override;
 
-  enum Flags {
-    EDGE1_INVISIBLE = 0x0001,
-    EDGE2_INVISIBLE = 0x0002,
-    EDGE3_INVISIBLE = 0x0004,
-    EDGE4_INVISIBLE = 0x0008
-  };
+	bool getRecord(int groupcode,
+	               dimeParam& param,
+	               int index = 0) const override;
+	const char* getEntityName() const override;
 
-  void setFlags(const int16 flags);
-  int16 getFlags() const;
+	enum Flags
+	{
+		EDGE1_INVISIBLE = 0x0001,
+		EDGE2_INVISIBLE = 0x0002,
+		EDGE3_INVISIBLE = 0x0004,
+		EDGE4_INVISIBLE = 0x0008
+	};
 
-  virtual void print() const;
-  virtual bool write(dimeOutput * const out);
-  virtual int typeId() const;
-  virtual int countRecords() const;
-    
+	void setFlags(int16_t flags);
+	int16_t getFlags() const;
+
+	bool write(DimeOutput* out) override;
+	TypeID typeId() const override;
+	int countRecords() const override;
+
 protected:
+	bool handleRecord(int groupcode,
+	                  const dimeParam& param) override;
 
-  virtual bool handleRecord(const int groupcode,
-			    const dimeParam &param, 
-			    dimeMemHandler * const memhandler);
-  
-  int16 flags; 
-
+	int16_t flags;
 
 public:
 #ifndef NO_RR_DATA
-  class dimeBlock *block; // ugly, needed for RR
+	class DimeBlock* block; // ugly, needed for RR
 #endif
 }; // class dime3DFace
 
 #endif // ! DIME_3DFACE_H
-

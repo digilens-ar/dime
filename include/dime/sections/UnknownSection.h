@@ -36,30 +36,27 @@
 #include <dime/sections/Section.h>
 #include <dime/util/Array.h>
 
-class DIME_DLL_API dimeUnknownSection : public dimeSection 
+class  dimeUnknownSection : public DimeSection
 {
-  friend class dimeModel;
+	friend class DimeModel;
 
 public:
-  dimeUnknownSection(const char * const sectionname, 
-		    dimeMemHandler *memhandler = NULL);
-  virtual ~dimeUnknownSection();
-  
-  virtual const char *getSectionName() const;
-  virtual dimeSection *copy(dimeModel * const model) const;
-  
+	dimeUnknownSection(const char* sectionname);
+	~dimeUnknownSection() override;
+
+	const char* getSectionName() const override;
+	DimeSection* copy(DimeModel* model) const override;
+
 public:
-  virtual bool read(dimeInput * const file);
-  virtual bool write(dimeOutput * const file);
-  virtual int typeId() const;
-  virtual int countRecords() const;
-  
+	bool read(DimeInput* file) override;
+	bool write(DimeOutput* file) override;
+	TypeID typeId() const override;
+	int countRecords() const override;
+
 private:
-  char *sectionName;
-  class dimeRecord **records;
-  int numRecords;
-
+	char* sectionName;
+	class DimeRecord** records;
+	int numRecords;
 }; // class dimeUnknownSection
 
 #endif // ! DIME_UNKNOWNSECTION_H
-

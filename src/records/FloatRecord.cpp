@@ -38,34 +38,34 @@
 #include <dime/records/FloatRecord.h>
 #include <dime/Input.h>
 #include <dime/Output.h>
-#include <dime/util/MemHandler.h>
+
 
 /*!
   Constructor
 */
 
 dimeFloatRecord::dimeFloatRecord(const int group_code, const float val)
-  : dimeRecord(group_code)
+	: DimeRecord(group_code)
 {
-  this->setValue(val);
+	this->setValue(val);
 }
 
 //!
 
-dimeRecord *
-dimeFloatRecord::copy(dimeMemHandler * const mh) const
+DimeRecord*
+dimeFloatRecord::copy() const
 {
-  return new(mh) dimeFloatRecord(this->groupCode, this->value);
+	return new dimeFloatRecord(this->groupCode, this->value);
 }
 
 /*!
   Sets the float value.
 */
 
-void 
+void
 dimeFloatRecord::setValue(const float val)
 {
-  this->value = val;
+	this->value = val;
 }
 
 //!
@@ -73,49 +73,49 @@ dimeFloatRecord::setValue(const float val)
 float
 dimeFloatRecord::getValue() const
 {
-  return this->value;
+	return this->value;
 }
 
 //!
 
-int 
+DimeBase::TypeID
 dimeFloatRecord::typeId() const
 {
-  return dimeBase::dimeFloatRecordType;
+	return DimeBase::dimeFloatRecordType;
 }
 
 //!
 
-bool 
-dimeFloatRecord::read(dimeInput * const in)
+bool
+dimeFloatRecord::read(DimeInput* const in)
 {
-  return in->readFloat(this->value);
+	return in->readFloat(this->value);
 }
 
 //!
 
-bool 
-dimeFloatRecord::write(dimeOutput * const out)
+bool
+dimeFloatRecord::write(DimeOutput* const out)
 {
-  if (dimeRecord::write(out)) {
-    return out->writeFloat(this->value);
-  }
-  return false;
+	if (DimeRecord::write(out))
+	{
+		return out->writeFloat(this->value);
+	}
+	return false;
 }
 
 //!
 
-void 
-dimeFloatRecord::setValue(const dimeParam &param, dimeMemHandler * const)
+void
+dimeFloatRecord::setValue(const dimeParam& param)
 {
-  this->value = param.float_data;
+	this->value = param.float_data;
 }
 
 //!
 
-void 
-dimeFloatRecord::getValue(dimeParam &param) const
+void
+dimeFloatRecord::getValue(dimeParam& param) const
 {
-  param.float_data = this->value;
+	param.float_data = this->value;
 }
-

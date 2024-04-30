@@ -35,32 +35,29 @@
 
 #include <dime/records/Record.h>
 
-class DIME_DLL_API dimeStringRecord : public dimeRecord
+class  dimeStringRecord : public DimeRecord
 {
 public:
-  dimeStringRecord(const int group_code = 0);
-  virtual ~dimeStringRecord();
+	dimeStringRecord(int group_code = 0);
+	~dimeStringRecord() override;
 
-  virtual dimeRecord *copy(dimeMemHandler * const mh) const;
-  virtual void setValue(const dimeParam &param, dimeMemHandler * const memhandler = NULL);
-  virtual void getValue(dimeParam &param) const;
+	DimeRecord* copy() const override;
+	void setValue(const dimeParam& param) override;
+	void getValue(dimeParam& param) const override;
 
-  void setStringPointer(char * const s);
-  bool setString(const char * const s, 
-                 dimeMemHandler * const memhandler = NULL);
-  char *getString();
+	void setStringPointer(char* s);
+	bool setString(const char* s);
+	char* getString();
 
 public:
-  bool isEndOfSectionRecord() const;
-  bool isEndOfFileRecord() const;
-  int typeId() const;
-  bool read(dimeInput * const in);
-  bool write(dimeOutput * const out);
+	bool isEndOfSectionRecord() const override;
+	bool isEndOfFileRecord() const override;
+	TypeID typeId() const override;
+	bool read(DimeInput* in) override;
+	bool write(DimeOutput* out) override;
 
 protected:
-  char *string;
-  
+	char* string;
 }; // class dimeStringRecord
 
 #endif // ! DIME_STRINGRECORD_H
-

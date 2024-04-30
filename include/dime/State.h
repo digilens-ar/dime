@@ -35,64 +35,65 @@
 
 #include <dime/util/Linear.h>
 
-class dimeInsert;
+class DimeInsert;
 
-class DIME_DLL_API dimeState
+class  DimeState
 {
 public:
-  dimeState(const bool traversePolylineVertices,
-	    const bool explodeInserts);
-  dimeState(const dimeState &st);
-  
-  const dimeMatrix &getMatrix() const;
-  const dimeMatrix &getInvMatrix() const;
-  void getMatrix(dimeMatrix &m) const;
-  void setMatrix(const dimeMatrix &matrix);
-  
-  enum {
-    TRAVERSE_POLYLINE_VERTICES = 0x1,
-    EXPLODE_INSERTS = 0x2,
-    // private flags
-    PUBLIC_MASK = 0x7fff,
-    PRIVATE_MASK = 0x8000,
-    INVMATRIX_DIRTY = 0x8000
-  };
+	DimeState(bool traversePolylineVertices,
+	          bool explodeInserts);
+	DimeState(const DimeState& st);
 
-  void setFlags(const unsigned int flags);
-  unsigned int getFlags() const;
+	const dimeMatrix& getMatrix() const;
+	const dimeMatrix& getInvMatrix() const;
+	void getMatrix(dimeMatrix& m) const;
+	void setMatrix(const dimeMatrix& matrix);
 
-  const dimeInsert *getCurrentInsert() const;
+	enum
+	{
+		TRAVERSE_POLYLINE_VERTICES = 0x1,
+		EXPLODE_INSERTS = 0x2,
+		// private flags
+		PUBLIC_MASK = 0x7fff,
+		PRIVATE_MASK = 0x8000,
+		INVMATRIX_DIRTY = 0x8000
+	};
+
+	void setFlags(unsigned int flags);
+	unsigned int getFlags() const;
+
+	const DimeInsert* getCurrentInsert() const;
 
 private:
-  friend class dimeInsert;
-  dimeMatrix matrix;
-  dimeMatrix invmatrix; // to speed up things...
-  unsigned int flags;
-  const dimeInsert *currentInsert;
+	friend class DimeInsert;
+	dimeMatrix matrix;
+	dimeMatrix invmatrix; // to speed up things...
+	unsigned int flags;
+	const DimeInsert* currentInsert;
 }; // class dimeState
 
-inline const dimeMatrix &
-dimeState::getMatrix() const {
-  return this->matrix;
+inline const dimeMatrix&
+DimeState::getMatrix() const
+{
+	return this->matrix;
 }
 
-inline void 
-dimeState::setFlags(const unsigned int flags)
+inline void
+DimeState::setFlags(const unsigned int flags)
 {
-  this->flags = (this->flags & PRIVATE_MASK) | flags;
-}
- 
-inline unsigned int 
-dimeState::getFlags() const
-{
-  return (this->flags & PUBLIC_MASK);
+	this->flags = (this->flags & PRIVATE_MASK) | flags;
 }
 
-inline const dimeInsert *
-dimeState::getCurrentInsert() const
+inline unsigned int
+DimeState::getFlags() const
 {
-  return this->currentInsert;
+	return (this->flags & PUBLIC_MASK);
+}
+
+inline const DimeInsert*
+DimeState::getCurrentInsert() const
+{
+	return this->currentInsert;
 }
 
 #endif // ! DIME_STATE_H
-

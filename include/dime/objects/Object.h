@@ -39,38 +39,34 @@
 #include <dime/util/Linear.h>
 #include <dime/RecordHolder.h>
 
-class dimeModel;
+class DimeModel;
 
-class DIME_DLL_API dimeObject : public dimeRecordHolder
+class  DimeObject : public DimeRecordHolder
 {
-  friend class dimeObjectesSection;
-  friend class dimeModel;
-  
+	friend class dimeObjectesSection;
+	friend class DimeModel;
+
 public:
-  dimeObject();
-  virtual ~dimeObject();
-  
-  virtual const char *getObjectName() const = 0;  
-  virtual dimeObject *copy(dimeModel * const model) const = 0; 
-  virtual bool read(dimeInput * const in);
-  virtual bool write(dimeOutput * const out);
-  virtual bool isOfType(const int thetypeid) const;
-  virtual int typeId() const = 0;
-  virtual int countRecords() const;
-  virtual void print() const {}
-  
+	DimeObject();
+	~DimeObject() override;
+
+	virtual const char* getObjectName() const = 0;
+	virtual DimeObject* copy(DimeModel* model) const = 0;
+	bool read(DimeInput* in) override;
+	bool write(DimeOutput* out) override;
+	bool isOfType(int thetypeid) const override;
+	TypeID typeId() const override = 0;
+	int countRecords() const override;
+
 protected:
-  virtual bool handleRecord(const int groupcode,
-			    const dimeParam &param,
-			    dimeMemHandler * const memhandler);
-  
+	bool handleRecord(int groupcode,
+	                  const dimeParam& param) override;
+
 public:
-  static dimeObject *createObject(const char * const name,
-				 dimeMemHandler * const memhandler = NULL);    
+	static DimeObject* createObject(const char* name);
+
 protected:
-  bool copyRecords(dimeObject * const newobject, dimeModel * const model) const;
-  
+	bool copyRecords(DimeObject* newobject, DimeModel* model) const;
 }; // class dimeObject
 
 #endif // ! DIME_OBJECT_H
-

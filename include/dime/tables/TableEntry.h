@@ -36,38 +36,34 @@
 #include <dime/Base.h>
 #include <dime/RecordHolder.h>
 
-class dimeModel;
+class DimeModel;
 
-class DIME_DLL_API dimeTableEntry : public dimeRecordHolder
+class  DimeTableEntry : public DimeRecordHolder
 {
-  friend class dimeUnknownTable;
-  friend class dimeLayerTable;
-  
+	friend class DimeUnknownTable;
+	friend class DimeLayerTable;
+
 public:
-  dimeTableEntry();
-  virtual ~dimeTableEntry();
+	DimeTableEntry();
+	~DimeTableEntry() override;
 
-  virtual const char *getTableName() const = 0;
-  virtual bool read(dimeInput * const in);
-  virtual bool write(dimeOutput * const out);
-  virtual dimeTableEntry *copy(dimeModel * const model) const = 0;
-  virtual int typeId() const = 0;
-  virtual bool isOfType(const int thetypeid) const;
-  virtual int countRecords() const;
+	virtual const char* getTableName() const = 0;
+	bool read(DimeInput* in) override;
+	bool write(DimeOutput* out) override;
+	virtual DimeTableEntry* copy(DimeModel* model) const = 0;
+	TypeID typeId() const override = 0;
+	bool isOfType(int thetypeid) const override;
+	int countRecords() const override;
 
-  static dimeTableEntry *createTableEntry(const char * const name,
-					 dimeMemHandler * const memhandler = NULL);
-  
+	static DimeTableEntry* createTableEntry(const char* name);
+
 protected:
-  bool preWrite(dimeOutput * const output);
+	bool preWrite(DimeOutput* output);
 
-  virtual bool handleRecord(const int groupcode,
-			    const dimeParam &param,
-			    dimeMemHandler * const memhandler);
-  
-  bool copyRecords(dimeTableEntry * const table, dimeModel * const model) const;
+	bool handleRecord(int groupcode,
+	                  const dimeParam& param) override;
 
+	bool copyRecords(DimeTableEntry* table, DimeModel* model) const;
 }; // class dimeTableEntry
 
 #endif // ! DIME_TABLEENTRY_H
-

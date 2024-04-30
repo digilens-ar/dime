@@ -33,8 +33,8 @@
 #ifndef _DXF2VRML_CONVERT_FUNCS_H_
 #define _DXF2VRML_CONVERT_FUNCS_H_
 
-class dimeEntity;
-class dimeState;
+class DimeEntity;
+class DimeState;
 class dxfLayerData;
 class dxfConverter;
 
@@ -42,25 +42,25 @@ class dxfConverter;
 #define M_PI 3.14159265358979323846
 #endif // M_PI
 
-void convert_3dface(const dimeEntity *, const dimeState *, 
-		    dxfLayerData *, dxfConverter *);
-void convert_line(const dimeEntity *, const dimeState *, 
-		  dxfLayerData *, dxfConverter *);
-void convert_point(const dimeEntity *, const dimeState *, 
-		   dxfLayerData *, dxfConverter *);
-void convert_circle(const dimeEntity *, const dimeState *, 
-		    dxfLayerData *, dxfConverter *);
-void convert_ellipse(const dimeEntity *, const dimeState *, 
-		     dxfLayerData *, dxfConverter *);
-void convert_arc(const dimeEntity *, const dimeState *, 
-		 dxfLayerData *, dxfConverter *);
-void convert_solid(const dimeEntity *, const dimeState *, 
-		   dxfLayerData *, dxfConverter *);
-void convert_trace(const dimeEntity *, const dimeState *, 
-		   dxfLayerData *, dxfConverter *);
-void convert_polyline(const dimeEntity *, const dimeState *, 
-		      dxfLayerData *, dxfConverter *);
-void convert_lwpolyline(const dimeEntity *, const dimeState *, 
-			dxfLayerData *, dxfConverter *);
+void convert_3dface(const DimeEntity*, const DimeState*,
+                    dxfLayerData*, dxfConverter*);
+void convert_line(const DimeEntity*, const DimeState*,
+                  dxfLayerData*, dxfConverter*);
+void convert_point(const DimeEntity*, const DimeState*,
+                   dxfLayerData*, dxfConverter*);
+void convert_circle(const DimeEntity*, const DimeState*,
+                    dxfLayerData*, dxfConverter*);
+void convert_ellipse(const DimeEntity*, const DimeState*,
+                     dxfLayerData*, dxfConverter*);
+void convert_arc(const DimeEntity*, const DimeState*,
+                 dxfLayerData*, dxfConverter*);
+void convert_solid(const DimeEntity*, const DimeState*,
+                   dxfLayerData*, dxfConverter*);
+void convert_trace(const DimeEntity*, const DimeState*,
+                   dxfLayerData*, dxfConverter*);
+void convert_polyline(const DimeEntity*, const DimeState*,
+                      dxfLayerData*, dxfConverter*);
+void convert_lwpolyline(const DimeEntity*, const DimeState*,
+                        dxfLayerData*, dxfConverter*);
 
 #endif // _DXF2VRML_CONVERT_FUNCS_H_

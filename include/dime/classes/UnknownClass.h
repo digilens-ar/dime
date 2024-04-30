@@ -35,25 +35,23 @@
 
 #include <dime/classes/Class.h>
 
-class dimeMemHandler;
 
-class DIME_DLL_API dimeUnknownClass : public dimeClass 
+
+class  dimeUnknownClass : public DimeClass
 {
 public:
-  dimeUnknownClass(const char * const name, dimeMemHandler * const memhandler);
-  virtual ~dimeUnknownClass();
+	dimeUnknownClass(const char* name);
+	~dimeUnknownClass() override;
 
-  virtual dimeClass *copy(dimeModel * const model) const;
-  
-  virtual const char *getDxfClassName() const;
-  virtual bool write(dimeOutput * const out);
-  virtual int typeId() const;
-  virtual int countRecords() const;
-  
+	DimeClass* copy(DimeModel* model) const override;
+
+	const char* getDxfClassName() const override;
+	bool write(DimeOutput* out) override;
+	TypeID typeId() const override;
+	int countRecords() const override;
+
 private:
-  char *dxfClassName;
-  
+	char* dxfClassName;
 }; // class dimeUnknownClass
 
 #endif // ! DIME_UNKNOWNCLASS_H
-

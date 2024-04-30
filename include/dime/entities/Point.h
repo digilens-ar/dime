@@ -37,50 +37,47 @@
 #include <dime/entities/ExtrusionEntity.h>
 #include <dime/util/Linear.h>
 
-class DIME_DLL_API dimePoint : public dimeExtrusionEntity
+class  DimePoint : public DimeExtrusionEntity
 {
 public:
-  dimePoint();
+	DimePoint();
 
-  const dimeVec3f &getCoords() const;
-  void setCoords(const dimeVec3f &v);
+	const dimeVec3& getCoords() const;
+	void setCoords(const dimeVec3& v);
 
-  virtual dimeEntity *copy(dimeModel * const model) const;
-  virtual bool getRecord(const int groupcode,
-			 dimeParam &param,
-			 const int index = 0) const;
-  virtual const char *getEntityName() const;
+	DimeEntity* copy(DimeModel* model) const override;
+	bool getRecord(int groupcode,
+	               dimeParam& param,
+	               int index = 0) const override;
+	const char* getEntityName() const override;
 
-  virtual bool write(dimeOutput * const out);
-  virtual int typeId() const;
-  virtual int countRecords() const;
+	bool write(DimeOutput* out) override;
+	TypeID typeId() const override;
+	int countRecords() const override;
 
-  virtual GeometryType extractGeometry(dimeArray <dimeVec3f> &verts,
-				       dimeArray <int> &indices,
-				       dimeVec3f &extrusionDir,
-				       dxfdouble &thickness);
-  
+	GeometryType extractGeometry(dimeArray<dimeVec3>& verts,
+	                             dimeArray<int>& indices,
+	                             dimeVec3& extrusionDir,
+	                             dxfdouble& thickness) override;
+
 protected:
-  virtual bool handleRecord(const int groupcode, 
-                            const dimeParam &param,
-			    dimeMemHandler * const memhandler);
+	bool handleRecord(int groupcode,
+	                  const dimeParam& param) override;
 
 private:
-  dimeVec3f coords;
-
+	dimeVec3 coords;
 }; // class dimePoint
 
-inline const dimeVec3f &
-dimePoint::getCoords() const
+inline const dimeVec3&
+DimePoint::getCoords() const
 {
-  return coords;
+	return coords;
 }
 
-inline void 
-dimePoint::setCoords(const dimeVec3f &v)
+inline void
+DimePoint::setCoords(const dimeVec3& v)
 {
-  this->coords = v;
+	this->coords = v;
 }
 
 #endif // ! DIME_POINT_H
-

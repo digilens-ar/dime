@@ -38,7 +38,7 @@
 #include <dime/records/StringRecord.h>
 #include <dime/Input.h>
 #include <dime/Output.h>
-#include <dime/util/MemHandler.h>
+
 #include <string.h>
 
 /*! 
@@ -46,9 +46,9 @@
 */
 
 dimeStringRecord::dimeStringRecord(const int group_code)
-  : dimeRecord(group_code)
+	: DimeRecord(group_code)
 {
-  this->string = NULL;
+	this->string = nullptr;
 }
 
 /*!
@@ -57,33 +57,31 @@ dimeStringRecord::dimeStringRecord(const int group_code)
 
 dimeStringRecord::~dimeStringRecord()
 {
-  delete[] this->string;
+	delete[] this->string;
 }
 
 //!
 
-dimeRecord *
-dimeStringRecord::copy(dimeMemHandler * const mh) const
+DimeRecord*
+dimeStringRecord::copy() const
 {
-  dimeStringRecord *s= new(mh) dimeStringRecord(this->groupCode);
-  if (s) {
-    s->setString(this->string, mh);
-  }
-  return s;
+	auto s = new dimeStringRecord(this->groupCode);
+	if (s)
+	{
+		s->setString(this->string);
+	}
+	return s;
 }
 
 /*!
-  Will store a copy of string \a s. If \a memhandler != NULL, it
-  will be used to allocate the needed memory. If \a memhandler == NULL,
-  the memory will be allocated from the heap.
+  Will store a copy of string \a s.
 */
 
 bool
-dimeStringRecord::setString(const char * const s, 
-			   dimeMemHandler * const memhandler)
+dimeStringRecord::setString(const char* const s)
 {
-  DXF_STRCPY(memhandler, this->string, s);
-  return this->string != NULL;
+	DXF_STRCPY(this->string, s);
+	return this->string != nullptr;
 }
 
 /*!  
@@ -93,19 +91,19 @@ dimeStringRecord::setString(const char * const s,
 */
 
 void
-dimeStringRecord::setStringPointer(char * const s)
+dimeStringRecord::setStringPointer(char* const s)
 {
-  this->string = s;
+	this->string = s;
 }
 
 /*!
   Returns a pointer to the string.
 */
 
-char *
+char*
 dimeStringRecord::getString()
 {
-  return string;
+	return string;
 }
 
 //!
@@ -113,7 +111,7 @@ dimeStringRecord::getString()
 bool
 dimeStringRecord::isEndOfSectionRecord() const
 {
-  return (this->groupCode == 0) && !strcmp(string, "ENDSEC");
+	return (this->groupCode == 0) && !strcmp(string, "ENDSEC");
 }
 
 //!
@@ -121,58 +119,54 @@ dimeStringRecord::isEndOfSectionRecord() const
 bool
 dimeStringRecord::isEndOfFileRecord() const
 {
-  return (this->groupCode == 0) && !strcmp(string, "EOF");
+	return (this->groupCode == 0) && !strcmp(string, "EOF");
 }
 
 //!
 
-int 
+DimeBase::TypeID
 dimeStringRecord::typeId() const
 {
-  return dimeBase::dimeStringRecordType;
+	return DimeBase::dimeStringRecordType;
 }
 
 //!
 
-bool 
-dimeStringRecord::read(dimeInput * const in)
+bool
+dimeStringRecord::read(DimeInput* const in)
 {
-  this->string = NULL;
-  const char *ptr = in->readString();
-  if (ptr) return this->setString(ptr, in->getMemHandler());
-  else return false;
+	this->string = nullptr;
+	const char* ptr = in->readString();
+	if (ptr) return this->setString(ptr);
+	return false;
 }
 
 //!
 
-bool 
-dimeStringRecord::write(dimeOutput * const out)
+bool
+dimeStringRecord::write(DimeOutput* const out)
 {
-  if (dimeRecord::write(out)) { // write group code
-    return out->writeString(this->string);
-  }
-  return false;
+	if (DimeRecord::write(out))
+	{
+		// write group code
+		return out->writeString(this->string);
+	}
+	return false;
 }
 
 //!
 
-void 
-dimeStringRecord::setValue(const dimeParam &param, dimeMemHandler * const memhandler)
+void
+dimeStringRecord::setValue(const dimeParam& param)
 {
-  if (memhandler) {
-    this->string = memhandler->stringAlloc(param.string_data);
-  }
-  else {
-    this->string = new char[strlen(param.string_data)+1];
-    if (this->string) strcpy(this->string, param.string_data);
-  }
+	this->string = new char[strlen(param.string_data) + 1];
+	if (this->string) strcpy(this->string, param.string_data);
 }
 
 //!
 
-void 
-dimeStringRecord::getValue(dimeParam &param) const
+void
+dimeStringRecord::getValue(dimeParam& param) const
 {
-  param.string_data = this->string;
+	param.string_data = this->string;
 }
-

@@ -36,27 +36,32 @@
 #include <dime/util/Linear.h>
 #include <dime/State.h>
 
-void 
-convert_point(const dimeEntity *entity, const dimeState *state, 
-	      dxfLayerData *layerData, dxfConverter *)
+void
+convert_point(const DimeEntity* entity, const DimeState* state,
+              dxfLayerData* layerData, dxfConverter*)
 {
-  dimePoint *point = (dimePoint*)entity;
-  dimeVec3f v0 = point->getCoords();
+	auto point = (DimePoint*)entity;
+	dimeVec3 v0 = point->getCoords();
 
-  dimeParam param;
-  if (point->getRecord(38, param)) {
-    v0[2] = param.double_data;
-  }
-  
-  dimeMatrix matrix;
-  state->getMatrix(matrix);
-  
-  dxfdouble thickness = point->getThickness();
-  if (thickness != 0.0) { // line
-    dimeVec3f e = point->getExtrusionDir();
-    layerData->addLine(v0, v0 + thickness * e);
-  }
-  else { // point
-    layerData->addPoint(v0);
-  }
+	dimeParam param;
+	if (point->getRecord(38, param))
+	{
+		v0[2] = param.double_data;
+	}
+
+	dimeMatrix matrix;
+	state->getMatrix(matrix);
+
+	dxfdouble thickness = point->getThickness();
+	if (thickness != 0.0)
+	{
+		// line
+		dimeVec3 e = point->getExtrusionDir();
+		layerData->addLine(v0, v0 + thickness * e);
+	}
+	else
+	{
+		// point
+		layerData->addPoint(v0);
+	}
 }

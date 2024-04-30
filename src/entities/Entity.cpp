@@ -31,7 +31,7 @@
 \**************************************************************************/
 
 /*!
-  \class dimeEntity dime/entities/Entity.h
+  \class DimeEntity dime/entities/Entity.h
   \brief The dimeEntity class is the superclass of all \e entity classes.
 
   If you plan to implement your own entity you should inherit this
@@ -96,9 +96,7 @@
   When reading, the handleRecord() method will be called for every
   record found in the entity. If some group code is not supported by
   you, you should call the parent's handleRecord() and it will be
-  stored there.  If you need to allocate memory to store the data you
-  should check if the dimeMemHandler parameter != NULL and then use it
-  to allocate memory.  There is a convenience macro defined in
+  stored there. There is a convenience macro defined in
   include/dime/Basic.h that copies a string, using the memory handler
   if set.
 
@@ -129,7 +127,7 @@
 #include <dime/records/Int16Record.h>
 #include <dime/Input.h>
 #include <dime/Output.h>
-#include <dime/util/MemHandler.h>
+
 #include <dime/Model.h>
 
 #include <string.h>
@@ -157,38 +155,34 @@
 */
 
 /*!
-  \fn void dimeEntity::setColorNumber(const int16 c)
+  \fn void dimeEntity::setColorNumber(const int16_t c)
   Sets the color number for this entity.
   Zero indicates the BYBLOCK (floating) color. 256 indicates BYLAYER. 
   A negative value indicates that the layer is turned off.
 */
 
 /*!
-  \fn int16 dimeEntity::getColorNumber() const
+  \fn int16_t dimeEntity::getColorNumber() const
   Returns the color number for this entity.
   
   \sa dimeEntity::setColorNumber()
 */
 
 /*!
-  \fn void dimeEntity::print() const
-*/
-
-/*!
   Constructor.
 */
 
-dimeEntity::dimeEntity() 
-  : dimeRecordHolder(0), entityFlags(0), colorNumber(256) 
+DimeEntity::DimeEntity()
+	: DimeRecordHolder(0), entityFlags(0), colorNumber(256)
 {
-  this->layer = dimeLayer::getDefaultLayer();
+	this->layer = dimeLayer::getDefaultLayer();
 }
 
 /*!
   Destructor.
 */
 
-dimeEntity::~dimeEntity()
+DimeEntity::~DimeEntity()
 {
 }
 
@@ -197,18 +191,18 @@ dimeEntity::~dimeEntity()
 */
 
 bool
-dimeEntity::copyRecords(dimeEntity * const entity, dimeModel * const model) const
+DimeEntity::copyRecords(DimeEntity* const entity, DimeModel* const model) const
 {
-  dimeMemHandler *memh = model->getMemHandler();
-  bool ok = dimeRecordHolder::copyRecords(entity, memh);
-  
-  if (ok && this->layer) {
-    entity->layer = model->addLayer(this->layer->getLayerName());
-    if (!entity->layer) ok = false;
-  }
-  entity->entityFlags = this->entityFlags;
-  entity->colorNumber = this->colorNumber;  
-  return ok;
+	bool ok = DimeRecordHolder::copyRecords(entity);
+
+	if (ok && this->layer)
+	{
+		entity->layer = model->addLayer(this->layer->getLayerName());
+		if (!entity->layer) ok = false;
+	}
+	entity->entityFlags = this->entityFlags;
+	entity->colorNumber = this->colorNumber;
+	return ok;
 }
 
 /*!
@@ -217,9 +211,9 @@ dimeEntity::copyRecords(dimeEntity * const entity, dimeModel * const model) cons
 */
 
 bool
-dimeEntity::isDeleted() const
+DimeEntity::isDeleted() const
 {
-  return this->entityFlags & FLAG_DELETED;
+	return this->entityFlags & FLAG_DELETED;
 }
 
 /*!
@@ -228,105 +222,107 @@ dimeEntity::isDeleted() const
 */
 
 void
-dimeEntity::setDeleted(const bool onOff)
+DimeEntity::setDeleted(const bool onOff)
 {
-  if (onOff) {
-    this->entityFlags |= FLAG_DELETED;
-  }
-  else {
-    this->entityFlags &= ~FLAG_DELETED;
-  }
+	if (onOff)
+	{
+		this->entityFlags |= FLAG_DELETED;
+	}
+	else
+	{
+		this->entityFlags &= ~FLAG_DELETED;
+	}
 }
 
 /*!
   Useful for developers (at least for me :-).
   \sa dimeEntity::setTagged()
 */
-bool 
-dimeEntity::isTagged() const
+bool
+DimeEntity::isTagged() const
 {
-  return this->entityFlags & FLAG_TAGGED ? true : false;
+	return this->entityFlags & FLAG_TAGGED ? true : false;
 }
 
 /*!
   Useful for developers.
   \sa dimeEntity::isTagged()
 */
-void 
-dimeEntity::setTagged(const bool onOff)
+void
+DimeEntity::setTagged(const bool onOff)
 {
-  if (onOff) {
-    this->entityFlags |= FLAG_TAGGED;
-  }
-  else {
-    this->entityFlags &= ~FLAG_TAGGED;
-  }
+	if (onOff)
+	{
+		this->entityFlags |= FLAG_TAGGED;
+	}
+	else
+	{
+		this->entityFlags &= ~FLAG_TAGGED;
+	}
 }
-
 
 
 //!
 
-bool 
-dimeEntity::write(dimeOutput * const file)
+bool
+DimeEntity::write(DimeOutput* const file)
 {
-  return dimeRecordHolder::write(file);
+	return DimeRecordHolder::write(file);
 }
 
 /*!
   Static function which creates an entity based on its name. 
 */
 
-dimeEntity *
-dimeEntity::createEntity(const char * const name, 
-			 dimeMemHandler * const memhandler)
+DimeEntity*
+DimeEntity::createEntity(const char* const name)
 {
 #ifndef NDEBUG
-  //fprintf(stderr,"Entity: %s\n", name);
+	//fprintf(stderr,"Entity: %s\n", name);
 #endif
 
-  //
-  // TODO: optimize 
-  //
-  // right now, I just check for the most common (for 3D gfx)
-  // entities first.
-  //
-  // Could be quite easily solved by using a hash list with
-  // pointers to static methods that returns a new instance
-  // of the correct type.
-  //
+	//
+	// TODO: optimize 
+	//
+	// right now, I just check for the most common (for 3D gfx)
+	// entities first.
+	//
+	// Could be quite easily solved by using a hash list with
+	// pointers to static methods that returns a new instance
+	// of the correct type.
+	//
 
-  if (!strcmp(name, "3DFACE"))
-    return new(memhandler) dime3DFace;
-  if (!strcmp(name, "VERTEX"))
-    return new(memhandler) dimeVertex;
-  if (!strcmp(name, "POLYLINE"))
-    return new(memhandler) dimePolyline;
-  if (!strcmp(name, "LINE"))
-    return new(memhandler) dimeLine;
-  if (!strcmp(name, "TEXT"))
-    return new(memhandler) dimeText;
-  if (!strcmp(name, "INSERT"))
-    return new(memhandler) dimeInsert;
-  if (!strcmp(name, "BLOCK"))
-    return new(memhandler) dimeBlock(memhandler);
-  if (!strcmp(name, "SOLID"))
-    return new(memhandler) dimeSolid;   
-  if (!strcmp(name, "TRACE"))
-    return new(memhandler) dimeTrace;
-  if (!strcmp(name, "POINT"))
-    return new(memhandler) dimePoint;
-  if (!strcmp(name, "CIRCLE"))
-    return new(memhandler) dimeCircle;
-  if (!strcmp(name, "LWPOLYLINE"))
-    return new(memhandler) dimeLWPolyline;
-  if (!strcmp(name, "SPLINE"))
-    return new(memhandler) dimeSpline;
-  if (!strcmp(name, "ELLIPSE"))
-    return new(memhandler) dimeEllipse;
-  if (!strcmp(name, "ARC"))
-    return new(memhandler) dimeArc;
-  return new(memhandler) dimeUnknownEntity(name, memhandler);
+	if (!strcmp(name, "3DFACE"))
+		return new dime3DFace;
+	if (!strcmp(name, "VERTEX"))
+		return new DimeVertex;
+	if (!strcmp(name, "POLYLINE"))
+		return new DimePolyline;
+	if (!strcmp(name, "LINE"))
+		return new DimeLine;
+	if (!strcmp(name, "TEXT"))
+		return new DimeText;
+	if (!strcmp(name, "INSERT"))
+		return new DimeInsert;
+	if (!strcmp(name, "BLOCK"))
+		return new DimeBlock;
+	if (!strcmp(name, "SOLID"))
+		return new DimeSolid;
+	if (!strcmp(name, "TRACE"))
+		return new DimeTrace;
+	if (!strcmp(name, "POINT"))
+		return new DimePoint;
+	if (!strcmp(name, "CIRCLE"))
+		return new DimeCircle;
+	if (!strcmp(name, "LWPOLYLINE"))
+		return new DimeLWPolyline;
+	if (!strcmp(name, "SPLINE"))
+		return new DimeSpline;
+	if (!strcmp(name, "ELLIPSE"))
+		return new DimeEllipse;
+	if (!strcmp(name, "ARC"))
+		return new DimeArc;
+	return new DimeUnknownEntity(name);
 }
 
 /*!
@@ -336,39 +332,42 @@ dimeEntity::createEntity(const char * const name,
   will already have been read.
 */
 
-bool 
-dimeEntity::readEntities(dimeInput * const file,
-			dimeArray <dimeEntity*> &array, 
-			const char * const stopat)
+bool
+DimeEntity::readEntities(DimeInput* const file,
+                         dimeArray<DimeEntity*>& array,
+                         const char* const stopat)
 {
-  int32 groupcode;
-  const char *string;
-  bool ok = true;
-  dimeEntity *entity = NULL;
-  dimeMemHandler *memhandler = file->getMemHandler();
-  
-  while (true) {
-    if (!file->readGroupCode(groupcode) || groupcode != 0) {
-      fprintf(stderr,"Error reading groupcode: %d\n", groupcode);
-      ok = false;
-      break;
-    }
-    string = file->readString();
-    if (!strcmp(string, stopat)) break;
-    entity = dimeEntity::createEntity(string, memhandler);
-    if (entity == NULL) {
-      fprintf(stderr,"error creating entity: %s\n", string);
-      ok = false;
-      break;
-    }
-    if (!entity->read(file)) {
-      fprintf(stderr,"error reading entity: %s.\n", string);
-      ok = false;
-      break;
-    }
-    array.append(entity);
-  }
-  return ok;
+	int32_t groupcode;
+	const char* string;
+	bool ok = true;
+	DimeEntity* entity = nullptr;
+
+	while (true)
+	{
+		if (!file->readGroupCode(groupcode) || groupcode != 0)
+		{
+			fprintf(stderr, "Error reading groupcode: %d\n", groupcode);
+			ok = false;
+			break;
+		}
+		string = file->readString();
+		if (!strcmp(string, stopat)) break;
+		entity = DimeEntity::createEntity(string);
+		if (entity == nullptr)
+		{
+			fprintf(stderr, "error creating entity: %s\n", string);
+			ok = false;
+			break;
+		}
+		if (!entity->read(file))
+		{
+			fprintf(stderr, "error reading entity: %s.\n", string);
+			ok = false;
+			break;
+		}
+		array.append(entity);
+	}
+	return ok;
 }
 
 /*!
@@ -379,42 +378,48 @@ dimeEntity::readEntities(dimeInput * const file,
   memory, or if there was no non-deleted entities.
 */
 
-dimeEntity **
-dimeEntity::copyEntityArray(const dimeEntity *const*const array, 
-                           int &nument,
-                           dimeModel * const model)
+DimeEntity**
+DimeEntity::copyEntityArray(const DimeEntity* const* const array,
+                            int& nument,
+                            DimeModel* const model)
 {
-  int i;
-  int num = nument;
-  dimeMemHandler *memh = model->getMemHandler();
+	int i;
+	int num = nument;
 
-  nument = 0;
-  for (i = 0; i < num; i++) { 
-    if (!array[i]->isDeleted()) nument++;
-  }
-  if (nument == 0) return NULL;
-    
-  dimeEntity **newarr = ARRAY_NEW(memh, dimeEntity*, nument);
-  
-  bool ok = newarr != NULL;
-  if (ok) {
-    int cnt = 0;
-    for (i = 0; i < num && ok; i++) {
-      if (!array[i]->isDeleted()) {
-        newarr[cnt] = array[i]->copy(model);
-        if (newarr[cnt] == NULL) {
-//          sim_trace("failed to copy entity: %d\n", array[i]->typeId());
-        }
-        ok = newarr[cnt++] != NULL;
-      }
-    }
-    if (!ok && !memh) { // free memory
-      for (i = 0; i < cnt; i++)
-        delete newarr[i];
-      delete [] newarr;
-    }
-  }
-  return ok ? newarr : (dimeEntity**)NULL;
+	nument = 0;
+	for (i = 0; i < num; i++)
+	{
+		if (!array[i]->isDeleted()) nument++;
+	}
+	if (nument == 0) return nullptr;
+
+	DimeEntity** newarr = ARRAY_NEW(DimeEntity*, nument);
+
+	bool ok = newarr != nullptr;
+	if (ok)
+	{
+		int cnt = 0;
+		for (i = 0; i < num && ok; i++)
+		{
+			if (!array[i]->isDeleted())
+			{
+				newarr[cnt] = array[i]->copy(model);
+				if (newarr[cnt] == nullptr)
+				{
+					//          sim_trace("failed to copy entity: %d\n", array[i]->typeId());
+				}
+				ok = newarr[cnt++] != nullptr;
+			}
+		}
+		if (!ok)
+		{
+			// free memory
+			for (i = 0; i < cnt; i++)
+				delete newarr[i];
+			delete [] newarr;
+		}
+	}
+	return ok ? newarr : static_cast<DimeEntity**>(nullptr);
 }
 
 /*!
@@ -422,49 +427,52 @@ dimeEntity::copyEntityArray(const dimeEntity *const*const array,
   \a array of length \a nument into \a destarray.
 */
 
-bool
-dimeEntity::copyEntityArray(const dimeEntity *const*const array, 
-			   const int nument,
-			   dimeModel * const model,
-			   dimeArray <dimeEntity*> &destarray)
+bool DimeEntity::copyEntityArray(const DimeEntity* const* const array,
+                            const int nument,
+                            DimeModel* const model,
+                            dimeArray<DimeEntity*>& destarray)
 {
-  int i;
-//  dimeMemHandler *memh = model->getMemHandler();
+	int i;
 
-  int num = 0;
-  for (i = 0; i < nument; i++) { 
-    if (!array[i]->isDeleted()) num++;
-  }
-  if (num == 0) {
-    destarray.setCount(0);
-    return true;
-  }
+	int num = 0;
+	for (i = 0; i < nument; i++)
+	{
+		if (!array[i]->isDeleted()) num++;
+	}
+	if (num == 0)
+	{
+		destarray.setCount(0);
+		return true;
+	}
 
-  destarray.makeEmpty(num);
-  
-  for (i = 0; i < nument; i++) {
-    if (!array[i]->isDeleted()) {
-      dimeEntity *entity = array[i]->copy(model);
-      if (entity == NULL) {
-	destarray.setCount(0);
-	return false; 
-      }
-      destarray.append(entity);
-    }
-  }
-  return true;
+	destarray.makeEmpty(num);
+
+	for (i = 0; i < nument; i++)
+	{
+		if (!array[i]->isDeleted())
+		{
+			DimeEntity* entity = array[i]->copy(model);
+			if (entity == nullptr)
+			{
+				destarray.setCount(0);
+				return false;
+			}
+			destarray.append(entity);
+		}
+	}
+	return true;
 }
 
 /*!
   Convenience function which returns the layer name of this entity.
 */
 
-const char *
-dimeEntity::getLayerName() const
+const char*
+DimeEntity::getLayerName() const
 {
-  if (this->layer) 
-    return this->layer->getLayerName();
-  return NULL;
+	if (this->layer)
+		return this->layer->getLayerName();
+	return nullptr;
 }
 
 /*!
@@ -472,8 +480,8 @@ dimeEntity::getLayerName() const
   \sa dimeEntitiesSection::fixReferences().
 */
 
-void 
-dimeEntity::fixReferences(dimeModel * const) 
+void
+DimeEntity::fixReferences(DimeModel* const)
 {
 }
 
@@ -488,18 +496,18 @@ dimeEntity::fixReferences(dimeModel * const)
 */
 
 void
-dimeEntity::arbitraryAxis(const dimeVec3f &givenaxis, dimeVec3f &newaxis)
+DimeEntity::arbitraryAxis(const dimeVec3& givenaxis, dimeVec3& newaxis)
 {
-  dimeVec3f yaxis(0.0, 1.0, 0.0);
-  dimeVec3f zaxis(0.0, 0.0, 1.0);
-  
-  if (fabs(givenaxis[0]) < ARBBOUND && 
-      fabs(givenaxis[1]) < ARBBOUND) 
-    newaxis = yaxis.cross(givenaxis);
-  else
-    newaxis = zaxis.cross(givenaxis);
- 
-  newaxis.normalize();
+	dimeVec3 yaxis(0.0, 1.0, 0.0);
+	dimeVec3 zaxis(0.0, 0.0, 1.0);
+
+	if (fabs(givenaxis[0]) < ARBBOUND &&
+		fabs(givenaxis[1]) < ARBBOUND)
+		newaxis = yaxis.cross(givenaxis);
+	else
+		newaxis = zaxis.cross(givenaxis);
+
+	newaxis.normalize();
 }
 
 /*!
@@ -510,25 +518,25 @@ dimeEntity::arbitraryAxis(const dimeVec3f &givenaxis, dimeVec3f &newaxis)
 */
 
 void
-dimeEntity::generateUCS(const dimeVec3f &givenaxis, dimeMatrix &m)
+DimeEntity::generateUCS(const dimeVec3& givenaxis, dimeMatrix& m)
 {
-  dimeVec3f newaxis;
-  dimeEntity::arbitraryAxis(givenaxis, newaxis);
-  newaxis.normalize();
-  dimeVec3f yaxis = givenaxis.cross(newaxis);
-  yaxis.normalize();
-  m.setRotate(newaxis, yaxis, givenaxis);
+	dimeVec3 newaxis;
+	DimeEntity::arbitraryAxis(givenaxis, newaxis);
+	newaxis.normalize();
+	dimeVec3 yaxis = givenaxis.cross(newaxis);
+	yaxis.normalize();
+	m.setRotate(newaxis, yaxis, givenaxis);
 }
 
 //!
 
-int 
-dimeEntity::countRecords() const
+int
+DimeEntity::countRecords() const
 {
-  int cnt = 0;
-  if (this->layer) cnt++;
-  if (this->colorNumber != 256) cnt++;
-  return cnt + dimeRecordHolder::countRecords();
+	int cnt = 0;
+	if (this->layer) cnt++;
+	if (this->colorNumber != 256) cnt++;
+	return cnt + DimeRecordHolder::countRecords();
 }
 
 /*!
@@ -537,13 +545,12 @@ dimeEntity::countRecords() const
   entities (INSERT, BUILD) will need to overload it.
 */
 
-bool 
-dimeEntity::traverse(const dimeState * const state, 
-		    dimeCallback callback,
-		    void *userdata)
+bool
+DimeEntity::traverse(const DimeState* const state,
+                     dimeCallback const& callback)
 {
-  if (this->isDeleted()) return true;
-  return callback(state, this, userdata);
+	if (this->isDeleted()) return true;
+	return callback(state, this);
 }
 
 /*!
@@ -579,26 +586,26 @@ dimeEntity::traverse(const dimeState * const state,
 
 */
 
-dimeEntity::GeometryType 
-dimeEntity::extractGeometry(dimeArray <dimeVec3f> &verts,
-			   dimeArray <int> &indices,
-			   dimeVec3f &extrusionDir,
-			   dxfdouble &thickness)
+DimeEntity::GeometryType
+DimeEntity::extractGeometry(dimeArray<dimeVec3>& verts,
+                            dimeArray<int>& indices,
+                            dimeVec3& extrusionDir,
+                            dxfdouble& thickness)
 {
-  extrusionDir = dimeVec3f(0,0,1);
-  verts.setCount(0);
-  indices.setCount(0);
-  thickness = 0.0f;
-  return NONE;
+	extrusionDir = dimeVec3(0, 0, 1);
+	verts.setCount(0);
+	indices.setCount(0);
+	thickness = 0.0f;
+	return NONE;
 }
 
 //!
 
-bool 
-dimeEntity::isOfType(const int thetypeid) const
+bool
+DimeEntity::isOfType(const int thetypeid) const
 {
-  return thetypeid == dimeEntityType ||
-    dimeRecordHolder::isOfType(thetypeid);
+	return thetypeid == dimeEntityType ||
+		DimeRecordHolder::isOfType(thetypeid);
 }
 
 /*!
@@ -608,34 +615,36 @@ dimeEntity::isOfType(const int thetypeid) const
   \sa dimeEntity::handleRecord().
 */
 
-bool 
-dimeEntity::read(dimeInput * const file)
+bool
+DimeEntity::read(DimeInput* const file)
 {
-  // a little hack to avoid storing a useless extra pointer in the class.
-  // this->layer is used as a temporary char * pointer which will
-  // be used in handleRecord().
-  // could have used a static buffer, but then the library would not
-  // not have been thread safe anymore.
-  // As an extra precaution, a flag is set in this->entityFlags to signal to
-  // handleRecord() that it is safe to treat this->layer as a char *
-  // pointer.
+	// a little hack to avoid storing a useless extra pointer in the class.
+	// this->layer is used as a temporary char * pointer which will
+	// be used in handleRecord().
+	// could have used a static buffer, but then the library would not
+	// not have been thread safe anymore.
+	// As an extra precaution, a flag is set in this->entityFlags to signal to
+	// handleRecord() that it is safe to treat this->layer as a char *
+	// pointer.
 
-  char tmpbuffer[TMP_BUFFER_LEN+1];
-  tmpbuffer[0] = 0;
-  const dimeLayer *tmplayer = this->layer;
-  this->layer = (const dimeLayer*) tmpbuffer;
-  this->entityFlags |= FLAG_TMP_BUFFER_SET;
-  bool ok = dimeRecordHolder::read(file); // handleRecord() will change tmpbuffer...
-  this->entityFlags &= ~FLAG_TMP_BUFFER_SET;
-  this->layer = tmplayer; // reset pointer and flag immediately
-  if (ok) {
-    // this is a hack. See handleRecord() to understand what happens
-    if (tmpbuffer[0] != 0) {
-      this->layer = file->getModel()->addLayer(tmpbuffer);
-    }
-    else this->layer = dimeLayer::getDefaultLayer();
-  }
-  return ok;  
+	char tmpbuffer[TMP_BUFFER_LEN + 1];
+	tmpbuffer[0] = 0;
+	const dimeLayer* tmplayer = this->layer;
+	this->layer = (const dimeLayer*)tmpbuffer;
+	this->entityFlags |= FLAG_TMP_BUFFER_SET;
+	bool ok = DimeRecordHolder::read(file); // handleRecord() will change tmpbuffer...
+	this->entityFlags &= ~FLAG_TMP_BUFFER_SET;
+	this->layer = tmplayer; // reset pointer and flag immediately
+	if (ok)
+	{
+		// this is a hack. See handleRecord() to understand what happens
+		if (tmpbuffer[0] != 0)
+		{
+			this->layer = file->getModel()->addLayer(tmpbuffer);
+		}
+		else this->layer = dimeLayer::getDefaultLayer();
+	}
+	return ok;
 }
 
 /*!
@@ -644,87 +653,99 @@ dimeEntity::read(dimeInput * const file)
   to the default layer.
 */
 
-void 
-dimeEntity::setLayer(const dimeLayer * const layer)
+void
+DimeEntity::setLayer(const dimeLayer* const layer)
 {
-  if (layer == NULL)
-    this->layer = dimeLayer::getDefaultLayer();
-  else
-    this->layer = layer;
+	if (layer == nullptr)
+		this->layer = dimeLayer::getDefaultLayer();
+	else
+		this->layer = layer;
 }
 
 //!
 
-bool 
-dimeEntity::handleRecord(const int groupcode,
-			const dimeParam &param,
-			dimeMemHandler * const memhandler)
+bool
+DimeEntity::handleRecord(const int groupcode,
+                         const dimeParam& param)
 {
-  if (groupcode == 8) {
-    // Should only arrive her during read(). this->layer is then used
-    // as a temporary storage for the character string.
-    // Checking flag just to be safe...
-    if (this->entityFlags & FLAG_TMP_BUFFER_SET) {
-      strncpy((char*)this->layer, param.string_data, TMP_BUFFER_LEN);
-    }
-    else assert(0);
-    return true;
-  }
-  else if (groupcode == 62) {
-    this->entityFlags |= FLAG_COLOR_NUMBER;
-    this->colorNumber = param.int16_data;
-    return true;
-  }
-  else if (groupcode == 67) {
-    this->entityFlags |= FLAG_PAPERSPACE;
-    return true;
-  }
-  else if (groupcode == 100) {
-    this->entityFlags |= FLAG_SUBCLASS_MARKER;
-    if (strcmp(param.string_data, "AcDbEntity") != 0) {
-      return false; // store in record-holder
-    }
-    return true;
-  }
-  else if (groupcode == 102) {
-    // ignore these, don't store
-    return true;
-  }
-  else if (groupcode == 330) {
-    this->entityFlags |= FLAG_ACAD_REACTORS;
-    return false; // store in recordholder
-  }
-  else if (groupcode == 360) {
-    this->entityFlags |= FLAG_ACAD_XDICTIONARY;
-    return false; // store in recordholder
-  }
-  else if (groupcode == 5) {
-    this->entityFlags |= FLAG_HANDLE;
-    return false; // store in recordholder
-  }
-  else if (groupcode == 6) {
-    this->entityFlags |= FLAG_LINETYPE;
-    return false; // store in recordholder
-  }
-  return false;
+	if (groupcode == 8)
+	{
+		// Should only arrive her during read(). this->layer is then used
+		// as a temporary storage for the character string.
+		// Checking flag just to be safe...
+		if (this->entityFlags & FLAG_TMP_BUFFER_SET)
+		{
+			strncpy((char*)this->layer, param.string_data, TMP_BUFFER_LEN);
+		}
+		else
+			assert(0);
+		return true;
+	}
+	if (groupcode == 62)
+	{
+		this->entityFlags |= FLAG_COLOR_NUMBER;
+		this->colorNumber = param.int16_data;
+		return true;
+	}
+	if (groupcode == 67)
+	{
+		this->entityFlags |= FLAG_PAPERSPACE;
+		return true;
+	}
+	if (groupcode == 100)
+	{
+		this->entityFlags |= FLAG_SUBCLASS_MARKER;
+		if (strcmp(param.string_data, "AcDbEntity") != 0)
+		{
+			return false; // store in record-holder
+		}
+		return true;
+	}
+	if (groupcode == 102)
+	{
+		// ignore these, don't store
+		return true;
+	}
+	if (groupcode == 330)
+	{
+		this->entityFlags |= FLAG_ACAD_REACTORS;
+		return false; // store in recordholder
+	}
+	if (groupcode == 360)
+	{
+		this->entityFlags |= FLAG_ACAD_XDICTIONARY;
+		return false; // store in recordholder
+	}
+	if (groupcode == 5)
+	{
+		this->entityFlags |= FLAG_HANDLE;
+		return false; // store in recordholder
+	}
+	if (groupcode == 6)
+	{
+		this->entityFlags |= FLAG_LINETYPE;
+		return false; // store in recordholder
+	}
+	return false;
 }
 
 //!
 
-bool 
-dimeEntity::getRecord(const int groupcode,
-		     dimeParam &param,
-		     const int index) const
+bool
+DimeEntity::getRecord(const int groupcode,
+                      dimeParam& param,
+                      const int index) const
 {
-  switch (groupcode) {
-  case 8:
-    param.string_data = this->layer->getLayerName();
-    return true;
-  case 62:
-    param.int16_data = this->colorNumber;
-    return true;
-  }
-  return dimeRecordHolder::getRecord(groupcode, param, index);
+	switch (groupcode)
+	{
+	case 8:
+		param.string_data = this->layer->getLayerName();
+		return true;
+	case 62:
+		param.int16_data = this->colorNumber;
+		return true;
+	}
+	return DimeRecordHolder::getRecord(groupcode, param, index);
 }
 
 //
@@ -735,100 +756,114 @@ dimeEntity::getRecord(const int groupcode,
   Writes the group code 0, layer name, and some other stuff.
 */
 bool
-dimeEntity::preWrite(dimeOutput * const file)
+DimeEntity::preWrite(DimeOutput* const file)
 {
-  file->writeGroupCode(0);
-  bool ret = file->writeString(this->getEntityName()) ;
+	file->writeGroupCode(0);
+	bool ret = file->writeString(this->getEntityName());
 
-  // write stupid handle?
-  if (this->entityFlags & FLAG_HANDLE) {
-    dimeParam param;
-    if (this->getRecord(5, param)) {
-      file->writeGroupCode(5);
-      file->writeString(param.string_data);
-    }
-  }
-
-#if 1
-  if (this->entityFlags & FLAG_ACAD_REACTORS) {
-    file->writeGroupCode(102);
-    file->writeString("{ACAD_REACTORS");
-    dimeParam param;
-    if (this->getRecord(330, param)) {
-      file->writeGroupCode(330);
-      file->writeString(param.string_data);
-    }
-    file->writeGroupCode(102);
-    file->writeString("}");
-  }
-  if (this->entityFlags & FLAG_ACAD_XDICTIONARY) {
-    file->writeGroupCode(102);
-    file->writeString("{ACAD_XDICTIONARY");
-    dimeParam param;
-    if (this->getRecord(360, param)) {
-      file->writeGroupCode(360);
-      file->writeString(param.string_data);
-    }
-    file->writeGroupCode(102);
-    file->writeString("}");
-  }
-#endif
-
-  // write stupid subclass marker data?
-  if (this->entityFlags & FLAG_SUBCLASS_MARKER) {
-    file->writeGroupCode(100);
-    file->writeString("AcDbEntity");
-  }
-  if (this->entityFlags & FLAG_PAPERSPACE) {
-    file->writeGroupCode(67);
-    file->writeInt16(1);
-  }
-
-  // write layer
-  file->writeGroupCode(8);
-  ret = file->writeString(this->layer->getLayerName());
-
-  // write linetype
-  if (this->entityFlags & FLAG_LINETYPE) {
-    dimeParam param;
-    if (this->getRecord(6, param)) {
-      file->writeGroupCode(6);
-      file->writeString(param.string_data);
-    }
-  }
-  
-  // write color number
-  if (this->colorNumber != 256) {
-    file->writeGroupCode(62);
-    ret = file->writeInt16(this->colorNumber);
-  }
+	// write stupid handle?
+	if (this->entityFlags & FLAG_HANDLE)
+	{
+		dimeParam param;
+		if (this->getRecord(5, param))
+		{
+			file->writeGroupCode(5);
+			file->writeString(param.string_data);
+		}
+	}
 
 #if 1
-  if ((this->entityFlags & FLAG_SUBCLASS_MARKER)) {
-    dimeParam param;
-    int idx = 0;
-    while (this->getRecord(100, param, idx)) {
-      file->writeGroupCode(100);
-      file->writeString(param.string_data);
-      idx++;
-    }
-  }
+	if (this->entityFlags & FLAG_ACAD_REACTORS)
+	{
+		file->writeGroupCode(102);
+		file->writeString("{ACAD_REACTORS");
+		dimeParam param;
+		if (this->getRecord(330, param))
+		{
+			file->writeGroupCode(330);
+			file->writeString(param.string_data);
+		}
+		file->writeGroupCode(102);
+		file->writeString("}");
+	}
+	if (this->entityFlags & FLAG_ACAD_XDICTIONARY)
+	{
+		file->writeGroupCode(102);
+		file->writeString("{ACAD_XDICTIONARY");
+		dimeParam param;
+		if (this->getRecord(360, param))
+		{
+			file->writeGroupCode(360);
+			file->writeString(param.string_data);
+		}
+		file->writeGroupCode(102);
+		file->writeString("}");
+	}
 #endif
-  return ret;
+
+	// write stupid subclass marker data?
+	if (this->entityFlags & FLAG_SUBCLASS_MARKER)
+	{
+		file->writeGroupCode(100);
+		file->writeString("AcDbEntity");
+	}
+	if (this->entityFlags & FLAG_PAPERSPACE)
+	{
+		file->writeGroupCode(67);
+		file->writeInt16(1);
+	}
+
+	// write layer
+	file->writeGroupCode(8);
+	ret = file->writeString(this->layer->getLayerName());
+
+	// write linetype
+	if (this->entityFlags & FLAG_LINETYPE)
+	{
+		dimeParam param;
+		if (this->getRecord(6, param))
+		{
+			file->writeGroupCode(6);
+			file->writeString(param.string_data);
+		}
+	}
+
+	// write color number
+	if (this->colorNumber != 256)
+	{
+		file->writeGroupCode(62);
+		ret = file->writeInt16(this->colorNumber);
+	}
+
+#if 1
+	if ((this->entityFlags & FLAG_SUBCLASS_MARKER))
+	{
+		dimeParam param;
+		int idx = 0;
+		while (this->getRecord(100, param, idx))
+		{
+			file->writeGroupCode(100);
+			file->writeString(param.string_data);
+			idx++;
+		}
+	}
+#endif
+	return ret;
 }
 
 //!
-bool 
-dimeEntity::shouldWriteRecord(const int groupcode) const
+bool
+DimeEntity::shouldWriteRecord(const int groupcode) const
 {
-  switch (groupcode) {
-  case 5:
-  case 6:
-  case 100:
-  case 330:
-  case 360:
-    return false;
-  default:
-    return true;
-  }
+	switch (groupcode)
+	{
+	case 5:
+	case 6:
+	case 100:
+	case 330:
+	case 360:
+		return false;
+	default:
+		return true;
+	}
 }

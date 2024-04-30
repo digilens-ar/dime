@@ -36,31 +36,29 @@
 #include <dime/sections/Section.h>
 #include <dime/util/Array.h>
 
-class DIME_DLL_API dimeObjectsSection : public dimeSection
+class  DimeObjectsSection : public DimeSection
 {
-  friend class dimeModel;
+	friend class DimeModel;
 
 public:
-  dimeObjectsSection(dimeMemHandler * const memhandler = NULL);
-  virtual ~dimeObjectsSection();
+	DimeObjectsSection() = default;
+	~DimeObjectsSection() override;
 
-  virtual const char *getSectionName() const; 
-  virtual dimeSection *copy(dimeModel * const model) const;
-  
-  virtual bool read(dimeInput * const file);
-  virtual bool write(dimeOutput * const file);
-  virtual int typeId() const;
-  virtual int countRecords() const;
+	const char* getSectionName() const override;
+	DimeSection* copy(DimeModel* model) const override;
 
-  int getNumObjects() const;
-  class dimeObject *getObject(const int idx);
-  void removeObject(const int idx);
-  void insertObject(dimeObject * const object, const int idx = -1); 
-  
+	bool read(DimeInput* file) override;
+	bool write(DimeOutput* file) override;
+	TypeID typeId() const override;
+	int countRecords() const override;
+
+	int getNumObjects() const;
+	class DimeObject* getObject(int idx);
+	void removeObject(int idx);
+	void insertObject(DimeObject* object, int idx = -1);
+
 private:
-  dimeArray <dimeObject*> objects;
-
+	dimeArray<DimeObject*> objects;
 }; // class dimeObjectsSection
 
 #endif // ! DIME_OBJECTSSECTION_H
-

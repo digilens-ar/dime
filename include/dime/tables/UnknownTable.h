@@ -35,22 +35,20 @@
 
 #include <dime/tables/TableEntry.h>
 
-class DIME_DLL_API dimeUnknownTable : public dimeTableEntry 
+class  DimeUnknownTable : public DimeTableEntry
 {
 public:
-  dimeUnknownTable(const char * const name, dimeMemHandler * const memhandler);
-  virtual ~dimeUnknownTable();
+	DimeUnknownTable(const char* name);
+	~DimeUnknownTable() override;
 
-  virtual const char *getTableName() const;
-  virtual dimeTableEntry *copy(dimeModel * const model) const;
-  virtual bool write(dimeOutput * const out);
-  virtual int typeId() const;
-  virtual int countRecords() const;
+	const char* getTableName() const override;
+	DimeTableEntry* copy(DimeModel* model) const override;
+	bool write(DimeOutput* out) override;
+	TypeID typeId() const override;
+	int countRecords() const override;
 
 private:
-  char *tableName;
-
-}; // class dimeUnknownTable
+	char* tableName;
+}; 
 
 #endif // ! DIME_UNKNOWNTABLE_H
-

@@ -39,229 +39,225 @@
 #include <dime/util/Linear.h>
 
 
-class dimeVertex;
+class DimeVertex;
 
-class DIME_DLL_API dimePolyline : public dimeExtrusionEntity
+class  DimePolyline : public DimeExtrusionEntity
 {
 public:
-  dimePolyline();
-  virtual ~dimePolyline();
+	DimePolyline();
+	~DimePolyline() override;
 
-  enum Type {
-    POLYLINE,
-    POLYFACE_MESH,
-    POLYGON_MESH
-  };
+	enum Type
+	{
+		POLYLINE,
+		POLYFACE_MESH,
+		POLYGON_MESH
+	};
 
-  enum Flags {
-    CLOSED            = 0x01,
-    POLYMESH_CLOSED_M = 0x01,
-    CURVE_FIT         = 0x02,
-    SPLINE_FIT        = 0x04,
-    IS_POLYLINE_3D    = 0x08,
-    IS_POLYMESH_3D    = 0x10,
-    POLYMESH_CLOSED_N = 0x20,
-    IS_POLYFACE_MESH  = 0x40,
-    CONTINOUS_PATTERN = 0x80
-  };
+	enum Flags
+	{
+		CLOSED = 0x01,
+		POLYMESH_CLOSED_M = 0x01,
+		CURVE_FIT = 0x02,
+		SPLINE_FIT = 0x04,
+		IS_POLYLINE_3D = 0x08,
+		IS_POLYMESH_3D = 0x10,
+		POLYMESH_CLOSED_N = 0x20,
+		IS_POLYFACE_MESH = 0x40,
+		CONTINOUS_PATTERN = 0x80
+	};
 
-  enum SurfaceType {
-    NONE            = 0,
-    QUADRIC_BSPLINE = 5,
-    CUBIC_BSPLINE   = 6,
-    BEZIER          = 8
-  };
+	enum SurfaceType
+	{
+		NONE = 0,
+		QUADRIC_BSPLINE = 5,
+		CUBIC_BSPLINE = 6,
+		BEZIER = 8
+	};
 
-  int16 getFlags() const;
-  void setFlags(const int16 flags);
+	int16_t getFlags() const;
+	void setFlags(int16_t flags);
 
-  int getType() const;
+	int getType() const;
 
-  const dimeVec3f &getElevation() const;
-  void setElevation(const dimeVec3f &e);
+	const dimeVec3& getElevation() const;
+	void setElevation(const dimeVec3& e);
 
-  int16 getPolymeshCountN() const;
-  int16 getPolymeshCountM() const;
-  int16 getSmoothSurfaceMdensity() const;
-  int16 getSmoothSurfaceNdensity() const;
+	int16_t getPolymeshCountN() const;
+	int16_t getPolymeshCountM() const;
+	int16_t getSmoothSurfaceMdensity() const;
+	int16_t getSmoothSurfaceNdensity() const;
 
-  int getNumCoordVertices() const;
-  int getNumIndexVertices() const;
-  int getNumSplineFrameControlPoints() const;
+	int getNumCoordVertices() const;
+	int getNumIndexVertices() const;
+	int getNumSplineFrameControlPoints() const;
 
-  int16 getSurfaceType() const;
-  void setSurfaceType(const int16 type);
+	int16_t getSurfaceType() const;
+	void setSurfaceType(int16_t type);
 
-  dimeVertex *getCoordVertex(const int index);
-  dimeVertex *getIndexVertex(const int index);
-  dimeVertex *getSplineFrameControlPoint(const int index);
+	DimeVertex* getCoordVertex(int index);
+	DimeVertex* getIndexVertex(int index);
+	DimeVertex* getSplineFrameControlPoint(int index);
 
-  void setCoordVertices(dimeVertex **vertices, const int num,
-			dimeMemHandler * const memhandler = NULL);
-  void setIndexVertices(dimeVertex **vertices, const int num,
-			dimeMemHandler * const memhandler = NULL);
-  void setSplineFrameControlPoints(dimeVertex **vertices, const int num,
-				   dimeMemHandler * const memhandler = NULL);
+	void setCoordVertices(DimeVertex** vertices, int num);
+	void setIndexVertices(DimeVertex** vertices, int num);
+	void setSplineFrameControlPoints(DimeVertex** vertices, int num);
 
-  // KRF, 02-16-2006, added to enable ::copy of new polyline
-  void setSeqend(const dimeEntity *ent);
+	// KRF, 02-16-2006, added to enable ::copy of new polyline
+	void setSeqend(const DimeEntity* ent);
 
-  virtual dimeEntity *copy(dimeModel *const model) const;
-  virtual bool getRecord(const int groupcode,
-			 dimeParam &param,
-			 const int index = 0) const;
+	DimeEntity* copy(DimeModel* model) const override;
+	bool getRecord(int groupcode,
+	               dimeParam& param,
+	               int index = 0) const override;
 
-  virtual void setLayer(const dimeLayer * const layer);
-  virtual const char *getEntityName() const;
+	void setLayer(const dimeLayer* layer) override;
+	const char* getEntityName() const override;
 
-  virtual bool read(dimeInput * const in);
-  virtual bool write(dimeOutput * const out);
-  virtual int typeId() const;
-  virtual int countRecords() const;
-   
-  virtual GeometryType extractGeometry(dimeArray <dimeVec3f> &verts,
-				       dimeArray <int> &indices,
-				       dimeVec3f &extrusionDir,
-				       dxfdouble &thickness);
+	bool read(DimeInput* in) override;
+	bool write(DimeOutput* out) override;
+	TypeID typeId() const override;
+	int countRecords() const override;
 
-  void clearSurfaceData();
-    
+	GeometryType extractGeometry(dimeArray<dimeVec3>& verts,
+	                             dimeArray<int>& indices,
+	                             dimeVec3& extrusionDir,
+	                             dxfdouble& thickness) override;
+
+	void clearSurfaceData();
+
 protected:
-  virtual bool handleRecord(const int groupcode, 
-			    const dimeParam &param,
-                            dimeMemHandler * const memhandler);
-  virtual bool traverse(const dimeState * const state, 
-			dimeCallback callback,
-			void *userdata);
-  
-private:
+	bool handleRecord(int groupcode,
+	                  const dimeParam& param) override;
+	bool traverse(const DimeState* state,
+	              dimeCallback const& callback) override;
 
-  int numCoordVertices() const;
-  int numIndexVertices() const;
- 
-  int16 flags;
+private:
+	int numCoordVertices() const;
+	int numIndexVertices() const;
+
+	int16_t flags;
 
 #ifdef DIME_FIXBIG
-  int32 countM;
-  int32 countN;
-  int32 smoothCountM;
-  int32 smoothCountN;
+  int32_t countM;
+  int32_t countN;
+  int32_t smoothCountM;
+  int32_t smoothCountN;
 #else
-  int16 countM; 
-  int16 countN; 
-  int16 smoothCountM;
-  int16 smoothCountN;
+	int16_t countM;
+	int16_t countN;
+	int16_t smoothCountM;
+	int16_t smoothCountN;
 #endif
 
-  int16 surfaceType;
-  
-  int32 coordCnt;  // real # of coordinate vertices
-  int32 indexCnt;  // real # of index vertices
-  int32 frameCnt; 
-  
-  dimeVertex **coordVertices;
-  dimeVertex **indexVertices;
-  dimeVertex **frameVertices;
-  dimeEntity *seqend;
-  dimeVec3f elevation;
+	int16_t surfaceType;
+
+	int32_t coordCnt; // real # of coordinate vertices
+	int32_t indexCnt; // real # of index vertices
+	int32_t frameCnt;
+
+	DimeVertex** coordVertices;
+	DimeVertex** indexVertices;
+	DimeVertex** frameVertices;
+	DimeEntity* seqend;
+	dimeVec3 elevation;
 }; // class dimePolyline
 
-inline int16 
-dimePolyline::getFlags() const
+inline int16_t
+DimePolyline::getFlags() const
 {
-  return this->flags;
+	return this->flags;
 }
 
-inline void 
-dimePolyline::setFlags(const int16 flags)
+inline void
+DimePolyline::setFlags(const int16_t flags)
 {
-  this->flags = flags;
+	this->flags = flags;
 }
 
-inline const dimeVec3f &
-dimePolyline::getElevation() const
+inline const dimeVec3&
+DimePolyline::getElevation() const
 {
-  return elevation;
+	return elevation;
 }
 
-inline void 
-dimePolyline::setElevation(const dimeVec3f &e)
+inline void
+DimePolyline::setElevation(const dimeVec3& e)
 {
-  this->elevation = e;
+	this->elevation = e;
 }
 
-inline int16 
-dimePolyline::getPolymeshCountN() const
+inline int16_t
+DimePolyline::getPolymeshCountN() const
 {
-  return this->countN;
+	return this->countN;
 }
 
-inline int16 
-dimePolyline::getPolymeshCountM() const
+inline int16_t
+DimePolyline::getPolymeshCountM() const
 {
-  return this->countM;
+	return this->countM;
 }
 
-inline int16 
-dimePolyline::getSmoothSurfaceMdensity() const
+inline int16_t
+DimePolyline::getSmoothSurfaceMdensity() const
 {
-  return this->smoothCountM;
+	return this->smoothCountM;
 }
 
-inline int16 
-dimePolyline::getSmoothSurfaceNdensity() const
+inline int16_t
+DimePolyline::getSmoothSurfaceNdensity() const
 {
-  return this->smoothCountN;
-}
-
-inline int 
-dimePolyline::getNumCoordVertices() const
-{
-  return this->coordCnt;
-}
-
-inline int 
-dimePolyline::getNumIndexVertices() const
-{
-  return this->indexCnt;
+	return this->smoothCountN;
 }
 
 inline int
-dimePolyline::getNumSplineFrameControlPoints() const
+DimePolyline::getNumCoordVertices() const
 {
-  return this->frameCnt;
+	return this->coordCnt;
 }
 
-inline dimeVertex *
-dimePolyline::getCoordVertex(const int index)
+inline int
+DimePolyline::getNumIndexVertices() const
 {
-  return this->coordVertices[index];
+	return this->indexCnt;
 }
 
-inline dimeVertex *
-dimePolyline::getIndexVertex(const int index)
+inline int
+DimePolyline::getNumSplineFrameControlPoints() const
 {
-  return this->indexVertices[index];
+	return this->frameCnt;
 }
 
-inline dimeVertex *
-dimePolyline::getSplineFrameControlPoint(const int index)
+inline DimeVertex*
+DimePolyline::getCoordVertex(const int index)
 {
-  return this->frameVertices[index];
+	return this->coordVertices[index];
 }
 
-inline int16 
-dimePolyline::getSurfaceType() const
+inline DimeVertex*
+DimePolyline::getIndexVertex(const int index)
 {
-  return this->surfaceType;
+	return this->indexVertices[index];
 }
 
-inline void 
-dimePolyline::setSurfaceType(const int16 type)
+inline DimeVertex*
+DimePolyline::getSplineFrameControlPoint(const int index)
 {
-  this->surfaceType = type;
+	return this->frameVertices[index];
+}
+
+inline int16_t
+DimePolyline::getSurfaceType() const
+{
+	return this->surfaceType;
+}
+
+inline void
+DimePolyline::setSurfaceType(const int16_t type)
+{
+	this->surfaceType = type;
 }
 
 
 #endif // ! DIME_POLYLINE_H
-

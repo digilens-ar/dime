@@ -36,33 +36,31 @@
 #include <dime/sections/Section.h>
 #include <dime/util/Array.h>
 
-class DIME_DLL_API dimeEntitiesSection : public dimeSection
+class  DimeEntitiesSection : public DimeSection
 {
-  friend class dimeModel;
+	friend class DimeModel;
 
 public:
-  dimeEntitiesSection(dimeMemHandler * const memhandler = NULL);
-  virtual ~dimeEntitiesSection();
+	DimeEntitiesSection() = default;
+	~DimeEntitiesSection() override;
 
-  virtual const char *getSectionName() const; 
-  virtual dimeSection *copy(dimeModel * const model) const;
-  
-  virtual bool read(dimeInput * const file);
-  virtual bool write(dimeOutput * const file);
-  virtual int typeId() const;
-  virtual int countRecords() const;
-  
-  void fixReferences(dimeModel * const model);
+	const char* getSectionName() const override;
+	DimeSection* copy(DimeModel* model) const override;
 
-  int getNumEntities() const;
-  dimeEntity *getEntity(const int idx);
-  void removeEntity(const int idx);
-  void insertEntity(dimeEntity * const entity, const int idx = -1); 
-  
+	bool read(DimeInput* file) override;
+	bool write(DimeOutput* file) override;
+	TypeID typeId() const override;
+	int countRecords() const override;
+
+	void fixReferences(DimeModel* model);
+
+	int getNumEntities() const;
+	DimeEntity* getEntity(int idx);
+	void removeEntity(int idx);
+	void insertEntity(DimeEntity* entity, int idx = -1);
+
 private:
-  dimeArray <dimeEntity*> entities;
-
+	dimeArray<DimeEntity*> entities;
 }; // class dimeEntitiesSection
 
 #endif // ! DIME_ENTITIESSECTION_H
-

@@ -31,7 +31,7 @@
 \**************************************************************************/
 
 /*!
-  \class dimeOutput dime/Output.h
+  \class DimeOutput dime/Output.h
   \brief The dimeOutput class handles writing of DXF and DXB files.
 */
 
@@ -48,9 +48,9 @@
   Constructor.
 */
 
-dimeOutput::dimeOutput()
-  : fp( NULL ), binary( false ), callback( NULL ), callbackdata( NULL ),
-    aborted( false ), didOpenFile(false)
+DimeOutput::DimeOutput()
+	: fp(nullptr), binary(false), callback(nullptr), callbackdata(nullptr),
+	  aborted(false), didOpenFile(false)
 {
 }
 
@@ -58,9 +58,9 @@ dimeOutput::dimeOutput()
   Destructor.
 */
 
-dimeOutput::~dimeOutput()
+DimeOutput::~DimeOutput()
 {
-  if (this->fp && this->didOpenFile) fclose(this->fp);
+	if (this->fp && this->didOpenFile) fclose(this->fp);
 }
 
 /*!
@@ -70,14 +70,14 @@ dimeOutput::~dimeOutput()
   void * \a cbdata argument.
 */
 
-void 
-dimeOutput::setCallback(const int num_records, 
-		       int (*cb)(float, void *), void *cbdata)
+void
+DimeOutput::setCallback(const int num_records,
+                        int (*cb)(float, void*), void* cbdata)
 {
-  this->callback = cb;
-  this->callbackdata = cbdata;
-  this->numwrites = 0;
-  this->numrecords = num_records;
+	this->callback = cb;
+	this->callbackdata = cbdata;
+	this->numwrites = 0;
+	this->numrecords = num_records;
 }
 
 /*!
@@ -87,27 +87,27 @@ dimeOutput::setCallback(const int num_records,
 */
 
 bool
-dimeOutput::setFilename(const char * const filename)
+DimeOutput::setFilename(const char* const filename)
 {
-  if (this->fp && this->didOpenFile) fclose(this->fp);
-  this->fp = fopen(filename, "wb");
-  this->didOpenFile = true;
-  return (this->fp != NULL);
+	if (this->fp && this->didOpenFile) fclose(this->fp);
+	this->fp = fopen(filename, "wb");
+	this->didOpenFile = true;
+	return (this->fp != nullptr);
 }
 
 /*!
   Sets the output stream. \a fp should be a valid file/stream, and
   it will not be closed in the destructor.
  */
-bool 
-dimeOutput::setFileHandle(FILE *fp)
+bool
+DimeOutput::setFileHandle(FILE* fp)
 {
-  if (this->fp && this->didOpenFile) fclose(this->fp);
+	if (this->fp && this->didOpenFile) fclose(this->fp);
 
-  assert(fp);
-  this->fp = fp;
-  this->didOpenFile = false;
-  return true;
+	assert(fp);
+	this->fp = fp;
+	this->didOpenFile = false;
+	return true;
 }
 
 /*!
@@ -116,9 +116,9 @@ dimeOutput::setFileHandle(FILE *fp)
 */
 
 void
-dimeOutput::setBinary(const bool state)
+DimeOutput::setBinary(const bool state)
 {
-  this->binary = state;
+	this->binary = state;
 }
 
 /*!
@@ -126,9 +126,9 @@ dimeOutput::setBinary(const bool state)
 */
 
 bool
-dimeOutput::isBinary() const
+DimeOutput::isBinary() const
 {
-  return this->binary;
+	return this->binary;
 }
 
 /*!
@@ -136,18 +136,20 @@ dimeOutput::isBinary() const
 */
 
 bool
-dimeOutput::writeGroupCode(const int groupcode)
+DimeOutput::writeGroupCode(const int groupcode)
 {
-  if (this->aborted) return false;
-  if (this->callback && this->numrecords) {
-    if ((this->numwrites & 255) == 0) {
-      float val = float(this->numwrites) / float(this->numrecords);
-      if (val > 1.0f) val = 1.0f;
-      this->aborted = !(bool) callback(val, this->callbackdata);
-    }
-    this->numwrites++;
-  }
-  return fprintf(this->fp, "%3d\n", groupcode) > 0;
+	if (this->aborted) return false;
+	if (this->callback && this->numrecords)
+	{
+		if ((this->numwrites & 255) == 0)
+		{
+			float val = static_cast<float>(this->numwrites) / static_cast<float>(this->numrecords);
+			if (val > 1.0f) val = 1.0f;
+			this->aborted = !static_cast<bool>(callback(val, this->callbackdata));
+		}
+		this->numwrites++;
+	}
+	return fprintf(this->fp, "%3d\n", groupcode) > 0;
 }
 
 /*!
@@ -155,9 +157,9 @@ dimeOutput::writeGroupCode(const int groupcode)
 */
 
 bool
-dimeOutput::writeInt8(const int8 val)
+DimeOutput::writeInt8(const int8_t val)
 {
-  return fprintf(this->fp,"%6d\n", (int)val) > 0;
+	return fprintf(this->fp, "%6d\n", static_cast<int>(val)) > 0;
 }
 
 /*!
@@ -165,9 +167,9 @@ dimeOutput::writeInt8(const int8 val)
 */
 
 bool
-dimeOutput::writeInt16(const int16 val)
+DimeOutput::writeInt16(const int16_t val)
 {
-  return fprintf(this->fp,"%6d\n", (int)val) > 0;
+	return fprintf(this->fp, "%6d\n", static_cast<int>(val)) > 0;
 }
 
 /*!
@@ -175,9 +177,9 @@ dimeOutput::writeInt16(const int16 val)
 */
 
 bool
-dimeOutput::writeInt32(const int32 val)
+DimeOutput::writeInt32(const int32_t val)
 {
-  return fprintf(this->fp,"%6d\n", val) > 0;
+	return fprintf(this->fp, "%6d\n", val) > 0;
 }
 
 /*!
@@ -185,16 +187,15 @@ dimeOutput::writeInt32(const int32 val)
 */
 
 bool
-dimeOutput::writeFloat(const float val)
+DimeOutput::writeFloat(const float val)
 {
-  // Check for integer value, force decimal and one zero.
-  if( fabsf( val ) < 1000000.0 && floorf( val ) == val ) {
-    return fprintf(this->fp, "%.1f\n", val);
-  }
-  else {
-    return fprintf(this->fp, "%g\n", val);
-//    return fprintf(this->fp, "%#f\n", val);
-  }
+	// Check for integer value, force decimal and one zero.
+	if (fabsf(val) < 1000000.0 && floorf(val) == val)
+	{
+		return fprintf(this->fp, "%.1f\n", val);
+	}
+	return fprintf(this->fp, "%g\n", val);
+	//    return fprintf(this->fp, "%#f\n", val);
 }
 
 /*!
@@ -202,16 +203,15 @@ dimeOutput::writeFloat(const float val)
 */
 
 bool
-dimeOutput::writeDouble(const dxfdouble val)
+DimeOutput::writeDouble(const dxfdouble val)
 {
-  // Check for integer value, force decimal and one zero.
-  if( fabs( val ) < 1000000.0 && floor( val ) == val ) {
-    return fprintf(this->fp, "%.1f\n", val);
-  }
-  else {
-    return fprintf(this->fp,"%g\n", val) > 0;
-//    return fprintf(this->fp,"%#f\n", val) > 0;
-  }
+	// Check for integer value, force decimal and one zero.
+	if (fabs(val) < 1000000.0 && floor(val) == val)
+	{
+		return fprintf(this->fp, "%.1f\n", val);
+	}
+	return fprintf(this->fp, "%g\n", val) > 0;
+	//    return fprintf(this->fp,"%#f\n", val) > 0;
 }
 
 /*!
@@ -219,15 +219,14 @@ dimeOutput::writeDouble(const dxfdouble val)
 */
 
 bool
-dimeOutput::writeString(const char * const str)
+DimeOutput::writeString(const char* const str)
 {
-  return fprintf(this->fp, "%s\n", str) > 0;
+	return fprintf(this->fp, "%s\n", str) > 0;
 }
 
 int
-dimeOutput::getUniqueHandleId()
+DimeOutput::getUniqueHandleId()
 {
-  // FIXME
-  return 1;
+	// FIXME
+	return 1;
 }
-

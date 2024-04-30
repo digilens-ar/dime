@@ -100,4 +100,3 @@
   the array.  This will free up any overhead caused by the array doubling
   mechanism.
 */
-

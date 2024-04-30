@@ -36,31 +36,29 @@
 #include <dime/sections/Section.h>
 #include <dime/util/Array.h>
 
-class DIME_DLL_API dimeClassesSection : public dimeSection
+class  DimeClassesSection : public DimeSection
 {
-  friend class dimeModel;
+	friend class DimeModel;
 
 public:
-  dimeClassesSection(dimeMemHandler * const memhandler = NULL);
-  virtual ~dimeClassesSection();
+	DimeClassesSection() = default;
+	~DimeClassesSection() override;
 
-  virtual const char *getSectionName() const; 
-  virtual dimeSection *copy(dimeModel * const model) const;
-  
-  virtual bool read(dimeInput * const file);
-  virtual bool write(dimeOutput * const file);
-  virtual int typeId() const;
-  virtual int countRecords() const;
-  
-  int getNumClasses() const;
-  class dimeClass *getClass(const int idx);
-  void removeClass(const int idx);
-  void insertClass(dimeClass * const myclass, const int idx = -1); 
+	const char* getSectionName() const override;
+	DimeSection* copy(DimeModel* model) const override;
+
+	bool read(DimeInput* file) override;
+	bool write(DimeOutput* file) override;
+	TypeID typeId() const override;
+	int countRecords() const override;
+
+	int getNumClasses() const;
+	class DimeClass* getClass(int idx);
+	void removeClass(int idx);
+	void insertClass(DimeClass* myclass, int idx = -1);
 
 private:
-  dimeArray <dimeClass*> classes;
-
+	dimeArray<DimeClass*> classes;
 }; // class dimeClassesSection
 
 #endif // ! DIME_CLASSESSECTION_H
-

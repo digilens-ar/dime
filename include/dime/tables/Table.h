@@ -36,45 +36,43 @@
 #include <dime/Base.h>
 #include <dime/util/Array.h>
 
-class dimeInput;
-class dimeModel;
-class dimeOutput;
-class dimeTableEntry;
-class dimeRecord;
+class DimeInput;
+class DimeModel;
+class DimeOutput;
+class DimeTableEntry;
+class DimeRecord;
 
-class DIME_DLL_API dimeTable : public dimeBase
+class  DimeTable : public DimeBase
 {
 public:
-  dimeTable(dimeMemHandler * const memhandler);
-  virtual ~dimeTable();
-  
-  bool read(dimeInput * const in);
-  bool write(dimeOutput * const out);
-  dimeTable *copy(dimeModel * const model) const;
-  int typeId() const;
-  int countRecords() const;
-  int tableType() const;
+	DimeTable();
+	~DimeTable() override;
 
-  void setTableName(const char * name);
-  const char * tableName() const;
-  
-  int getNumTableEntries() const;
-  dimeTableEntry *getTableEntry(const int idx);
-  void insertTableEntry(dimeTableEntry * const tableEntry, const int idx = -1);
-  void removeTableEntry(const int idx);
+	bool read(DimeInput* in);
+	bool write(DimeOutput* out);
+	DimeTable* copy(DimeModel* model) const;
+	TypeID typeId() const override;
+	int countRecords() const;
+	int tableType() const;
 
-  int getNumTableRecords() const;
-  dimeRecord *getTableRecord(const int idx);
-  void insertTableRecord(dimeRecord * const record, const int idx = -1);
-  void removeTableRecord(const int idx);
+	void setTableName(const char* name);
+	const char* tableName() const;
+
+	int getNumTableEntries() const;
+	DimeTableEntry* getTableEntry(int idx);
+	void insertTableEntry(DimeTableEntry* tableEntry, int idx = -1);
+	void removeTableEntry(int idx);
+
+	int getNumTableRecords() const;
+	DimeRecord* getTableRecord(int idx);
+	void insertTableRecord(DimeRecord* record, int idx = -1);
+	void removeTableRecord(int idx);
 
 private:
-  int16 maxEntries; // dummy variable read from file
-  char * tablename;
-  dimeArray <dimeTableEntry*> tableEntries;
-  dimeArray <dimeRecord*> records;
-  dimeMemHandler *memHandler;
+	int16_t maxEntries; // dummy variable read from file
+	char* tablename;
+	dimeArray<DimeTableEntry*> tableEntries;
+	dimeArray<DimeRecord*> records;
 }; // class dimeTable
 
 #endif // ! DIME_TABLE_H
-

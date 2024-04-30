@@ -31,170 +31,174 @@
 \**************************************************************************/
 
 /*!
-  \class dimeLayerTable dime/tables/LayerTable.h
+  \class DimeLayerTable dime/tables/LayerTable.h
   \brief The dimeLayerTable class reads and writes LAYER \e tables.
 */
 
 #include <dime/tables/LayerTable.h>
 #include <dime/Input.h>
 #include <dime/Output.h>
-#include <dime/util/MemHandler.h>
+
 #include <dime/Model.h>
 #include <dime/records/Record.h>
 #include <string.h>
 
-static const char tableName[] = "LAYER";
+static constexpr char tableName[] = "LAYER";
 
 /*!
   Constructor.
 */
 
-dimeLayerTable::dimeLayerTable()
-  : colorNumber( 0 ), layerName( NULL ), layerInfo( NULL )
+DimeLayerTable::DimeLayerTable()
+	: colorNumber(0), layerName(nullptr), layerInfo(nullptr)
 {
 }
 
-dimeLayerTable::~dimeLayerTable()
+DimeLayerTable::~DimeLayerTable()
 {
-  delete [] this->layerName;
-}
-
-//!
-
-dimeTableEntry *
-dimeLayerTable::copy(dimeModel * const model) const
-{
-  dimeMemHandler *memh = model->getMemHandler();
-  dimeLayerTable *l = new(memh) dimeLayerTable;
-  l->colorNumber = this->colorNumber;
-  if (this->layerName) {
-    DXF_STRCPY(memh, l->layerName, this->layerName);
-  }
-  if (this->layerInfo) {
-    l->layerInfo = (dimeLayer*)model->addLayer(this->layerInfo->getLayerName(),
-                                               DXFABS(this->colorNumber));
-  }
-  if (!copyRecords(l, model)) {
-    // check if allocated on heap.
-    if (!memh) delete l;
-    l = NULL;
-  }
-  return l;
+	delete [] this->layerName;
 }
 
 //!
 
-const char *
-dimeLayerTable::getTableName() const
+DimeTableEntry*
+DimeLayerTable::copy(DimeModel* const model) const
 {
-  return tableName;
+	auto l = new DimeLayerTable;
+	l->colorNumber = this->colorNumber;
+	if (this->layerName)
+	{
+		DXF_STRCPY(l->layerName, this->layerName);
+	}
+	if (this->layerInfo)
+	{
+		l->layerInfo = model->addLayer(this->layerInfo->getLayerName(), DXFABS(this->colorNumber));
+	}
+	if (!copyRecords(l, model))
+	{
+		// check if allocated on heap.
+		delete l;
+		l = nullptr;
+	}
+	return l;
 }
 
 //!
 
-bool
-dimeLayerTable::read(dimeInput * const file)
+const char*
+DimeLayerTable::getTableName() const
 {
-  bool ret = dimeTableEntry::read(file);
-  if (ret) {
-    this->registerLayer(file->getModel());
-  }
-  return ret;
+	return tableName;
 }
 
 //!
 
 bool
-dimeLayerTable::write(dimeOutput * const file)
+DimeLayerTable::read(DimeInput* const file)
 {
-  bool ret = dimeTableEntry::preWrite(file);
+	bool ret = DimeTableEntry::read(file);
+	if (ret)
+	{
+		this->registerLayer(file->getModel());
+	}
+	return ret;
+}
 
-  if (this->layerName) {
-    ret = file->writeGroupCode(2);
-    file->writeString(this->layerName);
-  }
-  file->writeGroupCode(62);
-  file->writeInt16(this->colorNumber);
+//!
 
-  ret = dimeTableEntry::write(file);
-  return ret;
+bool
+DimeLayerTable::write(DimeOutput* const file)
+{
+	bool ret = DimeTableEntry::preWrite(file);
+
+	if (this->layerName)
+	{
+		ret = file->writeGroupCode(2);
+		file->writeString(this->layerName);
+	}
+	file->writeGroupCode(62);
+	file->writeInt16(this->colorNumber);
+
+	ret = DimeTableEntry::write(file);
+	return ret;
+}
+
+//!
+
+DimeBase::TypeID
+DimeLayerTable::typeId() const
+{
+	return DimeBase::dimeLayerTableType;
+}
+
+//!
+
+bool
+DimeLayerTable::handleRecord(const int groupcode,
+                             const dimeParam& param)
+{
+	switch (groupcode)
+	{
+	case 2:
+		this->setLayerName(param.string_data);
+		return true;
+	case 62:
+		this->setColorNumber(param.int16_data);
+		return true;
+	}
+	return DimeTableEntry::handleRecord(groupcode, param);
 }
 
 //!
 
 int
-dimeLayerTable::typeId() const
+DimeLayerTable::countRecords() const
 {
-  return dimeBase::dimeLayerTableType;
-}
-
-//!
-
-bool
-dimeLayerTable::handleRecord(const int groupcode,
-                             const dimeParam &param,
-                             dimeMemHandler * const memhandler)
-{
-  switch(groupcode) {
-  case 2:
-    this->setLayerName(param.string_data, memhandler);
-    return true;
-  case 62:
-    this->setColorNumber(param.int16_data);
-    return true;
-  }
-  return dimeTableEntry::handleRecord(groupcode, param, memhandler);
-}
-
-//!
-
-int
-dimeLayerTable::countRecords() const
-{
-  int cnt = 1; // header
-  if (this->layerInfo) cnt++;
-  cnt++; // colorNumber
-  return cnt + dimeTableEntry::countRecords();
+	int cnt = 1; // header
+	if (this->layerInfo) cnt++;
+	cnt++; // colorNumber
+	return cnt + DimeTableEntry::countRecords();
 }
 
 /*!
   Sets the layer name.
 */
 void
-dimeLayerTable::setLayerName(const char * name, dimeMemHandler * const memhandler)
+DimeLayerTable::setLayerName(const char* name)
 {
-  if (this->layerName && memhandler == NULL) {
-    delete [] this->layerName;
-  }
-  DXF_STRCPY(memhandler, this->layerName, name);
+	if (this->layerName)
+	{
+		delete [] this->layerName;
+	}
+	DXF_STRCPY(this->layerName, name);
 }
 
 /*!
   Returns the layer name.
  */
-const char *
-dimeLayerTable::getLayerName(void) const
+const char*
+DimeLayerTable::getLayerName(void) const
 {
-  return this->layerName;
+	return this->layerName;
 }
 
 /*!
   Sets the color number.
  */
 void
-dimeLayerTable::setColorNumber(const int16 colnum)
+DimeLayerTable::setColorNumber(const int16_t colnum)
 {
-  this->colorNumber = colnum;
-  if (this->layerInfo) this->layerInfo->setColorNumber(DXFABS(this->colorNumber));
+	this->colorNumber = colnum;
+	if (this->layerInfo) this->layerInfo->setColorNumber(DXFABS(this->colorNumber));
 }
 
 /*!
   Returns the color number.
  */
-int16
-dimeLayerTable::getColorNumber(void) const
+int16_t
+DimeLayerTable::getColorNumber(void) const
 {
-  return this->colorNumber;
+	return this->colorNumber;
 }
 
 /*!
@@ -205,10 +209,10 @@ dimeLayerTable::getColorNumber(void) const
   entities using this layer.
 */
 void
-dimeLayerTable::registerLayer(dimeModel * model)
+DimeLayerTable::registerLayer(DimeModel* model)
 {
-  if (this->layerInfo == NULL && this->layerName != NULL) {
-    this->layerInfo = (dimeLayer*) 
-      model->addLayer(this->layerName, DXFABS(this->colorNumber));
-  }
+	if (this->layerInfo == nullptr && this->layerName != nullptr)
+	{
+		this->layerInfo = model->addLayer(this->layerName, DXFABS(this->colorNumber));
+	}
 }

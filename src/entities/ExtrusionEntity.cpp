@@ -31,7 +31,7 @@
 \**************************************************************************/
 
 /*!
-  \class dimeExtrusionEntity dime/entities/ExtrusionEntity.h
+  \class DimeExtrusionEntity dime/entities/ExtrusionEntity.h
   \brief The dimeExtrusionEntity class is the superclass of all \e entity classes with extrusion data.
 */
 
@@ -63,8 +63,8 @@
   the thickness to \e 0.0.
 */
 
-dimeExtrusionEntity::dimeExtrusionEntity()
-  : extrusionDir(0,0,1), thickness( 0.0 )
+DimeExtrusionEntity::DimeExtrusionEntity()
+	: extrusionDir(0, 0, 1), thickness(0.0)
 {
 }
 
@@ -72,100 +72,102 @@ dimeExtrusionEntity::dimeExtrusionEntity()
   Will write the extrusion and thickness records.
 */
 
-bool 
-dimeExtrusionEntity::writeExtrusionData(dimeOutput * const file)
+bool
+DimeExtrusionEntity::writeExtrusionData(DimeOutput* const file)
 {
-  if (this->thickness != 0.0) {
-    file->writeGroupCode(39);
-    file->writeDouble(this->thickness);
-  }
-  if (this->extrusionDir != dimeVec3f(0,0,1)) {
-    file->writeGroupCode(210);
-    file->writeDouble(this->extrusionDir[0]);
-    file->writeGroupCode(220);
-    file->writeDouble(this->extrusionDir[1]);
-    file->writeGroupCode(230);
-    file->writeDouble(this->extrusionDir[2]);
-  }
-  return true;
+	if (this->thickness != 0.0)
+	{
+		file->writeGroupCode(39);
+		file->writeDouble(this->thickness);
+	}
+	if (this->extrusionDir != dimeVec3(0, 0, 1))
+	{
+		file->writeGroupCode(210);
+		file->writeDouble(this->extrusionDir[0]);
+		file->writeGroupCode(220);
+		file->writeDouble(this->extrusionDir[1]);
+		file->writeGroupCode(230);
+		file->writeDouble(this->extrusionDir[2]);
+	}
+	return true;
 }
 
 //!
 
-int 
-dimeExtrusionEntity::typeId() const
+DimeBase::TypeID
+DimeExtrusionEntity::typeId() const
 {
-  return dimeBase::dimeExtrusionEntityType;
+	return DimeBase::dimeExtrusionEntityType;
 }
 
 //!
 
-bool 
-dimeExtrusionEntity::isOfType(const int thetypeid) const
+bool
+DimeExtrusionEntity::isOfType(const int thetypeid) const
 {
-  return thetypeid == dimeExtrusionEntityType ||
-    dimeEntity::isOfType(thetypeid);
+	return thetypeid == dimeExtrusionEntityType ||
+		DimeEntity::isOfType(thetypeid);
 }
 
 //!
 
-int 
-dimeExtrusionEntity::countRecords() const
+int
+DimeExtrusionEntity::countRecords() const
 {
-  int cnt = 0;
-  if (this->thickness != 0.0) cnt++;
-  if (this->extrusionDir != dimeVec3f(0,0,1)) cnt+=3;
-  return cnt + dimeEntity::countRecords();
+	int cnt = 0;
+	if (this->thickness != 0.0) cnt++;
+	if (this->extrusionDir != dimeVec3(0, 0, 1)) cnt += 3;
+	return cnt + DimeEntity::countRecords();
 }
 
 /*!
   Copies all extrusion data from \a entity.
 */
 
-void 
-dimeExtrusionEntity::copyExtrusionData(const dimeExtrusionEntity * const entity)
+void
+DimeExtrusionEntity::copyExtrusionData(const DimeExtrusionEntity* const entity)
 {
-  this->extrusionDir = entity->extrusionDir;
-  this->thickness = entity->thickness;
+	this->extrusionDir = entity->extrusionDir;
+	this->thickness = entity->thickness;
 }
 
 //!
 
-bool 
-dimeExtrusionEntity::handleRecord(const int groupcode,
-				 const dimeParam &param,
-				 dimeMemHandler * const memhandler)
+bool
+DimeExtrusionEntity::handleRecord(const int groupcode,
+                                  const dimeParam& param)
 {
-  switch(groupcode) {
-  case 39:
-    this->thickness = param.double_data;
-    return true;
-  case 210:
-  case 220:
-  case 230:
-    this->extrusionDir[(groupcode-210)/10] = param.double_data;
-    return true;
-  }
-  return dimeEntity::handleRecord(groupcode, param, memhandler);
+	switch (groupcode)
+	{
+	case 39:
+		this->thickness = param.double_data;
+		return true;
+	case 210:
+	case 220:
+	case 230:
+		this->extrusionDir[(groupcode - 210) / 10] = param.double_data;
+		return true;
+	}
+	return DimeEntity::handleRecord(groupcode, param);
 }
 
 //!
 
-bool 
-dimeExtrusionEntity::getRecord(const int groupcode,
-			      dimeParam &param,
-			      const int index) const
+bool
+DimeExtrusionEntity::getRecord(const int groupcode,
+                               dimeParam& param,
+                               const int index) const
 {
-  switch(groupcode) {
-  case 39:
-    param.double_data = this->thickness; 
-    return true;
-  case 210:
-  case 220:
-  case 230:
-    param.double_data = this->extrusionDir[(groupcode-210)/10]; 
-    return true;
-  }
-  return dimeEntity::getRecord(groupcode, param, index);
+	switch (groupcode)
+	{
+	case 39:
+		param.double_data = this->thickness;
+		return true;
+	case 210:
+	case 220:
+	case 230:
+		param.double_data = this->extrusionDir[(groupcode - 210) / 10];
+		return true;
+	}
+	return DimeEntity::getRecord(groupcode, param, index);
 }
-

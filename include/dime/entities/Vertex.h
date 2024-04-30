@@ -37,93 +37,91 @@
 #include <dime/entities/Entity.h>
 #include <dime/util/Linear.h>
 
-class dimePolyline;
+class DimePolyline;
 
-class DIME_DLL_API dimeVertex : public dimeEntity
+class  DimeVertex : public DimeEntity
 {
-  friend class dimePolyline;
-  friend class dimeEntity;
-  
+	friend class DimePolyline;
+	friend class DimeEntity;
+
 public:
-  dimeVertex();
+	DimeVertex();
 
-  enum Flags {
-    CURVE_FITTING_VERTEX   = 0x01,
-    HAS_CURVE_FIT_TANGENT  = 0x02,
-    SPLINE_VERTEX          = 0x08,
-    FRAME_CONTROL_POINT    = 0x10,
-    POLYLINE_3D_VERTEX     = 0x20,
-    POLYGON_MESH_VERTEX    = 0x40,
-    POLYFACE_MESH_VERTEX   = 0x80
-  };
-  
-  virtual dimeEntity *copy(dimeModel * const model) const;
-  virtual bool getRecord(const int groupcode,
-			 dimeParam &param,
-			 const int index = 0) const;
-  virtual const char *getEntityName() const;
+	enum Flags
+	{
+		CURVE_FITTING_VERTEX = 0x01,
+		HAS_CURVE_FIT_TANGENT = 0x02,
+		SPLINE_VERTEX = 0x08,
+		FRAME_CONTROL_POINT = 0x10,
+		POLYLINE_3D_VERTEX = 0x20,
+		POLYGON_MESH_VERTEX = 0x40,
+		POLYFACE_MESH_VERTEX = 0x80
+	};
 
-  int16 getFlags() const;
-  void setFlags(const int16 flags);
+	DimeEntity* copy(DimeModel* model) const override;
+	bool getRecord(int groupcode,
+	               dimeParam& param,
+	               int index = 0) const override;
+	const char* getEntityName() const override;
 
-  void setCoords(const dimeVec3f &v);
-  const dimeVec3f &getCoords() const;
-  
-  int numIndices() const;
-  int getIndex(const int idx) const;
-  void setIndex(const int idx, const int val);
+	int16_t getFlags() const;
+	void setFlags(int16_t flags);
 
-  virtual bool write(dimeOutput * const out);
-  virtual int typeId() const;
-  virtual int countRecords() const;
+	void setCoords(const dimeVec3& v);
+	const dimeVec3& getCoords() const;
+
+	int numIndices() const;
+	int getIndex(int idx) const;
+	void setIndex(int idx, int val);
+
+	bool write(DimeOutput* out) override;
+	TypeID typeId() const override;
+	int countRecords() const override;
 
 protected:
-  virtual bool handleRecord(const int groupcode, 
-			    const dimeParam &param,
-                            dimeMemHandler * const memhandler);
-  
-private:
-  int16 flags;
-#ifdef DIME_FIXBIG
-  int32 indices[4];
-#else
-  int16 indices[4];
-#endif
-  dimeVec3f coords;
-  dimePolyline *polyline; // link back to polyline...
+	bool handleRecord(int groupcode,
+	                  const dimeParam& param) override;
 
+private:
+	int16_t flags;
+#ifdef DIME_FIXBIG
+  int32_t indices[4];
+#else
+	int16_t indices[4];
+#endif
+	dimeVec3 coords;
+	DimePolyline* polyline; // link back to polyline...
 }; // class dimeVertex
 
-inline void 
-dimeVertex::setCoords(const dimeVec3f &v)
+inline void
+DimeVertex::setCoords(const dimeVec3& v)
 {
-  this->coords = v;
+	this->coords = v;
 }
 
-inline const dimeVec3f &
-dimeVertex::getCoords() const
+inline const dimeVec3&
+DimeVertex::getCoords() const
 {
-  return this->coords;
+	return this->coords;
 }
 
-inline void 
-dimeVertex::setIndex(const int idx, const int val)
+inline void
+DimeVertex::setIndex(const int idx, const int val)
 {
-  assert(idx >= 0 && idx < 4);
-  this->indices[idx] = val;
+	assert(idx >= 0 && idx < 4);
+	this->indices[idx] = val;
 }
 
-inline int16 
-dimeVertex::getFlags() const
+inline int16_t
+DimeVertex::getFlags() const
 {
-  return this->flags;
+	return this->flags;
 }
 
-inline void 
-dimeVertex::setFlags(const int16 flags)
+inline void
+DimeVertex::setFlags(const int16_t flags)
 {
-  this->flags = flags;
+	this->flags = flags;
 }
 
 #endif // ! DIME_VERTEX_H
-

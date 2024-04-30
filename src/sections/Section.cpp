@@ -31,7 +31,7 @@
 \**************************************************************************/
 
 /*!
-  \class dimeSection dime/sections/Section.h
+  \class DimeSection dime/sections/Section.h
   \brief The dimeSection class is the superclass for all \e section classes.
   
   Currently supported sections are:
@@ -45,7 +45,7 @@
 
 #include <dime/sections/Section.h>
 #include <string.h>
-#include <dime/util/MemHandler.h>
+
 #include <dime/sections/UnknownSection.h>
 #include <dime/sections/EntitiesSection.h>
 #include <dime/sections/HeaderSection.h>
@@ -63,16 +63,15 @@
   Constructor
 */
 
-dimeSection::dimeSection(dimeMemHandler * const memhandler)
-  : memHandler( memhandler )
+DimeSection::DimeSection()
 {
 }
- 
+
 /*!
   Empty virtual destructor.
 */
 
-dimeSection::~dimeSection()
+DimeSection::~DimeSection()
 {
 }
 
@@ -81,53 +80,27 @@ dimeSection::~dimeSection()
   from a text string.
 */
 
-dimeSection *
-dimeSection::createSection(const char * const sectionname,
-			  dimeMemHandler *memhandler)
+DimeSection*
+DimeSection::createSection(const char* const sectionname)
 {
-  if (!strcmp(sectionname, "HEADER"))
-    return new dimeHeaderSection(memhandler);
-#if 0 // passthrough for the moment. I can't imaging anybody is using them 
-  if (!strcmp(sectionname, "CLASSES"))
-    return new dimeClassesSection(memhandler);
-  if (!strcmp(sectionname, "OBJECTS"))
-    return new dimeObjectsSection(memhandler);
-#endif
-  if (!strcmp(sectionname, "TABLES"))
-    return new dimeTablesSection(memhandler);
-  if (!strcmp(sectionname, "BLOCKS"))
-    return new dimeBlocksSection(memhandler);
-  if (!strcmp(sectionname, "ENTITIES"))
-    return new dimeEntitiesSection(memhandler);
-  return new dimeUnknownSection(sectionname, memhandler);
+	if (!strcmp(sectionname, "HEADER"))
+		return new DimeHeaderSection;
+	if (!strcmp(sectionname, "CLASSES"))
+		return new DimeClassesSection;
+	if (!strcmp(sectionname, "OBJECTS"))
+		return new DimeObjectsSection;
+	if (!strcmp(sectionname, "TABLES"))
+		return new DimeTablesSection;
+	if (!strcmp(sectionname, "BLOCKS"))
+		return new DimeBlocksSection;
+	if (!strcmp(sectionname, "ENTITIES"))
+		return new DimeEntitiesSection;
+	return new dimeUnknownSection(sectionname);
 }
 
-//!
-
-bool 
-dimeSection::isOfType(const int thetypeid) const
+bool
+DimeSection::isOfType(const int thetypeid) const
 {
-  return thetypeid == dimeSectionType ||
-    dimeBase::isOfType(thetypeid);
+	return thetypeid == dimeSectionType ||
+		DimeBase::isOfType(thetypeid);
 }
-
-/*!
-  \fn const char * dimeSection::getSectionName() const = 0
-*/
-
-/*!
-  \fn dimeSection * dimeSection::copy(dimeModel * const model) const = 0
-*/
-
-/*!
-  \fn bool dimeSection::read(dimeInput * const file) = 0
-*/
-
-/*!
-  \fn bool dimeSection::write(dimeOutput * const file) = 0
-*/
-
-/*!
-  \fn int dimeSection::typeId() const = 0
-*/
-

@@ -36,73 +36,70 @@
 #include <dime/tables/TableEntry.h>
 #include <dime/util/Linear.h>
 
-class DIME_DLL_API dimeUCSTable : public dimeTableEntry 
+class  DimeUCSTable : public DimeTableEntry
 {
 public:
-  dimeUCSTable();
+	DimeUCSTable();
 
-  virtual dimeTableEntry *copy(dimeModel * const model) const;
-  virtual const char *getTableName() const;
+	DimeTableEntry* copy(DimeModel* model) const override;
+	const char* getTableName() const override;
 
-  const dimeVec3f &getOrigin() const;
-  const dimeVec3f &getXaxis() const;
-  const dimeVec3f &getYaxis() const;
-  
-  void setOrigin(const dimeVec3f &v);
-  void setXaxis(const dimeVec3f &v);
-  void setYaxis(const dimeVec3f &v);
-  
-  virtual bool write(dimeOutput * const out);
-  virtual int typeId() const;
-  virtual int countRecords() const;
+	const dimeVec3& getOrigin() const;
+	const dimeVec3& getXaxis() const;
+	const dimeVec3& getYaxis() const;
+
+	void setOrigin(const dimeVec3& v);
+	void setXaxis(const dimeVec3& v);
+	void setYaxis(const dimeVec3& v);
+
+	bool write(DimeOutput* out) override;
+	TypeID typeId() const override;
+	int countRecords() const override;
 
 protected:
-  virtual bool handleRecord(const int groupcodes,
-			    const dimeParam &param,
-			    dimeMemHandler * const memhandler);
-  
-private:
-  dimeVec3f origin;
-  dimeVec3f xaxis;
-  dimeVec3f yaxis;
+	bool handleRecord(int groupcodes,
+	                  const dimeParam& param) override;
 
+private:
+	dimeVec3 origin;
+	dimeVec3 xaxis;
+	dimeVec3 yaxis;
 }; // class dimeUCSTable
 
-inline const dimeVec3f &
-dimeUCSTable::getOrigin() const
+inline const dimeVec3&
+DimeUCSTable::getOrigin() const
 {
-  return this->origin;
+	return this->origin;
 }
 
-inline const dimeVec3f &
-dimeUCSTable::getXaxis() const
+inline const dimeVec3&
+DimeUCSTable::getXaxis() const
 {
-  return this->xaxis;
+	return this->xaxis;
 }
 
-inline const dimeVec3f &
-dimeUCSTable::getYaxis() const
+inline const dimeVec3&
+DimeUCSTable::getYaxis() const
 {
-  return this->yaxis;
+	return this->yaxis;
 }
 
-inline void 
-dimeUCSTable::setOrigin(const dimeVec3f &v)
+inline void
+DimeUCSTable::setOrigin(const dimeVec3& v)
 {
-  this->origin = v;
+	this->origin = v;
 }
 
-inline void 
-dimeUCSTable::setXaxis(const dimeVec3f &v)
+inline void
+DimeUCSTable::setXaxis(const dimeVec3& v)
 {
-  this->origin = v;
+	this->origin = v;
 }
 
-inline void 
-dimeUCSTable::setYaxis(const dimeVec3f &v)
+inline void
+DimeUCSTable::setYaxis(const dimeVec3& v)
 {
-  this->origin = v;
+	this->origin = v;
 }
 
 #endif // ! DIME_UCSTABLE_H
-

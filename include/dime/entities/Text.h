@@ -32,67 +32,64 @@
 
 #ifndef DIME_TEXT_H
 #define DIME_TEXT_H
-  
+
 #include <dime/Basic.h>
 #include <dime/entities/ExtrusionEntity.h>
 
-class DIME_DLL_API dimeText : public dimeExtrusionEntity
+class  DimeText : public DimeExtrusionEntity
 {
 public:
-  dimeText();
-//  dimeText(const char* s);
+	DimeText();
+	//  dimeText(const char* s);
 
-  void setOrigin(const dimeVec3f &o);
-  void getOrigin(dimeVec3f &o) const;
-  void setSecond(const dimeVec3f &s);
-  bool getSecond(dimeVec3f &s) const;
-  void setHeight(const dxfdouble h);
-  dxfdouble getHeight() const;
-  void setWidth(const dxfdouble w);
-  dxfdouble getWidth() const;
-  void setRotation(const dxfdouble a);
-  dxfdouble getRotation() const;
-  void setHJust(const int32 h);
-  int32 getHJust() const;
-  void setVJust(const int32 v);
-  int32 getVJust() const;
-  void setTextString(const char* s);
-  char* getTextString() const;
-  
-  virtual bool getRecord(const int groupcode,
-			 dimeParam &param,
-			 const int index = 0) const;
-  virtual const char *getEntityName() const;
+	void setOrigin(const dimeVec3& o);
+	dimeVec3 getOrigin() const;
+	void setSecond(const dimeVec3& s);
+	bool getSecond(dimeVec3& s) const;
+	void setHeight(dxfdouble h);
+	dxfdouble getHeight() const;
+	void setWidth(dxfdouble w);
+	dxfdouble getWidth() const;
+	void setRotation(dxfdouble a);
+	dxfdouble getRotation() const;
+	void setHJust(int32_t h);
+	int32_t getHJust() const;
+	void setVJust(int32_t v);
+	int32_t getVJust() const;
+	void setTextString(const char* s);
+	char* getTextString() const;
 
-  virtual dimeEntity *copy(dimeModel * const model) const;
-  
-  virtual void print() const;
-  virtual bool write(dimeOutput * const out);
-  virtual int typeId() const;
-  virtual int countRecords() const;
-  
-  virtual GeometryType extractGeometry(dimeArray <dimeVec3f> &verts,
-				       dimeArray <int> &indices,
-				       dimeVec3f &extrusionDir,
-				       dxfdouble &thickness);
-  
+	bool getRecord(int groupcode,
+	               dimeParam& param,
+	               int index = 0) const override;
+	const char* getEntityName() const override;
+
+	DimeEntity* copy(DimeModel* model) const override;
+
+	bool write(DimeOutput* out) override;
+	TypeID typeId() const override;
+	int countRecords() const override;
+
+	GeometryType extractGeometry(dimeArray<dimeVec3>& verts,
+	                             dimeArray<int>& indices,
+	                             dimeVec3& extrusionDir,
+	                             dxfdouble& thickness) override;
+
 protected:
-  virtual bool handleRecord(const int groupcode, 
-			    const dimeParam &param,
-                            dimeMemHandler * const memhandler);
-    
-private:
-  dimeVec3f origin;
-  dimeVec3f second;
-  bool haveSecond;
-  dxfdouble height;
-  dxfdouble width;
-  dxfdouble rotation;
-  dxfdouble wScale;
-  int32 hJust;
-  int32 vJust;
-  char* text;
+	bool handleRecord(int groupcode,
+	                  const dimeParam& param) override;
 
+private:
+	dimeVec3 origin;
+	dimeVec3 second;
+	bool haveSecond;
+	dxfdouble height;
+	dxfdouble width;
+	dxfdouble rotation;
+	dxfdouble wScale;
+	int32_t hJust;
+	int32_t vJust;
+	char* text;
 }; // class dimeText
 
 //
@@ -100,107 +97,105 @@ private:
 //
 
 
-inline void 
-dimeText::setOrigin(const dimeVec3f &o)
+inline void
+DimeText::setOrigin(const dimeVec3& o)
 {
-  this->origin = o;
+	this->origin = o;
 }
 
-inline void 
-dimeText::getOrigin(dimeVec3f &o) const
+inline dimeVec3
+DimeText::getOrigin() const
 {
-  o = this->origin;
+	return this->origin;
 }
 
-inline void 
-dimeText::setSecond(const dimeVec3f &s)
+inline void
+DimeText::setSecond(const dimeVec3& s)
 {
-  this->second = s;
+	this->second = s;
 }
 
-inline bool 
-dimeText::getSecond(dimeVec3f &s) const
+inline bool
+DimeText::getSecond(dimeVec3& s) const
 {
-  if( haveSecond ) {
-    s = this->second;
-    return true;
-  }
-  else {
-    return false;
-  }
+	if (haveSecond)
+	{
+		s = this->second;
+		return true;
+	}
+	return false;
 }
 
-inline void 
-dimeText::setHeight(const dxfdouble h)
+inline void
+DimeText::setHeight(const dxfdouble h)
 {
-  this->height = h;
+	this->height = h;
 }
 
-inline dxfdouble 
-dimeText::getHeight() const
+inline dxfdouble
+DimeText::getHeight() const
 {
-  return this->height;
+	return this->height;
 }
 
-inline void 
-dimeText::setWidth(const dxfdouble w)
+inline void
+DimeText::setWidth(const dxfdouble w)
 {
-  this->width = w;
+	this->width = w;
 }
 
-inline dxfdouble 
-dimeText::getWidth() const
+inline dxfdouble
+DimeText::getWidth() const
 {
-  return this->width;
+	return this->width;
 }
 
-inline void 
-dimeText::setRotation(const dxfdouble a)
+inline void
+DimeText::setRotation(const dxfdouble a)
 {
-  this->rotation = a;
+	this->rotation = a;
 }
 
-inline dxfdouble 
-dimeText::getRotation() const
+inline dxfdouble
+DimeText::getRotation() const
 {
-  return this->rotation;
+	return this->rotation;
 }
 
-inline void 
-dimeText::setHJust(const int32 h)
+inline void
+DimeText::setHJust(const int32_t h)
 {
-  this->hJust = h;
+	this->hJust = h;
 }
 
-inline int32 
-dimeText::getHJust() const
+inline int32_t
+DimeText::getHJust() const
 {
-  return this->hJust;
+	return this->hJust;
 }
 
-inline void 
-dimeText::setVJust(const int32 v)
+inline void
+DimeText::setVJust(const int32_t v)
 {
-  this->vJust = v;
+	this->vJust = v;
 }
 
-inline int32
-dimeText::getVJust() const
+inline int32_t
+DimeText::getVJust() const
 {
-  return this->vJust;
+	return this->vJust;
 }
 
 //inline void 
 //dimeText::setTextString(const char* s)
 //{
-  //this->text = s;
+//this->text = s;
 //}
 
-inline char* 
-dimeText::getTextString() const
+inline char*
+DimeText::getTextString() const
 {
-  return this->text;
+	return this->text;
 }
- 
-#endif // ! DIME_TEXT_H
 
+#endif // ! DIME_TEXT_H

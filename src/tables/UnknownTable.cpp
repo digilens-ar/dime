@@ -31,14 +31,14 @@
 \**************************************************************************/
 
 /*!
-  \class dimeUnknownTable dime/tables/UnknownTable.h
+  \class DimeUnknownTable dime/tables/UnknownTable.h
   \brief The dimeUnknownTable class reads and writes undefined tables.
 */
 
 #include <dime/tables/UnknownTable.h>
 #include <dime/Input.h>
 #include <dime/Output.h>
-#include <dime/util/MemHandler.h>
+
 #include <dime/Model.h>
 #include <dime/records/Record.h>
 #include <string.h>
@@ -47,68 +47,68 @@
   Constructor.
 */
 
-dimeUnknownTable::dimeUnknownTable(const char * const name,
-                                   dimeMemHandler * const memhandler)
+DimeUnknownTable::DimeUnknownTable(const char* const name)
 {
-  DXF_STRCPY(memhandler, this->tableName, name);
+	DXF_STRCPY(this->tableName, name);
 }
 
 /*!
   Destructor. Should only be called if no memory handler is used.
 */
 
-dimeUnknownTable::~dimeUnknownTable()
+DimeUnknownTable::~DimeUnknownTable()
 {
-  delete [] this->tableName;
+	delete [] this->tableName;
 }
 
 //!
 
-dimeTableEntry *
-dimeUnknownTable::copy(dimeModel * const model) const
+DimeTableEntry*
+DimeUnknownTable::copy(DimeModel* const model) const
 {
-  dimeMemHandler *memh = model->getMemHandler();
-  dimeUnknownTable *u = new(memh) dimeUnknownTable(this->tableName, memh);
-  if (!this->copyRecords(u, model)) {
-    // check if allocated on heap.
-    if (!memh) delete u;
-    u = NULL;
-  }
-  return u;
+	auto u = new DimeUnknownTable(this->tableName);
+	if (!this->copyRecords(u, model))
+	{
+		// check if allocated on heap.
+		delete u;
+		u = nullptr;
+	}
+	return u;
 }
 
 //!
 
 bool
-dimeUnknownTable::write(dimeOutput * const file)
+DimeUnknownTable::write(DimeOutput* const file)
 {
-  bool ret = dimeTableEntry::preWrite(file);
-  if (ret) {
-    ret = dimeTableEntry::write(file);
-  }
-  return ret;
+	bool ret = DimeTableEntry::preWrite(file);
+	if (ret)
+	{
+		ret = DimeTableEntry::write(file);
+	}
+	return ret;
+}
+
+//!
+
+DimeBase::TypeID
+DimeUnknownTable::typeId() const
+{
+	return DimeBase::dimeUnknownTableType;
 }
 
 //!
 
 int
-dimeUnknownTable::typeId() const
+DimeUnknownTable::countRecords() const
 {
-  return dimeBase::dimeUnknownTableType;
+	return 1 + DimeTableEntry::countRecords();
 }
 
 //!
 
-int
-dimeUnknownTable::countRecords() const
+const char*
+DimeUnknownTable::getTableName() const
 {
-  return 1 + dimeTableEntry::countRecords();
-}
-
-//!
-
-const char *
-dimeUnknownTable::getTableName() const
-{
-  return this->tableName;
+	return this->tableName;
 }

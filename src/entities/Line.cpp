@@ -31,14 +31,14 @@
 \**************************************************************************/
 
 /*!
-  \class dimeLine dime/entities/Line.h
+  \class DimeLine dime/entities/Line.h
   \brief The dimeLine class handles a LINE \e entity.
 */
 
 #include <dime/entities/Line.h>
 #include <dime/records/Record.h>
 #include <dime/Output.h>
-#include <dime/util/MemHandler.h>
+
 #include <dime/Model.h>
 
 static char entityName[] = "LINE";
@@ -47,147 +47,136 @@ static char entityName[] = "LINE";
   Constructor.
 */
 
-dimeLine::dimeLine() 
+DimeLine::DimeLine()
 {
-  coords[0].setValue(0,0,0);
-  coords[1].setValue(0,0,0);
+	coords[0].setValue(0, 0, 0);
+	coords[1].setValue(0, 0, 0);
 }
 
 //!
 
-dimeEntity *
-dimeLine::copy(dimeModel * const model) const
+DimeEntity*
+DimeLine::copy(DimeModel* const model) const
 {
-  dimeLine *l = new(model->getMemHandler()) dimeLine;
-  if (!l) return NULL;
+	auto l = new DimeLine;
+	if (!l) return nullptr;
 
-  for (int i = 0; i < 2; i++)
-    l->coords[i] = this->coords[i];
-  
-  if (!this->copyRecords(l, model)) {
-    // check if allocated on heap.
-    if (!model->getMemHandler()) delete l;
-    l = NULL;
-  }
-  else {
-    l->copyExtrusionData(this);
-  }
-  return l;  
+	for (int i = 0; i < 2; i++)
+		l->coords[i] = this->coords[i];
+
+	if (!this->copyRecords(l, model))
+	{
+		// check if allocated on heap.
+		delete l;
+		l = nullptr;
+	}
+	else
+	{
+		l->copyExtrusionData(this);
+	}
+	return l;
 }
 
 /*!
   Writes a \e Line entity.  
 */
 
-bool 
-dimeLine::write(dimeOutput * const file)
+bool
+DimeLine::write(DimeOutput* const file)
 {
-  this->preWrite(file);
+	this->preWrite(file);
 
-  for (int i = 0; i < 2; i++) {
-    for (int j = 0; j < 3; j++) {
-      file->writeGroupCode((j+1)*10+i);
-      file->writeDouble(this->coords[i][j]);
-    }
-  }
-  return this->writeExtrusionData(file) && 
-    dimeEntity::write(file);
+	for (int i = 0; i < 2; i++)
+	{
+		for (int j = 0; j < 3; j++)
+		{
+			file->writeGroupCode((j + 1) * 10 + i);
+			file->writeDouble(this->coords[i][j]);
+		}
+	}
+	return this->writeExtrusionData(file) &&
+		DimeEntity::write(file);
 }
 
 //!
 
-int 
-dimeLine::typeId() const
+DimeBase::TypeID
+DimeLine::typeId() const
 {
-  return dimeBase::dimeLineType;
+	return DimeBase::dimeLineType;
 }
 
 /*!
   Handles the callback from dimeEntity::readRecords().
 */
 
-bool 
-dimeLine::handleRecord(const int groupcode,
-		      const dimeParam &param,
-		      dimeMemHandler * const memhandler)
+bool
+DimeLine::handleRecord(const int groupcode,
+                       const dimeParam& param)
 {
-  switch(groupcode) {
-  case 10:
-  case 20:
-  case 30:
-  case 11:
-  case 21:
-  case 31:
-    this->coords[groupcode % 10][groupcode / 10 - 1] = param.double_data;
-    return true;
-  }
-  return dimeExtrusionEntity::handleRecord(groupcode, param, memhandler);
+	switch (groupcode)
+	{
+	case 10:
+	case 20:
+	case 30:
+	case 11:
+	case 21:
+	case 31:
+		this->coords[groupcode % 10][groupcode / 10 - 1] = param.double_data;
+		return true;
+	}
+	return DimeExtrusionEntity::handleRecord(groupcode, param);
 }
 
 //!
 
-const char *
-dimeLine::getEntityName() const
+const char*
+DimeLine::getEntityName() const
 {
-  return entityName;
+	return entityName;
 }
 
 //!
 
-bool 
-dimeLine::getRecord(const int groupcode,
-		   dimeParam &param,
-		   const int index) const
+bool
+DimeLine::getRecord(const int groupcode,
+                    dimeParam& param,
+                    const int index) const
 {
-  switch(groupcode) {
-  case 10:
-  case 20:
-  case 30:
-  case 11:
-  case 21:
-  case 31:
-    param.double_data = this->coords[groupcode % 10][groupcode / 10 - 1];
-    return true;
-  }
-  return dimeExtrusionEntity::getRecord(groupcode, param, index);
+	switch (groupcode)
+	{
+	case 10:
+	case 20:
+	case 30:
+	case 11:
+	case 21:
+	case 31:
+		param.double_data = this->coords[groupcode % 10][groupcode / 10 - 1];
+		return true;
+	}
+	return DimeExtrusionEntity::getRecord(groupcode, param, index);
 }
 
-//!
-
-void
-dimeLine::print() const
+DimeEntity::GeometryType
+DimeLine::extractGeometry(dimeArray<dimeVec3>& verts,
+                          dimeArray<int>&/*indices*/,
+                          dimeVec3& extrusionDir,
+                          dxfdouble& thickness)
 {
-  fprintf(stderr,"LINE:\n");
-  for (int i = 0; i < 2; i++) { 
-    fprintf(stderr,"coord: %f %f %f\n", coords[i][0], 
-	    coords[i][1], coords[i][2]); 
-    
-  } 
-}
+	thickness = this->thickness;
+	extrusionDir = this->extrusionDir;
 
-//!
-
-dimeEntity::GeometryType 
-dimeLine::extractGeometry(dimeArray <dimeVec3f> &verts,
-			 dimeArray <int> &/*indices*/,
-			 dimeVec3f &extrusionDir,
-			 dxfdouble &thickness)
-{
-  thickness = this->thickness;
-  extrusionDir = this->extrusionDir;
-
-  verts.append(coords[0]);
-  verts.append(coords[1]);
-  return dimeEntity::LINES;
+	verts.append(coords[0]);
+	verts.append(coords[1]);
+	return DimeEntity::LINES;
 }
 
 //!
 
 int
-dimeLine::countRecords() const
+DimeLine::countRecords() const
 {
-  int cnt = 1; // header
-  cnt += 6; // coordinates
-  return cnt + dimeExtrusionEntity::countRecords();
+	int cnt = 1; // header
+	cnt += 6; // coordinates
+	return cnt + DimeExtrusionEntity::countRecords();
 }
-

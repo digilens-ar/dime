@@ -31,7 +31,7 @@
 \**************************************************************************/
 
 /*!
-  \class dimeModel dime/Model.h
+  \class DimeModel dime/Model.h
   \brief The dimeModel class organizes a model.
 
   The constructor accepts a boolean value which specifies whether or not a 
@@ -60,24 +60,24 @@
   This method returns a string saying which version of DIME is used.
 */
 
-const char *
-dimeModel::getVersionString()
+const char*
+DimeModel::getVersionString()
 {
-  static char versionstring[] = "DIME v0.9";
-  return versionstring;
+	static char versionstring[] = "DIME v0.9";
+	return versionstring;
 }
 
-void 
-dimeModel::getVersion(int &major, int &minor)
+void
+DimeModel::getVersion(int& major, int& minor)
 {
-  major = 0;
-  minor = 9;
+	major = 0;
+	minor = 9;
 }
 
 #include <dime/Input.h>
 #include <dime/Output.h>
 #include <dime/util/Dict.h>
-#include <dime/util/MemHandler.h>
+
 #include <dime/State.h>
 #include <dime/sections/Section.h>
 #include <dime/sections/EntitiesSection.h>
@@ -93,63 +93,58 @@ dimeModel::getVersion(int &major, int &minor)
 #define EOFID     "EOF"
 
 /*!
-  Constructor. If \a usememhandler is \e TRUE, the dimeMemHandler will
-  be used to allocate entities and records.
+  Constructor.
 */
-dimeModel::dimeModel(const bool usememhandler)
-  : refDict( NULL ), 
-  layerDict( NULL ), 
-  memoryHandler( NULL ), 
-  largestHandle(0),
-  usememhandler(usememhandler)
+DimeModel::DimeModel()
+	: refDict(nullptr),
+	  layerDict(nullptr),
+	  largestHandle(0)
 {
-  this->init();
+	this->init();
 }
 
 /*!
   Destructor.
 */
 
-dimeModel::~dimeModel()
+DimeModel::~DimeModel()
 {
-  int i;
-  delete this->refDict;
-  delete this->layerDict;
+	int i;
+	delete this->refDict;
+	delete this->layerDict;
 
-  for (i = 0; i < this->layers.count(); i++) 
-    delete this->layers[i];
-  for (i = 0; i < this->sections.count(); i++) 
-    delete this->sections[i];
-  
-  delete this->memoryHandler; // free memory :)
+	for (i = 0; i < this->layers.count(); i++)
+		delete this->layers[i];
+	for (i = 0; i < this->sections.count(); i++)
+		delete this->sections[i];
 }
 
 /*!
   Returns a copy of the model.
 */
 
-dimeModel *
-dimeModel::copy() const
+DimeModel*
+DimeModel::copy() const
 {
-  dimeModel *newmodel = new dimeModel(this->usememhandler);
-  
-  if (!newmodel || !newmodel->init()) return NULL;
+	auto newmodel = new DimeModel();
 
-  newmodel->largestHandle = this->largestHandle;
-  int i;
-  int n = this->sections.count();
+	if (!newmodel || !newmodel->init()) return nullptr;
 
-  // refDict and layerDict will be updated during the copy operations
-  for (i = 0; i < n; i++)
-    newmodel->sections.append(sections[i]->copy(newmodel));
-  
-  // fix forward references
-  dimeBlocksSection *bs = (dimeBlocksSection*) newmodel->findSection("BLOCKS");
-  dimeEntitiesSection *es =
-    (dimeEntitiesSection*) newmodel->findSection("ENTITIES");
-  if (bs) bs->fixReferences(newmodel);
-  if (es) es->fixReferences(newmodel);
-  return newmodel;
+	newmodel->largestHandle = this->largestHandle;
+	int i;
+	int n = this->sections.count();
+
+	// refDict and layerDict will be updated during the copy operations
+	for (i = 0; i < n; i++)
+		newmodel->sections.append(sections[i]->copy(newmodel));
+
+	// fix forward references
+	auto bs = static_cast<DimeBlocksSection*>(newmodel->findSection("BLOCKS"));
+	auto es =
+		static_cast<DimeEntitiesSection*>(newmodel->findSection("ENTITIES"));
+	if (bs) bs->fixReferences(newmodel);
+	if (es) es->fixReferences(newmodel);
+	return newmodel;
 }
 
 /*!  
@@ -161,96 +156,100 @@ dimeModel::copy() const
   new data structures for the new model.  
 */
 bool
-dimeModel::init()
+DimeModel::init()
 {
-  this->sections.setCount(0);
-  this->layers.setCount(0);
-  delete this->refDict;
-  delete this->layerDict;
-  delete this->memoryHandler;
+	this->sections.setCount(0);
+	this->layers.setCount(0);
+	delete this->refDict;
+	delete this->layerDict;
 
-  // set all to NULL first to support exceptions.
-  this->refDict = NULL;
-  this->layerDict = NULL;
-  this->memoryHandler = NULL;
-  
-  this->refDict = new dimeDict;
-  this->layerDict = new dimeDict(101); // relatively small
-  if (this->usememhandler) this->memoryHandler = new dimeMemHandler;
-  
-  return true;
+	// set all to NULL first to support exceptions.
+	this->refDict = nullptr;
+	this->layerDict = nullptr;
+
+	this->refDict = new dimeDict;
+	this->layerDict = new dimeDict(101); // relatively small
+
+	return true;
 }
 
 /*!
   Reads the model file into the internal structures.
 */
 
-bool 
-dimeModel::read(dimeInput * const in)
+bool
+DimeModel::read(DimeInput* const in)
 {
-  in->model = this; // _very_ important
+	in->model = this; // _very_ important
 
-  this->init();
-  
-  int32 groupcode;
-  const char *string;
-  bool ok = true; 
-  dimeSection *section;
-  
-  while (true) {
-    ok = false;
-    if (!in->readGroupCode(groupcode)) break;
-    if (groupcode != 0 && groupcode != 999) break;
-    string = in->readString();
-    if (string == NULL) break;
-    
-    if (groupcode == 999) {
-      ok = true;
-      dimeParam param;
-      param.string_data = string;
-      this->headerComments.append(dimeRecord::createRecord(groupcode, 
-							   param,
-							   memoryHandler));
-      continue;
-    }
-    if (!strcmp(string, SECTIONID)) {
-      ok = in->readGroupCode(groupcode);
-      string = in->readString();
-      ok = ok && string != NULL && groupcode == 2;
-      if (!ok) break;
-      section = dimeSection::createSection(string, in->getMemHandler());
-      ok = section != NULL && section->read(in);
-      if (!ok) break;
-      this->sections.append(section);
-    }
-    else if (!strcmp(string, EOFID)) {
-      ok = true;
-      break;
-    }
-    else break; // something unexpected has happened
-  }	
-  if (!ok) {
-    if (in->aborted) {
+	this->init();
+
+	int32_t groupcode;
+	const char* string;
+	bool ok = true;
+	DimeSection* section;
+
+	while (true)
+	{
+		ok = false;
+		if (!in->readGroupCode(groupcode)) break;
+		if (groupcode != 0 && groupcode != 999) break;
+		string = in->readString();
+		if (string == nullptr) break;
+
+		if (groupcode == 999)
+		{
+			ok = true;
+			dimeParam param;
+			param.string_data = string;
+			this->headerComments.append(DimeRecord::createRecord(groupcode,
+			                                                     param));
+			continue;
+		}
+		if (!strcmp(string, SECTIONID))
+		{
+			ok = in->readGroupCode(groupcode);
+			string = in->readString();
+			ok = ok && string != nullptr && groupcode == 2;
+			if (!ok) break;
+			section = DimeSection::createSection(string);
+			ok = section != nullptr && section->read(in);
+			if (!ok) break;
+			this->sections.append(section);
+		}
+		else if (!strcmp(string, EOFID))
+		{
+			ok = true;
+			break;
+		}
+		else break; // something unexpected has happened
+	}
+	if (!ok)
+	{
+		if (in->aborted)
+		{
 #ifndef NDEBUG
-      fprintf(stderr,"DXF read aborted by user.\n");
+			fprintf(stderr, "DXF read aborted by user.\n");
 #endif
-    }
-    else {
+		}
+		else
+		{
 #ifndef NDEBUG
-      fprintf( stderr, "DXF loading failed at line: %d\n", in->getFilePosition());
+			fprintf(stderr, "DXF loading failed at line: %d\n", in->getFilePosition());
 #endif
-    }
-  }
-  else {
-    dimeBlocksSection *bs = (dimeBlocksSection*)this->findSection("BLOCKS");
-    dimeEntitiesSection *es = (dimeEntitiesSection*)this->findSection("ENTITIES");
-    if (bs) bs->fixReferences(this);
-    if (es) es->fixReferences(this);
-//#ifndef NDEBUG
-//    fprintf(stderr,"dimeModel::largestHandle: %d\n", this->largestHandle);
-//#endif
-  }
-  return ok;
+		}
+	}
+	else
+	{
+		auto bs = static_cast<DimeBlocksSection*>(this->findSection("BLOCKS"));
+		auto es = static_cast<DimeEntitiesSection*>(this->findSection("ENTITIES"));
+		if (bs) bs->fixReferences(this);
+		if (es) es->fixReferences(this);
+		//#ifndef NDEBUG
+		//    fprintf(stderr,"dimeModel::largestHandle: %d\n", this->largestHandle);
+		//#endif
+	}
+	return ok;
 }
 
 /*!
@@ -258,42 +257,46 @@ dimeModel::read(dimeInput * const in)
   hopefully DWG will be supported soon.
 */
 
-bool 
-dimeModel::write(dimeOutput * const out)
+bool
+DimeModel::write(DimeOutput* const out)
 {
-  if (largestHandle > 0) {
-    dimeHeaderSection *hs = (dimeHeaderSection*)
-      this->findSection("HEADER");
-    
-    if (hs) {
-      dimeParam param;
-      int groupcode;
-      if (hs->getVariable("$HANDSEED", &groupcode, &param, 1) == 1) {
-        char buf[512];
-        this->getUniqueHandle(buf, 512);
-        this->largestHandle--; // ok to use this handle next time
-        param.string_data = buf;
-        hs->setVariable("$HANDSEED", &groupcode, &param, 1,
-                        this->getMemHandler());
-      }
-    }
-  }
-  (void)out->writeHeader();
-  int i, n = this->headerComments.count();
-  for (i = 0; i < n; i++) {
-    this->headerComments[i]->write(out);
-  }
+	if (largestHandle > 0)
+	{
+		auto hs = static_cast<DimeHeaderSection*>(this->findSection("HEADER"));
 
-  n = sections.count();
-  for (i = 0; i < n; i++) {
-    out->writeGroupCode(0);
-    out->writeString(SECTIONID);
-    if (!sections[i]->write(out)) break;
-  }
-  if (i == n) {
-    return out->writeGroupCode(0) && out->writeString(EOFID);
-  }
-  return false;
+		if (hs)
+		{
+			dimeParam param;
+			int groupcode;
+			if (hs->getVariable("$HANDSEED", &groupcode, &param, 1) == 1)
+			{
+				char buf[512];
+				this->getUniqueHandle(buf, 512);
+				this->largestHandle--; // ok to use this handle next time
+				param.string_data = buf;
+				hs->setVariable("$HANDSEED", &groupcode, &param, 1);
+			}
+		}
+	}
+	(void)out->writeHeader();
+	int i, n = this->headerComments.count();
+	for (i = 0; i < n; i++)
+	{
+		this->headerComments[i]->write(out);
+	}
+
+	n = sections.count();
+	for (i = 0; i < n; i++)
+	{
+		out->writeGroupCode(0);
+		out->writeString(SECTIONID);
+		if (!sections[i]->write(out)) break;
+	}
+	if (i == n)
+	{
+		return out->writeGroupCode(0) && out->writeString(EOFID);
+	}
+	return false;
 }
 
 /*!
@@ -302,35 +305,35 @@ dimeModel::write(dimeOutput * const out)
   for other purposes.
 */
 
-const char *
-dimeModel::addReference(const char * const name, void *id)
+const char*
+DimeModel::addReference(const char* const name, void* id)
 {
-  char *ptr = NULL;
-  refDict->enter(name, ptr, id);
-  return (const char*) ptr;
+	char* ptr = nullptr;
+	refDict->enter(name, ptr, id);
+	return ptr;
 }
 
 /*!
   Finds a reference from the dictionary.
 */
 
-void *
-dimeModel::findReference(const char * const name) const
+void*
+DimeModel::findReference(const char* const name) const
 {
-  void *id;
-  if (refDict->find(name, id))
-    return id;
-  return NULL; 
+	void* id;
+	if (refDict->find(name, id))
+		return id;
+	return nullptr;
 }
 
 /*!
   Finds a pointer to a string in the dictionary. 
 */
 
-const char *
-dimeModel::findRefStringPtr(const char * const name) const
+const char*
+DimeModel::findRefStringPtr(const char* const name) const
 {
-  return refDict->find(name);
+	return refDict->find(name);
 }
 
 /*!
@@ -338,19 +341,9 @@ dimeModel::findRefStringPtr(const char * const name) const
 */
 
 void
-dimeModel::removeReference(const char * const name)
+DimeModel::removeReference(const char* const name)
 {
-  refDict->remove(name);
-}
-
-/*!
-  Returns a pointer to the memory handler used for this model.
-*/
-
-dimeMemHandler *
-dimeModel::getMemHandler()
-{
-  return this->memoryHandler;
+	refDict->remove(name);
 }
 
 /*!
@@ -358,23 +351,23 @@ dimeModel::getMemHandler()
   pointer to the existing layer will be returned.
 */
 
-const dimeLayer *
-dimeModel::addLayer(const char * const name, const int16 colnum,
-                    const int16 flags)
+dimeLayer* DimeModel::addLayer(const char* const name, const int16_t colnum,
+                               const int16_t flags)
 {
-  void *temp = NULL;
-  if (!this->layerDict->find(name, temp)) {
-    // default layer has layer-num = 0, hence the + 1
-    dimeLayer *layer = new dimeLayer(name, this->layers.count()+1,
-                                     colnum, flags);
-    char *ptr;
-    layerDict->enter(name, ptr, layer);
-    // this is a little hack...
-    layer->layerName = ptr; // need a pointer that won't disappear
-    this->layers.append(layer);
-    return layer;
-  }
-  return (dimeLayer*) temp;
+	void* temp = nullptr;
+	if (!this->layerDict->find(name, temp))
+	{
+		// default layer has layer-num = 0, hence the + 1
+		auto layer = new dimeLayer(name, this->layers.count() + 1,
+		                           colnum, flags);
+		char* ptr;
+		layerDict->enter(name, ptr, layer);
+		// this is a little hack...
+		layer->layerName = ptr; // need a pointer that won't disappear
+		this->layers.append(layer);
+		return layer;
+	}
+	return static_cast<dimeLayer*>(temp);
 }
 
 /*!
@@ -382,11 +375,11 @@ dimeModel::addLayer(const char * const name, const int16 colnum,
   \sa dimeModel::getNumLayers()
 */
 
-const dimeLayer *
-dimeModel::getLayer(const int idx) const
+const dimeLayer*
+DimeModel::getLayer(const int idx) const
 {
-  assert(idx >= 0 && idx <= this->layers.count());
-  return this->layers[idx];
+	assert(idx >= 0 && idx <= this->layers.count());
+	return this->layers[idx];
 }
 
 /*!
@@ -394,12 +387,12 @@ dimeModel::getLayer(const int idx) const
   by that name is found.
 */
 
-const dimeLayer *
-dimeModel::getLayer(const char * const layername) const
+const dimeLayer*
+DimeModel::getLayer(const char* const layername) const
 {
-  void *ptr = NULL;
-  this->layerDict->find(layername, ptr);
-  return (const dimeLayer*) ptr;
+	void* ptr = nullptr;
+	this->layerDict->find(layername, ptr);
+	return static_cast<const dimeLayer*>(ptr);
 }
 
 /*!
@@ -412,9 +405,9 @@ dimeModel::getLayer(const char * const layername) const
 */
 
 int
-dimeModel::getNumLayers() const
+DimeModel::getNumLayers() const
 {
-  return layers.count();
+	return layers.count();
 }
 
 /*!
@@ -422,12 +415,12 @@ dimeModel::getNumLayers() const
   BLOCKS section.
 */
 
-const char *
-dimeModel::addBlock(const char * const blockname, dimeBlock * const block)
-{  
-  char *ptr = NULL;
-  refDict->enter(blockname, ptr, block);
-  return (const char*) ptr;
+const char*
+DimeModel::addBlock(const char* const blockname, DimeBlock* const block)
+{
+	char* ptr = nullptr;
+	refDict->enter(blockname, ptr, block);
+	return ptr;
 }
 
 /*!
@@ -435,12 +428,12 @@ dimeModel::addBlock(const char * const blockname, dimeBlock * const block)
   if no block with that name exists.
 */
 
-dimeBlock *
-dimeModel::findBlock(const char * const blockname)
+DimeBlock*
+DimeModel::findBlock(const char* const blockname)
 {
-  void *tmp = NULL;
-  this->refDict->find(blockname, tmp);
-  return (dimeBlock*)tmp;
+	void* tmp = nullptr;
+	this->refDict->find(blockname, tmp);
+	return static_cast<DimeBlock*>(tmp);
 }
 
 /*!
@@ -449,29 +442,31 @@ dimeModel::findBlock(const char * const blockname)
   Currently (directly) supported versions are: r10, r11/r12, r13 and r14.
 */
 
-const char *
-dimeModel::getDxfVersion() const
+const char*
+DimeModel::getDxfVersion() const
 {
-  const dimeHeaderSection *header =
-    (const dimeHeaderSection*) this->findSection("HEADER");
+	auto header =
+		static_cast<const DimeHeaderSection*>(this->findSection("HEADER"));
 
-  if (!header) {
-    return NULL;
-  }
+	if (!header)
+	{
+		return nullptr;
+	}
 
-  int groupcode; 
-  dimeParam param;
+	int groupcode;
+	dimeParam param;
 
-  if (header->getVariable("$ACADVER", &groupcode, &param, 1) != 1 ||
-      groupcode != 1) {
-    return NULL;
-  }
-  if (!strcmp(param.string_data, "AC1006")) return "r10";
-  if (!strcmp(param.string_data, "AC1009")) return "r11/r12";
-  if (!strcmp(param.string_data, "AC1012")) return "r13";
-  if (!strcmp(param.string_data, "AC1013")) return "r14";
+	if (header->getVariable("$ACADVER", &groupcode, &param, 1) != 1 ||
+		groupcode != 1)
+	{
+		return nullptr;
+	}
+	if (!strcmp(param.string_data, "AC1006")) return "r10";
+	if (!strcmp(param.string_data, "AC1009")) return "r11/r12";
+	if (!strcmp(param.string_data, "AC1012")) return "r13";
+	if (!strcmp(param.string_data, "AC1013")) return "r14";
 
-  return NULL;
+	return nullptr;
 }
 
 /*!
@@ -482,15 +477,16 @@ dimeModel::getDxfVersion() const
 */
 
 int
-dimeModel::countRecords() const
+DimeModel::countRecords() const
 {
-  int cnt = 0;
-  int i, n = sections.count();
-  for (i = 0; i < n; i++) {
-    cnt += 1 + this->sections[i]->countRecords();
-  }
-  cnt++; // EOF
-  return cnt;
+	int cnt = 0;
+	int i, n = sections.count();
+	for (i = 0; i < n; i++)
+	{
+		cnt += 1 + this->sections[i]->countRecords();
+	}
+	cnt++; // EOF
+	return cnt;
 }
 
 /*
@@ -513,36 +509,39 @@ dimeModel::countRecords() const
 */
 
 bool
-dimeModel::traverseEntities(dimeCallback callback,
-                            void *userdata,
+DimeModel::traverseEntities(dimeCallback const& callback,
                             bool traverseBlocksSection,
                             bool explodeInserts,
                             bool traversePolylineVertices)
 {
-  int i, n;
-  dimeState state(traversePolylineVertices, explodeInserts);
-  if (traverseBlocksSection) {
-    dimeBlocksSection *bs =
-      (dimeBlocksSection*) this->findSection("BLOCKS");
-    if (bs) {
-      n = bs->getNumBlocks();
-      for (i = 0; i < n; i++) {
-        if (!bs->getBlock(i)->traverse(&state, callback, userdata))
-          return false;
-      }
-    }
-  }
-  dimeEntitiesSection *es =
-    (dimeEntitiesSection*) this->findSection("ENTITIES");
-  if (es) {
-    n = es->getNumEntities();
-    for (i = 0; i < n; i++) {
-      if (!es->getEntity(i)->traverse(&state, callback, userdata))
-        return false;
-    }
-  }
+	int i, n;
+	DimeState state(traversePolylineVertices, explodeInserts);
+	if (traverseBlocksSection)
+	{
+		auto bs =
+			static_cast<DimeBlocksSection*>(this->findSection("BLOCKS"));
+		if (bs)
+		{
+			n = bs->getNumBlocks();
+			for (i = 0; i < n; i++)
+			{
+				if (!bs->getBlock(i)->traverse(&state, callback))
+					return false;
+			}
+		}
+	}
+	auto es = static_cast<DimeEntitiesSection*>(this->findSection("ENTITIES"));
+	if (es)
+	{
+		n = es->getNumEntities();
+		for (i = 0; i < n; i++)
+		{
+			if (!es->getEntity(i)->traverse(&state, callback))
+				return false;
+		}
+	}
 
-  return true;
+	return true;
 }
 
 /*!
@@ -550,30 +549,32 @@ dimeModel::traverseEntities(dimeCallback callback,
   supported sections are HEADER, CLASSES, TABLES, BLOCKS, ENTITIES and OBJECTS.
 */
 
-const dimeSection *
-dimeModel::findSection(const char * const sectionname) const
+const DimeSection*
+DimeModel::findSection(const char* const sectionname) const
 {
-  int i, n = this->sections.count();
-  for (i = 0; i < n; i++) {
-    if (strcmp(this->sections[i]->getSectionName(), sectionname) == 0)
-      return this->sections[i];
-  }
-  return NULL;
+	int i, n = this->sections.count();
+	for (i = 0; i < n; i++)
+	{
+		if (strcmp(this->sections[i]->getSectionName(), sectionname) == 0)
+			return this->sections[i];
+	}
+	return nullptr;
 }
 
 /*!
   \overload
 */
 
-dimeSection *
-dimeModel::findSection(const char * const sectionname)
+DimeSection*
+DimeModel::findSection(const char* const sectionname)
 {
-  int i, n = this->sections.count();
-  for (i = 0; i < n; i++) {
-    if (strcmp(this->sections[i]->getSectionName(), sectionname) == 0)
-      return this->sections[i];
-  }
-  return NULL;
+	int i, n = this->sections.count();
+	for (i = 0; i < n; i++)
+	{
+		if (strcmp(this->sections[i]->getSectionName(), sectionname) == 0)
+			return this->sections[i];
+	}
+	return nullptr;
 }
 
 /*!
@@ -583,9 +584,9 @@ dimeModel::findSection(const char * const sectionname)
 */
 
 int
-dimeModel::getNumSections() const
+DimeModel::getNumSections() const
 {
-  return this->sections.count();
+	return this->sections.count();
 }
 
 /*!
@@ -594,11 +595,11 @@ dimeModel::getNumSections() const
   \sa dimeModel::getNumSections()
 */
 
-dimeSection *
-dimeModel::getSection(const int idx)
+DimeSection*
+DimeModel::getSection(const int idx)
 {
-  assert(idx >= 0 && idx < this->sections.count());
-  return this->sections[idx];
+	assert(idx >= 0 && idx < this->sections.count());
+	return this->sections[idx];
 }
 
 /*!
@@ -612,13 +613,14 @@ dimeModel::getSection(const int idx)
 */
 
 void
-dimeModel::insertSection(dimeSection * const section, const int idx)
+DimeModel::insertSection(DimeSection* const section, const int idx)
 {
-  if (idx < 0) this->sections.append(section);
-  else {
-    assert(idx <= this->sections.count());
-    this->sections.insertElem(idx, section);
-  }
+	if (idx < 0) this->sections.append(section);
+	else
+	{
+		assert(idx <= this->sections.count());
+		this->sections.insertElem(idx, section);
+	}
 }
 
 /*!
@@ -626,11 +628,11 @@ dimeModel::insertSection(dimeSection * const section, const int idx)
 */
 
 void
-dimeModel::removeSection(const int idx)
+DimeModel::removeSection(const int idx)
 {
-  assert(idx >= 0 && idx < this->sections.count());
-  delete this->sections[idx];
-  this->sections.removeElem(idx);
+	assert(idx >= 0 && idx < this->sections.count());
+	delete this->sections[idx];
+	this->sections.removeElem(idx);
 }
 
 /*!
@@ -640,47 +642,50 @@ dimeModel::removeSection(const int idx)
   AutoCAD...
 */
 void
-dimeModel::registerHandle(const int handle)
+DimeModel::registerHandle(const int handle)
 {
-  if (handle >= this->largestHandle) {
-    this->largestHandle = handle;
-  }
+	if (handle >= this->largestHandle)
+	{
+		this->largestHandle = handle;
+	}
 }
 
 /*!
   \overload
 */
 void
-dimeModel::registerHandle(const char * const handle)
+DimeModel::registerHandle(const char* const handle)
 {
-  int num;
-  if (sscanf(handle, "%x", &num)) {
-    this->registerHandle(num);
-  }
+	int num;
+	if (sscanf(handle, "%x", &num))
+	{
+		this->registerHandle(num);
+	}
 }
 
 int
-dimeModel::getUniqueHandle()
+DimeModel::getUniqueHandle()
 {
-  return ++this->largestHandle;
+	return ++this->largestHandle;
 }
 
-const char *
-dimeModel::getUniqueHandle(char *buf, const int)
+const char*
+DimeModel::getUniqueHandle(char* buf, const int)
 {
-  sprintf(buf,"%x", getUniqueHandle());
-  return buf;
+	sprintf(buf, "%x", getUniqueHandle());
+	return buf;
 }
 
 /*!
   Convenience function
 */
 void
-dimeModel::addEntity(dimeEntity *entity)
+DimeModel::addEntity(DimeEntity* entity)
 {
-  dimeEntitiesSection *es =
-    (dimeEntitiesSection*) this->findSection("ENTITIES");
-  if (es) {
-    es->insertEntity(entity);
-  }
+	auto es =
+		static_cast<DimeEntitiesSection*>(this->findSection("ENTITIES"));
+	if (es)
+	{
+		es->insertEntity(entity);
+	}
 }

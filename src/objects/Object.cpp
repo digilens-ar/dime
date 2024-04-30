@@ -31,7 +31,7 @@
 \**************************************************************************/
 
 /*!
-  \class dimeObject dime/objects/Object.h
+  \class DimeObject dime/objects/Object.h
   \brief The dimeObject class is the superclass for the \e object classes.
 */
 
@@ -39,7 +39,7 @@
 #include <dime/objects/UnknownObject.h>
 #include <dime/Input.h>
 #include <dime/Output.h>
-#include <dime/util/MemHandler.h>
+
 #include <dime/Model.h>
 
 #include <string.h>
@@ -60,8 +60,8 @@
   Constructor.
 */
 
-dimeObject::dimeObject() 
-  : dimeRecordHolder(0) // objects are separated by group code 0
+DimeObject::DimeObject()
+	: DimeRecordHolder(0) // objects are separated by group code 0
 {
 }
 
@@ -69,7 +69,7 @@ dimeObject::dimeObject()
   Destructor.
 */
 
-dimeObject::~dimeObject()
+DimeObject::~DimeObject()
 {
 }
 
@@ -78,49 +78,47 @@ dimeObject::~dimeObject()
 */
 
 bool
-dimeObject::copyRecords(dimeObject * const myobject, dimeModel * const model) const
+DimeObject::copyRecords(DimeObject* const myobject, DimeModel* const model) const
 {
-  dimeMemHandler *memh = model->getMemHandler();
-  bool ok = dimeRecordHolder::copyRecords(myobject, memh);
-  return ok;
+	bool ok = DimeRecordHolder::copyRecords(myobject);
+	return ok;
 }
 
 /*!
   Writes common and unknown object records to file.
 */
 
-bool 
-dimeObject::write(dimeOutput * const file)
+bool
+DimeObject::write(DimeOutput* const file)
 {
-  return dimeRecordHolder::write(file);
+	return DimeRecordHolder::write(file);
 }
 
 /*!
   Static function which creates an object based on its name. 
 */
 
-dimeObject *
-dimeObject::createObject(const char * const name, 
-		      dimeMemHandler * const memhandler)
+DimeObject*
+DimeObject::createObject(const char* const name)
 {
-  return new(memhandler) dimeUnknownObject(name, memhandler);
+	return new dimeUnknownObject(name);
 }
 
 //!
 
-int 
-dimeObject::countRecords() const
+int
+DimeObject::countRecords() const
 {
-  return dimeRecordHolder::countRecords();
+	return DimeRecordHolder::countRecords();
 }
 
 //!
 
-bool 
-dimeObject::isOfType(const int thetypeid) const
+bool
+DimeObject::isOfType(const int thetypeid) const
 {
-  return thetypeid == dimeObjectType ||
-    dimeRecordHolder::isOfType(thetypeid);
+	return thetypeid == dimeObjectType ||
+		DimeRecordHolder::isOfType(thetypeid);
 }
 
 /*!
@@ -130,24 +128,18 @@ dimeObject::isOfType(const int thetypeid) const
   \sa dimeObject::handleRecord().
 */
 
-bool 
-dimeObject::read(dimeInput * const file)
+bool
+DimeObject::read(DimeInput* const file)
 {
-  return dimeRecordHolder::read(file);
+	return DimeRecordHolder::read(file);
 }
 
 //!
 
-bool 
-dimeObject::handleRecord(const int /*groupcode*/,
-			const dimeParam &/*param*/,
-			dimeMemHandler * const /*memhandler*/)
+bool
+DimeObject::handleRecord(const int /*groupcode*/,
+                         const dimeParam&/*param*/)
 {
-  // no groupcodes supported yet...
-  return false;
+	// no groupcodes supported yet...
+	return false;
 }
-
-/*!
-  \fn void dimeObject::print() const
-*/
-

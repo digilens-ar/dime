@@ -35,27 +35,25 @@
 
 #include <dime/records/Record.h>
 
-class DIME_DLL_API dimeDoubleRecord : public dimeRecord
+class  dimeDoubleRecord : public DimeRecord
 {
 public:
-  dimeDoubleRecord(const int group_code = 10, const dxfdouble val = 0.0f);
+	dimeDoubleRecord(int group_code = 10, dxfdouble val = 0.0f);
 
-  virtual dimeRecord *copy(dimeMemHandler * const mh) const;
-  virtual void setValue(const dimeParam &param, dimeMemHandler * const memhandler = NULL);
-  virtual void getValue(dimeParam &param) const;
+	DimeRecord* copy() const override;
+	void setValue(const dimeParam& param) override;
+	void getValue(dimeParam& param) const override;
 
-  dxfdouble getValue() const;
-  void setValue(const dxfdouble val);
+	dxfdouble getValue() const;
+	void setValue(dxfdouble val);
 
 public:
-  int typeId() const;
-  bool read(dimeInput * const in);
-  bool write(dimeOutput * const out);
+	TypeID typeId() const override;
+	bool read(DimeInput* in) override;
+	bool write(DimeOutput* out) override;
 
 private:
-  dxfdouble value;
-  
+	dxfdouble value;
 }; // class dimeDoubleRecord
 
 #endif // ! DIME_DOUBLERECORD_H
-

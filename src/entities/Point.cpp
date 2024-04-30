@@ -31,7 +31,7 @@
 \**************************************************************************/
 
 /*!
-  \class dimePoint dime/entities/Point.h
+  \class DimePoint dime/entities/Point.h
   \brief The dimePoint class handles a POINT \e entity.
 */
 
@@ -39,7 +39,7 @@
 #include <dime/records/Record.h>
 #include <dime/Input.h>
 #include <dime/Output.h>
-#include <dime/util/MemHandler.h>
+
 #include <dime/Model.h>
 
 static char entityName[] = "POINT";
@@ -48,121 +48,123 @@ static char entityName[] = "POINT";
   Constructor.
 */
 
-dimePoint::dimePoint()
-  : coords(0, 0, 0)
+DimePoint::DimePoint()
+	: coords(0, 0, 0)
 {
 }
 
 //!
 
-dimeEntity *
-dimePoint::copy(dimeModel * const model) const
+DimeEntity*
+DimePoint::copy(DimeModel* const model) const
 {
-  dimePoint *p = new(model->getMemHandler()) dimePoint;
+	auto p = new DimePoint;
 
-  p->coords = this->coords;
-  p->copyExtrusionData(this);
+	p->coords = this->coords;
+	p->copyExtrusionData(this);
 
-  if (!this->copyRecords(p, model)) {
-    // check if allocated on heap.
-    if (!model->getMemHandler()) delete p;
-    p = NULL;
-  }
-  return p;
+	if (!this->copyRecords(p, model))
+	{
+		// check if allocated on heap.
+		delete p;
+		p = nullptr;
+	}
+	return p;
 }
 
 //!
 
-bool 
-dimePoint::write(dimeOutput * const file)
+bool
+DimePoint::write(DimeOutput* const file)
 {
-  bool ret = true;
-  if (!this->isDeleted()) {
-    this->preWrite(file);
+	bool ret = true;
+	if (!this->isDeleted())
+	{
+		this->preWrite(file);
 
-    file->writeGroupCode(10);
-    file->writeDouble(this->coords[0]);
-    file->writeGroupCode(20);
-    file->writeDouble(this->coords[1]);
-    file->writeGroupCode(30);
-    file->writeDouble(this->coords[2]);
-    
-    ret = this->writeExtrusionData(file) && dimeEntity::write(file);
-  }
-  return ret;
+		file->writeGroupCode(10);
+		file->writeDouble(this->coords[0]);
+		file->writeGroupCode(20);
+		file->writeDouble(this->coords[1]);
+		file->writeGroupCode(30);
+		file->writeDouble(this->coords[2]);
+
+		ret = this->writeExtrusionData(file) && DimeEntity::write(file);
+	}
+	return ret;
 }
 
 //!
 
-int 
-dimePoint::typeId() const
+DimeBase::TypeID
+DimePoint::typeId() const
 {
-  return dimeBase::dimePointType;
+	return DimeBase::dimePointType;
 }
 
 //!
 
-bool 
-dimePoint::handleRecord(const int groupcode,
-		       const dimeParam &param,
-		       dimeMemHandler * const memhandler)
+bool
+DimePoint::handleRecord(const int groupcode,
+                        const dimeParam& param)
 {
-  switch(groupcode) {
-  case 10:
-  case 20:
-  case 30:
-    this->coords[groupcode/10-1] = param.double_data;
-    return true;
-  }
-  return dimeExtrusionEntity::handleRecord(groupcode, param, memhandler); 
+	switch (groupcode)
+	{
+	case 10:
+	case 20:
+	case 30:
+		this->coords[groupcode / 10 - 1] = param.double_data;
+		return true;
+	}
+	return DimeExtrusionEntity::handleRecord(groupcode, param);
 }
 
 //!
 
-const char *
-dimePoint::getEntityName() const
+const char*
+DimePoint::getEntityName() const
 {
-  return entityName;
+	return entityName;
 }
 
 //!
 
-bool 
-dimePoint::getRecord(const int groupcode,
-		    dimeParam &param,
-		    const int index) const
+bool
+DimePoint::getRecord(const int groupcode,
+                     dimeParam& param,
+                     const int index) const
 {
-  switch(groupcode) {
-  case 10:
-  case 20:
-  case 30:
-    param.double_data = this->coords[groupcode/10-1];
-    return true;
-  }
-  return dimeExtrusionEntity::getRecord(groupcode, param, index); 
+	switch (groupcode)
+	{
+	case 10:
+	case 20:
+	case 30:
+		param.double_data = this->coords[groupcode / 10 - 1];
+		return true;
+	}
+	return DimeExtrusionEntity::getRecord(groupcode, param, index);
 }
 
 //!
 
-dimeEntity::GeometryType 
-dimePoint::extractGeometry(dimeArray <dimeVec3f> &verts,
-			  dimeArray <int> &/*indices*/,
-			  dimeVec3f &extrusionDir,
-			  dxfdouble &thickness)
+DimeEntity::GeometryType
+DimePoint::extractGeometry(dimeArray<dimeVec3>& verts,
+                           dimeArray<int>&/*indices*/,
+                           dimeVec3& extrusionDir,
+                           dxfdouble& thickness)
 {
-  thickness = this->thickness;
-  extrusionDir = this->extrusionDir;
-  verts.append(this->coords);
-  return dimeEntity::POINTS;
+	thickness = this->thickness;
+	extrusionDir = this->extrusionDir;
+	verts.append(this->coords);
+	return DimeEntity::POINTS;
 }
 
 //!
 
 int
-dimePoint::countRecords() const
+DimePoint::countRecords() const
 {
-  int cnt = 0;
-  cnt += 4; // header + coordinates
-  return cnt + dimeExtrusionEntity::countRecords();
+	int cnt = 0;
+	cnt += 4; // header + coordinates
+	return cnt + DimeExtrusionEntity::countRecords();
 }
-

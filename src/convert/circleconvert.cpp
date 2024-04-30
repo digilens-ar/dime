@@ -42,86 +42,95 @@
 // and return the number of circle subdivisions necessary
 // to respect the maxerr parameter.
 //
-static int 
+static int
 calc_num_sub(dxfdouble maxerr, dxfdouble radius)
 {
-  if (maxerr >= radius || maxerr <= 0.0) maxerr = radius/40.0f;
+	if (maxerr >= radius || maxerr <= 0.0) maxerr = radius / 40.0f;
 
-  dxfdouble x = radius - maxerr;
-  dxfdouble y = sqrt(radius*radius - x*x);
+	dxfdouble x = radius - maxerr;
+	dxfdouble y = sqrt(radius * radius - x * x);
 
-  dxfdouble rad = atan(y/x);
-  
-  return int(M_PI/fabs(rad)) + 1;
+	dxfdouble rad = atan(y / x);
+
+	return static_cast<int>(M_PI / fabs(rad)) + 1;
 }
 
 
-void 
-convert_circle(const dimeEntity *entity, const dimeState *state, 
-	       dxfLayerData *layerData, dxfConverter *converter)
+void
+convert_circle(const DimeEntity* entity, const DimeState* state,
+               dxfLayerData* layerData, dxfConverter* converter)
 {
-  dimeCircle *circle = (dimeCircle*) entity;
+	auto circle = (DimeCircle*)entity;
 
-  dimeMatrix matrix;
-  state->getMatrix(matrix);
+	dimeMatrix matrix;
+	state->getMatrix(matrix);
 
-  dimeVec3f e = circle->getExtrusionDir();
-  dxfdouble thickness = circle->getThickness();
-  
-  if (e != dimeVec3f(0,0,1)) {
-    dimeMatrix m;
-    dimeEntity::generateUCS(e, m);
-    matrix.multRight(m);
-  }
-  e = dimeVec3f(0,0,1) * thickness;
+	dimeVec3 e = circle->getExtrusionDir();
+	dxfdouble thickness = circle->getThickness();
 
-  dimeVec3f center = circle->getCenter();
-  dxfdouble radius = circle->getRadius();
+	if (e != dimeVec3(0, 0, 1))
+	{
+		dimeMatrix m;
+		DimeEntity::generateUCS(e, m);
+		matrix.multRight(m);
+	}
+	e = dimeVec3(0, 0, 1) * thickness;
 
-  dimeParam param;
-  if (circle->getRecord(38, param)) {
-    center[2] = param.double_data;
-  }
-  
-  int numpts = converter->getNumSub();
-  if (numpts <= 0) { // use maxerr
-    numpts = calc_num_sub(converter->getMaxerr(), radius);
-  }
-  dxfdouble inc = (2*M_PI) / numpts;  
-  dxfdouble rad = inc;
-  int i;
-  
-  dimeVec3f v;
-  dimeVec3f prev(center[0] + radius,
-		 center[1],
-		 center[2]);
-  
-  for (i = 1; i < numpts; i++) {
-    v = dimeVec3f(center[0] + radius * cos(rad),
-		  center[1] + radius * sin(rad),
-		  center[2]);
-    
-    if (thickness == 0.0) {
-      layerData->addLine(prev, v, &matrix);
-    }
-    else {
-      layerData->addQuad(prev, v, v + e, prev + e,
-			 &matrix);
-    }
-    prev = v;
-    rad += inc;
-  }
+	dimeVec3 center = circle->getCenter();
+	dxfdouble radius = circle->getRadius();
 
-  v = dimeVec3f(center[0] + radius,
-		center[1],
-		center[2]);
-  
-  if (thickness == 0.0) {
-    layerData->addLine(prev, v, &matrix);
-  }
-  else {
-    layerData->addQuad(prev, v, v + e, prev + e,
-		       &matrix);
-  }
-  // FIXME: code to close cylinder?
+	dimeParam param;
+	if (circle->getRecord(38, param))
+	{
+		center[2] = param.double_data;
+	}
+
+	int numpts = converter->getNumSub();
+	if (numpts <= 0)
+	{
+		// use maxerr
+		numpts = calc_num_sub(converter->getMaxerr(), radius);
+	}
+	dxfdouble inc = (2 * M_PI) / numpts;
+	dxfdouble rad = inc;
+	int i;
+
+	dimeVec3 v;
+	dimeVec3 prev(center[0] + radius,
+	               center[1],
+	               center[2]);
+
+	for (i = 1; i < numpts; i++)
+	{
+		v = dimeVec3(center[0] + radius * cos(rad),
+		              center[1] + radius * sin(rad),
+		              center[2]);
+
+		if (thickness == 0.0)
+		{
+			layerData->addLine(prev, v, &matrix);
+		}
+		else
+		{
+			layerData->addQuad(prev, v, v + e, prev + e,
+			                   &matrix);
+		}
+		prev = v;
+		rad += inc;
+	}
+
+	v = dimeVec3(center[0] + radius,
+	              center[1],
+	              center[2]);
+
+	if (thickness == 0.0)
+	{
+		layerData->addLine(prev, v, &matrix);
+	}
+	else
+	{
+		layerData->addQuad(prev, v, v + e, prev + e,
+		                   &matrix);
+	}
+	// FIXME: code to close cylinder?
 }

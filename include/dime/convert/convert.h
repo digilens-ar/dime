@@ -36,78 +36,86 @@
 #include <stdio.h>
 #include <dime/Basic.h>
 
-class dimeModel;
+class DimeModel;
 class dxfLayerData;
-class dimeState;
-class dimeEntity;
+class DimeState;
+class DimeEntity;
 
-class DIME_DLL_API dxfConverter
+class  dxfConverter
 {
 public:
-  dxfConverter();
-  ~dxfConverter();
-  
-  void setMaxerr(const dxfdouble maxerr) {
-    this->maxerr = maxerr;
-  }
-  void findHeaderVariables(dimeModel &model);
-  bool doConvert(dimeModel &model);
-  bool writeVrml(const char * filename, const bool vrml1 = false,
-                 const bool only2d = false);
-  bool writeVrml(FILE *out, const bool vrml1 = false,
-                 const bool only2d = false);
+	dxfConverter();
+	~dxfConverter();
 
-  void setNumSub(const int num) {
-    this->numsub = num;
-  }
-  int getNumSub() const {
-    return numsub;
-  }
-  dxfdouble getMaxerr() const {
-    return this->maxerr;
-  }
+	void setMaxerr(const dxfdouble maxerr)
+	{
+		this->maxerr = maxerr;
+	}
 
-  void setFillmode(const bool fill) {
-    this->fillmode = fill;
-  }
-  bool getFillmode() const {
-    return this->fillmode;
-  }
+	void findHeaderVariables(DimeModel& model);
+	bool doConvert(DimeModel& model);
+	bool writeVrml(const char* filename, bool vrml1 = false,
+	               bool only2d = false);
+	bool writeVrml(FILE* out, bool vrml1 = false,
+	               bool only2d = false);
 
-  bool getLayercol() const {
-    return this->layercol;
-  }
-  
-  void setLayercol(const bool v) {
-    this->layercol = v;
-  }
+	void setNumSub(const int num)
+	{
+		this->numsub = num;
+	}
 
-  dxfLayerData *getLayerData(const int colidx);
-  dxfLayerData *getLayerData(const dimeEntity *entity);
-  dxfLayerData ** getLayerData();
-  int getColorIndex(const dimeEntity *entity);
-  int getCurrentInsertColorIndex() const {
-    return currentInsertColorIndex;
-  }
+	int getNumSub() const
+	{
+		return numsub;
+	}
+
+	dxfdouble getMaxerr() const
+	{
+		return this->maxerr;
+	}
+
+	void setFillmode(const bool fill)
+	{
+		this->fillmode = fill;
+	}
+
+	bool getFillmode() const
+	{
+		return this->fillmode;
+	}
+
+	bool getLayercol() const
+	{
+		return this->layercol;
+	}
+
+	void setLayercol(const bool v)
+	{
+		this->layercol = v;
+	}
+
+	dxfLayerData* getLayerData(int colidx);
+	dxfLayerData* getLayerData(const DimeEntity* entity);
+	dxfLayerData** getLayerData();
+	int getColorIndex(const DimeEntity* entity);
+
+	int getCurrentInsertColorIndex() const
+	{
+		return currentInsertColorIndex;
+	}
 
 private:
-  friend class dime2Profit;
-  friend class dime2So;
+	friend class dime2Profit;
+	friend class dime2So;
 
-  dxfLayerData *layerData[255];
-  int dummy[4];
-  dxfdouble maxerr;
-  int currentInsertColorIndex;
-  dimeEntity *currentPolyline;
-  int numsub;
-  bool fillmode;
-  bool layercol;
-  
-  bool private_callback(const dimeState * const state, 
-			dimeEntity *entity);
-  static bool dime_callback(const dimeState * const state, 
-			    dimeEntity *entity, void *);
-
+	dxfLayerData* layerData[255];
+	int dummy[4];
+	dxfdouble maxerr;
+	int currentInsertColorIndex;
+	DimeEntity* currentPolyline;
+	int numsub;
+	bool fillmode;
+	bool layercol;
 };
 
 #endif // _DXF2VRML_CONVERT_H_

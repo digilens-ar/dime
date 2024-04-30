@@ -37,119 +37,114 @@
 #include <dime/entities/Entity.h>
 #include <dime/util/Linear.h>
 
-class dimeBlock;
+class DimeBlock;
 
-class DIME_DLL_API dimeInsert : public dimeEntity
+class  DimeInsert : public DimeEntity
 {
-  friend class dimeEntitiesSection;
-  friend class dimeBlocksSection;
+	friend class DimeEntitiesSection;
+	friend class DimeBlocksSection;
 
 public:
-  dimeInsert();
-  virtual ~dimeInsert();
+	DimeInsert();
+	~DimeInsert() override;
 
-  void setBlock(dimeBlock * const block);
-  dimeBlock * getBlock() const;
+	void setBlock(DimeBlock* block);
+	DimeBlock* getBlock() const;
 
-  virtual dimeEntity *copy(dimeModel * const model) const;
-  virtual bool getRecord(const int groupcode,
-			 dimeParam &param,
-			 const int index = 0) const;
-  virtual const char *getEntityName() const;
+	DimeEntity* copy(DimeModel* model) const override;
+	bool getRecord(int groupcode,
+	               dimeParam& param,
+	               int index = 0) const override;
+	const char* getEntityName() const override;
 
-  virtual bool read(dimeInput * const in);
-  virtual bool write(dimeOutput * const out);
-  virtual int typeId() const;
-  virtual int countRecords() const;
+	bool read(DimeInput* in) override;
+	bool write(DimeOutput* out) override;
+	TypeID typeId() const override;
+	int countRecords() const override;
 
-  void setInsertionPoint(const dimeVec3f &v);
-  const dimeVec3f &getInsertionPoint() const;
+	void setInsertionPoint(const dimeVec3& v);
+	const dimeVec3& getInsertionPoint() const;
 
-  void setScale(const dimeVec3f &v);
-  const dimeVec3f & getScale() const;
-  
-  void setRotAngle(dxfdouble angle);
-  dxfdouble getRotAngle() const;
+	void setScale(const dimeVec3& v);
+	const dimeVec3& getScale() const;
 
-  // FIXME: more set and get methods
-  
+	void setRotAngle(dxfdouble angle);
+	dxfdouble getRotAngle() const;
+
+	// FIXME: more set and get methods
+
 protected:
-  virtual void fixReferences(dimeModel * const model);
-  virtual bool handleRecord(const int groupcode, 
-			    const dimeParam &param,
-			    dimeMemHandler * const memhandler);
-  virtual bool traverse(const dimeState * const state, 
-                        dimeCallback callback,
-                        void *userdata);
+	void fixReferences(DimeModel* model) override;
+	bool handleRecord(int groupcode,
+	                  const dimeParam& param) override;
+	bool traverse(const DimeState* state,
+	              dimeCallback const& callback) override;
 
 private:
-  void makeMatrix(dimeMatrix &m) const;
+	void makeMatrix(dimeMatrix& m) const;
 
-  int16 attributesFollow;
-  const char *blockName;
-  dimeVec3f insertionPoint;
-  dimeVec3f extrusionDir;
-  dimeVec3f scale;
-  dxfdouble rotAngle;
-  dimeEntity **entities;
-  int numEntities;
+	int16_t attributesFollow;
+	const char* blockName;
+	dimeVec3 insertionPoint;
+	dimeVec3 extrusionDir;
+	dimeVec3 scale;
+	dxfdouble rotAngle;
+	DimeEntity** entities;
+	int numEntities;
 #ifdef DIME_FIXBIG
-  int32 rowCount;
+  int32_t rowCount;
 #else
-  int16 rowCount;
+	int16_t rowCount;
 #endif
-  int16 columnCount;
-  dxfdouble rowSpacing;
-  dxfdouble columnSpacing;
-  dimeEntity *seqend;
-  dimeBlock *block;
-
+	int16_t columnCount;
+	dxfdouble rowSpacing;
+	dxfdouble columnSpacing;
+	DimeEntity* seqend;
+	DimeBlock* block;
 }; // class dimeInsert
 
 
-
-inline void 
-dimeInsert::setInsertionPoint(const dimeVec3f &v)
+inline void
+DimeInsert::setInsertionPoint(const dimeVec3& v)
 {
-  this->insertionPoint = v;
+	this->insertionPoint = v;
 }
 
-inline const dimeVec3f &
-dimeInsert::getInsertionPoint() const
+inline const dimeVec3&
+DimeInsert::getInsertionPoint() const
 {
-  return this->insertionPoint;
+	return this->insertionPoint;
 }
 
-inline dimeBlock *
-dimeInsert::getBlock() const
+inline DimeBlock*
+DimeInsert::getBlock() const
 {
-  return this->block;
+	return this->block;
 }
 
-inline void 
-dimeInsert::setScale(const dimeVec3f &v)
+inline void
+DimeInsert::setScale(const dimeVec3& v)
 {
-  this->scale = v;
+	this->scale = v;
 }
 
-inline const dimeVec3f &
-dimeInsert::getScale() const
+inline const dimeVec3&
+DimeInsert::getScale() const
 {
-  return this->scale;
+	return this->scale;
 }
 
-inline void 
-dimeInsert::setRotAngle(dxfdouble angle)
+inline void
+DimeInsert::setRotAngle(dxfdouble angle)
 {
-  this->rotAngle = angle;
+	this->rotAngle = angle;
 }
 
 inline dxfdouble
-dimeInsert::getRotAngle() const
+DimeInsert::getRotAngle() const
 {
-  return this->rotAngle;
+	return this->rotAngle;
 }
 
 
 #endif // ! DIME_INSERT_H
-

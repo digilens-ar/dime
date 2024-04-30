@@ -35,23 +35,21 @@
 
 #include <dime/entities/Entity.h>
 
-class DIME_DLL_API dimeUnknownEntity : public dimeEntity 
+class  DimeUnknownEntity : public DimeEntity
 {
 public:
-  dimeUnknownEntity(const char * const name, dimeMemHandler * const memhandler);
-  virtual ~dimeUnknownEntity();
+	DimeUnknownEntity(const char* name);
+	~DimeUnknownEntity() override;
 
-  virtual dimeEntity *copy(dimeModel * const model) const;
-  
-  virtual const char *getEntityName() const;
-  virtual bool write(dimeOutput * const out);
-  virtual int typeId() const;
-  virtual int countRecords() const;
-  
+	DimeEntity* copy(DimeModel* model) const override;
+
+	const char* getEntityName() const override;
+	bool write(DimeOutput* out) override;
+	TypeID typeId() const override;
+	int countRecords() const override;
+
 private:
-  char *entityName;
-  
+	char* entityName;
 }; // class dimeUnknownEntity
 
 #endif // ! DIME_UNKNOWNENTITY_H
-

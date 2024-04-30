@@ -38,7 +38,7 @@
 #include <dime/classes/UnknownClass.h>
 #include <dime/Input.h>
 #include <dime/Output.h>
-#include <dime/util/MemHandler.h>
+
 #include <dime/Model.h>
 #include <string.h>
 
@@ -46,10 +46,9 @@
   Constructor.
 */
 
-dimeUnknownClass::dimeUnknownClass(const char * const name,
-                                   dimeMemHandler * const memhandler)
+dimeUnknownClass::dimeUnknownClass(const char* const name)
 {
-  DXF_STRCPY(memhandler, this->dxfClassName, name);
+	DXF_STRCPY(this->dxfClassName, name);
 }
 
 /*!
@@ -58,39 +57,40 @@ dimeUnknownClass::dimeUnknownClass(const char * const name,
 
 dimeUnknownClass::~dimeUnknownClass()
 {
-  delete [] this->dxfClassName;
+	delete [] this->dxfClassName;
 }
 
 //!
 
-dimeClass *
-dimeUnknownClass::copy(dimeModel * const model) const
+DimeClass*
+dimeUnknownClass::copy(DimeModel* const model) const
 {
-  dimeMemHandler *memh = model->getMemHandler();
-  dimeUnknownClass *u = new(memh) dimeUnknownClass(this->dxfClassName, memh);
-  if (!this->copyRecords(u, model)) { // check if allocated on heap.
-    if (!memh) delete u;
-    u = NULL;
-  }
-  return u;
+	auto u = new dimeUnknownClass(this->dxfClassName);
+	if (!this->copyRecords(u, model))
+	{
+		// check if allocated on heap.
+		delete u;
+		u = nullptr;
+	}
+	return u;
 }
 
 //!
 
 bool
-dimeUnknownClass::write(dimeOutput * const file)
+dimeUnknownClass::write(DimeOutput* const file)
 {
-  if (file->writeGroupCode(9) && file->writeString(this->dxfClassName))
-    return dimeClass::write(file);
-  return false;
+	if (file->writeGroupCode(9) && file->writeString(this->dxfClassName))
+		return DimeClass::write(file);
+	return false;
 }
 
 //!
 
-int
+DimeBase::TypeID
 dimeUnknownClass::typeId() const
 {
-  return dimeBase::dimeUnknownClassType;
+	return DimeBase::dimeUnknownClassType;
 }
 
 //!
@@ -98,13 +98,13 @@ dimeUnknownClass::typeId() const
 int
 dimeUnknownClass::countRecords() const
 {
-  return 1 + dimeClass::countRecords();
+	return 1 + DimeClass::countRecords();
 }
 
 //!
 
-const char *
+const char*
 dimeUnknownClass::getDxfClassName() const
 {
-  return this->dxfClassName;
+	return this->dxfClassName;
 }

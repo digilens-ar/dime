@@ -31,14 +31,14 @@
 \**************************************************************************/
 
 /*!
-  \class dimeUnknownEntity dime/entities/UnknownEntity.h
+  \class DimeUnknownEntity dime/entities/UnknownEntity.h
   \brief The dimeUnknownEntity class reads and writes undefined \e entity classes.
 */
 
 #include <dime/entities/UnknownEntity.h>
 #include <dime/Input.h>
 #include <dime/Output.h>
-#include <dime/util/MemHandler.h>
+
 #include <dime/Model.h>
 #include <dime/records/Record.h>
 #include <string.h>
@@ -47,65 +47,64 @@
   Constructor.
 */
 
-dimeUnknownEntity::dimeUnknownEntity(const char * const name,
-                                     dimeMemHandler * const memhandler)
+DimeUnknownEntity::DimeUnknownEntity(const char* const name)
 {
-  DXF_STRCPY(memhandler, this->entityName, name);
+	DXF_STRCPY(this->entityName, name);
 }
 
 /*!
   Destructor. Should only be called if no memory handler is used.
 */
 
-dimeUnknownEntity::~dimeUnknownEntity()
+DimeUnknownEntity::~DimeUnknownEntity()
 {
-  delete [] this->entityName;
+	delete [] this->entityName;
 }
 
 //!
 
-dimeEntity *
-dimeUnknownEntity::copy(dimeModel * const model) const
+DimeEntity*
+DimeUnknownEntity::copy(DimeModel* const model) const
 {
-  dimeMemHandler *memh = model->getMemHandler();
-  dimeUnknownEntity *u = new(memh) dimeUnknownEntity(this->entityName, memh);
-  if (!this->copyRecords(u, model)) {
-    // check if allocated on heap.
-    if (!memh) delete u;
-    u = NULL;
-  }
-  return u;
+	auto u = new DimeUnknownEntity(this->entityName);
+	if (!this->copyRecords(u, model))
+	{
+		// check if allocated on heap.
+		delete u;
+		u = nullptr;
+	}
+	return u;
 }
 
 //!
 
 bool
-dimeUnknownEntity::write(dimeOutput * const file)
+DimeUnknownEntity::write(DimeOutput* const file)
 {
-  dimeEntity::preWrite(file);
-  return dimeEntity::write(file);
+	DimeEntity::preWrite(file);
+	return DimeEntity::write(file);
+}
+
+//!
+
+DimeBase::TypeID
+DimeUnknownEntity::typeId() const
+{
+	return DimeBase::dimeUnknownEntityType;
 }
 
 //!
 
 int
-dimeUnknownEntity::typeId() const
+DimeUnknownEntity::countRecords() const
 {
-  return dimeBase::dimeUnknownEntityType;
+	return 1 + DimeEntity::countRecords();
 }
 
 //!
 
-int
-dimeUnknownEntity::countRecords() const
+const char*
+DimeUnknownEntity::getEntityName() const
 {
-  return 1 + dimeEntity::countRecords();
-}
-
-//!
-
-const char *
-dimeUnknownEntity::getEntityName() const
-{
-  return this->entityName;
+	return this->entityName;
 }

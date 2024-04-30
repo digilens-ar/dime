@@ -39,7 +39,7 @@
 #include <dime/records/Record.h>
 #include <dime/Input.h>
 #include <dime/Output.h>
-#include <dime/util/MemHandler.h>
+
 #include <dime/util/Array.h>
 #include <dime/Model.h>
 
@@ -50,12 +50,11 @@
   Constructor which stores the section name.
 */
 
-dimeUnknownSection::dimeUnknownSection(const char * const sectionname,
-                                       dimeMemHandler *memhandler)
-  : dimeSection(memhandler), records( NULL ), numRecords( 0 )
+dimeUnknownSection::dimeUnknownSection(const char* const sectionname)
+	: DimeSection(), records(nullptr), numRecords(0)
 {
-  this->sectionName = new char[strlen(sectionname)+1];
-  if (this->sectionName) strcpy(this->sectionName, sectionname);
+	this->sectionName = new char[strlen(sectionname) + 1];
+	if (this->sectionName) strcpy(this->sectionName, sectionname);
 }
 
 /*!
@@ -64,102 +63,101 @@ dimeUnknownSection::dimeUnknownSection(const char * const sectionname,
 
 dimeUnknownSection::~dimeUnknownSection()
 {
-  delete [] this->sectionName;
-  if (!this->memHandler) {
-    for (int i = 0; i < this->numRecords; i++)
-      delete this->records[i];
-    delete [] this->records;
-  }
+	delete [] this->sectionName;
+	for (int i = 0; i < this->numRecords; i++)
+		delete this->records[i];
+	delete [] this->records;
 }
 
 //!
 
-dimeSection *
-dimeUnknownSection::copy(dimeModel * const model) const
+DimeSection*
+dimeUnknownSection::copy(DimeModel* const model) const
 {
-  int i;
-  dimeMemHandler *memh = model->getMemHandler();
-  dimeUnknownSection *us = new dimeUnknownSection(this->sectionName,
-                                                  memh);
-  bool ok = us != NULL;
-  if (ok && this->numRecords) {
-    us->records = ARRAY_NEW(memh, dimeRecord*, this->numRecords);
-    bool ok = us->records != NULL;
-    if (ok) {
-      for (i = 0; i < this->numRecords && ok; i++) {
-        us->records[i] = this->records[i]->copy(memh);
-        ok = us->records[i] != NULL;
-      }
-      us->numRecords = i;
-    }
-  }
-  if (!ok) {
-    if (!memh) delete us;
-    us = NULL;
-  }
-//  sim_trace("unknown section copy: %p\n", us);
-  return us;
+	int i;
+	auto us = new dimeUnknownSection(this->sectionName);
+	bool ok = us != nullptr;
+	if (ok && this->numRecords)
+	{
+		us->records = ARRAY_NEW(DimeRecord*, this->numRecords);
+		bool ok = us->records != nullptr;
+		if (ok)
+		{
+			for (i = 0; i < this->numRecords && ok; i++)
+			{
+				us->records[i] = this->records[i]->copy();
+				ok = us->records[i] != nullptr;
+			}
+			us->numRecords = i;
+		}
+	}
+	if (!ok)
+	{
+		delete us;
+		us = nullptr;
+	}
+	//  sim_trace("unknown section copy: %p\n", us);
+	return us;
 }
 
 //!
 
 bool
-dimeUnknownSection::read(dimeInput * const file)
+dimeUnknownSection::read(DimeInput* const file)
 {
-  dimeRecord *record;
-  bool ok = true;
-  dimeArray <dimeRecord*> array(512);
-  dimeMemHandler *memhandler = file->getMemHandler();
+	DimeRecord* record;
+	bool ok = true;
+	dimeArray<DimeRecord*> array(512);
 
-  while (true) {
-    record = dimeRecord::readRecord(file);
-    if (record == NULL) {
-      fprintf(stderr,"could not create/read record (dimeUnknownSection.cpp)"
-              "line: %d\n", file->getFilePosition());
-      ok = false;
-      break;
-    } 
-    array.append(record);
-    if (record->isEndOfSectionRecord()) break;
-  }
-  if (ok && array.count()) {
-    if (memhandler) {
-      this->records = (dimeRecord**)
-        memhandler->allocMem(array.count()*sizeof(dimeRecord*));
-    }
-    else {
-      this->records = new dimeRecord*[array.count()];
-    }
-    if (this->records) {
-      int n = this->numRecords = array.count();
-      for (int i = 0; i < n; i++)
-        this->records[i] = array[i];
-    }
-  }
-  return ok;
+	while (true)
+	{
+		record = DimeRecord::readRecord(file);
+		if (record == nullptr)
+		{
+			fprintf(stderr, "could not create/read record (dimeUnknownSection.cpp)"
+			        "line: %d\n", file->getFilePosition());
+			ok = false;
+			break;
+		}
+		array.append(record);
+		if (record->isEndOfSectionRecord()) break;
+	}
+	if (ok && array.count())
+	{
+		this->records = new DimeRecord*[array.count()];
+		if (this->records)
+		{
+			int n = this->numRecords = array.count();
+			for (int i = 0; i < n; i++)
+				this->records[i] = array[i];
+		}
+	}
+	return ok;
 }
 
 //!
 
 bool
-dimeUnknownSection::write(dimeOutput * const file)
+dimeUnknownSection::write(DimeOutput* const file)
 {
-  if (file->writeGroupCode(2) && file->writeString(this->sectionName)) {
-    int i;
-    for (i = 0; i < this->numRecords; i++) {
-      if (!this->records[i]->write(file)) break;
-    }
-    if (i == this->numRecords) return true;
-  }
-  return false;
+	if (file->writeGroupCode(2) && file->writeString(this->sectionName))
+	{
+		int i;
+		for (i = 0; i < this->numRecords; i++)
+		{
+			if (!this->records[i]->write(file)) break;
+		}
+		if (i == this->numRecords) return true;
+	}
+	return false;
 }
 
 //!
 
-int
+DimeBase::TypeID
 dimeUnknownSection::typeId() const
 {
-  return dimeBase::dimeUnknownSectionType;
+	return DimeBase::dimeUnknownSectionType;
 }
 
 //!
@@ -167,13 +165,13 @@ dimeUnknownSection::typeId() const
 int
 dimeUnknownSection::countRecords() const
 {
-  return this->numRecords + 1; // onw record is written in write()
+	return this->numRecords + 1; // onw record is written in write()
 }
 
 //!
 
-const char *
+const char*
 dimeUnknownSection::getSectionName() const
 {
-  return this->sectionName;
+	return this->sectionName;
 }

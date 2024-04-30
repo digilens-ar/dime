@@ -35,89 +35,87 @@
 
 #include <dime/Basic.h>
 
-class DIME_DLL_API dimeLayer
+class  dimeLayer
 {
 public:
+	enum Flags
+	{
+		FROZEN = 0x1,
+		FROZEN_NEW_VIEWPORTS = 0x2,
+		LOCKED = 0x4
+	};
 
-  enum Flags {
-    FROZEN               = 0x1,
-    FROZEN_NEW_VIEWPORTS = 0x2,
-    LOCKED               = 0x4
-  };
+	const char* getLayerName() const;
+	int getLayerNum() const;
 
-  const char *getLayerName() const;
-  int getLayerNum() const;
+	int16_t getColorNumber() const;
+	void setColorNumber(int16_t num);
 
-  int16 getColorNumber() const;
-  void setColorNumber(const int16 num);
-  
-  int16 getFlags() const;
-  void setFlags(const int16 &flags);
+	int16_t getFlags() const;
+	void setFlags(const int16_t& flags);
 
-  bool isDefaultLayer() const;
+	bool isDefaultLayer() const;
 
-  static const dimeLayer *getDefaultLayer();
+	static const dimeLayer* getDefaultLayer();
 
-  static void colorToRGB(const int colornum, 
-                         dxfdouble &r, dxfdouble &g, dxfdouble &b);
+	static void colorToRGB(int colornum,
+	                       dxfdouble& r, dxfdouble& g, dxfdouble& b);
 
 private:
-  friend class dimeModel;
-  
-  dimeLayer();
-  dimeLayer(const char * const name, const int num, 
-            const int16 colnum, const int16 flags); 
-  const char *layerName;
-  int layerNum;
-  int16 colorNum;
-  int16 flags;
+	friend class DimeModel;
 
-  static void cleanup_default_layer(void);
-  static dimeLayer * defaultLayer;
+	dimeLayer();
+	dimeLayer(const char* name, int num,
+	          int16_t colnum, int16_t flags);
+	const char* layerName;
+	int layerNum;
+	int16_t colorNum;
+	int16_t flags;
 
+	static void cleanup_default_layer(void);
+	static dimeLayer* defaultLayer;
 }; // class dimeLayer
 
-inline const char *
+inline const char*
 dimeLayer::getLayerName() const
 {
-  return layerName;
+	return layerName;
 }
 
-inline int 
+inline int
 dimeLayer::getLayerNum() const
 {
-  return layerNum;
+	return layerNum;
 }
 
-inline int16 
+inline int16_t
 dimeLayer::getColorNumber() const
 {
-  return colorNum;
+	return colorNum;
 }
 
-inline void 
-dimeLayer::setColorNumber(const int16 num)
+inline void
+dimeLayer::setColorNumber(const int16_t num)
 {
-  this->colorNum = num;
+	this->colorNum = num;
 }
-  
-inline int16 
+
+inline int16_t
 dimeLayer::getFlags() const
 {
-  return this->flags;
+	return this->flags;
 }
 
-inline void 
-dimeLayer::setFlags(const int16 &flags)
+inline void
+dimeLayer::setFlags(const int16_t& flags)
 {
-  this->flags = flags;
+	this->flags = flags;
 }
 
-inline bool 
+inline bool
 dimeLayer::isDefaultLayer() const
 {
-  return this == dimeLayer::getDefaultLayer();
+	return this == getDefaultLayer();
 }
 
 #endif // ! DIME_LAYER_H
-

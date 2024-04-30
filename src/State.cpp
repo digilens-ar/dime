@@ -31,7 +31,7 @@
 \**************************************************************************/
 
 /*!
-  \class dimeState dime/State.h
+  \class DimeState dime/State.h
   \brief The dimeState class manages various state variables while the
   model is traversed.
 */
@@ -42,56 +42,58 @@
   Constructor.
 */
 
-dimeState::dimeState(const bool traversePolylineVertices,
-		   const bool explodeInserts) 
+DimeState::DimeState(const bool traversePolylineVertices,
+                     const bool explodeInserts)
 {
-  this->matrix.makeIdentity();
-  this->invmatrix.makeIdentity();
-  this->currentInsert = NULL;
-  this->flags = 0;
-  if (traversePolylineVertices) {
-    this->flags |= TRAVERSE_POLYLINE_VERTICES;
-  }
-  if (explodeInserts) {
-    this->flags |= EXPLODE_INSERTS;
-  }
+	this->matrix.makeIdentity();
+	this->invmatrix.makeIdentity();
+	this->currentInsert = nullptr;
+	this->flags = 0;
+	if (traversePolylineVertices)
+	{
+		this->flags |= TRAVERSE_POLYLINE_VERTICES;
+	}
+	if (explodeInserts)
+	{
+		this->flags |= EXPLODE_INSERTS;
+	}
 }
 
 /*!
   Constructor.
 */
 
-dimeState::dimeState(const dimeState &st) 
+DimeState::DimeState(const DimeState& st)
 {
-  this->matrix = st.matrix;
-  this->invmatrix = st.invmatrix;
-  this->flags = st.flags;
-  this->currentInsert = st.currentInsert;
+	this->matrix = st.matrix;
+	this->invmatrix = st.invmatrix;
+	this->flags = st.flags;
+	this->currentInsert = st.currentInsert;
 }
 
-void 
-dimeState::setMatrix(const dimeMatrix &m)
+void
+DimeState::setMatrix(const dimeMatrix& m)
 {
-  this->matrix = m;
-  this->flags |= INVMATRIX_DIRTY;
+	this->matrix = m;
+	this->flags |= INVMATRIX_DIRTY;
 }
 
 
-const dimeMatrix &
-dimeState::getInvMatrix() const 
+const dimeMatrix&
+DimeState::getInvMatrix() const
 {
-  if (this->flags & INVMATRIX_DIRTY) {
-    dimeState *thisp = (dimeState*)this;
-    thisp->invmatrix = thisp->matrix;
-    thisp->invmatrix.inverse();
-    thisp->flags ^= INVMATRIX_DIRTY;
-  }
-  return this->invmatrix;
+	if (this->flags & INVMATRIX_DIRTY)
+	{
+		auto thisp = (DimeState*)this;
+		thisp->invmatrix = thisp->matrix;
+		thisp->invmatrix.inverse();
+		thisp->flags ^= INVMATRIX_DIRTY;
+	}
+	return this->invmatrix;
 }
 
-void 
-dimeState::getMatrix(dimeMatrix &m) const 
+void
+DimeState::getMatrix(dimeMatrix& m) const
 {
-  m = this->matrix;
+	m = this->matrix;
 }
-

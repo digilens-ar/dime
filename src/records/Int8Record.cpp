@@ -38,86 +38,86 @@
 #include <dime/records/Int8Record.h>
 #include <dime/Input.h>
 #include <dime/Output.h>
-#include <dime/util/MemHandler.h>
+
 
 /*!
   Constructor
 */
 
-dimeInt8Record::dimeInt8Record(const int group_code, const int8 val)
-  : dimeRecord(group_code)
+dimeInt8Record::dimeInt8Record(const int group_code, const int8_t val)
+	: DimeRecord(group_code)
 {
-  this->setValue(val);
+	this->setValue(val);
 }
 
 //!
 
-dimeRecord *
-dimeInt8Record::copy(dimeMemHandler * const mh) const
+DimeRecord*
+dimeInt8Record::copy() const
 {
-  return new(mh) dimeInt8Record(this->groupCode, this->value);
+	return new dimeInt8Record(this->groupCode, this->value);
 }
 
 /*!
   Sets the value.
 */
 
-void 
-dimeInt8Record::setValue(const int8 val)
+void
+dimeInt8Record::setValue(const int8_t val)
 {
-  this->value = val;
+	this->value = val;
 }
 
 /*!
-  Returns the int8 value.
+  Returns the int8_t value.
 */
 
-int8
+int8_t
 dimeInt8Record::getValue() const
 {
-  return this->value;
+	return this->value;
 }
 
 //!
 
-int 
+DimeBase::TypeID
 dimeInt8Record::typeId() const
 {
-  return dimeBase::dimeInt8RecordType;
+	return DimeBase::dimeInt8RecordType;
 }
 
 //!
 
-bool 
-dimeInt8Record::read(dimeInput * const in)
+bool
+dimeInt8Record::read(DimeInput* const in)
 {
-  return in->readInt8(this->value);
+	return in->readInt8(this->value);
 }
 
 //!
 
-bool 
-dimeInt8Record::write(dimeOutput * const out)
+bool
+dimeInt8Record::write(DimeOutput* const out)
 {
-  if (dimeRecord::write(out)) {
-    return out->writeInt8(this->value);
-  }
-  return false;
+	if (DimeRecord::write(out))
+	{
+		return out->writeInt8(this->value);
+	}
+	return false;
 }
 
 //!
 
-void 
-dimeInt8Record::setValue(const dimeParam &param, dimeMemHandler * const )
+void
+dimeInt8Record::setValue(const dimeParam& param)
 {
-  this->value = param.int8_data;
+	this->value = param.int8_data;
 }
 
 //!
 
-void 
-dimeInt8Record::getValue(dimeParam &param) const
+void
+dimeInt8Record::getValue(dimeParam& param) const
 {
-  param.int8_data = this->value;
+	param.int8_data = this->value;
 }
-

@@ -35,27 +35,25 @@
 
 #include <dime/records/Record.h>
 
-class DIME_DLL_API dimeInt16Record : public dimeRecord
+class  dimeInt16Record : public DimeRecord
 {
 public:
-  dimeInt16Record(const int group_code = 60, const int16 val = 0);
+	dimeInt16Record(int group_code = 60, int16_t val = 0);
 
-  virtual dimeRecord *copy(dimeMemHandler * const mh) const;
-  virtual void setValue(const dimeParam &param, dimeMemHandler * const memhandler = NULL);
-  virtual void getValue(dimeParam &param) const;
-  
-  int16 getValue() const;
-  void setValue(const int16 val);
+	DimeRecord* copy() const override;
+	void setValue(const dimeParam& param) override;
+	void getValue(dimeParam& param) const override;
+
+	int16_t getValue() const;
+	void setValue(int16_t val);
 
 public:
-  int typeId() const;
-  bool read(dimeInput * const in);
-  bool write(dimeOutput * const out);
+	TypeID typeId() const override;
+	bool read(DimeInput* in) override;
+	bool write(DimeOutput* out) override;
 
 private:
-  int16 value;
-  
+	int16_t value;
 }; // class dimeInt16Record
 
 #endif // ! DIME_INT16RECORD_H
-

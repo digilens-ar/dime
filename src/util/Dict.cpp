@@ -51,10 +51,10 @@
 
 dimeDict::dimeDict(const int entries)
 {
-  this->tableSize = entries;
-  this->buckets = new dimeDictEntry *[tableSize];
-  for (int i = 0; i < tableSize; i++)
-    buckets[i] = NULL;
+	this->tableSize = entries;
+	this->buckets = new dimeDictEntry*[tableSize];
+	for (int i = 0; i < tableSize; i++)
+		buckets[i] = nullptr;
 }
 
 /*!
@@ -63,8 +63,8 @@ dimeDict::dimeDict(const int entries)
 
 dimeDict::~dimeDict()
 {
-  clear();
-  delete [] buckets;
+	clear();
+	delete [] buckets;
 }
 
 /*!
@@ -74,16 +74,18 @@ dimeDict::~dimeDict()
 void
 dimeDict::clear()
 {
-  int i;
-  dimeDictEntry *entry, *nextEntry;
+	int i;
+	dimeDictEntry *entry, *nextEntry;
 
-  for(i = 0; i < tableSize; i++) {
-    for(entry = buckets[i]; entry != NULL; entry = nextEntry) {
-      nextEntry = entry->next;
-      delete entry;
-    }
-    buckets[i] = NULL;
-  }
+	for (i = 0; i < tableSize; i++)
+	{
+		for (entry = buckets[i]; entry != nullptr; entry = nextEntry)
+		{
+			nextEntry = entry->next;
+			delete entry;
+		}
+		buckets[i] = nullptr;
+	}
 }
 
 /*!
@@ -93,21 +95,20 @@ dimeDict::clear()
   old id is replaced with \a value.
 */
 
-const char *
-dimeDict::enter(const char * const key, void *value)
+const char*
+dimeDict::enter(const char* const key, void* value)
 {
-  dimeDictEntry *&entry = findEntry(key);
-  
-  if(entry == NULL) {
-    entry = new dimeDictEntry(key, value);
-    if (entry == NULL) return NULL;
-    entry->next = NULL;
-    return entry->key;
-  }
-  else {
-    entry->value = value;
-    return entry->key;
-  }
+	dimeDictEntry*& entry = findEntry(key);
+
+	if (entry == nullptr)
+	{
+		entry = new dimeDictEntry(key, value);
+		if (entry == nullptr) return nullptr;
+		entry->next = nullptr;
+		return entry->key;
+	}
+	entry->value = value;
+	return entry->key;
 }
 
 /*!
@@ -116,26 +117,26 @@ dimeDict::enter(const char * const key, void *value)
   \e false otherwise. The string pointer is returned in \a ptr.
 */
 
-bool 
-dimeDict::enter(const char * const key, char *&ptr, void *value)
+bool
+dimeDict::enter(const char* const key, char*& ptr, void* value)
 {
-  dimeDictEntry *&entry = findEntry(key);
-  
-  if(entry == NULL) {
-    entry = new dimeDictEntry(key, value);
-    if (entry == NULL) {
-      ptr = NULL;
-      return false;
-    }
-    entry->next = NULL;
-    ptr = entry->key;
-    return true;
-  }
-  else {
-    entry->value = value;
-    ptr = entry->key;
-    return false;
-  }
+	dimeDictEntry*& entry = findEntry(key);
+
+	if (entry == nullptr)
+	{
+		entry = new dimeDictEntry(key, value);
+		if (entry == nullptr)
+		{
+			ptr = nullptr;
+			return false;
+		}
+		entry->next = nullptr;
+		ptr = entry->key;
+		return true;
+	}
+	entry->value = value;
+	ptr = entry->key;
+	return false;
 }
 
 /*!
@@ -143,13 +144,13 @@ dimeDict::enter(const char * const key, char *&ptr, void *value)
   if found, NULL otherwise.  
 */
 
-const char *
-dimeDict::find(const char * const key) const
+const char*
+dimeDict::find(const char* const key) const
 {
-  dimeDictEntry *&entry = findEntry(key);
-  if (entry) 
-    return entry->key;
-  return NULL;
+	dimeDictEntry*& entry = findEntry(key);
+	if (entry)
+		return entry->key;
+	return nullptr;
 }
 
 /*!
@@ -157,18 +158,17 @@ dimeDict::find(const char * const key) const
 */
 
 bool
-dimeDict::find(const char * const key, void *&value) const
+dimeDict::find(const char* const key, void*& value) const
 {
-  dimeDictEntry *&entry = findEntry(key);
+	dimeDictEntry*& entry = findEntry(key);
 
-  if(entry == NULL) {
-    value = NULL;
-    return false;
-  }
-  else {
-    value = entry->value;
-    return true;
-  }
+	if (entry == nullptr)
+	{
+		value = nullptr;
+		return false;
+	}
+	value = entry->value;
+	return true;
 }
 
 /*!
@@ -176,49 +176,49 @@ dimeDict::find(const char * const key, void *&value) const
 */
 
 bool
-dimeDict::remove(const char * const key)
+dimeDict::remove(const char* const key)
 {
-  dimeDictEntry *&entry = findEntry(key);
-  dimeDictEntry *tmp;
+	dimeDictEntry*& entry = findEntry(key);
+	dimeDictEntry* tmp;
 
-  if(entry == NULL)
-    return false;
-  else {
-    tmp = entry;
-    entry = entry->next;
-    delete tmp;
-    return true;
-  }
+	if (entry == nullptr)
+		return false;
+	tmp = entry;
+	entry = entry->next;
+	delete tmp;
+	return true;
 }
 
 // private funcs
 
-dimeDictEntry *&
-dimeDict::findEntry(const char * const key) const
+dimeDictEntry*&
+dimeDict::findEntry(const char* const key) const
 {
-  dimeDictEntry **entry;
+	dimeDictEntry** entry;
 
-  entry = &buckets[bucketNr(key) % tableSize];
-  
-  while(*entry != NULL) {
-    if(strcmp((*entry)->key, key) == 0) break;
-    entry = &(*entry)->next;
-  }
-  return *entry;
+	entry = &buckets[bucketNr(key) % tableSize];
+
+	while (*entry != nullptr)
+	{
+		if (strcmp((*entry)->key, key) == 0) break;
+		entry = &(*entry)->next;
+	}
+	return *entry;
 }
 
 unsigned int
-dimeDict::bucketNr(const char *s) const
+dimeDict::bucketNr(const char* s) const
 {
-  unsigned int total, shift;
-  total = shift = 0;
-  while (*s) {
-    total = total ^ ((*s) << shift);
-    shift+=5;
-    if (shift>24) shift -= 24;
-    s++;
-  }
-  return total % tableSize;
+	unsigned int total, shift;
+	total = shift = 0;
+	while (*s)
+	{
+		total = total ^ ((*s) << shift);
+		shift += 5;
+		if (shift > 24) shift -= 24;
+		s++;
+	}
+	return total % tableSize;
 }
 
 /*
@@ -228,34 +228,37 @@ dimeDict::bucketNr(const char *s) const
 void
 dimeDict::dump(void)
 {
-  int i;
-  dimeDictEntry *entry, *nextEntry;
+	int i;
+	dimeDictEntry *entry, *nextEntry;
 
-  for(i = 0; i < tableSize; i++) {
-    for(entry = buckets[i]; entry != NULL; entry = nextEntry) {
-      nextEntry = entry->next;
-      printf("entry: '%s' %p\n", entry->key, entry->value);
-    }
-  }
+	for (i = 0; i < tableSize; i++)
+	{
+		for (entry = buckets[i]; entry != nullptr; entry = nextEntry)
+		{
+			nextEntry = entry->next;
+			printf("entry: '%s' %p\n", entry->key, entry->value);
+		}
+	}
 }
 
-void 
+void
 dimeDict::print_info()
 {
-  int i, cnt;
-  dimeDictEntry *entry;
+	int i, cnt;
+	dimeDictEntry* entry;
 
-  printf("---------- dict info ------------------\n");
+	printf("---------- dict info ------------------\n");
 
-  for (i = 0; i < tableSize; i++) {
-    entry = buckets[i];
-    cnt = 0;
-    while(entry) {
-      entry = entry->next;
-      cnt++;
-    }
-    printf(" bucket: %d, cnt: %d\n",i, cnt);
-  }
-  printf("\n\n\n");
+	for (i = 0; i < tableSize; i++)
+	{
+		entry = buckets[i];
+		cnt = 0;
+		while (entry)
+		{
+			entry = entry->next;
+			cnt++;
+		}
+		printf(" bucket: %d, cnt: %d\n", i, cnt);
+	}
+	printf("\n\n\n");
 }
-

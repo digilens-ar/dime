@@ -74,7 +74,7 @@ int
 dime_isinf(double value)
 {
 #ifdef HAVE_ISINF
-  return isinf(value);
+	return isinf(value);
 #elif defined(HAVE_FPCLASS)
   if (fpclass(value) == FP_NINF) { return -1; }
   if (fpclass(value) == FP_PINF) { return +1; }
@@ -102,7 +102,7 @@ int
 dime_isnan(double value)
 {
 #ifdef HAVE_ISNAN
-  return isnan(value);
+	return isnan(value);
 #elif defined(HAVE__ISNAN)
   return _isnan(value);
 #elif defined(HAVE_FPCLASS)
@@ -135,7 +135,7 @@ dime_finite(double value)
 #ifdef HAVE_FINITE
   return finite(value);
 #elif defined(HAVE__FINITE)
-  return _finite(value);
+	return _finite(value);
 #else
   return !dime_isinf(value) && !dime_isnan(value);
 #endif

@@ -41,108 +41,105 @@
 // please note that the thickness will always be 0.0 for this entity
 //
 
-class DIME_DLL_API dimeEllipse : public dimeExtrusionEntity
+class  DimeEllipse : public DimeExtrusionEntity
 {
 public:
-  dimeEllipse();
+	DimeEllipse();
 
-  void setCenter(const dimeVec3f &c);
-  const dimeVec3f &getCenter() const;
+	void setCenter(const dimeVec3& c);
+	const dimeVec3& getCenter() const;
 
-  void setMajorAxisEndpoint(const dimeVec3f &v);
-  const dimeVec3f &getMajorAxisEndpoint() const;
-  
-  void setMinorMajorRatio(const dxfdouble ratio);
-  dxfdouble getMinorMajorRatio() const;
+	void setMajorAxisEndpoint(const dimeVec3& v);
+	const dimeVec3& getMajorAxisEndpoint() const;
 
-  void setStartParam(const dxfdouble p);
-  dxfdouble getStartParam() const;
+	void setMinorMajorRatio(dxfdouble ratio);
+	dxfdouble getMinorMajorRatio() const;
 
-  void setEndParam(const dxfdouble p);
-  dxfdouble getEndParam() const;
-  
-  virtual dimeEntity *copy(dimeModel * const model) const;
-  virtual bool getRecord(const int groupcode,
-			 dimeParam &param,
-			 const int index = 0) const;
-  virtual const char *getEntityName() const;
-  virtual void print() const;
-  virtual bool write(dimeOutput * const out);
-  virtual int typeId() const;
-  virtual int countRecords() const;
+	void setStartParam(dxfdouble p);
+	dxfdouble getStartParam() const;
 
-protected:  
-  virtual bool handleRecord(const int groupcode,
-			    const dimeParam &param,
-			    dimeMemHandler * const memhandler);  
+	void setEndParam(dxfdouble p);
+	dxfdouble getEndParam() const;
+
+	DimeEntity* copy(DimeModel* model) const override;
+	bool getRecord(int groupcode,
+	               dimeParam& param,
+	               int index = 0) const override;
+	const char* getEntityName() const override;
+	bool write(DimeOutput* out) override;
+	TypeID typeId() const override;
+	int countRecords() const override;
+
+protected:
+	bool handleRecord(int groupcode,
+	                  const dimeParam& param) override;
+
 private:
-  dimeVec3f center;
-  dimeVec3f majorAxisEndpoint;
-  dxfdouble ratio;
-  dxfdouble startParam;
-  dxfdouble endParam;
-
+	dimeVec3 center;
+	dimeVec3 majorAxisEndpoint;
+	dxfdouble ratio;
+	dxfdouble startParam;
+	dxfdouble endParam;
 }; // class dimeEllipse
 
-inline const dimeVec3f &
-dimeEllipse::getCenter() const
+inline const dimeVec3&
+DimeEllipse::getCenter() const
 {
-  return this->center;
-}
-
-inline void 
-dimeEllipse::setCenter(const dimeVec3f &c)
-{
-  this->center = c;
+	return this->center;
 }
 
 inline void
-dimeEllipse::setMajorAxisEndpoint(const dimeVec3f &v)
+DimeEllipse::setCenter(const dimeVec3& c)
 {
-  this->majorAxisEndpoint = v;
+	this->center = c;
 }
 
-inline const dimeVec3f &
-dimeEllipse::getMajorAxisEndpoint() const
+inline void
+DimeEllipse::setMajorAxisEndpoint(const dimeVec3& v)
 {
-  return this->majorAxisEndpoint;
-}
-  
-inline void 
-dimeEllipse::setMinorMajorRatio(const dxfdouble ratio)
-{
-  this->ratio = ratio;
+	this->majorAxisEndpoint = v;
 }
 
-inline dxfdouble 
-dimeEllipse::getMinorMajorRatio() const
+inline const dimeVec3&
+DimeEllipse::getMajorAxisEndpoint() const
 {
-  return this->ratio;
+	return this->majorAxisEndpoint;
 }
 
-inline void 
-dimeEllipse::setStartParam(const dxfdouble p)
+inline void
+DimeEllipse::setMinorMajorRatio(const dxfdouble ratio)
 {
-  this->startParam = p;
+	this->ratio = ratio;
 }
 
-inline dxfdouble 
-dimeEllipse::getStartParam() const
+inline dxfdouble
+DimeEllipse::getMinorMajorRatio() const
 {
-  return this->startParam;
+	return this->ratio;
 }
 
-inline void 
-dimeEllipse::setEndParam(const dxfdouble p)
+inline void
+DimeEllipse::setStartParam(const dxfdouble p)
 {
-  this->endParam = p;
+	this->startParam = p;
 }
 
-inline dxfdouble 
-dimeEllipse::getEndParam() const
+inline dxfdouble
+DimeEllipse::getStartParam() const
 {
-  return this->endParam;
+	return this->startParam;
+}
+
+inline void
+DimeEllipse::setEndParam(const dxfdouble p)
+{
+	this->endParam = p;
+}
+
+inline dxfdouble
+DimeEllipse::getEndParam() const
+{
+	return this->endParam;
 }
 
 #endif // ! DIME_ELLIPSE_H
-

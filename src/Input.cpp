@@ -31,7 +31,7 @@
 \**************************************************************************/
 
 /*!
-  \class dimeInput dime/Input.h
+  \class DimeInput dime/Input.h
   \brief The dimeInput class offers transparent file I/O for DXF and DXB
 */
 
@@ -66,78 +66,79 @@
   Constructor.
 */
 
-dimeInput::dimeInput()
-  : model( NULL ), version( 12 ), fd( -1 ), readbuf( NULL ),
-    callback( NULL ), callbackdata( NULL )
+DimeInput::DimeInput()
+	: model(nullptr), version(12), fd(-1), readbuf(nullptr),
+	  callback(nullptr), callbackdata(nullptr)
 {
 #ifdef USE_GZFILE
   this->gzfp = NULL;
 #else
-  this->fp = NULL;
-  this->didOpenFile = false;
+	this->fp = nullptr;
+	this->didOpenFile = false;
 #endif
-  this->prevwashandle = false;
+	this->prevwashandle = false;
 }
 
 /*!
   Destructor.
 */
 
-dimeInput::~dimeInput()
+DimeInput::~DimeInput()
 {
-  delete [] this->readbuf;
+	delete [] this->readbuf;
 #ifdef USE_GZFILE
   if (this->gzfp) gzclose(this->gzfp);
 #else
-  if (this->fp && this->didOpenFile) fclose(this->fp);
+	if (this->fp && this->didOpenFile) fclose(this->fp);
 #endif
 }
 
 bool
-dimeInput::init()
+DimeInput::init()
 {
-  this->aborted = false;
-  this->hasPutBack = false;
-  this->putBackCode = 0;
-  this->filePosition = 0;
-  this->binary = false;
-  this->binary16bit = false;
+	this->aborted = false;
+	this->hasPutBack = false;
+	this->putBackCode = 0;
+	this->filePosition = 0;
+	this->binary = false;
+	this->binary16bit = false;
 
-  this->fd = -1;
+	this->fd = -1;
 #ifdef USE_GZFILE
   if (this->gzfp) gzclose(this->gzfp);
   this->gzfp = NULL;
   this->gzeof = true;
 #else
-  if (this->fp && this->didOpenFile) fclose(this->fp);
-  this->fp = NULL;
-  this->didOpenFile = false;
-  this->fpeof = true;
+	if (this->fp && this->didOpenFile) fclose(this->fp);
+	this->fp = nullptr;
+	this->didOpenFile = false;
+	this->fpeof = true;
 #endif
-  this->filesize = 0;
-  if (this->readbuf == NULL) {
-    this->readbuf = new char[READBUFSIZE]; // create buffer
-    if (!this->readbuf) return false;
-  }
-  this->readbufIndex = 0;
-  this->readbufLen = 0;
-  this->backBufIndex = -1;
-  this->backBuf.setCount(0);
-  this->prevposition = 0.0f;
-  this->cbcnt = 0;
-  this->prevwashandle = false;
-  this->endianSwap = false;
-  return true;
+	this->filesize = 0;
+	if (this->readbuf == nullptr)
+	{
+		this->readbuf = new char[READBUFSIZE]; // create buffer
+		if (!this->readbuf) return false;
+	}
+	this->readbufIndex = 0;
+	this->readbufLen = 0;
+	this->backBufIndex = -1;
+	this->backBuf.setCount(0);
+	this->prevposition = 0.0f;
+	this->cbcnt = 0;
+	this->prevwashandle = false;
+	this->endianSwap = false;
+	return true;
 }
 
 /*!
   This method returns whether file input was aborted or not.
 */
 
-bool 
-dimeInput::isAborted() const
+bool
+DimeInput::isAborted() const
 {
-  return this->aborted;
+	return this->aborted;
 }
 
 /*!
@@ -145,13 +146,13 @@ dimeInput::isAborted() const
   float in the range between 0 and 1, and void * \a cbdata as arguments.
 */
 
-void 
-dimeInput::setCallback(int (*cb)(float, void *), void *cbdata)
+void
+DimeInput::setCallback(int (*cb)(float, void*), void* cbdata)
 {
-  this->callback = cb;
-  this->callbackdata = cbdata;
-  this->prevposition = 0.0f;
-  this->cbcnt = 0;
+	this->callback = cb;
+	this->callbackdata = cbdata;
+	this->prevposition = 0.0f;
+	this->cbcnt = 0;
 }
 
 /*!
@@ -160,12 +161,12 @@ dimeInput::setCallback(int (*cb)(float, void *), void *cbdata)
 */
 
 float
-dimeInput::relativePosition()
+DimeInput::relativePosition()
 {
-  assert(this->didOpenFile);
-  if (!this->filesize) return 0.0f;
-  return (((float)(lseek(this->fd, 0, SEEK_CUR)-(readbufLen-readbufIndex)))/
-	  ((float)(this->filesize)));
+	assert(this->didOpenFile);
+	if (!this->filesize) return 0.0f;
+	return (static_cast<float>(lseek(this->fd, 0, SEEK_CUR) - (readbufLen - readbufIndex)) /
+		static_cast<float>(this->filesize));
 }
 
 /*!
@@ -174,17 +175,18 @@ dimeInput::relativePosition()
 */
 
 bool
-dimeInput::setFile(const char * const filename)
+DimeInput::setFile(const char* const filename)
 {
 #ifdef _WIN32
-  int fd = open(filename, O_RDONLY | O_BINARY);
+	int fd = open(filename, O_RDONLY | O_BINARY);
 #else
   int fd = open(filename, O_RDONLY);
 #endif
-  if (fd < 0) {
-    return false;
-  }
-  return setFilePointer(fd);
+	if (fd < 0)
+	{
+		return false;
+	}
+	return setFilePointer(fd);
 }
 
 /*!
@@ -192,18 +194,18 @@ dimeInput::setFile(const char * const filename)
   and will \e not be closed in the destructor. No progress information
   will be available during loading if this method is used.
 */
-bool 
-dimeInput::setFileHandle(FILE *fp)
+bool
+DimeInput::setFileHandle(FILE* fp)
 {
-  if (!this->init()) return false;
-  this->fp = fp;
-  this->fpeof = false;
-  this->didOpenFile = false;
-  this->filesize = 1;
-  
-  this->binary = this->checkBinary();
+	if (!this->init()) return false;
+	this->fp = fp;
+	this->fpeof = false;
+	this->didOpenFile = false;
+	this->filesize = 1;
 
-  return true;
+	this->binary = this->checkBinary();
+
+	return true;
 }
 
 
@@ -212,39 +214,39 @@ dimeInput::setFileHandle(FILE *fp)
   with the unistd open() function.
 */
 
-bool 
-dimeInput::setFilePointer(const int newfd)
+bool
+DimeInput::setFilePointer(const int newfd)
 {
-  if (!this->init()) return false;
-  this->fd = newfd;
+	if (!this->init()) return false;
+	this->fd = newfd;
 #if USE_GZFILE
   this->gzfp = gzdopen(this->fd, "rb");
   this->gzeof = false; 
 #else
-  this->fp = fdopen(this->fd, "rb");
-  this->didOpenFile = true;
-  this->fpeof = false;
+	this->fp = fdopen(this->fd, "rb");
+	this->didOpenFile = true;
+	this->fpeof = false;
 #endif
-  long startpos = lseek(fd, 0, SEEK_CUR);
-  this->filesize = lseek(fd, 0, SEEK_END);
-  lseek(fd, startpos, SEEK_SET);
+	long startpos = lseek(fd, 0, SEEK_CUR);
+	this->filesize = lseek(fd, 0, SEEK_END);
+	lseek(fd, startpos, SEEK_SET);
 
-  this->binary = this->checkBinary();
+	this->binary = this->checkBinary();
 
-  return this->filesize > 0;
+	return this->filesize > 0;
 }
 
 /*!
   Returns true if end of file is encountered.
 */
 
-bool 
-dimeInput::eof() const
+bool
+DimeInput::eof() const
 {
 #if USE_GZFILE
   return this->gzeof;
 #else
-  return this->fpeof;
+	return this->fpeof;
 #endif
 }
 
@@ -255,61 +257,72 @@ dimeInput::eof() const
   actual group code following as a 16-bit integer.
 */
 
-bool 
-dimeInput::readGroupCode(int32 &code)
+bool
+DimeInput::readGroupCode(int32_t& code)
 {
-  bool ret;
-  if (this->hasPutBack) {
-    this->hasPutBack = false;
-    code = this->putBackCode;
-    ret = true;
-  }
-  else {
-    if (this->didOpenFile && this->callback && this->cbcnt++ > 100) {
-      this->cbcnt = 0;
-      float pos = this->relativePosition();
-      if (pos > this->prevposition + 0.01f) {
-	this->prevposition = pos;
-	if (!this->callback(pos, this->callbackdata)) {
-	  this->aborted = true;
-	  return false;
+	bool ret;
+	if (this->hasPutBack)
+	{
+		this->hasPutBack = false;
+		code = this->putBackCode;
+		ret = true;
 	}
-      }
-    }
-    
-    if (this->binary) {
-      if (this->binary16bit) {
-        uint16 uval;
-        int16 *ptr = (int16*)&uval;
-        ret = this->readInt16(*ptr);
-        code = (int32)uval;
-      }
-      else {
-        unsigned char uval; // group code is unsigned int8
-        char *ptr = (char*) &uval;
-        ret = this->get(*ptr);
-        code = (int32) uval;
-      }
-      if (code == 255) {
-	int16 val16;
-	ret = this->readInt16(val16);
-	code = (int32) val16; 
-      }
-    }
-    else {
-      //
-      // quick fix to ignore comments
-      //
-      ret = readInt32(code);
-      while (ret && code == 999) {
-	readString();
-	ret = readInt32(code);
-      }
-    }
-  }
-  if (code == 5) this->prevwashandle = true;
-  else this->prevwashandle = false;
-  return ret;
+	else
+	{
+		if (this->didOpenFile && this->callback && this->cbcnt++ > 100)
+		{
+			this->cbcnt = 0;
+			float pos = this->relativePosition();
+			if (pos > this->prevposition + 0.01f)
+			{
+				this->prevposition = pos;
+				if (!this->callback(pos, this->callbackdata))
+				{
+					this->aborted = true;
+					return false;
+				}
+			}
+		}
+
+		if (this->binary)
+		{
+			if (this->binary16bit)
+			{
+				uint16_t uval;
+				auto ptr = (int16_t*)&uval;
+				ret = this->readInt16(*ptr);
+				code = static_cast<int32_t>(uval);
+			}
+			else
+			{
+				unsigned char uval; // group code is unsigned int8
+				auto ptr = (char*)&uval;
+				ret = this->get(*ptr);
+				code = static_cast<int32_t>(uval);
+			}
+			if (code == 255)
+			{
+				int16_t val16;
+				ret = this->readInt16(val16);
+				code = static_cast<int32_t>(val16);
+			}
+		}
+		else
+		{
+			//
+			// quick fix to ignore comments
+			//
+			ret = readInt32(code);
+			while (ret && code == 999)
+			{
+				readString();
+				ret = readInt32(code);
+			}
+		}
+	}
+	if (code == 5) this->prevwashandle = true;
+	else this->prevwashandle = false;
+	return ret;
 }
 
 /*!
@@ -319,11 +332,11 @@ dimeInput::readGroupCode(int32 &code)
   returned.
 */
 
-void 
-dimeInput::putBackGroupCode(const int32 code)
+void
+DimeInput::putBackGroupCode(const int32_t code)
 {
-  this->putBackCode = code;
-  this->hasPutBack = true;
+	this->putBackCode = code;
+	this->hasPutBack = true;
 }
 
 
@@ -331,180 +344,207 @@ dimeInput::putBackGroupCode(const int32 code)
   Reads an 8 bit integer from the file.
 */
 
-bool 
-dimeInput::readInt8(int8 &val)
+bool
+DimeInput::readInt8(int8_t& val)
 {
-  if (this->binary) {
-    char *ptr = (char*)&val;
-    return get(*ptr);
-  }
-  
-  long tmp;
-  bool ok = skipWhiteSpace();
-  if (ok && readInteger(tmp) && tmp >= -128 && tmp <= 127) {
-    val = (int8) tmp;
-    return nextLine();
-  }
-  return false;
+	if (this->binary)
+	{
+		auto ptr = (char*)&val;
+		return get(*ptr);
+	}
+
+	long tmp;
+	bool ok = skipWhiteSpace();
+	if (ok && readInteger(tmp) && tmp >= -128 && tmp <= 127)
+	{
+		val = static_cast<int8_t>(tmp);
+		return nextLine();
+	}
+	return false;
 }
 
 /*!
   Reads a 16 bit integer from the file.
 */
 
-bool 
-dimeInput::readInt16(int16 &val)
+bool
+DimeInput::readInt16(int16_t& val)
 {
-  if (this->binary) {
-    bool ret;
-    char *ptr = (char*)&val;
-    if (this->endianSwap) {
-      this->get(ptr[1]);
-      ret = this->get(ptr[0]);
-    }
-    else {
-      this->get(ptr[0]);
-      ret = this->get(ptr[1]);
-    }
-    return ret;
-  }
+	if (this->binary)
+	{
+		bool ret;
+		auto ptr = (char*)&val;
+		if (this->endianSwap)
+		{
+			this->get(ptr[1]);
+			ret = this->get(ptr[0]);
+		}
+		else
+		{
+			this->get(ptr[0]);
+			ret = this->get(ptr[1]);
+		}
+		return ret;
+	}
 
-  long tmp;
-  bool ok = skipWhiteSpace();
-  if (ok && readInteger(tmp) && tmp >= -32768 && tmp <= 32767) {
-    val = (int16) tmp;
-    return nextLine();
-  }
-  return false;
+	long tmp;
+	bool ok = skipWhiteSpace();
+	if (ok && readInteger(tmp) && tmp >= -32768 && tmp <= 32767)
+	{
+		val = static_cast<int16_t>(tmp);
+		return nextLine();
+	}
+	return false;
 }
 
 /*!
   Reads a 32 bit integer from the file. 
 */
 
-bool 
-dimeInput::readInt32(int32 &val)
+bool
+DimeInput::readInt32(int32_t& val)
 {
-  if (this->binary) {
-    bool ret;
-    char *ptr = (char*)&val;
-    if (this->endianSwap) {
-      this->get(ptr[3]);
-      this->get(ptr[2]);
-      this->get(ptr[1]);
-      ret = this->get(ptr[0]);
-    }
-    else {
-      this->get(ptr[0]);
-      this->get(ptr[1]);
-      this->get(ptr[2]);
-      ret = this->get(ptr[3]);
-    }
-    return ret;
-  }
-  
-  long tmp;
-  if (skipWhiteSpace() && readInteger(tmp)) {
-    val = tmp;
-    return nextLine();
-  }
-  return false;
+	if (this->binary)
+	{
+		bool ret;
+		auto ptr = (char*)&val;
+		if (this->endianSwap)
+		{
+			this->get(ptr[3]);
+			this->get(ptr[2]);
+			this->get(ptr[1]);
+			ret = this->get(ptr[0]);
+		}
+		else
+		{
+			this->get(ptr[0]);
+			this->get(ptr[1]);
+			this->get(ptr[2]);
+			ret = this->get(ptr[3]);
+		}
+		return ret;
+	}
+
+	long tmp;
+	if (skipWhiteSpace() && readInteger(tmp))
+	{
+		val = tmp;
+		return nextLine();
+	}
+	return false;
 }
 
 /*!
   Reads a single precision floating point number from the file. 
 */
 
-bool 
-dimeInput::readFloat(float &val)
+bool
+DimeInput::readFloat(float& val)
 {
-  bool ret = false;
+	bool ret = false;
 
-  if (this->binary) {
-    // binary files only contains doubles
-    dxfdouble tmp;
-    ret = readDouble(tmp);
-    val = (float) tmp; 
-  }
-  else {
-    dxfdouble tmp;
-    ret = skipWhiteSpace();
-    if (ret && 
-        readReal(tmp)) {    
-      val = (float) tmp;
-      ret = nextLine();
-    }
-  }
-  if (ret) {
-    if (!dime_finite(val)) {
-      int tst = dime_isinf(val);
-      if (tst < 0) {
-        val = -FLT_MAX;
-      }
-      else if (tst > 0) {
-        val = FLT_MAX;
-      }
-    }
-  }
-  return ret;
+	if (this->binary)
+	{
+		// binary files only contains doubles
+		dxfdouble tmp;
+		ret = readDouble(tmp);
+		val = static_cast<float>(tmp);
+	}
+	else
+	{
+		dxfdouble tmp;
+		ret = skipWhiteSpace();
+		if (ret &&
+			readReal(tmp))
+		{
+			val = static_cast<float>(tmp);
+			ret = nextLine();
+		}
+	}
+	if (ret)
+	{
+		if (!dime_finite(val))
+		{
+			int tst = dime_isinf(val);
+			if (tst < 0)
+			{
+				val = -FLT_MAX;
+			}
+			else if (tst > 0)
+			{
+				val = FLT_MAX;
+			}
+		}
+	}
+	return ret;
 }
 
 /*!
   Reads a dxfdouble precision floating point number from the file.
 */
 
-bool 
-dimeInput::readDouble(dxfdouble &val)
+bool
+DimeInput::readDouble(dxfdouble& val)
 {
-  bool ret = false;
-  if (this->binary) {
-    double tmp;
-    assert(sizeof(tmp) == 8);
-    char *ptr = (char*)&tmp;
-    if (this->endianSwap) {
-      this->get(ptr[7]);
-      this->get(ptr[6]);
-      this->get(ptr[5]);
-      this->get(ptr[4]);
-      this->get(ptr[3]);
-      this->get(ptr[2]);
-      this->get(ptr[1]);
-      ret = this->get(ptr[0]);
-      val = (dxfdouble) tmp;
-    }
-    else {
-      this->get(ptr[0]);
-      this->get(ptr[1]);
-      this->get(ptr[2]);
-      this->get(ptr[3]);
-      this->get(ptr[4]);
-      this->get(ptr[5]);
-      this->get(ptr[6]);
-      ret = this->get(ptr[7]);
-      val = (dxfdouble) tmp;
-    }
-  }
-  else {
-    if (skipWhiteSpace()) {
-      if (readReal(val)) {
-        ret = nextLine();
-      }
-    }
-  }
-  
-  if (ret) {
-    if (!dime_finite(val)) {
-      int tst = dime_isinf(val);
-      // choose FLT_MAX as the maximum value if a number is infinite
-      if (tst < 0) {
-        val = -FLT_MAX;
-      }
-      else if (tst > 0) {
-        val = FLT_MAX;
-      }
-    }
-  }
-  return ret;
+	bool ret = false;
+	if (this->binary)
+	{
+		double tmp;
+		assert(sizeof(tmp) == 8);
+		auto ptr = (char*)&tmp;
+		if (this->endianSwap)
+		{
+			this->get(ptr[7]);
+			this->get(ptr[6]);
+			this->get(ptr[5]);
+			this->get(ptr[4]);
+			this->get(ptr[3]);
+			this->get(ptr[2]);
+			this->get(ptr[1]);
+			ret = this->get(ptr[0]);
+			val = tmp;
+		}
+		else
+		{
+			this->get(ptr[0]);
+			this->get(ptr[1]);
+			this->get(ptr[2]);
+			this->get(ptr[3]);
+			this->get(ptr[4]);
+			this->get(ptr[5]);
+			this->get(ptr[6]);
+			ret = this->get(ptr[7]);
+			val = tmp;
+		}
+	}
+	else
+	{
+		if (skipWhiteSpace())
+		{
+			if (readReal(val))
+			{
+				ret = nextLine();
+			}
+		}
+	}
+
+	if (ret)
+	{
+		if (!dime_finite(val))
+		{
+			int tst = dime_isinf(val);
+			// choose FLT_MAX as the maximum value if a number is infinite
+			if (tst < 0)
+			{
+				val = -FLT_MAX;
+			}
+			else if (tst > 0)
+			{
+				val = FLT_MAX;
+			}
+		}
+	}
+	return ret;
 }
 
 /*!
@@ -513,36 +553,40 @@ dimeInput::readDouble(dxfdouble &val)
   copy it somewhere if you need it.
 */
 
-const char *
-dimeInput::readString()
+const char*
+DimeInput::readString()
 {
-  bool ok = skipWhiteSpace();
-  if (ok) {
-    char c;
-    int idx = 0;
-#if 0     
+	bool ok = skipWhiteSpace();
+	if (ok)
+	{
+		char c;
+		int idx = 0;
+#if 0
     if (this->binary) {
       if (!get(c)) return NULL;
       if (c != 0) lineBuf[idx++] = c;
     }
 #endif
-    while (get(c) && c != 0xa && c != 0xd && c != 0 && idx < DXF_MAXLINELEN) {
-      lineBuf[idx++] = c;
-    }
-    if (c == 0xa) this->putBack(c);
-    else if (c == 0xd) this->putBack(c);
-    this->nextLine();
-    this->lineBuf[idx] = '\0';
+		while (get(c) && c != 0xa && c != 0xd && c != 0 && idx < DXF_MAXLINELEN)
+		{
+			lineBuf[idx++] = c;
+		}
+		if (c == 0xa) this->putBack(c);
+		else if (c == 0xd) this->putBack(c);
+		this->nextLine();
+		this->lineBuf[idx] = '\0';
 
-    if (this->prevwashandle) {
-      this->prevwashandle = false;
-      if (this->model) {
-	this->model->registerHandle(this->lineBuf);
-      }
-    }
-    return this->lineBuf;
-  }
-  return NULL;
+		if (this->prevwashandle)
+		{
+			this->prevwashandle = false;
+			if (this->model)
+			{
+				this->model->registerHandle(this->lineBuf);
+			}
+		}
+		return this->lineBuf;
+	}
+	return nullptr;
 }
 
 /*!
@@ -550,53 +594,46 @@ dimeInput::readString()
  This is used for reading TEXT primary values, group_code = 1.
 */
 
-const char *
-dimeInput::readStringNoSkip()
+const char*
+DimeInput::readStringNoSkip()
 {
-    char c;
-    int idx = 0;
-#if 0     
+	char c;
+	int idx = 0;
+#if 0
     if (this->binary) {
       if (!get(c)) return NULL;
       if (c != 0) lineBuf[idx++] = c;
     }
 #endif
-    while (get(c) && c != 0xa && c != 0xd && c != 0 && idx < DXF_MAXLINELEN) {
-      lineBuf[idx++] = c;
-    }
-    if (c == 0xa) this->putBack(c);
-    else if (c == 0xd) this->putBack(c);
-    this->nextLine();
-    this->lineBuf[idx] = '\0';
+	while (get(c) && c != 0xa && c != 0xd && c != 0 && idx < DXF_MAXLINELEN)
+	{
+		lineBuf[idx++] = c;
+	}
+	if (c == 0xa) this->putBack(c);
+	else if (c == 0xd) this->putBack(c);
+	this->nextLine();
+	this->lineBuf[idx] = '\0';
 
-    if (this->prevwashandle) {
-      this->prevwashandle = false;
-      if (this->model) {
-	this->model->registerHandle(this->lineBuf);
-      }
-    }
-    return this->lineBuf;
+	if (this->prevwashandle)
+	{
+		this->prevwashandle = false;
+		if (this->model)
+		{
+			this->model->registerHandle(this->lineBuf);
+		}
+	}
+	return this->lineBuf;
 }
 
-/*!
-  Returns the memory handler used in this model.
-*/
-
-dimeMemHandler *
-dimeInput::getMemHandler()
-{
-  if (model) return model->getMemHandler();
-  return NULL;
-}
 
 /*!
   Returns the model for this file.
 */
 
-dimeModel *
-dimeInput::getModel()
+DimeModel*
+DimeInput::getModel()
 {
-  return model;
+	return model;
 }
 
 /*!
@@ -604,30 +641,30 @@ dimeInput::getModel()
   For binary files the file position is returned.
 */
 
-int 
-dimeInput::getFilePosition() const
+int
+DimeInput::getFilePosition() const
 {
-  return filePosition;
+	return filePosition;
 }
 
 /*!
   Returns true if this is a binary (DXB) file.
 */
 
-bool 
-dimeInput::isBinary() const
+bool
+DimeInput::isBinary() const
 {
-  return binary;
+	return binary;
 }
 
 /*!
   Returns the version of this file (10, 12, 13 or 14).
 */
 
-int 
-dimeInput::getVersion() const
+int
+DimeInput::getVersion() const
 {
-  return version;
+	return version;
 }
 
 // private funcs ***********************************************************
@@ -637,7 +674,7 @@ dimeInput::getVersion() const
 //  stdio caching is not fast enough...
 //
 bool
-dimeInput::doBufferRead()
+DimeInput::doBufferRead()
 {
 #if USE_GZFILE
   if (!this->gzfp) return false;
@@ -654,19 +691,18 @@ dimeInput::doBufferRead()
     return true;
   }
 #else // ! USE_GZFILE
-  if (!this->fp) return false;
-  int len = fread(this->readbuf, 1, READBUFSIZE, this->fp);
-  if (len <= 0) {
-    this->fpeof = true;
-    this->readbufIndex = 0;
-    this->readbufLen = 0;
-    return false;
-  }
-  else {
-    this->readbufIndex = 0;
-    this->readbufLen = len;
-    return true;
-  }
+	if (!this->fp) return false;
+	size_t len = fread(this->readbuf, 1, READBUFSIZE, this->fp);
+	if (len <= 0)
+	{
+		this->fpeof = true;
+		this->readbufIndex = 0;
+		this->readbufLen = 0;
+		return false;
+	}
+	this->readbufIndex = 0;
+	this->readbufLen = len;
+	return true;
 #endif // ! USE_GZFILE
 }
 
@@ -675,12 +711,12 @@ dimeInput::doBufferRead()
 //
 
 void
-dimeInput::putBack(const char c)
+DimeInput::putBack(const char c)
 {
-  if (readbufIndex > 0 && backBufIndex < 0)
-    readbufIndex--;
-  else
-    backBuf[++backBufIndex] = c;
+	if (readbufIndex > 0 && backBufIndex < 0)
+		readbufIndex--;
+	else
+		backBuf[++backBufIndex] = c;
 }
 
 //
@@ -688,15 +724,16 @@ dimeInput::putBack(const char c)
 //
 
 void
-dimeInput::putBack(const char * const string)
+DimeInput::putBack(const char* const string)
 {
-  int n = strlen(string);
-  if (n <= readbufIndex && backBufIndex < 0)
-    readbufIndex -= n;
-  else {
-    for (int i = n - 1; i >= 0; i--) 
-      backBuf[++backBufIndex] = string[i];
-  }
+	size_t n = strlen(string);
+	if (n <= readbufIndex && backBufIndex < 0)
+		readbufIndex -= n;
+	else
+	{
+		for (size_t i = n - 1; i >= 0; i--)
+			backBuf[++backBufIndex] = string[i];
+	}
 }
 
 //
@@ -704,9 +741,9 @@ dimeInput::putBack(const char * const string)
 //
 
 bool
-dimeInput::read(char &c)
+DimeInput::read(char& c)
 {
-  return (skipWhiteSpace() && get(c));
+	return (skipWhiteSpace() && get(c));
 }
 
 //
@@ -714,19 +751,22 @@ dimeInput::read(char &c)
 //
 
 bool
-dimeInput::get(char &c)
-{  
-  if(backBufIndex >= 0) {
-    c = backBuf[backBufIndex--];
-    return true;
-  }
+DimeInput::get(char& c)
+{
+	if (backBufIndex >= 0)
+	{
+		c = backBuf[backBufIndex--];
+		return true;
+	}
 
-  if (readbufIndex >= readbufLen) {
-    if (!doBufferRead()) {
-      return false;
-    }
-  }
-  c = readbuf[readbufIndex++];
+	if (readbufIndex >= readbufLen)
+	{
+		if (!doBufferRead())
+		{
+			return false;
+		}
+	}
+	c = readbuf[readbufIndex++];
 #if 0
   if (c == 0) {
 #if USE_GZFILE
@@ -737,10 +777,11 @@ dimeInput::get(char &c)
     return false;
   }
 #endif
-  if (this->binary) {
-    this->filePosition++;
-  }
-  return true;
+	if (this->binary)
+	{
+		this->filePosition++;
+	}
+	return true;
 }
 
 //
@@ -748,39 +789,41 @@ dimeInput::get(char &c)
 //
 
 bool
-dimeInput::skipWhiteSpace()
+DimeInput::skipWhiteSpace()
 {
-  if (this->binary) return true;
-  char c;
-  register bool gotChar;
-  register char endline = 0xa;
-  register char endline2 = 0xd;
-  while((gotChar = get(c)) && isspace(c) && c != endline && c != endline2);
-  if (!gotChar) return false;
+	if (this->binary) return true;
+	char c;
+	bool gotChar;
+	char endline = 0xa;
+	char endline2 = 0xd;
+	while ((gotChar = get(c)) && isspace(c) && c != endline && c != endline2);
+	if (!gotChar) return false;
 
-  // step one char back
-  putBack(c);
-  return true;
+	// step one char back
+	putBack(c);
+	return true;
 }
 
 bool
-dimeInput::nextLine()
+DimeInput::nextLine()
 {
-  if (this->binary) return true;
+	if (this->binary) return true;
 
-  char c;
-  register bool gotChar;
-  register char endline = 0xa;
-  register char endline2 = 0xd;
-  while((gotChar = get(c)) && c != endline && c != endline2);
-  if (!gotChar) return false;
-  while (c == endline2) { // try to read one more
-    gotChar = get(c);
-    if (!gotChar) return false;
-  }
-  if (c != endline && c != endline2) this->putBack(c);
-  this->filePosition++;
-  return true;
+	char c;
+	bool gotChar;
+	char endline = 0xa;
+	char endline2 = 0xd;
+	while ((gotChar = get(c)) && c != endline && c != endline2);
+	if (!gotChar) return false;
+	while (c == endline2)
+	{
+		// try to read one more
+		gotChar = get(c);
+		if (!gotChar) return false;
+	}
+	if (c != endline && c != endline2) this->putBack(c);
+	this->filePosition++;
+	return true;
 }
 
 //
@@ -788,21 +831,21 @@ dimeInput::nextLine()
 //
 
 bool
-dimeInput::readInteger(long &l)
+DimeInput::readInteger(long& l)
 {
-  assert(!this->binary);
-  char str[TMPBUFSIZE];
-  char *s = str;
+	assert(!this->binary);
+	char str[TMPBUFSIZE];
+	char* s = str;
 
-  if(readChar(s, '-') || readChar(s, '+'))
-    s++;
+	if (readChar(s, '-') || readChar(s, '+'))
+		s++;
 
-  if(! readUnsignedIntegerString(s))
-    return false;
+	if (!readUnsignedIntegerString(s))
+		return false;
 
-  l = strtol(str, NULL, 0);
+	l = strtol(str, nullptr, 0);
 
-  return true;
+	return true;
 }
 
 //
@@ -810,63 +853,66 @@ dimeInput::readInteger(long &l)
 //
 
 bool
-dimeInput::readUnsignedInteger(unsigned long &l)
+DimeInput::readUnsignedInteger(unsigned long& l)
 {
-  assert(!this->binary);
-  char str[TMPBUFSIZE]; 
-  if(! readUnsignedIntegerString(str))
-    return false;
+	assert(!this->binary);
+	char str[TMPBUFSIZE];
+	if (!readUnsignedIntegerString(str))
+		return false;
 
-  l = strtoul(str, NULL, 0);
+	l = strtoul(str, nullptr, 0);
 
-  return true;
+	return true;
 }
 
 bool
-dimeInput::readUnsignedIntegerString(char * const str)
+DimeInput::readUnsignedIntegerString(char* const str)
 {
-  assert(!this->binary);
-  int minSize = 1;
-  char *s = str;
+	assert(!this->binary);
+	int minSize = 1;
+	char* s = str;
 
-  if(readChar(s, '0')) {
+	if (readChar(s, '0'))
+	{
+		if (readChar(s + 1, 'x'))
+		{
+			s += 2 + readHexDigits(s + 2);
+			minSize = 3;
+		}
 
-    if(readChar(s + 1, 'x')) {
-      s += 2 + readHexDigits(s + 2);
-      minSize = 3;
-    }
+		else
+			s += 1 + readDigits(s + 1);
+	}
 
-    else
-      s += 1 + readDigits(s + 1);
-  }
+	else
+		s += readDigits(s);
 
-  else
-    s += readDigits(s);
+	if (s - str < minSize)
+		return false;
 
-  if(s - str < minSize)
-    return false;
+	*s = '\0';
 
-  *s = '\0';
-
-  return true;
+	return true;
 }
 
 int
-dimeInput::readDigits(char * const string)
+DimeInput::readDigits(char* const string)
 {
-  assert(!this->binary);
-  char c, *s = string;
+	assert(!this->binary);
+	char c, *s = string;
 
-  while (get(c)) {
-    if(isdigit(c))
-      *s++ = c;
-    else {
-      putBack(c);
-      break;
-    }
-  }
-  
-  return s - string;
+	while (get(c))
+	{
+		if (isdigit(c))
+			*s++ = c;
+		else
+		{
+			putBack(c);
+			break;
+		}
+	}
+
+	return s - string;
 }
 
 //
@@ -875,48 +921,51 @@ dimeInput::readDigits(char * const string)
 //
 
 int
-dimeInput::readChar(char * const string, char charToRead)
+DimeInput::readChar(char* const string, char charToRead)
 {
-  assert(!this->binary);
+	assert(!this->binary);
 
-  char c;
-  int ret;
+	char c;
+	int ret;
 
-  if(!get(c))
-    ret = 0;
-  
-  else if(c == charToRead) {
-    *string = c;
-    ret = 1;
-  }
+	if (!get(c))
+		ret = 0;
 
-  else {
-    putBack(c);
-    ret = 0;
-  }
+	else if (c == charToRead)
+	{
+		*string = c;
+		ret = 1;
+	}
 
-  return ret;
+	else
+	{
+		putBack(c);
+		ret = 0;
+	}
+
+	return ret;
 }
 
 int
-dimeInput::readHexDigits(char * const string)
+DimeInput::readHexDigits(char* const string)
 {
-  assert(!this->binary);
+	assert(!this->binary);
 
-  char c, *s = string;
+	char c, *s = string;
 
-  while (get(c)) {
+	while (get(c))
+	{
+		if (isxdigit(c))
+			*s++ = c;
 
-    if(isxdigit(c))
-      *s++ = c;
+		else
+		{
+			putBack(c);
+			break;
+		}
+	}
 
-    else {
-      putBack(c);
-      break;
-    }
-  }
-
-  return s - string;
+	return s - string;
 }
 
 //
@@ -924,109 +973,118 @@ dimeInput::readHexDigits(char * const string)
 //
 
 bool
-dimeInput::readReal(dxfdouble &d)
+DimeInput::readReal(dxfdouble& d)
 {
-  assert(!this->binary);
+	assert(!this->binary);
 
-  char str[TMPBUFSIZE];
-  int n;
-  char *s = str;
-  bool gotNum = false;
+	char str[TMPBUFSIZE];
+	int n;
+	char* s = str;
+	bool gotNum = false;
 
-  n = readChar(s, '-');
-  if(n == 0)
-    n = readChar(s, '+');
-  s += n;
-  
-  if((n = readDigits(s)) > 0) {
-    gotNum = true;
-    s += n;
-  }
-  
-  if(readChar(s, '.') > 0) {
-    s++;
+	n = readChar(s, '-');
+	if (n == 0)
+		n = readChar(s, '+');
+	s += n;
 
-    if((n = readDigits(s)) > 0) {
-      gotNum = true;
-      s += n;
-    }
-  }
+	if ((n = readDigits(s)) > 0)
+	{
+		gotNum = true;
+		s += n;
+	}
 
-  if(!gotNum)
-    return false;
+	if (readChar(s, '.') > 0)
+	{
+		s++;
 
-  n = readChar(s, 'e');
-  if(n == 0)
-    n = readChar(s, 'E');
-  
-  if(n > 0) {
-    s += n;
+		if ((n = readDigits(s)) > 0)
+		{
+			gotNum = true;
+			s += n;
+		}
+	}
 
-    n = readChar(s, '-');
-    if(n == 0)
-      n = readChar(s, '+');
-    s += n;
-    
-    if((n = readDigits(s)) > 0)
-      s += n;
-    
-    else
-      return false; 
-  }
-  
-  *s = '\0';
-  
-  d = atof(str);
-  return true;
+	if (!gotNum)
+		return false;
+
+	n = readChar(s, 'e');
+	if (n == 0)
+		n = readChar(s, 'E');
+
+	if (n > 0)
+	{
+		s += n;
+
+		n = readChar(s, '-');
+		if (n == 0)
+			n = readChar(s, '+');
+		s += n;
+
+		if ((n = readDigits(s)) > 0)
+			s += n;
+
+		else
+			return false;
+	}
+
+	*s = '\0';
+
+	d = atof(str);
+	return true;
 }
 
-bool 
-dimeInput::checkBinary()
+bool
+DimeInput::checkBinary()
 {
-  { // perform endian-test
-    uint16 val;
-    char *ptr = (char*)&val;
-    ptr[0] = 1;
-    ptr[1] = 0;
-    if (val == 0x0001) this->endianSwap = false;
-    else {
-      assert(val == 0x0100);
-      this->endianSwap = true;
-    }
-  }
-  
-  static char binaryid[] = "AutoCAD Binary DXF";
-  char buf[64];
-  int i;
-  int n = strlen(binaryid);
-  for (i = 0; i < n; i++) {
-    if (!this->get(buf[i])) break;
-    if (buf[i] != binaryid[i]) break;
-  }
-  if (i < n) { // probably ascii
-    this->readbufIndex = 0; // assumes READBUFSIZE > 22, should be safe
-    this->filePosition = 0;
-    return false;
-  }
-  else {
-    // skip next 4 bytes
-    for (i = 0; i < 4; i++) this->get(buf[0]);
-    this->filePosition = 22; // byte position in file
+	{
+		// perform endian-test
+		uint16_t val;
+		auto ptr = (char*)&val;
+		ptr[0] = 1;
+		ptr[1] = 0;
+		if (val == 0x0001) this->endianSwap = false;
+		else
+		{
+			assert(val == 0x0100);
+			this->endianSwap = true;
+		}
+	}
 
-    char test16;
-    this->get(test16);
-    assert(test16 == 0);
-    this->get(test16);
-    if (test16 == 0) {
-      this->binary16bit = true;
-      this->putBack((char)0);
-      this->putBack((char)0);
-    }
-    else {
-      this->binary16bit = false;
-      this->putBack(test16);
-      this->putBack((char)0);
-    }
-    return true;
-  }
+	static char binaryid[] = "AutoCAD Binary DXF";
+	char buf[64];
+	int i;
+	size_t n = strlen(binaryid);
+	for (i = 0; i < n; i++)
+	{
+		if (!this->get(buf[i])) break;
+		if (buf[i] != binaryid[i]) break;
+	}
+	if (i < n)
+	{
+		// probably ascii
+		this->readbufIndex = 0; // assumes READBUFSIZE > 22, should be safe
+		this->filePosition = 0;
+		return false;
+	}
+	// skip next 4 bytes
+	for (i = 0; i < 4; i++) this->get(buf[0]);
+	this->filePosition = 22; // byte position in file
+
+	char test16;
+	this->get(test16);
+	assert(test16 == 0);
+	this->get(test16);
+	if (test16 == 0)
+	{
+		this->binary16bit = true;
+		this->putBack(static_cast<char>(0));
+		this->putBack(static_cast<char>(0));
+	}
+	else
+	{
+		this->binary16bit = false;
+		this->putBack(test16);
+		this->putBack(static_cast<char>(0));
+	}
+	return true;
 }

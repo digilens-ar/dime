@@ -38,7 +38,7 @@
 #include <dime/records/HexRecord.h>
 #include <dime/Input.h>
 #include <dime/Output.h>
-#include <dime/util/MemHandler.h>
+
 
 #include <string.h>
 
@@ -47,15 +47,14 @@
 */
 
 dimeHexRecord::dimeHexRecord(const int group_code)
-  : dimeStringRecord(group_code)
+	: dimeStringRecord(group_code)
 {
 }
 
 //!
 
-int 
+DimeBase::TypeID
 dimeHexRecord::typeId() const
 {
-  return dimeBase::dimeHexRecordType;
+	return DimeBase::dimeHexRecordType;
 }
-

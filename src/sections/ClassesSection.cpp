@@ -31,194 +31,192 @@
 \**************************************************************************/
 
 /*!
-  \class dimeClassesSection dime/sections/ClassesSection.h
+  \class DimeClassesSection dime/sections/ClassesSection.h
   \brief The dimeClassesSection class handles a CLASSES \e section.
 */
 
 #include <dime/sections/ClassesSection.h>
 #include <dime/Input.h>
 #include <dime/Output.h>
-#include <dime/util/MemHandler.h>
+
 #include <dime/Model.h>
 #include <dime/classes/Class.h>
 #include <dime/Model.h>
 
 #include <string.h>
 
-static const char sectionName[] = "CLASSES";
+static constexpr char sectionName[] = "CLASSES";
 
-/*!
-  Constructor.
-*/
-
-dimeClassesSection::dimeClassesSection(dimeMemHandler * const memhandler)
-  : dimeSection(memhandler)
-{
-}
 
 /*!
   Destructor.
 */
 
-dimeClassesSection::~dimeClassesSection()
+DimeClassesSection::~DimeClassesSection()
 {
-  if (!this->memHandler) {
-    for (int i = 0; i < this->classes.count(); i++)
-      delete this->classes[i];
-  }
+	for (int i = 0; i < this->classes.count(); i++)
+		delete this->classes[i];
 }
 
 //!
 
-dimeSection *
-dimeClassesSection::copy(dimeModel * const model) const
+DimeSection*
+DimeClassesSection::copy(DimeModel* const model) const
 {
-  dimeMemHandler *memh = model->getMemHandler();
-  dimeClassesSection *cs = new dimeClassesSection(memh); 
-  bool ok = cs != NULL;
+	auto cs = new DimeClassesSection();
+	bool ok = cs != nullptr;
 
-  int num  = this->classes.count();
-  if (ok && num) {
-    cs->classes.makeEmpty(num);
-    for (int i = 0; i < num; i++) {
-      cs->classes.append(this->classes[i]->copy(model));
-      if (cs->classes[i] == NULL) {
-	ok = false;
-	break;
-      }
-    }
-  }
-  
-  if (!ok) {
-    if (!memh) delete cs;
-    cs = NULL;
-  }
-//  sim_trace("classes section copy: %p\n", cs);
-  return cs;
-}
- 
-//!
+	int num = this->classes.count();
+	if (ok && num)
+	{
+		cs->classes.makeEmpty(num);
+		for (int i = 0; i < num; i++)
+		{
+			cs->classes.append(this->classes[i]->copy(model));
+			if (cs->classes[i] == NULL)
+			{
+				ok = false;
+				break;
+			}
+		}
+	}
 
-bool 
-dimeClassesSection::read(dimeInput * const file)
-{
-  int32 groupcode;
-  const char *string;
-  bool ok = true;
-  dimeClass *myclass = NULL;
-  dimeMemHandler *memhandler = file->getMemHandler();
-  this->classes.makeEmpty(64);
-
-//  sim_trace("Reading section: CLASSES\n");
-
-  while (true) {
-    if (!file->readGroupCode(groupcode) || (groupcode != 9 && groupcode != 0)) {
-      fprintf(stderr,"Error reading classes groupcode: %d.\n", groupcode);
-//      sim_warning("Error reading classes groupcode: %d.\n", groupcode);
-      ok = false;
-      break;
-    }
-    string = file->readString();
-    if (!strcmp(string, "ENDSEC")) break; 
-    myclass = dimeClass::createClass(string, memhandler);
-    if (myclass == NULL) {
-      fprintf(stderr,"error creating class: %s.\n", string);
-//      sim_warning("error creating class: %s.\n", string);
-      ok = false;
-      break;
-    }
-    if (!myclass->read(file)) {
-      fprintf(stderr,"error reading class: %s.\n", string);
-//      sim_warning("error reading class: %s.\n", string);
-      ok = false;
-      break;
-    }
-    this->classes.append(myclass);
-  }
-  return ok;
+	if (!ok)
+	{
+		delete cs;
+		cs = nullptr;
+	}
+	//  sim_trace("classes section copy: %p\n", cs);
+	return cs;
 }
 
 //!
 
-bool 
-dimeClassesSection::write(dimeOutput * const file)
+bool
+DimeClassesSection::read(DimeInput* const file)
 {
-//  sim_trace("Writing section: CLASSES\n");
+	int32_t groupcode;
+	const char* string;
+	bool ok = true;
+	DimeClass* myclass = nullptr;
+	this->classes.makeEmpty(64);
 
-  file->writeGroupCode(2);
-  file->writeString(sectionName);
- 
-  int i, n = this->classes.count();
-  for (i = 0; i < n; i++) {
-    if (!this->classes[i]->write(file)) break;
-  }
-  if (i == n) {
-    file->writeGroupCode(0);
-    file->writeString("ENDSEC");
-    return true;
-  }
-  return false;
+	//  sim_trace("Reading section: CLASSES\n");
+
+	while (true)
+	{
+		if (!file->readGroupCode(groupcode) || (groupcode != 9 && groupcode != 0))
+		{
+			fprintf(stderr, "Error reading classes groupcode: %d.\n", groupcode);
+			//      sim_warning("Error reading classes groupcode: %d.\n", groupcode);
+			ok = false;
+			break;
+		}
+		string = file->readString();
+		if (!strcmp(string, "ENDSEC")) break;
+		myclass = DimeClass::createClass(string);
+		if (myclass == nullptr)
+		{
+			fprintf(stderr, "error creating class: %s.\n", string);
+			//      sim_warning("error creating class: %s.\n", string);
+			ok = false;
+			break;
+		}
+		if (!myclass->read(file))
+		{
+			fprintf(stderr, "error reading class: %s.\n", string);
+			//      sim_warning("error reading class: %s.\n", string);
+			ok = false;
+			break;
+		}
+		this->classes.append(myclass);
+	}
+	return ok;
 }
 
 //!
 
-int 
-dimeClassesSection::typeId() const
+bool
+DimeClassesSection::write(DimeOutput* const file)
 {
-  return dimeBase::dimeClassesSectionType;
+	//  sim_trace("Writing section: CLASSES\n");
+
+	file->writeGroupCode(2);
+	file->writeString(sectionName);
+
+	int i, n = this->classes.count();
+	for (i = 0; i < n; i++)
+	{
+		if (!this->classes[i]->write(file)) break;
+	}
+	if (i == n)
+	{
+		file->writeGroupCode(0);
+		file->writeString("ENDSEC");
+		return true;
+	}
+	return false;
+}
+
+//!
+
+DimeBase::TypeID
+DimeClassesSection::typeId() const
+{
+	return DimeBase::dimeClassesSectionType;
 }
 
 //!
 
 int
-dimeClassesSection::countRecords() const
+DimeClassesSection::countRecords() const
 {
-  int cnt = 0;
-  int n = this->classes.count();
-  for (int i = 0; i < n; i++)
-    cnt += this->classes[i]->countRecords();
-  return cnt + 2; // two additional records are written in write()
+	int cnt = 0;
+	int n = this->classes.count();
+	for (int i = 0; i < n; i++)
+		cnt += this->classes[i]->countRecords();
+	return cnt + 2; // two additional records are written in write()
 }
 
 //!
 
-const char *
-dimeClassesSection::getSectionName() const
+const char*
+DimeClassesSection::getSectionName() const
 {
-  return sectionName;
+	return sectionName;
 }
 
 /*!
   Returns the number of classes in this section. 
 */
 
-int 
-dimeClassesSection::getNumClasses() const
+int
+DimeClassesSection::getNumClasses() const
 {
-  return this->classes.count();
+	return this->classes.count();
 }
 
 /*!
   Returns the class at index \a idx.
 */
 
-dimeClass *
-dimeClassesSection::getClass(const int idx)
+DimeClass*
+DimeClassesSection::getClass(const int idx)
 {
-  assert(idx >= 0 && idx < this->classes.count());
-  return this->classes[idx];
+	assert(idx >= 0 && idx < this->classes.count());
+	return this->classes[idx];
 }
 
 /*!
   Removes (and deletes if no memory handler is used) the class at index \a idx.
 */
 
-void 
-dimeClassesSection::removeClass(const int idx)
+void
+DimeClassesSection::removeClass(const int idx)
 {
-  assert(idx >= 0 && idx < this->classes.count());
-  if (!this->memHandler) delete this->classes[idx];
-  this->classes.removeElem(idx);
+	assert(idx >= 0 && idx < this->classes.count());
+	delete this->classes[idx];
+	this->classes.removeElem(idx);
 }
 
 /*!
@@ -226,13 +224,13 @@ dimeClassesSection::removeClass(const int idx)
   class will be inserted at the end of the list of classes.
 */
 
-void 
-dimeClassesSection::insertClass(dimeClass * const myclass, const int idx)
+void
+DimeClassesSection::insertClass(DimeClass* const myclass, const int idx)
 {
-  if (idx < 0) this->classes.append(myclass);
-  else {
-    assert(idx <= this->classes.count());
-    this->classes.insertElem(idx, myclass);
-  }
+	if (idx < 0) this->classes.append(myclass);
+	else
+	{
+		assert(idx <= this->classes.count());
+		this->classes.insertElem(idx, myclass);
+	}
 }
-

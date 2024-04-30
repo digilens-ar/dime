@@ -36,43 +36,45 @@
 #include <dime/Basic.h>
 #include <string.h>
 
-class DIME_DLL_API dimeDictEntry
+class  dimeDictEntry
 {
-  friend class dimeDict;
+	friend class dimeDict;
 
 private:
-  dimeDictEntry *next;
-  dimeDictEntry(const char * const k, void *v) {key = strdup(k); value = v; };
-  ~dimeDictEntry() {free(key);} 
-  char *key;
-  void *value;
+	dimeDictEntry* next;
 
+	dimeDictEntry(const char* const k, void* v)
+	{
+		key = strdup(k);
+		value = v;
+	};
+	~dimeDictEntry() { free(key); }
+	char* key;
+	void* value;
 }; // class dimeDictEntry
 
-class DIME_DLL_API dimeDict
+class  dimeDict
 {
 public:
-  dimeDict(const int entries = 17989);
-  ~dimeDict();
-  void clear();
+	dimeDict(int entries = 17989);
+	~dimeDict();
+	void clear();
 
-  bool enter(const char * const key, char *&ptr, void *value);
-  const char *enter(const char * const key, void *value);
-  const char *find(const char * const key) const;
-  bool find(const char * const key, void *&value) const;
-  bool remove(const char * const key);
-  void dump(void);
+	bool enter(const char* key, char*& ptr, void* value);
+	const char* enter(const char* key, void* value);
+	const char* find(const char* key) const;
+	bool find(const char* key, void*& value) const;
+	bool remove(const char* key);
+	void dump(void);
 
 private:
-  int tableSize;
-  dimeDictEntry **buckets;
-  dimeDictEntry *&findEntry(const char * const key) const;
-  unsigned int bucketNr(const char *key) const;
+	int tableSize;
+	dimeDictEntry** buckets;
+	dimeDictEntry*& findEntry(const char* key) const;
+	unsigned int bucketNr(const char* key) const;
 
 public:
-  void print_info();
-  
+	void print_info();
 }; // class dimeDict
 
 #endif // ! DIME_DICT_H
-

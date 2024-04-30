@@ -38,86 +38,86 @@
 #include <dime/records/Int16Record.h>
 #include <dime/Input.h>
 #include <dime/Output.h>
-#include <dime/util/MemHandler.h>
+
 
 /*!
   Constructor
 */
 
-dimeInt16Record::dimeInt16Record(const int group_code, const int16 val)
-  :dimeRecord(group_code)
+dimeInt16Record::dimeInt16Record(const int group_code, const int16_t val)
+	: DimeRecord(group_code)
 {
-  this->setValue(val);
+	this->setValue(val);
 }
 
 //!
 
-dimeRecord *
-dimeInt16Record::copy(dimeMemHandler * const mh) const
+DimeRecord*
+dimeInt16Record::copy() const
 {
-  return new(mh) dimeInt16Record(this->groupCode, this->value);
+	return new dimeInt16Record(this->groupCode, this->value);
 }
 
 /*!
-  Sets the int16 value.
+  Sets the int16_t value.
 */
 
-void 
-dimeInt16Record::setValue(const int16 val)
+void
+dimeInt16Record::setValue(const int16_t val)
 {
-  this->value = val;
+	this->value = val;
 }
 
 /*!
-  Returns the int16 value.
+  Returns the int16_t value.
 */
 
-int16
+int16_t
 dimeInt16Record::getValue() const
 {
-  return this->value;
+	return this->value;
 }
 
 //!
 
-int 
+DimeBase::TypeID
 dimeInt16Record::typeId() const
 {
-  return dimeBase::dimeInt16RecordType;
+	return DimeBase::dimeInt16RecordType;
 }
 
 //!
 
-bool 
-dimeInt16Record::read(dimeInput * const in)
+bool
+dimeInt16Record::read(DimeInput* const in)
 {
-  return in->readInt16(this->value);
+	return in->readInt16(this->value);
 }
 
 //!
 
-bool 
-dimeInt16Record::write(dimeOutput * const out)
+bool
+dimeInt16Record::write(DimeOutput* const out)
 {
-  if (dimeRecord::write(out)) {
-    return out->writeInt16(this->value);
-  }
-  return false;
+	if (DimeRecord::write(out))
+	{
+		return out->writeInt16(this->value);
+	}
+	return false;
 }
 
 //!
 
-void 
-dimeInt16Record::setValue(const dimeParam &param, dimeMemHandler * const )
+void
+dimeInt16Record::setValue(const dimeParam& param)
 {
-  this->value = param.int16_data;
+	this->value = param.int16_data;
 }
 
 //!
 
-void 
-dimeInt16Record::getValue(dimeParam &param) const
+void
+dimeInt16Record::getValue(dimeParam& param) const
 {
-  param.int16_data = this->value;
+	param.int16_data = this->value;
 }
-

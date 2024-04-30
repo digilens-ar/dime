@@ -31,7 +31,7 @@
 \**************************************************************************/
 
 /*!
-  \class dimeTablesSection dime/sections/TablesSection.h
+  \class DimeTablesSection dime/sections/TablesSection.h
   \brief The dimeTablesSection class handles a TABLES \e section.
 */
 
@@ -39,181 +39,182 @@
 #include <dime/tables/Table.h>
 #include <dime/Input.h>
 #include <dime/Output.h>
-#include <dime/util/MemHandler.h>
+
 #include <dime/Model.h>
 #include <dime/util/Array.h>
 
-static const char sectionName[] = "TABLES";
+static constexpr char sectionName[] = "TABLES";
 
-/*!
-  Constructor.
-*/
-
-dimeTablesSection::dimeTablesSection(dimeMemHandler * const memhandler)
-  : dimeSection( memhandler )
-{
-}
 
 /*!
   Destructor.
 */
 
-dimeTablesSection::~dimeTablesSection()
+DimeTablesSection::~DimeTablesSection()
 {
-  for (int i = 0; i < this->tables.count(); i++)
-    delete this->tables[i];
+	for (int i = 0; i < this->tables.count(); i++)
+		delete this->tables[i];
 }
 
 //!
 
-dimeSection *
-dimeTablesSection::copy(dimeModel * const model) const
+DimeSection*
+DimeTablesSection::copy(DimeModel* const model) const
 {
-  dimeMemHandler *memh = model->getMemHandler();
-  dimeTablesSection *ts = new dimeTablesSection(memh);
-  int n = this->tables.count();
-  if (n) {
-    int i;
-    ts->tables.makeEmpty(n);
-    for (i = 0; i < n; i++) {
-      dimeTable *cp = this->tables[i]->copy(model);
-      if (!cp) break;
-      ts->tables.append(cp);
-    }
-    if (i < n) {
-      fprintf(stderr,"Error copying TABLES section.\n");
-//      sim_warning("Error copying TABLES section.\n");
-      return NULL;
-    }
-  }
-  return ts;
+	auto ts = new DimeTablesSection;
+	int n = this->tables.count();
+	if (n)
+	{
+		int i;
+		ts->tables.makeEmpty(n);
+		for (i = 0; i < n; i++)
+		{
+			DimeTable* cp = this->tables[i]->copy(model);
+			if (!cp) break;
+			ts->tables.append(cp);
+		}
+		if (i < n)
+		{
+			fprintf(stderr, "Error copying TABLES section.\n");
+			//      sim_warning("Error copying TABLES section.\n");
+			return nullptr;
+		}
+	}
+	return ts;
 }
 
 /*!
   Will read a DXF TABLES section.
 */
 
-bool 
-dimeTablesSection::read(dimeInput * const file)
+bool
+DimeTablesSection::read(DimeInput* const file)
 {
-  int32 groupcode;
-  const char *string;
-  bool ok = true;
-  dimeTable *table = NULL;
-  dimeMemHandler *memhandler = file->getMemHandler();
+	int32_t groupcode;
+	const char* string;
+	bool ok = true;
+	DimeTable* table = nullptr;
 
-//  sim_trace("Reading section: TABLES\n");
+	//  sim_trace("Reading section: TABLES\n");
 
-  while (true) {
-    if (!file->readGroupCode(groupcode) || groupcode != 0) {
-      fprintf(stderr,"Error reading groupcode: %d\n", groupcode);
-//      sim_warning("Error reading groupcode: %d\n", groupcode);
-      ok = false;
-      break;
-    }
-    string = file->readString();
-    if (!strcmp(string, "ENDSEC")) break;
-    if (strcmp(string, "TABLE")) {
-      fprintf(stderr,"unexpected string.\n");
-//      sim_warning("unexpected string.\n");
-      ok = false;
-      break;
-    }
+	while (true)
+	{
+		if (!file->readGroupCode(groupcode) || groupcode != 0)
+		{
+			fprintf(stderr, "Error reading groupcode: %d\n", groupcode);
+			//      sim_warning("Error reading groupcode: %d\n", groupcode);
+			ok = false;
+			break;
+		}
+		string = file->readString();
+		if (!strcmp(string, "ENDSEC")) break;
+		if (strcmp(string, "TABLE"))
+		{
+			fprintf(stderr, "unexpected string.\n");
+			//      sim_warning("unexpected string.\n");
+			ok = false;
+			break;
+		}
 
-    table = new dimeTable(memhandler);
-    if (table == NULL) {
-      fprintf(stderr,"error creating table: %s\n", string);
-//      sim_warning("error creating table: %s\n", string);
-      ok = false;
-      break;
-    }
-    if (!table->read(file)) {
-      fprintf(stderr,"error reading table: %s.\n", string);
-//      sim_warning("error reading table: %s.\n", string);
-      ok = false;
-      break;
-    }
-    this->tables.append(table);
-  }
-  return ok;
+		table = new DimeTable;
+		if (table == nullptr)
+		{
+			fprintf(stderr, "error creating table: %s\n", string);
+			//      sim_warning("error creating table: %s\n", string);
+			ok = false;
+			break;
+		}
+		if (!table->read(file))
+		{
+			fprintf(stderr, "error reading table: %s.\n", string);
+			//      sim_warning("error reading table: %s.\n", string);
+			ok = false;
+			break;
+		}
+		this->tables.append(table);
+	}
+	return ok;
 }
 
 //!
 
-bool 
-dimeTablesSection::write(dimeOutput * const file)
+bool
+DimeTablesSection::write(DimeOutput* const file)
 {
-  if (file->writeGroupCode(2) && file->writeString(sectionName)) {
-    int i, n = this->tables.count();
-    for (i = 0; i < n; i++) {
-      if (!this->tables[i]->write(file)) break;
-    }
-    if (i == n) {
-      return file->writeGroupCode(0) && file->writeString("ENDSEC");
-    }
-  }
-  return false;
+	if (file->writeGroupCode(2) && file->writeString(sectionName))
+	{
+		int i, n = this->tables.count();
+		for (i = 0; i < n; i++)
+		{
+			if (!this->tables[i]->write(file)) break;
+		}
+		if (i == n)
+		{
+			return file->writeGroupCode(0) && file->writeString("ENDSEC");
+		}
+	}
+	return false;
 }
 
 //!
 
-int 
-dimeTablesSection::typeId() const
+DimeBase::TypeID
+DimeTablesSection::typeId() const
 {
-  return dimeBase::dimeTablesSectionType;
+	return DimeBase::dimeTablesSectionType;
 }
 
 //!
 
 int
-dimeTablesSection::countRecords() const
+DimeTablesSection::countRecords() const
 {
-  int cnt = 0;
-  int i, n = this->tables.count();
-  for (i = 0; i < n; i++)
-    cnt += this->tables[i]->countRecords();
-  return cnt + 2; // two records are written in write()
+	int cnt = 0;
+	int i, n = this->tables.count();
+	for (i = 0; i < n; i++)
+		cnt += this->tables[i]->countRecords();
+	return cnt + 2; // two records are written in write()
 }
 
 //!
 
-const char *
-dimeTablesSection::getSectionName() const
+const char*
+DimeTablesSection::getSectionName() const
 {
-  return sectionName;
+	return sectionName;
 }
 
 /*!
   Returns the number of tables in this section. 
 */
 
-int 
-dimeTablesSection::getNumTables() const
+int
+DimeTablesSection::getNumTables() const
 {
-  return this->tables.count();
+	return this->tables.count();
 }
 
 /*!
   Returns the table at index \a idx.
 */
 
-dimeTable *
-dimeTablesSection::getTable(const int idx)
+DimeTable*
+DimeTablesSection::getTable(const int idx)
 {
-  assert(idx >= 0 && idx < this->tables.count());
-  return this->tables[idx];
+	assert(idx >= 0 && idx < this->tables.count());
+	return this->tables[idx];
 }
 
 /*!
   Removes (and deletes if no memory handler is used) the table at index \a idx.
 */
 
-void 
-dimeTablesSection::removeTable(const int idx)
+void
+DimeTablesSection::removeTable(const int idx)
 {
-  assert(idx >= 0 && idx < this->tables.count());
-  if (!this->memHandler) delete this->tables[idx];
-  this->tables.removeElem(idx);
+	assert(idx >= 0 && idx < this->tables.count());
+	delete this->tables[idx];
+	this->tables.removeElem(idx);
 }
 
 /*!
@@ -223,13 +224,13 @@ dimeTablesSection::removeTable(const int idx)
   For instance, the LTYPE table should always precede the LAYER table.
 */
 
-void 
-dimeTablesSection::insertTable(dimeTable * const table, const int idx)
+void
+DimeTablesSection::insertTable(DimeTable* const table, const int idx)
 {
-  if (idx < 0) this->tables.append(table);
-  else {
-    assert(idx <= this->tables.count());
-    this->tables.insertElem(idx, table);
-  }
+	if (idx < 0) this->tables.append(table);
+	else
+	{
+		assert(idx <= this->tables.count());
+		this->tables.insertElem(idx, table);
+	}
 }
-

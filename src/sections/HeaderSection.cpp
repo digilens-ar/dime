@@ -31,41 +31,30 @@
 \**************************************************************************/
 
 /*!
-  \class dimeHeaderSection dime/sections/HeaderSection.h
+  \class DimeHeaderSection dime/sections/HeaderSection.h
   \brief The dimeHeaderSection class handles the HEADER \e section.
 */
 
 #include <dime/sections/HeaderSection.h>
 #include <dime/records/Record.h>
 #include <dime/records/StringRecord.h>
-#include <dime/util/MemHandler.h>
+
 #include <dime/Model.h>
 #include <dime/Input.h>
 #include <dime/Output.h>
 
 // FIXME: use a dimeDict to speed up findVariable()
 
-static const char sectionName[] = "HEADER";
-
-/*!
-  Constructor
-*/
-
-dimeHeaderSection::dimeHeaderSection(dimeMemHandler * const memhandler)
-  : dimeSection(memhandler) 
-{
-}
+static constexpr char sectionName[] = "HEADER";
 
 /*!
   Destructor
 */
 
-dimeHeaderSection::~dimeHeaderSection()
+DimeHeaderSection::~DimeHeaderSection()
 {
-  if (!this->memHandler) {
-    int i, n = this->records.count();
-    for (i = 0; i < n; i++) delete this->records[i];
-  }
+	int i, n = this->records.count();
+	for (i = 0; i < n; i++) delete this->records[i];
 }
 
 /*!
@@ -77,26 +66,29 @@ dimeHeaderSection::~dimeHeaderSection()
 */
 
 int
-dimeHeaderSection::getVariable(const char * const variableName,
-			      int * const groupcodes,
-			      dimeParam * const params,
-			      const int maxparams) const
+DimeHeaderSection::getVariable(const char* const variableName,
+                               int* const groupcodes,
+                               dimeParam* const params,
+                               const int maxparams) const
 {
-  int i = this->findVariable(variableName);
-  if (i >= 0) { // yup, found it!
-    i++;
-    int cnt = 0;
-    int n = this->records.count();
-    while (i < n && cnt < maxparams && this->records[i]->getGroupCode() != 9) {
-      groupcodes[cnt] = this->records[i]->getGroupCode();
-      this->records[i]->getValue(params[cnt]);
-      cnt++;
-      i++;
-    }
-    return cnt;
-  }
-  return -1;
-}  
+	int i = this->findVariable(variableName);
+	if (i >= 0)
+	{
+		// yup, found it!
+		i++;
+		int cnt = 0;
+		int n = this->records.count();
+		while (i < n && cnt < maxparams && this->records[i]->getGroupCode() != 9)
+		{
+			groupcodes[cnt] = this->records[i]->getGroupCode();
+			this->records[i]->getValue(params[cnt]);
+			cnt++;
+			i++;
+		}
+		return cnt;
+	}
+	return -1;
+}
 
 /*!
   Sets a header variable.
@@ -107,120 +99,129 @@ dimeHeaderSection::getVariable(const char * const variableName,
 */
 
 int
-dimeHeaderSection::setVariable(const char * const variableName,
-			      const int * const groupcodes,
-			      const dimeParam * const params,
-			      const int numparams,
-			      dimeMemHandler * const memhandler)
+DimeHeaderSection::setVariable(const char* const variableName,
+                               const int* const groupcodes,
+                               const dimeParam* const params,
+                               const int numparams)
 {
-  int i = findVariable(variableName);
-  if (i < 0) {
-    i = this->records.count();
-    dimeStringRecord *sr = (dimeStringRecord*)dimeRecord::createRecord(9, memhandler);
-    if (!sr) return false;
-    sr->setString(variableName, memhandler);
-    
-    this->records.append(sr);
-    for (int j = 0; j < numparams; j++) {
-      this->records.append(dimeRecord::createRecord(groupcodes[j], memhandler));
-    }
-  }
-  i++;
-  int cnt = 0;
-  for (int j = 0; j < numparams; j++) {
-    int k = i;
-    int n = this->records.count();
-    while (k < n && this->records[k]->getGroupCode() != groupcodes[j] &&
-	   this->records[k]->getGroupCode() != 9) {
-      k++;
-    }
-    if (k < n && this->records[k]->getGroupCode() == groupcodes[j]) {
-      cnt++;
-      this->records[k]->setValue(params[j]);
-    }
-  }
-  return cnt;
+	int i = findVariable(variableName);
+	if (i < 0)
+	{
+		i = this->records.count();
+		auto sr = static_cast<dimeStringRecord*>(DimeRecord::createRecord(9));
+		if (!sr) return false;
+		sr->setString(variableName);
+
+		this->records.append(sr);
+		for (int j = 0; j < numparams; j++)
+		{
+			this->records.append(DimeRecord::createRecord(groupcodes[j]));
+		}
+	}
+	i++;
+	int cnt = 0;
+	for (int j = 0; j < numparams; j++)
+	{
+		int k = i;
+		int n = this->records.count();
+		while (k < n && this->records[k]->getGroupCode() != groupcodes[j] &&
+			this->records[k]->getGroupCode() != 9)
+		{
+			k++;
+		}
+		if (k < n && this->records[k]->getGroupCode() == groupcodes[j])
+		{
+			cnt++;
+			this->records[k]->setValue(params[j]);
+		}
+	}
+	return cnt;
 }
 
 //!
 
-const char *
-dimeHeaderSection::getSectionName() const
+const char*
+DimeHeaderSection::getSectionName() const
 {
-  return sectionName;
+	return sectionName;
 }
 
 //!
 
-dimeSection *
-dimeHeaderSection::copy(dimeModel * const model) const
+DimeSection*
+DimeHeaderSection::copy(DimeModel* const model) const
 {
-  dimeMemHandler *mh = model->getMemHandler();
-  dimeHeaderSection *hs = new dimeHeaderSection(mh);
-  if (hs) {
-    int i, n = this->records.count();
-    hs->records.makeEmpty(n);
-    for (i = 0; i < n; i++) hs->records.append(this->records[i]->copy(mh));
-  }
-  return hs;
+	auto hs = new DimeHeaderSection;
+	if (hs)
+	{
+		int i, n = this->records.count();
+		hs->records.makeEmpty(n);
+		for (i = 0; i < n; i++) hs->records.append(this->records[i]->copy());
+	}
+	return hs;
 }
 
 //!
 
-bool 
-dimeHeaderSection::read(dimeInput * const file)
+bool
+DimeHeaderSection::read(DimeInput* const file)
 {
-  dimeRecord *record;
-  bool ok = true;
-  this->records.makeEmpty(512);
-  
-  while (true) {
-    record = dimeRecord::readRecord(file);
-    if (record == NULL) {
-      ok = false;
-      break;
-    }
-    if (record->isEndOfSectionRecord()) {
-      if (!file->getMemHandler()) delete record; // just delete EOS record
-      break;
-    }
-    this->records.append(record);
-  }
-  this->records.shrinkToFit();
-  return ok;
+	DimeRecord* record;
+	bool ok = true;
+	this->records.makeEmpty(512);
+
+	while (true)
+	{
+		record = DimeRecord::readRecord(file);
+		if (record == nullptr)
+		{
+			ok = false;
+			break;
+		}
+		if (record->isEndOfSectionRecord())
+		{
+			delete record; // just delete EOS record
+			break;
+		}
+		this->records.append(record);
+	}
+	this->records.shrinkToFit();
+	return ok;
 }
 
 //!
 
-bool 
-dimeHeaderSection::write(dimeOutput * const file)
+bool
+DimeHeaderSection::write(DimeOutput* const file)
 {
-  if (file->writeGroupCode(2) && file->writeString(sectionName)) {
-    int i, n = this->records.count();
-    for (i = 0; i < n; i++) {
-      if (!this->records[i]->write(file)) return false;
-    }
-    // don't forget to write EOS record
-    file->writeGroupCode(0);
-    return file->writeString("ENDSEC");
-  }
-  return false;
+	if (file->writeGroupCode(2) && file->writeString(sectionName))
+	{
+		int i, n = this->records.count();
+		for (i = 0; i < n; i++)
+		{
+			if (!this->records[i]->write(file)) return false;
+		}
+		// don't forget to write EOS record
+		file->writeGroupCode(0);
+		return file->writeString("ENDSEC");
+	}
+	return false;
 }
 
 //!
 
-int 
-dimeHeaderSection::typeId() const
+DimeBase::TypeID
+DimeHeaderSection::typeId() const
 {
-  return dimeBase::dimeHeaderSectionType;
+	return DimeBase::dimeHeaderSectionType;
 }
 
 //!
 
-int 
-dimeHeaderSection::countRecords() const
+int
+DimeHeaderSection::countRecords() const
 {
-  return this->records.count() + 2; // numrecords + SECTIONNAME + EOS
+	return this->records.count() + 2; // numrecords + SECTIONNAME + EOS
 }
 
 //
@@ -228,16 +229,17 @@ dimeHeaderSection::countRecords() const
 //
 
 int
-dimeHeaderSection::findVariable(const char * const variableName) const
+DimeHeaderSection::findVariable(const char* const variableName) const
 {
-  const int n = this->records.count();
-  int i;
-  for (i = 0; i < n; i++) {
-    if (this->records[i]->getGroupCode() == 9 &&
-	!strcmp(((dimeStringRecord*)this->records[i])->getString(),
-                variableName)) break;
-  }
-  if (i < n) return i;
-  return -1;
+	const int n = this->records.count();
+	int i;
+	for (i = 0; i < n; i++)
+	{
+		if (this->records[i]->getGroupCode() == 9 &&
+			!strcmp(static_cast<dimeStringRecord*>(this->records[i])->getString(),
+			        variableName))
+			break;
+	}
+	if (i < n) return i;
+	return -1;
 }
-
