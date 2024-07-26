@@ -140,6 +140,8 @@ target_include_directories(${PROJECT_NAME}
     $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
 )
 
+add_library(${PROJECT_NAME}::${PROJECT_NAME} ALIAS ${PROJECT_NAME})
+
 option(DIME_BUILD_EXAMPLES "Whether to build executable examples" OFF)
 if (DIME_BUILD_EXAMPLES)
     add_executable(dxf2vrml dxf2vrml/dxf2vrml.cpp)
