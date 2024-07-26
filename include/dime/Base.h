@@ -89,6 +89,7 @@ public:
 		dimeUnknownTableType,
 		dimeUCSTableType,
 		dimeLayerTableType,
+		dimeEndBlockType,
 
 		// this should be last
 		dimeLastTypeTag

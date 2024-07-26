@@ -90,6 +90,16 @@ private:
 	DimeEntity* endblock;
 }; // class dimeBlock
 
+class DimeEndBlock : public DimeEntity
+{
+public:
+	DimeEndBlock() = default;
+
+	TypeID typeId() const override {return DimeBase::dimeEndBlockType; }
+	const char* getEntityName() const override { return "ENDBLK"; }
+	DimeEntity* copy(DimeModel* model) const override { return new DimeEndBlock; }
+};
+
 inline const dimeVec3&
 DimeBlock::getBasePoint() const
 {

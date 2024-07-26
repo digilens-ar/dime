@@ -322,6 +322,8 @@ DimeEntity::createEntity(const char* const name)
 		return new DimeEllipse;
 	if (!strcmp(name, "ARC"))
 		return new DimeArc;
+	if (!strcmp(name, "ENDBLK"))
+		return new DimeEndBlock;
 	return new DimeUnknownEntity(name);
 }
 
