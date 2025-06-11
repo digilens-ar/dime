@@ -194,8 +194,7 @@ DimeOutput::writeFloat(const float val)
 	{
 		return fprintf(this->fp, "%.1f\n", val);
 	}
-	return fprintf(this->fp, "%g\n", val);
-	//    return fprintf(this->fp, "%#f\n", val);
+	return fprintf(this->fp, "%.15g\n", val);
 }
 
 /*!
@@ -210,8 +209,7 @@ DimeOutput::writeDouble(const dxfdouble val)
 	{
 		return fprintf(this->fp, "%.1f\n", val);
 	}
-	return fprintf(this->fp, "%g\n", val) > 0;
-	//    return fprintf(this->fp,"%#f\n", val) > 0;
+	return fprintf(this->fp, "%.15g\n", val) > 0;
 }
 
 /*!

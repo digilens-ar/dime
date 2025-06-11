@@ -278,7 +278,6 @@ DimeModel::write(DimeOutput* const out)
 			}
 		}
 	}
-	(void)out->writeHeader();
 	int i, n = this->headerComments.count();
 	for (i = 0; i < n; i++)
 	{
@@ -682,8 +681,9 @@ DimeModel::getUniqueHandle(char* buf, const int)
 void
 DimeModel::addEntity(DimeEntity* entity)
 {
-	auto es = static_cast<DimeEntitiesSection*>(this->findSection("ENTITIES"))
-	assert(es);
+	auto section = this->findSection("ENTITIES");
+	auto es = dynamic_cast<DimeEntitiesSection*>(section);
+	assert(es != nullptr);
 	if (es)
 	{
 		es->insertEntity(entity);

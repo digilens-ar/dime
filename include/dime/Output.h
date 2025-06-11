@@ -51,7 +51,6 @@ public:
 	void setBinary(bool state = true);
 	bool isBinary() const;
 
-	bool writeHeader() { return true; }
 	bool writeGroupCode(int groupcode);
 	bool writeInt8(int8_t val);
 	bool writeInt16(int16_t val);
