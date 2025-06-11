@@ -379,11 +379,6 @@ DimePolyline::write(DimeOutput* const file)
 	if (!ret) return false; // too lazy to check every write
 
 	int i;
-	// write all spline frame control points
-	for (i = 0; i < this->frameCnt; i++)
-	{
-		this->frameVertices[i]->write(file);
-	}
 	// write all coord vertices
 	for (i = 0; i < this->coordCnt; i++)
 	{
@@ -393,6 +388,11 @@ DimePolyline::write(DimeOutput* const file)
 	for (i = 0; i < this->indexCnt; i++)
 	{
 		this->indexVertices[i]->write(file);
+	}
+	// write all spline frame control points
+	for (i = 0; i < this->frameCnt; i++)
+	{
+		this->frameVertices[i]->write(file);
 	}
 
 	// write end-of-vertex signature...

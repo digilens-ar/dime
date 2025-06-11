@@ -682,8 +682,8 @@ DimeModel::getUniqueHandle(char* buf, const int)
 void
 DimeModel::addEntity(DimeEntity* entity)
 {
-	auto es =
-		static_cast<DimeEntitiesSection*>(this->findSection("ENTITIES"));
+	auto es = static_cast<DimeEntitiesSection*>(this->findSection("ENTITIES"))
+	assert(es);
 	if (es)
 	{
 		es->insertEntity(entity);
