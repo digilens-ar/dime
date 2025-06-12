@@ -138,6 +138,11 @@ DimeHeaderSection::setVariable(const char* const variableName,
 	return cnt;
 }
 
+void DimeHeaderSection::setVariable(const char* variableName, int groupcode, dimeParam const& param)
+{
+	setVariable(variableName, &groupcode, &param, 1);
+}
+
 //!
 
 const char*

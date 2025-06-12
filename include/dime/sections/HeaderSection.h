@@ -52,6 +52,11 @@ public:
 	                const dimeParam* params,
 	                int numparams);
 
+	void setVariable(
+		const char* variableName,
+		int groupcode,
+		dimeParam const& param);
+
 	const char* getSectionName() const override;
 	DimeSection* copy(DimeModel* model) const override;
 
